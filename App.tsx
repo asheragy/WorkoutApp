@@ -5,6 +5,7 @@ import {WorkoutScreen} from './components/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -20,28 +21,33 @@ const Stack = createStackNavigator<RootStackParamList>();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Home"
-          component={WorkoutList}
-          options={{
-            title: 'Workouts',
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}
-        />
-        <Stack.Screen name="Workout" component={WorkoutScreen} />
-      </Stack.Navigator>
+      <OverflowMenuProvider>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={WorkoutList}
+            options={{
+              title: 'Workouts',
+              headerStyle: styles.headerStyle,
+            }}
+          />
+          <Stack.Screen
+            name="Workout"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={WorkoutScreen}
+          />
+        </Stack.Navigator>
+      </OverflowMenuProvider>
     </NavigationContainer>
   );
 };
 
 const styles = StyleSheet.create({
+  headerStyle: {
+    backgroundColor: '#f4511e',
+  },
   sectionContainer: {
     marginTop: 32,
     paddingHorizontal: 24,

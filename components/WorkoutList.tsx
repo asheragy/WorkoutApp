@@ -10,10 +10,36 @@ import {
 import {Workout, Lift, LiftSet} from '../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import getProgram from '../programs/basic';
+import {
+  HeaderButton,
+  HeaderButtons,
+  HiddenItem,
+  OverflowMenu,
+} from 'react-navigation-header-buttons';
+
+const MaterialHeaderButton = props => (
+  <HeaderButton {...props} iconSize={23} color="blue" />
+);
 
 export function WorkoutList({navigation}: any) {
   const [completedIndex, setCompletedIndex] = useState(0);
   const storageKey = '@test9';
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+          <OverflowMenu
+            style={{marginHorizontal: 10}}
+            OverflowIcon={({color}) => (
+              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+            )}>
+            <HiddenItem title="Undo Complete" onPress={() => undoComplete()} />
+          </OverflowMenu>
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation]);
 
   function loadState() {
     console.log('load state');
@@ -24,6 +50,24 @@ export function WorkoutList({navigation}: any) {
         setCompletedIndex(values.length - 1);
       } else setCompletedIndex(-1);
     });
+  }
+
+  async function undoComplete() {
+    try {
+      var value = await AsyncStorage.getItem(storageKey);
+      var values = [];
+
+      if (value != null) {
+        values = JSON.parse(value);
+        values.pop();
+
+        await AsyncStorage.setItem(storageKey, JSON.stringify(values));
+        navigation.pop();
+        loadState();
+      }
+    } catch (e) {
+      // error reading value
+    }
   }
 
   async function onComplete(index: number) {

@@ -3416,7 +3416,7 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.4.0.tgz#665ab8bc4da27a774a40584e812e3e0fa45b1a1e"
   integrity sha512-agE4QfB2Lkp9uICn7BAqoscw4SZP9kTE2hxiFI3jBPmXJfdqiahTbUuKGsMoN2GtqL9AxhYioAcVvgsb1HvRbA==
 
-invariant@^2.2.4:
+invariant@>=2, invariant@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
   integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
@@ -5490,6 +5490,13 @@ react-native@0.64.0:
     use-subscription "^1.0.0"
     whatwg-fetch "^3.0.0"
     ws "^6.1.4"
+
+react-navigation-header-buttons@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/react-navigation-header-buttons/-/react-navigation-header-buttons-7.0.2.tgz#2971aa6e9c927a8e9872afa9a394bdbb625cbe4a"
+  integrity sha512-9upSzWAaIYalBwwMDIUa9XtquVElFAfPStjzl4SvV7XE4HAIcnafDGcMApyxn5zf3N4VvDSRTB9xfEiDzr98jg==
+  dependencies:
+    invariant ">=2"
 
 react-refresh@^0.4.0:
   version "0.4.3"
