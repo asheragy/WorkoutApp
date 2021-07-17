@@ -16,14 +16,14 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
+import Storage from '../utils/Storage';
 
-const MaterialHeaderButton = props => (
+const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
 );
 
 export function WorkoutList({navigation}: any) {
   const [completedIndex, setCompletedIndex] = useState(0);
-  const storageKey = '@test9';
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,7 +34,7 @@ export function WorkoutList({navigation}: any) {
             OverflowIcon={({color}) => (
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
-            <HiddenItem title="Undo Complete" onPress={() => undoComplete()} />
+            <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -42,63 +42,20 @@ export function WorkoutList({navigation}: any) {
   }, [navigation]);
 
   function loadState() {
-    console.log('load state');
-    AsyncStorage.getItem(storageKey).then(value => {
-      if (value != null) {
-        var values = JSON.parse(value);
-        console.log('completed index = ' + (values.length - 1));
-        setCompletedIndex(values.length - 1);
-      } else setCompletedIndex(-1);
-    });
+    Storage.getLastCompletedIndex().then(index => setCompletedIndex(index));
   }
 
-  async function undoComplete() {
-    try {
-      var value = await AsyncStorage.getItem(storageKey);
-      var values = [];
-
-      if (value != null) {
-        values = JSON.parse(value);
-        values.pop();
-
-        await AsyncStorage.setItem(storageKey, JSON.stringify(values));
-        navigation.pop();
-        loadState();
-      }
-    } catch (e) {
-      // error reading value
+  async function onUndo() {
+    if (await Storage.undoComplete()) {
+      navigation.pop();
+      loadState();
     }
   }
 
   async function onComplete(index: number) {
-    console.log('onComplete' + index);
-
-    try {
-      var value = await AsyncStorage.getItem(storageKey);
-      var values = [];
-
-      if (value == null && index != 0) {
-        console.log('First workout must be completed first');
-        return;
-      }
-
-      if (value != null) {
-        console.log('Previous value = ' + value);
-        values = JSON.parse(value);
-        if (values.length != index) {
-          console.log('Must complete workouts in order');
-          return;
-        }
-      }
-
-      values.push(new Date());
-
-      await AsyncStorage.setItem(storageKey, JSON.stringify(values));
-      //setCompletedIndex(values.length);
+    if (await Storage.complete(index)) {
       navigation.pop();
       loadState();
-    } catch (e) {
-      // error reading value
     }
   }
 
