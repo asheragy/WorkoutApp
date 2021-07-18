@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {Workout, Lift, LiftSet} from '../types/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import getProgram from '../programs/basic';
+import getProgram from '../programs/me';
 import {
   HeaderButton,
   HeaderButtons,
