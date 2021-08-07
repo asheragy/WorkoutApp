@@ -129,7 +129,14 @@ function LiftItem(props: {lift: Lift}) {
 }
 
 function SetItem(props: {set: LiftSet}) {
-  var str = props.set.weight + 'lb x ' + props.set.reps;
+  if (props.set.weight != null) var str = props.set.weight + 'lb';
+  else var str = 'Any';
+
+  str += ' x ';
+
+  if (typeof props.set.reps == 'number') str += props.set.reps;
+  else str += props.set.reps.min + '-' + props.set.reps.max;
+
   if (props.set.amrap) str = str + '+';
 
   if (props.set.repeat && props.set.repeat > 1) {

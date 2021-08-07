@@ -1,4 +1,4 @@
-import {Workout, Program} from '../types/types';
+import {Program, Workout} from '../types/types';
 
 function getDLDay(block: number, week: number): Workout {
   const weight = 235 + block * 10 + 20 * week;
@@ -179,8 +179,23 @@ function getPushDay(block: number, week: number): Workout {
         sets: [
           {
             reps: 10,
-            weight: 0,
-            repeat: 5,
+            weight: 45,
+          },
+          {
+            reps: 10,
+            weight: 55,
+          },
+          {
+            reps: {min: 8, max: 12},
+            weight: 65,
+          },
+          {
+            reps: {min: 8, max: 12},
+            weight: 60,
+          },
+          {
+            reps: {min: 8, max: 12},
+            weight: 55,
           },
         ],
       },
@@ -233,19 +248,18 @@ function getPullDay(block: number, week: number): Workout {
 }
 
 export default function getProgram(): Program {
-  const result = new Program();
-  result.workouts = [];
+  const workouts: Workout[] = [];
 
-  for (var block = 0; block < 5; block++) {
+  for (var block = 0; block < 1; block++) {
     for (var week = 0; week < 3; week++) {
       //result.workouts.push(getDLDay(block, week));
       //result.workouts.push(getBenchDay(block, week));
       //result.workouts.push(getUpperDay(block, week));
       //result.workouts.push(getLowerDay(block, week));
-      //result.workouts.push(getPushDay(block, week));
-      result.workouts.push(getPullDay(block, week));
+      workouts.push(getPushDay(block, week));
+      //result.workouts.push(getPullDay(block, week));
     }
   }
 
-  return result;
+  return {workouts};
 }

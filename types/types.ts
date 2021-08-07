@@ -1,20 +1,25 @@
-export class LiftSet {
-  weight: Number;
-  reps: number;
+export type LiftSet = {
+  weight?: Number;
+  reps: number | Range;
   repeat?: number;
-  amrap?: boolean = false;
-}
+  amrap?: boolean;
+};
 
-export class Lift {
+export type Lift = {
   name: string;
   sets?: LiftSet[];
-}
+};
 
-export class Workout {
+export type Workout = {
   week: number;
   lifts: Lift[];
-}
+};
 
-export class Program {
+export type Program = {
   workouts: Workout[];
-}
+};
+
+export type Range = {
+  min: number;
+  max: number;
+};
