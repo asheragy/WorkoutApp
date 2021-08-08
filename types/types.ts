@@ -11,7 +11,7 @@ export type Lift = {
 };
 
 export type WorkoutNode = {
-  week: number;
+  name?: string;
   lifts: Lift[];
 };
 

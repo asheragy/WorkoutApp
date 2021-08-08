@@ -4,7 +4,7 @@ function getSquatDay(week: number): WorkoutNode {
   const weight = week < 6 ? 0 + week * 2.5 : 20;
 
   return {
-    week: week + 1,
+    name: 'Week ' + week + 1,
     lifts: [
       {
         name: 'Pause Squat',
@@ -43,7 +43,7 @@ function getBenchDay(week: number): WorkoutNode {
   }
 
   return {
-    week: week + 1,
+    name: 'Week ' + week + 1,
     lifts: [
       {
         name: 'Bench Press',
@@ -80,7 +80,7 @@ function getDLDay(week: number): WorkoutNode {
   }
 
   return {
-    week: week + 1,
+    name: 'Week ' + week + 1,
     lifts: [
       {
         name: trapWeek ? 'Trap Bar' : 'Deadlift',

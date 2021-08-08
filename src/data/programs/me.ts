@@ -4,7 +4,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
   const weight = 235 + block * 10 + 20 * week;
 
   return {
-    week: week + 1,
+    name: 'DL Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Trap Bar Deadlift',
@@ -60,7 +60,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
   }
 
   return {
-    week: week + 1,
+    name: 'Bench Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Bench Press',
@@ -99,7 +99,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
 
 function getUpperDay(block: number, week: number): WorkoutNode {
   return {
-    week: week + 1,
+    name: 'Upper Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Pullups',
@@ -146,7 +146,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
 
 function getLowerDay(block: number, week: number): WorkoutNode {
   return {
-    week: week + 1,
+    name: 'Lower Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Sumo DL',
@@ -189,7 +189,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
   const ohpWeight = [ohpMin, ohpMid, ohpMax, ohpMid, ohpMin];
 
   return {
-    week: week + 1,
+    name: 'Push Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Overhead Press',
@@ -235,7 +235,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
 
 function getPullDay(block: number, week: number): WorkoutNode {
   return {
-    week: week + 1,
+    name: 'Pull Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Dumbbell Rows',

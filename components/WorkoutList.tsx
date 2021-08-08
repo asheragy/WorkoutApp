@@ -102,7 +102,7 @@ interface WorkoutItemProps {
 export function WorkoutListItem(props: WorkoutItemProps) {
   return (
     <View style={styles.workoutItem}>
-      <Text style={styles.weekText}>{'Week ' + props.workout.node.week}</Text>
+      <Text style={styles.titleText}>{props.workout.node?.name}</Text>
       {props.workout.node.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
@@ -151,7 +151,7 @@ function SetItem(props: {set: LiftSet}) {
 }
 
 const styles = StyleSheet.create({
-  weekText: {
+  titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
   },
