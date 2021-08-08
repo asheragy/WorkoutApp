@@ -1,6 +1,6 @@
-import {Program, Workout} from '../types/types';
+import {Program, WorkoutNode} from '../../../types/types';
 
-function getDLDay(block: number, week: number): Workout {
+function getDLDay(block: number, week: number): WorkoutNode {
   const weight = 235 + block * 10 + 20 * week;
 
   return {
@@ -26,7 +26,7 @@ function getDLDay(block: number, week: number): Workout {
   };
 }
 
-function getBenchDay(block: number, week: number): Workout {
+function getBenchDay(block: number, week: number): WorkoutNode {
   const weight = [0, 0, 0, 0, 0];
   const minWeight = 135 + block * 5;
   var maxWeight = 155 + block * 5 + week * 10;
@@ -97,7 +97,7 @@ function getBenchDay(block: number, week: number): Workout {
   };
 }
 
-function getUpperDay(block: number, week: number): Workout {
+function getUpperDay(block: number, week: number): WorkoutNode {
   return {
     week: week + 1,
     lifts: [
@@ -120,7 +120,7 @@ function getUpperDay(block: number, week: number): Workout {
   };
 }
 
-function getLowerDay(block: number, week: number): Workout {
+function getLowerDay(block: number, week: number): WorkoutNode {
   return {
     week: week + 1,
     lifts: [
@@ -158,7 +158,7 @@ function getLowerDay(block: number, week: number): Workout {
   };
 }
 
-function getPushDay(block: number, week: number): Workout {
+function getPushDay(block: number, week: number): WorkoutNode {
   const ohpMin = 15 + block * 2.5;
   const ohpMax = ohpMin + week * 5;
   const ohpMid = (ohpMax + ohpMin) / 2;
@@ -209,7 +209,7 @@ function getPushDay(block: number, week: number): Workout {
   };
 }
 
-function getPullDay(block: number, week: number): Workout {
+function getPullDay(block: number, week: number): WorkoutNode {
   return {
     week: week + 1,
     lifts: [
@@ -248,7 +248,7 @@ function getPullDay(block: number, week: number): Workout {
 }
 
 export default function getProgram(): Program {
-  const workouts: Workout[] = [];
+  const workouts: WorkoutNode[] = [];
 
   for (var block = 0; block < 1; block++) {
     for (var week = 0; week < 3; week++) {

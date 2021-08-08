@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
-import {Workout} from './types/types';
+import {Workout} from './src/data/Repository';
 import {WorkoutScreen} from './components/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
 import {NavigationContainer} from '@react-navigation/native';
@@ -10,7 +10,6 @@ import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 export type RootStackParamList = {
   Home: undefined;
   Workout: {
-    index: number;
     workout: Workout;
     onComplete: (index: number) => void;
   };

@@ -1,6 +1,6 @@
-import {Workout, Program} from '../types/types';
+import {WorkoutNode, Program} from '../../../types/types';
 
-function getSquatDay(week: number): Workout {
+function getSquatDay(week: number): WorkoutNode {
   const weight = week < 6 ? 0 + week * 2.5 : 20;
 
   return {
@@ -23,7 +23,7 @@ function getSquatDay(week: number): Workout {
   };
 }
 
-function getBenchDay(week: number): Workout {
+function getBenchDay(week: number): WorkoutNode {
   var sets = [];
 
   if (week != 5) {
@@ -56,7 +56,7 @@ function getBenchDay(week: number): Workout {
   };
 }
 
-function getDLDay(week: number): Workout {
+function getDLDay(week: number): WorkoutNode {
   var trapWeek = week % 2 == 0;
   const baseWeight = trapWeek ? 25 : 35;
   const weight = baseWeight + Math.floor(week / 2) * 5;

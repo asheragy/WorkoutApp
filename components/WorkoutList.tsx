@@ -7,23 +7,22 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {Workout, Lift, LiftSet} from '../types/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import getProgram from '../programs/me';
+import {Lift, LiftSet} from '../types/types';
 import {
   HeaderButton,
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import Storage from '../utils/Storage';
+import Storage from '../src/data/Storage';
+import Repository, {Workout} from '../src/data/Repository';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
 );
 
 export function WorkoutList({navigation}: any) {
-  const [completedIndex, setCompletedIndex] = useState(0);
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -35,6 +34,7 @@ export function WorkoutList({navigation}: any) {
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
+            <HiddenItem title="Refresh" onPress={() => loadState()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -42,12 +42,16 @@ export function WorkoutList({navigation}: any) {
   }, [navigation]);
 
   function loadState() {
-    Storage.getLastCompletedIndex().then(index => setCompletedIndex(index));
+    Repository.getWorkouts().then(workouts => {
+      var uncompletedWorkouts = workouts.filter(wo => !wo.completed);
+      setWorkouts(uncompletedWorkouts);
+    });
+    //Storage.getLastCompletedIndex().then(index => setCompletedIndex(index));
   }
 
   async function onUndo() {
     if (await Storage.undoComplete()) {
-      navigation.pop();
+      //navigation.pop();
       loadState();
     }
   }
@@ -63,38 +67,34 @@ export function WorkoutList({navigation}: any) {
 
   return (
     <WorkoutFlatList
-      completedIndex={completedIndex}
+      workouts={workouts}
       navigation={navigation}
       onComplete={onComplete}></WorkoutFlatList>
   );
 }
 
 function WorkoutFlatList(props: {
-  completedIndex: number;
+  workouts: Workout[];
   navigation: any;
   onComplete: (index: number) => void;
 }) {
-  const list = getProgram().workouts;
-
   function actionOnRow(index: number, item: Workout) {
     props.navigation.navigate('Workout', {
-      index: index,
       workout: item,
       onComplete: props.onComplete,
     });
   }
 
-  const renderItem = (item: ListRenderItemInfo<Workout>) =>
-    item.index > props.completedIndex && (
-      <TouchableOpacity onPress={() => actionOnRow(item.index, item.item)}>
-        <WorkoutItem workout={item.item}></WorkoutItem>
-      </TouchableOpacity>
-    );
+  const renderItem = (item: ListRenderItemInfo<Workout>) => (
+    <TouchableOpacity onPress={() => actionOnRow(item.index, item.item)}>
+      <WorkoutListItem workout={item.item}></WorkoutListItem>
+    </TouchableOpacity>
+  );
 
   return (
     <FlatList
       style={{backgroundColor: 'lightgray'}}
-      data={list}
+      data={props.workouts}
       renderItem={renderItem}
       keyExtractor={(_, index) => 'test' + index}></FlatList>
   );
@@ -104,11 +104,11 @@ interface WorkoutItemProps {
   workout: Workout;
 }
 
-export function WorkoutItem(props: WorkoutItemProps) {
+export function WorkoutListItem(props: WorkoutItemProps) {
   return (
     <View style={styles.workoutItem}>
-      <Text style={styles.weekText}>{'Week ' + props.workout.week}</Text>
-      {props.workout.lifts.map((lift, index) => (
+      <Text style={styles.weekText}>{'Week ' + props.workout.node.week}</Text>
+      {props.workout.node.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
     </View>

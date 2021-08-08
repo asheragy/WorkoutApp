@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {WorkoutItem} from './WorkoutList';
+import {WorkoutListItem} from './WorkoutList';
 import {Accessories} from './Accessories';
 import {LogBox} from 'react-native';
 
@@ -19,7 +19,6 @@ type SavedData = {
 
 export function WorkoutScreen({route, navigation}: Props) {
   console.log(route.params);
-  console.log('index = ' + route.params.index);
   console.log('workout = ' + route.params.workout);
   const workout = route.params.workout;
 
@@ -30,10 +29,11 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <View style={styles.container}>
-      <WorkoutItem workout={workout}></WorkoutItem>
-      <Accessories></Accessories>
+      <WorkoutListItem workout={workout}></WorkoutListItem>
       <View style={styles.bottom}>
-        <Button title="Complete" onPress={() => onComplete(route.params.index)}>
+        <Button
+          title="Complete"
+          onPress={() => onComplete(route.params.workout.position)}>
           Text
         </Button>
       </View>

@@ -10,13 +10,13 @@ export type Lift = {
   sets?: LiftSet[];
 };
 
-export type Workout = {
+export type WorkoutNode = {
   week: number;
   lifts: Lift[];
 };
 
 export type Program = {
-  workouts: Workout[];
+  workouts: WorkoutNode[];
 };
 
 export type Range = {
