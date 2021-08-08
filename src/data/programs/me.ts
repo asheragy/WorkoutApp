@@ -106,12 +106,36 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Dips',
+        sets: [
+          {
+            reps: 10,
+          },
+          {
+            reps: 5,
+            repeat: 5,
+          },
+          {
+            reps: 15,
+          },
+        ],
       },
       {
         name: 'Curls',
+        sets: [
+          {
+            weight: 25,
+            reps: {min: 10, max: 12},
+          },
+        ],
       },
       {
         name: 'DB Press',
+        sets: [
+          {
+            weight: 32.5,
+            reps: {min: 10, max: 15},
+          },
+        ],
       },
       {
         name: 'Band Pulls',
@@ -226,8 +250,12 @@ function getPullDay(block: number, week: number): WorkoutNode {
           },
           {
             weight: 100,
-            reps: 10,
-            repeat: 3,
+            reps: week + 8,
+            repeat: 2,
+          },
+          {
+            weight: 100,
+            reps: week + 9 + block,
           },
         ],
       },
@@ -252,12 +280,12 @@ export default function getProgram(): Program {
 
   for (var block = 0; block < 1; block++) {
     for (var week = 0; week < 3; week++) {
-      //result.workouts.push(getDLDay(block, week));
-      //result.workouts.push(getBenchDay(block, week));
-      //result.workouts.push(getUpperDay(block, week));
-      //result.workouts.push(getLowerDay(block, week));
+      workouts.push(getDLDay(block, week));
+      workouts.push(getBenchDay(block, week));
+      workouts.push(getUpperDay(block, week));
+      workouts.push(getLowerDay(block, week));
       workouts.push(getPushDay(block, week));
-      //result.workouts.push(getPullDay(block, week));
+      workouts.push(getPullDay(block, week));
     }
   }
 

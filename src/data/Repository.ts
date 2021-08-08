@@ -22,4 +22,12 @@ export default class Repository {
       });
     });
   }
+
+  static async complete(index: number): Promise<boolean> {
+    return Storage.complete(index);
+  }
+
+  static async undoComplete(): Promise<boolean> {
+    return Storage.undoComplete();
+  }
 }

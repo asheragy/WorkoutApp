@@ -104,7 +104,7 @@ function getDLDay(week: number): WorkoutNode {
 }
 
 export default function getProgram(): Program {
-  const result = new Program();
+  const result: Program = {workouts: []};
   result.workouts = [];
 
   for (var i = 0; i < 6; i++) {

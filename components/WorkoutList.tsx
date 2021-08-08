@@ -14,7 +14,6 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import Storage from '../src/data/Storage';
 import Repository, {Workout} from '../src/data/Repository';
 
 const MaterialHeaderButton = (props: any) => (
@@ -46,18 +45,14 @@ export function WorkoutList({navigation}: any) {
       var uncompletedWorkouts = workouts.filter(wo => !wo.completed);
       setWorkouts(uncompletedWorkouts);
     });
-    //Storage.getLastCompletedIndex().then(index => setCompletedIndex(index));
   }
 
   async function onUndo() {
-    if (await Storage.undoComplete()) {
-      //navigation.pop();
-      loadState();
-    }
+    if (await Repository.undoComplete()) loadState();
   }
 
   async function onComplete(index: number) {
-    if (await Storage.complete(index)) {
+    if (await Repository.complete(index)) {
       navigation.pop();
       loadState();
     }
