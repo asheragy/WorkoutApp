@@ -99,7 +99,7 @@ interface WorkoutItemProps {
   workout: Workout;
 }
 
-export function WorkoutListItem(props: WorkoutItemProps) {
+function WorkoutListItem(props: WorkoutItemProps) {
   return (
     <View style={styles.workoutItem}>
       <Text style={styles.titleText}>{props.workout.node?.name}</Text>

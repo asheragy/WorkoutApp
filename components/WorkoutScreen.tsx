@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {WorkoutListItem} from './WorkoutList';
 import {Accessories} from './Accessories';
 import {LogBox} from 'react-native';
+import {Lift, LiftSet} from '../types/types';
+import {Workout} from '../src/data/Repository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -29,7 +30,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <View style={styles.container}>
-      <WorkoutListItem workout={workout}></WorkoutListItem>
+      <WorkoutItem workout={workout}></WorkoutItem>
       <View style={styles.bottom}>
         <Button
           title="Complete"
@@ -41,6 +42,73 @@ export function WorkoutScreen({route, navigation}: Props) {
   );
 }
 
+function WorkoutItem(props: {workout: Workout}) {
+  return (
+    <View style={styles.workoutItem}>
+      <Text style={styles.titleText}>{props.workout.node?.name}</Text>
+      {props.workout.node.lifts.map((lift, index) => (
+        <LiftItem lift={lift} key={index}></LiftItem>
+      ))}
+    </View>
+  );
+}
+
+function LiftItem(props: {lift: Lift}) {
+  const showHeader = props.lift.sets != undefined;
+
+  return (
+    <View>
+      <Text style={styles.liftText}>{props.lift.name}</Text>
+      {showHeader && (
+        <View style={{flexDirection: 'row'}}>
+          <Text style={[styles.liftHeader, {width: '20%'}]}>Set</Text>
+          <Text style={[styles.liftHeader, {width: '40%'}]}>Weight</Text>
+          <Text style={[styles.liftHeader, {width: '40%'}]}>Reps</Text>
+        </View>
+      )}
+      <View style={styles.liftSetRow}>
+        {normalizeSets(props.lift.sets).map((set, index) => (
+          <SetItem number={index + 1} set={set} key={index}></SetItem>
+        ))}
+      </View>
+    </View>
+  );
+}
+
+function SetItem(props: {number: Number; set: LiftSet}) {
+  if (props.set.weight != null) var weight = props.set.weight + 'lb';
+  else var weight = 'Any';
+
+  var str = '';
+  if (typeof props.set.reps == 'number') str += props.set.reps;
+  else str += props.set.reps.min + '-' + props.set.reps.max;
+
+  if (props.set.amrap) str = str + '+';
+
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <Text style={{width: '20%'}}>{props.number}</Text>
+      <Text style={{width: '40%'}}>{weight}</Text>
+      <Text style={{width: '40%'}}>{str}</Text>
+    </View>
+  );
+}
+
+function normalizeSets(sets?: LiftSet[]): LiftSet[] {
+  var result: LiftSet[] = [];
+
+  sets?.forEach(set => {
+    if (set.repeat && set.repeat > 1) {
+      var t: LiftSet[] = Array(set.repeat)
+        .fill(0)
+        .map(x => set);
+      result.push(...t);
+    } else result.push(set);
+  });
+
+  return result;
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -49,5 +117,29 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 36,
+  },
+  titleText: {
+    fontSize: 18,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    paddingBottom: 10,
+  },
+  liftHeader: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  liftText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  workoutItem: {
+    marginHorizontal: 8,
+    marginVertical: 4,
+    padding: 8,
+    backgroundColor: 'white',
+    opacity: 0.8,
+  },
+  liftSetRow: {
+    marginLeft: 8,
   },
 });
