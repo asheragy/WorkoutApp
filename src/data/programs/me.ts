@@ -22,6 +22,12 @@ function getDLDay(block: number, week: number): WorkoutNode {
       {
         name: 'Lunges',
       },
+      {
+        name: 'Leg Extensions',
+      },
+      {
+        name: 'Leg Curls',
+      },
     ],
   };
 }
@@ -87,12 +93,6 @@ function getBenchDay(block: number, week: number): WorkoutNode {
           },
         ],
       },
-      {
-        name: 'Leg Extensions',
-      },
-      {
-        name: 'Leg Curls',
-      },
     ],
   };
 }
@@ -124,7 +124,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             weight: 25,
-            reps: {min: 10, max: 12},
+            reps: {min: 10, max: 13},
           },
         ],
       },
@@ -132,8 +132,8 @@ function getUpperDay(block: number, week: number): WorkoutNode {
         name: 'DB Press',
         sets: [
           {
-            weight: 32.5,
-            reps: {min: 10, max: 15},
+            weight: 35,
+            reps: {min: 8, max: 12},
           },
         ],
       },
@@ -153,7 +153,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 185 + 10 * week + 5 * block,
+            weight: 185 + 10 * week + 10 * block,
           },
         ],
       },
@@ -162,7 +162,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 115 + 10 * week + 5 * block,
+            weight: 115 + 10 * week + 10 * block,
           },
         ],
       },
@@ -171,7 +171,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 165 + 10 * week + 5 * block,
+            weight: 165 + 10 * week + 10 * block,
           },
         ],
       },
@@ -218,7 +218,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
             weight: 60,
           },
           {
-            reps: {min: 8, max: 12},
+            reps: 12,
             weight: 55,
           },
         ],
@@ -278,15 +278,15 @@ function getPullDay(block: number, week: number): WorkoutNode {
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
 
-  for (var block = 0; block < 1; block++) {
-    for (var week = 0; week < 3; week++) {
-      workouts.push(getDLDay(block, week));
-      workouts.push(getBenchDay(block, week));
-      workouts.push(getUpperDay(block, week));
-      workouts.push(getLowerDay(block, week));
-      workouts.push(getPushDay(block, week));
-      workouts.push(getPullDay(block, week));
-    }
+  const block = 1;
+
+  for (var week = 0; week < 3; week++) {
+    workouts.push(getDLDay(block, week));
+    workouts.push(getBenchDay(block, week));
+    workouts.push(getUpperDay(block, week));
+    workouts.push(getLowerDay(block, week));
+    workouts.push(getPushDay(block, week));
+    workouts.push(getPullDay(block, week));
   }
 
   return {workouts};

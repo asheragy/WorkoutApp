@@ -57,16 +57,16 @@ function LiftItem(props: {lift: Lift}) {
   const showHeader = props.lift.sets != undefined;
 
   return (
-    <View>
+    <View style={{marginVertical: 4}}>
       <Text style={styles.liftText}>{props.lift.name}</Text>
       {showHeader && (
         <View style={{flexDirection: 'row'}}>
           <Text style={[styles.liftHeader, {width: '20%'}]}>Set</Text>
-          <Text style={[styles.liftHeader, {width: '40%'}]}>Weight</Text>
-          <Text style={[styles.liftHeader, {width: '40%'}]}>Reps</Text>
+          <Text style={[styles.liftHeader, {width: '60%'}]}>Weight</Text>
+          <Text style={[styles.liftHeader, {width: '20%'}]}>Reps</Text>
         </View>
       )}
-      <View style={styles.liftSetRow}>
+      <View>
         {normalizeSets(props.lift.sets).map((set, index) => (
           <SetItem number={index + 1} set={set} key={index}></SetItem>
         ))}
@@ -87,9 +87,9 @@ function SetItem(props: {number: Number; set: LiftSet}) {
 
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{width: '20%'}}>{props.number}</Text>
-      <Text style={{width: '40%'}}>{weight}</Text>
-      <Text style={{width: '40%'}}>{str}</Text>
+      <Text style={{width: '20%', textAlign: 'center'}}>{props.number}</Text>
+      <Text style={{width: '60%', textAlign: 'center'}}>{weight}</Text>
+      <Text style={{width: '20%', textAlign: 'center'}}>{str}</Text>
     </View>
   );
 }
@@ -127,10 +127,13 @@ const styles = StyleSheet.create({
   liftHeader: {
     fontSize: 14,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   liftText: {
     fontSize: 16,
     fontWeight: 'bold',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
   workoutItem: {
     marginHorizontal: 8,
@@ -138,8 +141,5 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'white',
     opacity: 0.8,
-  },
-  liftSetRow: {
-    marginLeft: 8,
   },
 });

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const storageKey = '@test9';
+const storageKey = '@test10';
 class Storage {
   static async getLastCompletedIndex(): Promise<number> {
     //console.log('load state');
