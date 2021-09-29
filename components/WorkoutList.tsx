@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {Lift, LiftSet} from '../types/types';
+import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
 import {
   HeaderButton,
   HeaderButtons,
@@ -110,7 +110,7 @@ function WorkoutListItem(props: WorkoutItemProps) {
   );
 }
 
-function LiftItem(props: {lift: Lift}) {
+function LiftItem(props: {lift: Lift | PersistedLift}) {
   return (
     <View>
       <Text style={styles.liftText}>{props.lift.name}</Text>
@@ -123,7 +123,7 @@ function LiftItem(props: {lift: Lift}) {
   );
 }
 
-function SetItem(props: {set: LiftSet}) {
+function SetItem(props: {set: LiftSet | PersistedSet}) {
   if (props.set.weight != null) var str = props.set.weight + 'lb';
   else var str = 'Any';
 

@@ -200,6 +200,33 @@ function getPushDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Dumbell Bench Press',
+        id: 'dbPress',
+        sets: [
+          {
+            reps: 10,
+            weight: 45,
+          },
+          {
+            reps: 10,
+            weight: 55,
+          },
+          {
+            reps: 8,
+            weight: 65,
+          },
+          {
+            reps: 8,
+            weight: 60,
+          },
+          {
+            reps: 8,
+            weight: 55,
+          },
+        ],
+      },
+      /*
+      {
+        name: 'Dumbell Bench Press',
         sets: [
           {
             reps: 10,
@@ -223,6 +250,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
           },
         ],
       },
+      */
       {
         name: 'Lat Raises',
       },

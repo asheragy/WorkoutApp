@@ -4,7 +4,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {Accessories} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift, LiftSet} from '../types/types';
+import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
 import {Workout} from '../src/data/Repository';
 
 LogBox.ignoreLogs([
@@ -53,8 +53,9 @@ function WorkoutItem(props: {workout: Workout}) {
   );
 }
 
-function LiftItem(props: {lift: Lift}) {
+function LiftItem(props: {lift: Lift | PersistedLift}) {
   const showHeader = props.lift.sets != undefined;
+  const persisted = 'id' in props.lift;
 
   return (
     <View style={{marginVertical: 4}}>
@@ -66,16 +67,19 @@ function LiftItem(props: {lift: Lift}) {
           <Text style={[styles.liftHeader, {width: '20%'}]}>Reps</Text>
         </View>
       )}
-      <View>
-        {normalizeSets(props.lift.sets).map((set, index) => (
-          <SetItem number={index + 1} set={set} key={index}></SetItem>
-        ))}
-      </View>
+      {persisted && <Text>Persisted LIFT!!</Text>}
+      {!persisted && (
+        <View>
+          {normalizeSets(props.lift.sets).map((set, index) => (
+            <SetItem number={index + 1} set={set} key={index}></SetItem>
+          ))}
+        </View>
+      )}
     </View>
   );
 }
 
-function SetItem(props: {number: Number; set: LiftSet}) {
+function SetItem(props: {number: Number; set: LiftSet | PersistedSet}) {
   if (props.set.weight != null) var weight = props.set.weight + 'lb';
   else var weight = 'Any';
 
@@ -83,7 +87,7 @@ function SetItem(props: {number: Number; set: LiftSet}) {
   if (typeof props.set.reps == 'number') str += props.set.reps;
   else str += props.set.reps.min + '-' + props.set.reps.max;
 
-  if (props.set.amrap) str = str + '+';
+  if ('amrap' in props.set && props.set.amrap) str = str + '+';
 
   return (
     <View style={{flexDirection: 'row'}}>

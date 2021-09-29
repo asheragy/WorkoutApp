@@ -5,14 +5,25 @@ export type LiftSet = {
   amrap?: boolean;
 };
 
+export type PersistedSet = {
+  weight: number;
+  reps: number;
+};
+
 export type Lift = {
   name: string;
   sets?: LiftSet[];
 };
 
+export type PersistedLift = {
+  name: string;
+  id: string;
+  sets: PersistedSet[];
+};
+
 export type WorkoutNode = {
   name?: string;
-  lifts: Lift[];
+  lifts: (Lift | PersistedLift)[];
 };
 
 export type Program = {
