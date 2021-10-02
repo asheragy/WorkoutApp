@@ -1,11 +1,11 @@
-import React, {Fragment} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 import {Button, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {Accessories} from './Accessories';
 import {LogBox} from 'react-native';
 import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
-import {Workout} from '../src/data/Repository';
+import Repository, {Workout} from '../src/data/Repository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -67,7 +67,10 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
           <Text style={[styles.liftHeader, {width: '20%'}]}>Reps</Text>
         </View>
       )}
-      {persisted && <Text>Persisted LIFT!!</Text>}
+      {persisted && (
+        <PersistedLiftItem
+          lift={props.lift as PersistedLift}></PersistedLiftItem>
+      )}
       {!persisted && (
         <View>
           {normalizeSets(props.lift.sets).map((set, index) => (
@@ -75,6 +78,24 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
           ))}
         </View>
       )}
+    </View>
+  );
+}
+
+function PersistedLiftItem(props: {lift: PersistedLift}) {
+  const [lift, setLift] = useState<PersistedLift>(props.lift);
+
+  useEffect(() => {
+    Repository.getLift(props.lift.id)
+      .then(result => setLift(result))
+      .catch(/* Not yet persisted so nothing to load*/);
+  }, []);
+
+  return (
+    <View>
+      {lift.sets.map((set, index) => (
+        <SetItem number={index + 1} set={set} key={index}></SetItem>
+      ))}
     </View>
   );
 }

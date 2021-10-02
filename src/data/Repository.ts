@@ -1,4 +1,4 @@
-import {Program, WorkoutNode} from '../../types/types';
+import {PersistedLift, Program, WorkoutNode} from '../../types/types';
 import getProgram from '../data/programs/me';
 import Storage from './Storage';
 
@@ -22,6 +22,32 @@ export default class Repository {
         };
       });
     });
+  }
+
+  static async getLift(id: string): Promise<PersistedLift> {
+    // If data exists it should get saved value otherwise use default in workout template
+    // TODO fake data
+    var lift = {
+      name: 'Dumbell Bench Press',
+      id: 'dbPress',
+      sets: [
+        {
+          reps: 10,
+          weight: 80,
+        },
+        {
+          reps: 10,
+          weight: 90,
+        },
+        {
+          reps: 8,
+          weight: 100,
+        },
+      ],
+    };
+
+    return lift;
+    // If nothing found use return Promise.reject();
   }
 
   static async complete(index: number): Promise<boolean> {
