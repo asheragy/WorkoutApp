@@ -1,5 +1,12 @@
 import React, {Fragment, useEffect, useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {Accessories} from './Accessories';
@@ -94,13 +101,16 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
   return (
     <View>
       {lift.sets.map((set, index) => (
-        <SetItem number={index + 1} set={set} key={index}></SetItem>
+        <PersistedSetRow
+          number={index + 1}
+          set={set}
+          key={index}></PersistedSetRow>
       ))}
     </View>
   );
 }
 
-function SetItem(props: {number: Number; set: LiftSet | PersistedSet}) {
+function SetItem(props: {number: Number; set: LiftSet}) {
   if (props.set.weight != null) var weight = props.set.weight + 'lb';
   else var weight = 'Any';
 
@@ -108,13 +118,71 @@ function SetItem(props: {number: Number; set: LiftSet | PersistedSet}) {
   if (typeof props.set.reps == 'number') str += props.set.reps;
   else str += props.set.reps.min + '-' + props.set.reps.max;
 
-  if ('amrap' in props.set && props.set.amrap) str = str + '+';
+  if (props.set.amrap) str = str + '+';
 
   return (
     <View style={{flexDirection: 'row'}}>
       <Text style={{width: '20%', textAlign: 'center'}}>{props.number}</Text>
       <Text style={{width: '60%', textAlign: 'center'}}>{weight}</Text>
       <Text style={{width: '20%', textAlign: 'center'}}>{str}</Text>
+    </View>
+  );
+}
+
+function PersistedSetRow(props: {number: Number; set: PersistedSet}) {
+  const [set, setSet] = useState<PersistedSet>(props.set);
+
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <Text
+        style={{
+          width: '20%',
+          textAlign: 'center',
+          textAlignVertical: 'center',
+        }}>
+        {props.number}
+      </Text>
+      <View style={{width: '60%', flexDirection: 'row'}}>
+        <Text
+          style={{
+            textAlign: 'right',
+            width: '60%',
+            textAlignVertical: 'center',
+            marginRight: 4,
+          }}>
+          {set.weight + 'lb'}
+        </Text>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() => setSet({weight: set.weight + 5, reps: set.reps})}>
+          <Text style={styles.counterButtonText}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() => setSet({weight: set.weight - 5, reps: set.reps})}>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={{width: '20%', flexDirection: 'row'}}>
+        <Text
+          style={{
+            textAlign: 'center',
+            width: '40%',
+            textAlignVertical: 'center',
+          }}>
+          {set.reps}
+        </Text>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() => setSet({weight: set.weight, reps: set.reps + 1})}>
+          <Text style={styles.counterButtonText}>+</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() => setSet({weight: set.weight, reps: set.reps - 1})}>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -166,5 +234,20 @@ const styles = StyleSheet.create({
     padding: 8,
     backgroundColor: 'white',
     opacity: 0.8,
+  },
+  counterButtonContainer: {
+    elevation: 8,
+    backgroundColor: '#009688',
+    borderRadius: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 8,
+    margin: 1,
+  },
+  counterButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+    textTransform: 'uppercase',
   },
 });
