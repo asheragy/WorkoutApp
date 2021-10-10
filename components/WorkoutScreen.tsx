@@ -93,18 +93,26 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
   const [lift, setLift] = useState<PersistedLift>(props.lift);
 
   useEffect(() => {
-    Repository.getLift(props.lift.id)
-      .then(result => setLift(result))
-      .catch(/* Not yet persisted so nothing to load*/);
+    Repository.getLift(props.lift.id).then(result => {
+      if (result != null) setLift(result);
+    });
   }, []);
+
+  const onSetChange = (index: number, set: PersistedSet) => {
+    var updatedLift = {...lift};
+    updatedLift.sets[index] = set;
+    setLift(updatedLift);
+    Repository.saveLift(updatedLift);
+  };
 
   return (
     <View>
       {lift.sets.map((set, index) => (
         <PersistedSetRow
-          number={index + 1}
+          index={index}
           set={set}
-          key={index}></PersistedSetRow>
+          key={index}
+          onChange={onSetChange}></PersistedSetRow>
       ))}
     </View>
   );
@@ -129,9 +137,13 @@ function SetItem(props: {number: Number; set: LiftSet}) {
   );
 }
 
-function PersistedSetRow(props: {number: Number; set: PersistedSet}) {
-  const [set, setSet] = useState<PersistedSet>(props.set);
-
+function PersistedSetRow(props: {
+  index: number;
+  set: PersistedSet;
+  onChange: (index: number, set: PersistedSet) => void;
+}) {
+  console.log('persisted set row');
+  console.log(props.set);
   return (
     <View style={{flexDirection: 'row'}}>
       <Text
@@ -140,47 +152,71 @@ function PersistedSetRow(props: {number: Number; set: PersistedSet}) {
           textAlign: 'center',
           textAlignVertical: 'center',
         }}>
-        {props.number}
+        {props.index + 1}
       </Text>
-      <View style={{width: '60%', flexDirection: 'row'}}>
+      <View
+        style={{
+          width: '60%',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight - 5,
+              reps: props.set.reps,
+            })
+          }>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
         <Text
           style={{
             textAlign: 'right',
-            width: '60%',
             textAlignVertical: 'center',
             marginRight: 4,
           }}>
-          {set.weight + 'lb'}
+          {props.set.weight + 'lb'}
         </Text>
         <TouchableOpacity
           style={styles.counterButtonContainer}
-          onPress={() => setSet({weight: set.weight + 5, reps: set.reps})}>
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight + 5,
+              reps: props.set.reps,
+            })
+          }>
           <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() => setSet({weight: set.weight - 5, reps: set.reps})}>
-          <Text style={styles.counterButtonText}>-</Text>
         </TouchableOpacity>
       </View>
       <View style={{width: '20%', flexDirection: 'row'}}>
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight,
+              reps: props.set.reps - 1,
+            })
+          }>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
         <Text
           style={{
             textAlign: 'center',
             width: '40%',
             textAlignVertical: 'center',
           }}>
-          {set.reps}
+          {props.set.reps}
         </Text>
         <TouchableOpacity
           style={styles.counterButtonContainer}
-          onPress={() => setSet({weight: set.weight, reps: set.reps + 1})}>
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight,
+              reps: props.set.reps + 1,
+            })
+          }>
           <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() => setSet({weight: set.weight, reps: set.reps - 1})}>
-          <Text style={styles.counterButtonText}>-</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -247,7 +283,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#fff',
     fontWeight: 'bold',
-    alignSelf: 'center',
     textTransform: 'uppercase',
   },
 });

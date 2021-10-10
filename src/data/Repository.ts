@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistedLift, Program, WorkoutNode} from '../../types/types';
 import getProgram from '../data/programs/me';
 import Storage from './Storage';
@@ -7,6 +8,8 @@ export type Workout = {
   position: number;
   completed: Boolean;
 };
+
+const liftKeyPrefix = '@lift_';
 
 export default class Repository {
   static async getWorkouts(): Promise<Workout[]> {
@@ -24,30 +27,15 @@ export default class Repository {
     });
   }
 
-  static async getLift(id: string): Promise<PersistedLift> {
-    // If data exists it should get saved value otherwise use default in workout template
-    // TODO fake data
-    var lift = {
-      name: 'Dumbell Bench Press',
-      id: 'dbPress',
-      sets: [
-        {
-          reps: 10,
-          weight: 80,
-        },
-        {
-          reps: 10,
-          weight: 90,
-        },
-        {
-          reps: 8,
-          weight: 100,
-        },
-      ],
-    };
+  static async getLift(id: string): Promise<PersistedLift | null> {
+    var value = await AsyncStorage.getItem(liftKeyPrefix + id);
+    if (value != null) return JSON.parse(value);
 
-    return lift;
-    // If nothing found use return Promise.reject();
+    return null;
+  }
+
+  static async saveLift(lift: PersistedLift): Promise<void> {
+    return AsyncStorage.setItem(liftKeyPrefix + lift.id, JSON.stringify(lift));
   }
 
   static async complete(index: number): Promise<boolean> {
