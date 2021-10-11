@@ -33,37 +33,8 @@ function getDLDay(block: number, week: number): WorkoutNode {
 }
 
 function getBenchDay(block: number, week: number): WorkoutNode {
-  const weight = [0, 0, 0, 0, 0];
   const minWeight = 135 + block * 5;
-  var maxWeight = 155 + block * 5 + week * 10;
-  if (maxWeight > 175) maxWeight = 175;
-  const mid = (maxWeight - minWeight) / 2;
-
-  // Default is pyramid with min/max weight
-  weight[0] = minWeight;
-  weight[1] = minWeight + mid;
-  weight[2] = maxWeight;
-  weight[3] = minWeight + mid;
-  weight[4] = minWeight;
-
-  switch (week) {
-    case 1: {
-      if (block == 3) {
-        weight[1] = maxWeight;
-        weight[3] = 165;
-      } else if (block == 4) {
-        weight[1] = maxWeight;
-        weight[3] = maxWeight;
-      }
-      break;
-    }
-    case 2: {
-      if (block >= 1) weight[3] = maxWeight;
-      if (block >= 2) weight[1] = maxWeight;
-      if (block >= 3) weight[4] = maxWeight;
-      if (block == 4) weight[0] = maxWeight;
-    }
-  }
+  var maxWeight = minWeight + 30 + week * 5;
 
   return {
     name: 'Bench Week ' + (week + 1) + ' Block ' + (block + 1),
@@ -72,23 +43,23 @@ function getBenchDay(block: number, week: number): WorkoutNode {
         name: 'Bench Press',
         sets: [
           {
-            weight: weight[0],
+            weight: minWeight,
             reps: 12,
           },
           {
-            weight: weight[1],
+            weight: (minWeight + maxWeight) / 2,
             reps: 12,
           },
           {
-            weight: weight[2],
+            weight: maxWeight,
             reps: 12,
           },
           {
-            weight: weight[3],
+            weight: (minWeight + maxWeight) / 2,
             reps: 12,
           },
           {
-            weight: weight[4],
+            weight: minWeight,
             reps: 12,
           },
         ],
@@ -111,11 +82,11 @@ function getUpperDay(block: number, week: number): WorkoutNode {
             reps: 10,
           },
           {
-            reps: 5,
+            reps: 6,
             repeat: 5,
           },
           {
-            reps: 15,
+            reps: 10,
           },
         ],
       },
@@ -306,7 +277,7 @@ function getPullDay(block: number, week: number): WorkoutNode {
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
 
-  const block = 1;
+  const block = 2;
 
   for (var week = 0; week < 3; week++) {
     workouts.push(getDLDay(block, week));
