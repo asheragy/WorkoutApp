@@ -41,8 +41,8 @@ export function WorkoutList({navigation}: any) {
   }, [navigation]);
 
   function loadState() {
-    Repository.getWorkouts().then(workouts => {
-      var uncompletedWorkouts = workouts.filter(wo => !wo.completed);
+    Repository.getWorkouts().then(result => {
+      var uncompletedWorkouts = result.filter(wo => !wo.completed);
       setWorkouts(uncompletedWorkouts);
     });
   }
@@ -132,9 +132,9 @@ function SetItem(props: {set: LiftSet | PersistedSet}) {
   if (typeof props.set.reps == 'number') str += props.set.reps;
   else str += props.set.reps.min + '-' + props.set.reps.max;
 
-  if (props.set.amrap) str = str + '+';
+  if ('amrap' in props.set && props.set.amrap) str = str + '+';
 
-  if (props.set.repeat && props.set.repeat > 1) {
+  if ('repeat' in props.set && props.set.repeat && props.set.repeat > 1) {
     var arr = Array(props.set.repeat).fill(0);
 
     //console.log(arr);
