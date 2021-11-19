@@ -1,7 +1,17 @@
 import {Program, WorkoutNode} from '../../../types/types';
 
+function round5down(n: number) {
+  var rounded = Math.floor(n / 5);
+  return rounded * 5;
+}
+
+function round5up(n: number) {
+  var rounded = Math.ceil(n / 5);
+  return rounded * 5;
+}
+
 function getDLDay(block: number, week: number): WorkoutNode {
-  const weight = 235 + block * 10 + 20 * week;
+  const weight = 255 + 10 * week;
 
   return {
     name: 'DL Week ' + (week + 1) + ' Block ' + (block + 1),
@@ -10,23 +20,69 @@ function getDLDay(block: number, week: number): WorkoutNode {
         name: 'Trap Bar Deadlift',
         sets: [
           {
+            weight: weight - 20,
+            reps: 10,
+            repeat: 1,
+          },
+          {
             weight: weight,
-            reps: 10 - week * 2,
+            reps: 10,
             repeat: 1,
           },
         ],
       },
       {
-        name: 'Calve Raises',
-      },
-      {
         name: 'Lunges',
       },
       {
+        name: 'Calve Raises',
+        id: 'calf',
+        sets: [
+          {
+            weight: 70,
+            reps: 10,
+          },
+          {
+            weight: 70,
+            reps: 10,
+          },
+          {
+            weight: 70,
+            reps: 10,
+          },
+          {
+            weight: 70,
+            reps: 10,
+          },
+        ],
+      },
+      {
         name: 'Leg Extensions',
+        id: 'extensions',
+        sets: [
+          {
+            weight: 55,
+            reps: 12,
+          },
+          {
+            weight: 60,
+            reps: 12,
+          },
+        ],
       },
       {
         name: 'Leg Curls',
+        id: 'legcurls',
+        sets: [
+          {
+            weight: 100,
+            reps: 12,
+          },
+          {
+            weight: 115,
+            reps: 12,
+          },
+        ],
       },
     ],
   };
@@ -34,7 +90,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
 
 function getBenchDay(block: number, week: number): WorkoutNode {
   const minWeight = 135 + block * 5;
-  var maxWeight = minWeight + 30 + week * 5;
+  var maxWeight = 185 + week * 5;
 
   return {
     name: 'Bench Week ' + (week + 1) + ' Block ' + (block + 1),
@@ -47,7 +103,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
             reps: 12,
           },
           {
-            weight: (minWeight + maxWeight) / 2,
+            weight: round5up((minWeight + maxWeight) / 2),
             reps: 12,
           },
           {
@@ -55,7 +111,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
             reps: 12,
           },
           {
-            weight: (minWeight + maxWeight) / 2,
+            weight: round5down((minWeight + maxWeight) / 2),
             reps: 12,
           },
           {
@@ -124,7 +180,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 185 + 10 * week + 10 * block,
+            weight: 195 + 5 * week + 10 * Math.min(block, 2),
           },
         ],
       },
@@ -133,7 +189,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 115 + 10 * week + 10 * block,
+            weight: 125 + 5 * week + 10 * Math.min(block, 2),
           },
         ],
       },
@@ -142,7 +198,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 5,
-            weight: 165 + 10 * week + 10 * block,
+            weight: 125 + 5 * week + 10 * Math.min(block, 2) + 50,
           },
         ],
       },
@@ -277,7 +333,7 @@ function getPullDay(block: number, week: number): WorkoutNode {
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
 
-  const block = 2;
+  const block = 3;
 
   for (var week = 0; week < 3; week++) {
     workouts.push(getDLDay(block, week));

@@ -38,6 +38,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <View style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
+      <Accessories></Accessories>
       <View style={styles.bottom}>
         <Button
           title="Complete"

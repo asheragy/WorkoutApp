@@ -1,7 +1,7 @@
 import {WorkoutNode, Program} from '../../../types/types';
 
 function getSquatDay(week: number): WorkoutNode {
-  const weight = week < 6 ? 0 + week * 2.5 : 20;
+  const weight = week < 6 ? 2.5 + week * 2.5 : 20;
 
   return {
     name: 'Week ' + (week + 1),
@@ -24,30 +24,41 @@ function getSquatDay(week: number): WorkoutNode {
 }
 
 function getBenchDay(week: number): WorkoutNode {
-  var sets = [];
-
-  if (week != 5) {
-    sets.push({
-      weight: 7.5,
-      reps: 12,
-      repeat: 5 - week,
-    });
-  }
-
-  if (week > 0) {
-    sets.push({
-      weight: 10,
-      reps: 12,
-      repeat: week,
-    });
-  }
+  var weight = week < 3 ? 7.5 : 10;
 
   return {
     name: 'Week ' + (week + 1),
     lifts: [
       {
         name: 'Bench Press',
-        sets: sets,
+        sets: [
+          {
+            weight: weight,
+            reps: 10,
+          },
+          {
+            weight: weight + 2.5,
+            reps: 8,
+          },
+          {
+            weight: weight + 5,
+            reps: {
+              min: 6,
+              max: 8,
+            },
+          },
+          {
+            weight: weight + 2.5,
+            reps: 8,
+          },
+          {
+            weight: weight,
+            reps: {
+              min: 10,
+              max: 12,
+            },
+          },
+        ],
       },
       {
         name: 'Dumbell Rows - 10lbs on side',
