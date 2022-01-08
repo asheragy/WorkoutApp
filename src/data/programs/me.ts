@@ -1,4 +1,4 @@
-import {Program, WorkoutNode} from '../../../types/types';
+import {PersistedSet, Program, WorkoutNode} from '../../../types/types';
 
 function round5down(n: number) {
   var rounded = Math.floor(n / 5);
@@ -11,48 +11,51 @@ function round5up(n: number) {
 }
 
 function getDLDay(block: number, week: number): WorkoutNode {
-  const weight = 255 + 10 * week;
-
   return {
     name: 'DL Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Trap Bar Deadlift',
+        id: 'deadlift',
         sets: [
           {
-            weight: weight - 20,
-            reps: 10,
-            repeat: 1,
+            weight: 275,
+            reps: 5,
           },
           {
-            weight: weight,
-            reps: 10,
-            repeat: 1,
+            weight: 275,
+            reps: 5,
           },
         ],
       },
       {
         name: 'Lunges',
+        sets: [
+          {
+            reps: 5,
+            repeat: 5,
+          },
+        ],
       },
       {
         name: 'Calve Raises',
         id: 'calf',
         sets: [
           {
-            weight: 70,
-            reps: 10,
+            weight: 85,
+            reps: 8,
           },
           {
-            weight: 70,
-            reps: 10,
+            weight: 85,
+            reps: 8,
           },
           {
-            weight: 70,
-            reps: 10,
+            weight: 85,
+            reps: 8,
           },
           {
-            weight: 70,
-            reps: 10,
+            weight: 85,
+            reps: 8,
           },
         ],
       },
@@ -61,11 +64,11 @@ function getDLDay(block: number, week: number): WorkoutNode {
         id: 'extensions',
         sets: [
           {
-            weight: 55,
+            weight: 60,
             reps: 12,
           },
           {
-            weight: 60,
+            weight: 65,
             reps: 12,
           },
         ],
@@ -75,11 +78,11 @@ function getDLDay(block: number, week: number): WorkoutNode {
         id: 'legcurls',
         sets: [
           {
-            weight: 100,
+            weight: 105,
             reps: 12,
           },
           {
-            weight: 115,
+            weight: 120,
             reps: 12,
           },
         ],
@@ -89,33 +92,31 @@ function getDLDay(block: number, week: number): WorkoutNode {
 }
 
 function getBenchDay(block: number, week: number): WorkoutNode {
-  const minWeight = 135 + block * 5;
-  var maxWeight = 185 + week * 5;
-
   return {
     name: 'Bench Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Bench Press',
+        id: 'bench',
         sets: [
           {
-            weight: minWeight,
+            weight: 155,
             reps: 12,
           },
           {
-            weight: round5up((minWeight + maxWeight) / 2),
-            reps: 12,
+            weight: 170,
+            reps: 10,
           },
           {
-            weight: maxWeight,
-            reps: 12,
+            weight: 185,
+            reps: 8,
           },
           {
-            weight: round5down((minWeight + maxWeight) / 2),
-            reps: 12,
+            weight: 170,
+            reps: 10,
           },
           {
-            weight: minWeight,
+            weight: 155,
             reps: 12,
           },
         ],
@@ -125,47 +126,90 @@ function getBenchDay(block: number, week: number): WorkoutNode {
 }
 
 function getUpperDay(block: number, week: number): WorkoutNode {
+  var pullupSets = [...Array(10).keys()].map(_ => {
+    const result: PersistedSet = {
+      weight: 0,
+      reps: 2,
+    };
+    return result;
+  });
+
   return {
     name: 'Upper Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Pullups',
+        id: 'pullups',
+        sets: pullupSets,
       },
       {
         name: 'Dips',
+        id: 'dips',
         sets: [
           {
-            reps: 10,
-          },
-          {
+            weight: 0,
             reps: 6,
-            repeat: 5,
           },
           {
-            reps: 10,
+            weight: 0,
+            reps: 6,
+          },
+          {
+            weight: 0,
+            reps: 6,
+          },
+          {
+            weight: 0,
+            reps: 6,
+          },
+          {
+            weight: 0,
+            reps: 6,
           },
         ],
       },
       {
         name: 'Curls',
+        id: 'curls',
         sets: [
           {
-            weight: 25,
-            reps: {min: 10, max: 13},
+            weight: 60,
+            reps: 10,
+          },
+          {
+            weight: 60,
+            reps: 10,
+          },
+          {
+            weight: 60,
+            reps: 10,
           },
         ],
       },
       {
-        name: 'DB Press',
+        name: 'Incline DB Press',
+        id: 'inclineDb',
         sets: [
           {
-            weight: 35,
-            reps: {min: 8, max: 12},
+            weight: 30,
+            reps: 8,
+          },
+          {
+            weight: 30,
+            reps: 8,
+          },
+          {
+            weight: 30,
+            reps: 8,
+          },
+          {
+            weight: 30,
+            reps: 8,
           },
         ],
       },
       {
-        name: 'Band Pulls',
+        name: 'Face Pulls',
       },
     ],
   };
@@ -231,11 +275,15 @@ function getPushDay(block: number, week: number): WorkoutNode {
         sets: [
           {
             reps: 10,
-            weight: 45,
+            weight: 50,
           },
           {
             reps: 10,
-            weight: 55,
+            weight: 60,
+          },
+          {
+            reps: 8,
+            weight: 70,
           },
           {
             reps: 8,
@@ -244,10 +292,6 @@ function getPushDay(block: number, week: number): WorkoutNode {
           {
             reps: 8,
             weight: 60,
-          },
-          {
-            reps: 8,
-            weight: 55,
           },
         ],
       },
@@ -330,18 +374,39 @@ function getPullDay(block: number, week: number): WorkoutNode {
   };
 }
 
+function getDeloadDay(): WorkoutNode {
+  return {
+    name: 'Deload',
+    lifts: [
+      {
+        name: 'Cleans',
+      },
+      {
+        name: 'One Hand DL',
+      },
+      {
+        name: 'Deadlift',
+      },
+    ],
+  };
+}
+
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
 
-  const block = 3;
-
-  for (var week = 0; week < 3; week++) {
-    workouts.push(getDLDay(block, week));
-    workouts.push(getBenchDay(block, week));
-    workouts.push(getUpperDay(block, week));
-    workouts.push(getLowerDay(block, week));
-    workouts.push(getPushDay(block, week));
-    workouts.push(getPullDay(block, week));
+  for (var block = 0; block < 5; block++) {
+    for (var week = 0; week < 3; week++) {
+      // Stretch day 1
+      //workouts.push(getDLDay(block, week));
+      //workouts.push(getBenchDay(block, week));
+      workouts.push(getUpperDay(block, week));
+      // Stretch day 2
+      //workouts.push(getLowerDay(block, week));
+      //workouts.push(getPushDay(block, week));
+      //workouts.push(getPullDay(block, week));
+    }
+    // Deload
+    workouts.push(getDeloadDay());
   }
 
   return {workouts};

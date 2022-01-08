@@ -13,6 +13,7 @@ import {Accessories} from './Accessories';
 import {LogBox} from 'react-native';
 import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
 import Repository, {Workout} from '../src/data/Repository';
+import {ScrollView} from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -36,9 +37,9 @@ export function WorkoutScreen({route, navigation}: Props) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
-      <Accessories></Accessories>
+      {/*<Accessories></Accessories>*/}
       <View style={styles.bottom}>
         <Button
           title="Complete"
@@ -46,7 +47,7 @@ export function WorkoutScreen({route, navigation}: Props) {
           Text
         </Button>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

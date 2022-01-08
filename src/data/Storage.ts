@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistedLift} from '../../types/types';
 
-const storageKey = '@test12';
+const storageKey = '@test14';
 
 class Storage {
   static async getLastCompletedIndex(): Promise<number> {
