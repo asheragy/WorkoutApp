@@ -15,7 +15,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
     name: 'DL Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
-        name: 'Trap Bar Deadlift',
+        name: 'Trap Bar Deadlift (315/335x5, 365x3 405x1)',
         id: 'deadlift',
         sets: [
           {
@@ -220,29 +220,40 @@ function getLowerDay(block: number, week: number): WorkoutNode {
     name: 'Lower Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
-        name: 'Sumo DL',
+        name: 'Sumo DL (245x5/275x1)',
+        id: 'sumoDL',
         sets: [
           {
             reps: 5,
-            weight: 195 + 5 * week + 10 * Math.min(block, 2),
+            weight: 205,
+          },
+          {
+            reps: 1,
+            weight: 225,
           },
         ],
       },
       {
-        name: 'Pause Squat',
+        name: 'Pause Squat (175x5)',
+        id: 'squat',
         sets: [
           {
             reps: 5,
-            weight: 125 + 5 * week + 10 * Math.min(block, 2),
+            weight: 135,
           },
         ],
       },
       {
-        name: 'Pause Squat w/Bands',
+        name: 'Pause Squat w/Bands (225x5/275x1)',
+        id: 'squatBands',
         sets: [
           {
             reps: 5,
-            weight: 125 + 5 * week + 10 * Math.min(block, 2) + 50,
+            weight: 185,
+          },
+          {
+            reps: 1,
+            weight: 205,
           },
         ],
       },
@@ -254,20 +265,30 @@ function getLowerDay(block: number, week: number): WorkoutNode {
 }
 
 function getPushDay(block: number, week: number): WorkoutNode {
-  const ohpMin = 15 + block * 2.5;
-  const ohpMax = ohpMin + week * 5;
-  const ohpMid = (ohpMax + ohpMin) / 2;
-  const ohpWeight = [ohpMin, ohpMid, ohpMax, ohpMid, ohpMin];
-
   return {
     name: 'Push Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
         name: 'Overhead Press',
-        sets: ohpWeight.map(x => ({
-          weight: x,
-          reps: 10,
-        })),
+        id: 'ohp',
+        sets: [
+          {
+            reps: 10,
+            weight: 25,
+          },
+          {
+            reps: 10,
+            weight: 25,
+          },
+          {
+            reps: 10,
+            weight: 25,
+          },
+          {
+            reps: 10,
+            weight: 25,
+          },
+        ],
       },
       {
         name: 'Dumbell Bench Press',
@@ -295,35 +316,15 @@ function getPushDay(block: number, week: number): WorkoutNode {
           },
         ],
       },
-      /*
-      {
-        name: 'Dumbell Bench Press',
-        sets: [
-          {
-            reps: 10,
-            weight: 45,
-          },
-          {
-            reps: 10,
-            weight: 55,
-          },
-          {
-            reps: {min: 8, max: 12},
-            weight: 65,
-          },
-          {
-            reps: {min: 8, max: 12},
-            weight: 60,
-          },
-          {
-            reps: 12,
-            weight: 55,
-          },
-        ],
-      },
-      */
       {
         name: 'Lat Raises',
+        sets: [
+          {
+            weight: 22,
+            reps: {min: 8, max: 12},
+            repeat: 3,
+          },
+        ],
       },
       {
         name: 'Triceps',
@@ -337,29 +338,48 @@ function getPullDay(block: number, week: number): WorkoutNode {
     name: 'Pull Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
       {
-        name: 'Dumbbell Rows',
+        name: 'Row Machine',
+        id: 'rows',
         sets: [
           {
-            weight: 60,
-            reps: 10,
+            weight: 45,
+            reps: 8,
           },
           {
-            weight: 80,
-            reps: 10,
+            weight: 45,
+            reps: 8,
           },
           {
-            weight: 100,
-            reps: week + 8,
-            repeat: 2,
+            weight: 45,
+            reps: 8,
           },
           {
-            weight: 100,
-            reps: week + 9 + block,
+            weight: 45,
+            reps: 8,
           },
         ],
       },
       {
-        name: 'HS Pulldown',
+        name: 'HS Pulldown (90+25 x 8-10)',
+        id: 'hsRow',
+        sets: [
+          {
+            weight: 90,
+            reps: 8,
+          },
+          {
+            weight: 90,
+            reps: 8,
+          },
+          {
+            weight: 90,
+            reps: 8,
+          },
+          {
+            weight: 90,
+            reps: 8,
+          },
+        ],
       },
       {
         name: 'Hammer Curls',
@@ -391,19 +411,65 @@ function getDeloadDay(): WorkoutNode {
   };
 }
 
+function getStretch1() {
+  return {
+    name: 'Stretch 1',
+    lifts: [
+      {
+        name: 'Planks',
+      },
+      {
+        name: 'Hip Thrust',
+      },
+      {
+        name: 'Leg Balance',
+      },
+      {
+        name: 'Squat',
+      },
+      {
+        name: 'Toe Touch',
+      },
+    ],
+  };
+}
+
+function getStretch2() {
+  return {
+    name: 'Stretch 2',
+    lifts: [
+      {
+        name: 'Side Planks',
+      },
+      {
+        name: 'Hips',
+      },
+      {
+        name: 'Torso Twist',
+      },
+      {
+        name: 'Squat',
+      },
+      {
+        name: 'Toe Touch',
+      },
+    ],
+  };
+}
+
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
 
   for (var block = 0; block < 5; block++) {
     for (var week = 0; week < 3; week++) {
-      // Stretch day 1
-      //workouts.push(getDLDay(block, week));
-      //workouts.push(getBenchDay(block, week));
+      workouts.push(getStretch1());
+      workouts.push(getDLDay(block, week));
+      workouts.push(getBenchDay(block, week));
       workouts.push(getUpperDay(block, week));
-      // Stretch day 2
-      //workouts.push(getLowerDay(block, week));
-      //workouts.push(getPushDay(block, week));
-      //workouts.push(getPullDay(block, week));
+      workouts.push(getStretch2());
+      workouts.push(getLowerDay(block, week));
+      workouts.push(getPushDay(block, week));
+      workouts.push(getPullDay(block, week));
     }
     // Deload
     workouts.push(getDeloadDay());
