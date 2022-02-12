@@ -124,8 +124,14 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
 }
 
 function SetItem(props: {set: LiftSet | PersistedSet}) {
-  if (props.set.weight != null) var str = props.set.weight + 'lb';
-  else var str = 'Any';
+  var str = '';
+
+  if (props.set.weight != null) {
+    if (typeof props.set.weight == 'number') str += props.set.weight + 'lb';
+    else str += props.set.weight.min + '-' + props.set.weight.max + 'lbs';
+  } else {
+    str = 'Any';
+  }
 
   str += ' x ';
 

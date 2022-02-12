@@ -1,5 +1,5 @@
 export type LiftSet = {
-  weight?: Number;
+  weight?: number | Range;
   reps: number | Range;
   repeat?: number;
   amrap?: boolean;

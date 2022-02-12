@@ -18,7 +18,7 @@ const pull = [
   'Upright rows',
 ];
 
-export function Accessories() {
+export function AccessoriesLower() {
   return (
     <View style={styles.main}>
       <View style={styles.section}>
@@ -33,6 +33,13 @@ export function Accessories() {
           <Text>{x}</Text>
         ))}
       </View>
+    </View>
+  );
+}
+
+export function AccessoriesUpper() {
+  return (
+    <View style={styles.main}>
       <View style={styles.section}>
         <Text style={styles.header}>Push</Text>
         {push.map(x => (

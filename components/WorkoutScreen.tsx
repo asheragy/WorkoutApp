@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {Accessories} from './Accessories';
+import {AccessoriesUpper, AccessoriesLower} from './Accessories';
 import {LogBox} from 'react-native';
 import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
 import Repository, {Workout} from '../src/data/Repository';
@@ -39,7 +39,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <ScrollView style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
-      {/*<Accessories></Accessories>*/}
+      {workout.position == 0 ? <AccessoriesLower /> : <AccessoriesUpper />}
       <View style={styles.bottom}>
         <Button
           title="Complete"
@@ -121,8 +121,14 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
 }
 
 function SetItem(props: {number: Number; set: LiftSet}) {
-  if (props.set.weight != null) var weight = props.set.weight + 'lb';
-  else var weight = 'Any';
+  var weight = '';
+  // TODO function for this somewhere since its shared
+  if (props.set.weight != null) {
+    if (typeof props.set.weight == 'number') weight += props.set.weight + 'lb';
+    else weight += props.set.weight.min + '-' + props.set.weight.max + 'lbs';
+  } else {
+    weight = 'Any';
+  }
 
   var str = '';
   if (typeof props.set.reps == 'number') str += props.set.reps;
