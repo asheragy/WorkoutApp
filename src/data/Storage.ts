@@ -61,6 +61,15 @@ class Storage {
     } catch (e) {}
     return false;
   }
+
+  static async reset(): Promise<boolean> {
+    try {
+      await AsyncStorage.removeItem(storageKey);
+      return true;
+
+    } catch (e) {}
+    return false;
+  }
 }
 
 export default Storage;

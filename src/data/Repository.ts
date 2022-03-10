@@ -82,6 +82,10 @@ export default class Repository {
     return Storage.undoComplete();
   }
 
+  static async resetProgram(): Promise<boolean> {
+    return Storage.reset();
+  }
+
   static logProgram(program: Program) {
     //console.log(JSON.stringify(program, null, 2));
 

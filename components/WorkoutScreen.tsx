@@ -39,7 +39,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <ScrollView style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
-      {workout.position == 0 ? <AccessoriesLower /> : <AccessoriesUpper />}
+      {workout.position % 2 == 0 ? <AccessoriesLower /> : <AccessoriesUpper />}
       <View style={styles.bottom}>
         <Button
           title="Complete"

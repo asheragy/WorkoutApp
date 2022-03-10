@@ -34,6 +34,7 @@ export function WorkoutList({navigation}: any) {
             )}>
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
+            <HiddenItem title="Reset" onPress={() => onReset()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -49,6 +50,10 @@ export function WorkoutList({navigation}: any) {
 
   async function onUndo() {
     if (await Repository.undoComplete()) loadState();
+  }
+
+  async function onReset() {
+    if (await Repository.resetProgram()) loadState();
   }
 
   async function onComplete(index: number) {
