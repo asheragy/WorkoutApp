@@ -1,9 +1,21 @@
-import {WorkoutNode, Program} from '../../../types/types';
+import {WorkoutNode, Program, AccessoryGroup} from '../../../types/types';
+
+export default function getProgram(): Program {
+  const result: Program = {workouts: []};
+  result.workouts = [];
+
+  result.workouts.push(getSquatDay(1));
+  result.workouts.push(getBenchDay(1));
+  result.workouts.push(getDLDay(1));
+  result.workouts.push(getPressDay(1));
+
+  return result;
+}
 
 function getSquatDay(week: number): WorkoutNode {
   return {
     name: 'Lower Squat Day',
-
+    accessories: lowerAccessories,
     lifts: [
       {
         name: 'Bodyweight / Plate warmups',
@@ -69,14 +81,14 @@ function getSquatDay(week: number): WorkoutNode {
           },
         ],
       },
-    ],
+    ]
   };
 }
 
 function getBenchDay(week: number): WorkoutNode {
   return {
     name: 'Upper Bench Day',
-
+    accessories: upperAccessories,
     lifts: [
       {
         name: 'Warmup',
@@ -146,7 +158,7 @@ function getBenchDay(week: number): WorkoutNode {
 function getDLDay(week: number): WorkoutNode {
   return {
     name: 'Lower Deadlift Day',
-
+    accessories: lowerAccessories,
     lifts: [
       {
         name: 'Warmup',
@@ -206,9 +218,9 @@ function getDLDay(week: number): WorkoutNode {
 }
 
 function getPressDay(week: number): WorkoutNode {
-
   return {
     name: 'Upper Press Day',
+    accessories: upperAccessories,
     lifts: [
       {
         name: 'Overhead Press OR Incline Bench Press',
@@ -220,14 +232,31 @@ function getPressDay(week: number): WorkoutNode {
   };
 }
 
-export default function getProgram(): Program {
-  const result: Program = {workouts: []};
-  result.workouts = [];
+// Accessories
+const legs = ['Lunges / Step ups', 'Calf Raises', '1-leg DL', 'RDL'];
+const core = ['Planks', 'Hip Thrusts', 'Hanging leg raises'];
+const push = [
+  'Overhead Press',
+  'Pushups',
+  'Band Triceps',
+  'Lat Raises',
+  'Skull crushers',
+];
+const pull = [
+  'Curls',
+  'Band face pulls',
+  'Dumbell Rows',
+  'Barbell Rows',
+  'Upright rows',
+];
 
-  result.workouts.push(getSquatDay(1));
-  result.workouts.push(getBenchDay(1));
-  result.workouts.push(getDLDay(1));
-  result.workouts.push(getPressDay(1));
 
-  return result;
-}
+const lowerAccessories: AccessoryGroup[] = [
+  { name: "Legs", lifts: legs },
+  { name: "Core", lifts: core }
+]
+
+const upperAccessories: AccessoryGroup[] = [
+  { name: "Push", lifts: push },
+  { name: "Pull", lifts: pull }
+]

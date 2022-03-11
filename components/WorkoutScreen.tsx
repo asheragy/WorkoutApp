@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {AccessoriesUpper, AccessoriesLower} from './Accessories';
+import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
+import {Lift, LiftSet, PersistedLift, PersistedSet, AccessoryGroup} from '../types/types';
 import Repository, {Workout} from '../src/data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -39,7 +39,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <ScrollView style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
-      {workout.position % 2 == 0 ? <AccessoriesLower /> : <AccessoriesUpper />}
+      {workout.node.accessories != null && <AccessoryView accessories={workout.node.accessories}></AccessoryView>}
       <View style={styles.bottom}>
         <Button
           title="Complete"
