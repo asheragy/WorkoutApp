@@ -24,7 +24,7 @@ export type PersistedLift = {
 export type WorkoutNode = {
   name?: string;
   lifts: (Lift | PersistedLift)[];
-  accessories: AccessoryGroup[] | null
+  accessories?: AccessoryGroup[]
 };
 
 export type AccessoryGroup = {

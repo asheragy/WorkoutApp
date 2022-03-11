@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
-import {Workout} from './src/data/Repository';
+import {Workout} from './data/Repository';
 import {WorkoutScreen} from './components/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
 import {NavigationContainer} from '@react-navigation/native';

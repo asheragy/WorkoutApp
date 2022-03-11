@@ -1,4 +1,4 @@
-import {PersistedSet, Program, WorkoutNode} from '../../../types/types';
+import {PersistedSet, Program, WorkoutNode} from '../../types/types';
 
 function round5down(n: number) {
   var rounded = Math.floor(n / 5);

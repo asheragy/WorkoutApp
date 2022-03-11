@@ -14,7 +14,7 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import Repository, {Workout} from '../src/data/Repository';
+import Repository, {Workout} from '../data/Repository';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />

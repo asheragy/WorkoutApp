@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {PersistedLift} from '../../types/types';
+import {PersistedLift} from '../types/types';
 
 const storageKey = '@test14';
 

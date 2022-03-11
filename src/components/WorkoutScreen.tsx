@@ -12,7 +12,7 @@ import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
 import {Lift, LiftSet, PersistedLift, PersistedSet, AccessoryGroup} from '../types/types';
-import Repository, {Workout} from '../src/data/Repository';
+import Repository, {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 
 LogBox.ignoreLogs([

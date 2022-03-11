@@ -1,4 +1,4 @@
-import {WorkoutNode, Program, AccessoryGroup} from '../../../types/types';
+import {WorkoutNode, Program, AccessoryGroup} from '../../types/types';
 
 export default function getProgram(): Program {
   const result: Program = {workouts: []};
