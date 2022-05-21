@@ -3,6 +3,7 @@ import {StyleSheet, Text, useColorScheme} from 'react-native';
 import {Workout} from './data/Repository';
 import {WorkoutScreen} from './components/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
+import {WeightScreen} from './components/WeightScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
@@ -13,6 +14,7 @@ export type RootStackParamList = {
     workout: Workout;
     onComplete: (index: number) => void;
   };
+  Weight: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -36,6 +38,13 @@ const App = () => {
               headerStyle: styles.headerStyle,
             }}
             component={WorkoutScreen}
+          />
+          <Stack.Screen
+            name="Weight"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={WeightScreen}
           />
         </Stack.Navigator>
       </OverflowMenuProvider>

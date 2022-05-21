@@ -32,6 +32,7 @@ export function WorkoutList({navigation}: any) {
             OverflowIcon={({color}) => (
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
+            <HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
             <HiddenItem title="Reset" onPress={() => onReset()} />
@@ -61,6 +62,11 @@ export function WorkoutList({navigation}: any) {
       navigation.pop();
       loadState();
     }
+  }
+
+  async function onWeightLog() {
+    navigation.navigate('Weight', {
+    });
   }
 
   useEffect(loadState, []);
