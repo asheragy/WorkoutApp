@@ -66,7 +66,6 @@ class Storage {
     try {
       await AsyncStorage.removeItem(storageKey);
       return true;
-
     } catch (e) {}
     return false;
   }

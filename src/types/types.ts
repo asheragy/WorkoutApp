@@ -40,3 +40,8 @@ export type Range = {
   min: number;
   max: number;
 };
+
+export type WeightEntry = {
+  date: Date;
+  weight: number;
+}
