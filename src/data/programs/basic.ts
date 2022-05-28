@@ -4,150 +4,88 @@ export default function getProgram(): Program {
   const result: Program = {workouts: []};
   result.workouts = [];
 
-  result.workouts.push(getSquatDay(1));
-  result.workouts.push(getBenchDay(1));
-  result.workouts.push(getDLDay(1));
-  result.workouts.push(getPressDay(1));
+  for (var i = 0; i < 5; i++) {
+    result.workouts.push(getHome1());
+    result.workouts.push(getGym());
+    result.workouts.push(getHome2());
+  }
 
   return result;
 }
 
-function getSquatDay(week: number): WorkoutNode {
+function getHome1(): WorkoutNode {
   return {
-    name: 'Lower Squat Day',
-    accessories: lowerAccessories,
+    name: 'Home day 1',
+    accessories: homeAcessories,
     lifts: [
       {
-        name: 'Bodyweight / Plate warmups',
+        name: 'Leg/Ankle Mobility stretches',
       },
       {
-        name: 'Squat Warmups',
+        name: 'Bodyweight Squat',
+      },
+      {
+        name: '10lb plate squat',
+      },
+      {
+        name: 'Front Squat (Shoulder width stance)',
+        id: 'frontSquat',
         sets: [
           {
             weight: 0,
-            reps: 10,
+            reps: 1,
           },
-          {
-            weight: 10,
-            reps: 8,
-          },
-          {
-            weight: {min: 15, max: 25},
-            reps: 5,
-          },
-        ],
-      },
-      {
-        name: 'Squat A',
-        sets: [
-          {
-            weight: {min: 15, max: 25},
-            reps: {min: 8, max: 10},
-          },
-          {
-            weight: {min: 10, max: 20},
-            reps: {min: 10, max: 12},
-          },
-          {
-            weight: {min: 0, max: 15},
-            reps: {min: 10, max: 15},
-          },
-        ],
-      },
-      {
-        name: 'Squat B',
-        sets: [
-          {
-            weight: {min: 15, max: 25},
-            reps: {min: 8, max: 10},
-            repeat: 3,
-          },
-        ],
-      },
-      {
-        name: 'Squat C',
-        sets: [
-          {
-            weight: {min: 20, max: 30},
-            reps: {min: 5, max: 8},
-          },
-          {
-            weight: {min: 25, max: 35},
-            reps: {min: 3, max: 5},
-          },
-          {
-            weight: {min: 35, max: 45},
-            reps: {min: 1, max: 5},
-          },
-        ],
-      },
-    ]
-  };
-}
-
-function getBenchDay(week: number): WorkoutNode {
-  return {
-    name: 'Upper Bench Day',
-    accessories: upperAccessories,
-    lifts: [
-      {
-        name: 'Warmup',
-        sets: [
           {
             weight: 0,
-            reps: 10,
+            reps: 1,
+          },
+          {
+            weight: 0,
+            reps: 1,
+          },
+        ],
+      },
+      {
+        name: 'Trap bar deadlift (high handles / small 25lb)',
+        id: 'trapBar',
+        sets: [
+          {
+            weight: 25,
+            reps: 1,
+          },
+          {
+            weight: 25,
+            reps: 1,
+          },
+          {
+            weight: 25,
+            reps: 1,
+          },
+        ],
+      },
+      {
+        name: 'Bench Press (Pyramid weight)',
+        id: 'benchPress',
+        sets: [
+          {
+            weight: 5,
+            reps: 1,
           },
           {
             weight: 10,
-            reps: 8,
+            reps: 1,
           },
           {
-            weight: {min: 12.5, max: 15},
-            reps: 5,
-          },
-        ],
-      },
-      {
-        name: 'A) Light',
-        sets: [
-          {
-            weight: {min: 12.5, max: 15},
-            reps: {min: 8, max: 10},
+            weight: 15,
+            reps: 1,
           },
           {
-            weight: {min: 10, max: 12.5},
-            reps: {min: 10, max: 12},
+            weight: 10,
+            reps: 1,
           },
           {
-            weight: {min: 5, max: 10},
-            reps: {min: 12, max: 20},
-          },
-        ],
-      },
-      {
-        name: ' B) Medium',
-        sets: [
-          {
-            weight: {min: 12.5, max: 15},
-            reps: {min: 8, max: 10},
-            repeat: 3,
-          },
-        ],
-      },
-      {
-        name: 'C) Heavy',
-        sets: [
-          {
-            weight: {min: 15, max: 20},
-            reps: {min: 5, max: 8},
-          },
-          {
-            weight: {min: 20, max: 25},
-            reps: {min: 3, max: 5},
-          },
-          {
-            weight: {min: 25, max: 30},
-            reps: {min: 1, max: 5},
+            weight: 5,
+            reps: 1,
           },
         ],
       },
@@ -155,61 +93,73 @@ function getBenchDay(week: number): WorkoutNode {
   };
 }
 
-function getDLDay(week: number): WorkoutNode {
+function getHome2(): WorkoutNode {
   return {
-    name: 'Lower Deadlift Day',
-    accessories: lowerAccessories,
+    name: 'Home day 2',
+    accessories: homeAcessories,
     lifts: [
       {
-        name: 'Warmup',
+        name: 'Leg/Ankle Mobility stretches',
+      },
+      {
+        name: 'Bodyweight Squat',
+      },
+      {
+        name: 'Squat Bar warmups',
+      },
+      {
+        name: 'Squat Bar (no hand support)',
+        id: 'ssb',
+        sets: [
+          {
+            weight: 0,
+            reps: 1,
+          },
+          {
+            weight: 0,
+            reps: 1,
+          },
+        ],
+      },
+      {
+        name: 'Squat Bar (hands on rack)',
+        id: 'ssbAssist',
+        sets: [
+          {
+            weight: 0,
+            reps: 1,
+          },
+        ],
+      },
+      {
+        name: 'Deadlift (high rep)',
+        id: 'deadlift',
         sets: [
           {
             weight: 25,
-            reps: {min: 5, max: 8},
-          }
-        ],
-      },
-      {
-        name: 'A) Light',
-        sets: [
-          {
-            weight: {min: 25, max: 30},
-            reps: {min: 10, max: 15},
-            repeat: 3
+            reps: 1,
           },
-        ],
-      },
-      {
-        name: ' B) Medium',
-        sets: [
           {
             weight: 25,
-            reps: {min: 8, max: 10},
+            reps: 1,
           },
-          {
-            weight: 30,
-            reps: {min: 8, max: 10},
-          },
-          {
-            weight: 35,
-            reps: {min: 8, max: 10},
-          }
         ],
       },
       {
-        name: 'C) Heavy',
+        name: 'Overhead Press',
+        id: 'ohp',
         sets: [
           {
-            weight: {min: 30, max: 35},
-            reps: {min: 5, max: 8},
+            weight: 0,
+            reps: 1,
           },
           {
-            weight: {min: 35, max: 40},
-            reps: {min: 3, max: 5},
+            weight: 0,
+            reps: 1,
           },
           {
-            weight: {min: 40, max: 45},
-            reps: {min: 3, max: 5},
+            weight: 0,
+            reps: 1,
           },
         ],
       },
@@ -217,16 +167,60 @@ function getDLDay(week: number): WorkoutNode {
   };
 }
 
-function getPressDay(week: number): WorkoutNode {
+function getGym(): WorkoutNode {
   return {
-    name: 'Upper Press Day',
-    accessories: upperAccessories,
+    name: 'Gym Day',
+    accessories: gymAccessories,
     lifts: [
       {
-        name: 'Overhead Press OR Incline Bench Press',
+        name: 'Pulldowns (Pyramid)',
+        id: 'pulldowns',
+        sets: [
+          {
+            weight: 85,
+            reps: 10,
+          },
+          {
+            weight: 85,
+            reps: 10,
+          },
+          {
+            weight: 85,
+            reps: 10,
+          },
+          {
+            weight: 60,
+            reps: 1,
+          },
+        ],
       },
       {
-        name: 'Pulldowns or Rows',
+        name: 'Rows (Pyramid)',
+        id: 'rows',
+        sets: [
+          {
+            weight: 60,
+            reps: 10,
+          },
+          {
+            weight: 70,
+            reps: 10,
+          },
+          {
+            weight: 80,
+            reps: 10,
+          },
+          {
+            weight: 60,
+            reps: 1,
+          },
+        ],
+      },
+      {
+        name: 'Leg Press',
+      },
+      {
+        name: 'Dip Machine / Triceps',
       },
     ],
   };
@@ -235,28 +229,27 @@ function getPressDay(week: number): WorkoutNode {
 // Accessories
 const legs = ['Lunges / Step ups', 'Calf Raises', '1-leg DL', 'RDL'];
 const core = ['Planks', 'Hip Thrusts', 'Hanging leg raises'];
-const push = [
-  'Overhead Press',
-  'Pushups',
-  'Band Triceps',
-  'Lat Raises',
-  'Skull crushers',
-];
+const push = ['Dumbell Press flat/incline/overhead', 'Lat Raises', 'Flys'];
 const pull = [
-  'Curls',
+  'Curls DB/Machine',
+  'Reverse Curls',
+  'Reverse flys',
   'Band face pulls',
   'Dumbell Rows',
-  'Barbell Rows',
-  'Upright rows',
 ];
 
+const homeAcessories: AccessoryGroup[] = [
+  {
+    name: 'Arms',
+    lifts: ['Pushups', 'Lat Raises', 'Curls', 'Dumbell Rows', 'Upright rows'],
+  },
+  {name: 'Core', lifts: core},
+  {name: 'Legs', lifts: legs},
+];
 
-const lowerAccessories: AccessoryGroup[] = [
-  { name: "Legs", lifts: legs },
-  { name: "Core", lifts: core }
-]
-
-const upperAccessories: AccessoryGroup[] = [
-  { name: "Push", lifts: push },
-  { name: "Pull", lifts: pull }
-]
+const gymAccessories: AccessoryGroup[] = [
+  {name: 'Push', lifts: push},
+  {name: 'Pull', lifts: pull},
+  {name: 'Core', lifts: core},
+  {name: 'Legs', lifts: legs},
+];
