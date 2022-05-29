@@ -52,9 +52,7 @@ export function WorkoutScreen({route, navigation}: Props) {
       <View style={styles.bottom}>
         <Button
           title="Complete"
-          onPress={() => onComplete(route.params.workout.position)}>
-          Text
-        </Button>
+          onPress={() => onComplete(route.params.workout.position)}></Button>
       </View>
     </ScrollView>
   );
@@ -160,7 +158,9 @@ function SetItem(props: {number: Number; set: LiftSet}) {
 
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{width: '20%', textAlign: 'center'}}>{props.number}</Text>
+      <Text style={{width: '20%', textAlign: 'center'}}>
+        {props.number.toString()}
+      </Text>
       <Text style={{width: '60%', textAlign: 'center'}}>{weight}</Text>
       <Text style={{width: '20%', textAlign: 'center'}}>{str}</Text>
     </View>
