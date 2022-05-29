@@ -11,9 +11,16 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift, LiftSet, PersistedLift, PersistedSet, AccessoryGroup} from '../types/types';
+import {
+  Lift,
+  LiftSet,
+  PersistedLift,
+  PersistedSet,
+  AccessoryGroup,
+} from '../types/types';
 import Repository, {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
+import {useTheme} from '@react-navigation/native';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -39,7 +46,9 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <ScrollView style={styles.container}>
       <WorkoutItem workout={workout}></WorkoutItem>
-      {workout.node.accessories != null && <AccessoryView accessories={workout.node.accessories}></AccessoryView>}
+      {workout.node.accessories != null && (
+        <AccessoryView accessories={workout.node.accessories}></AccessoryView>
+      )}
       <View style={styles.bottom}>
         <Button
           title="Complete"
@@ -52,9 +61,13 @@ export function WorkoutScreen({route, navigation}: Props) {
 }
 
 function WorkoutItem(props: {workout: Workout}) {
+  const {colors} = useTheme();
+
   return (
     <View style={styles.workoutItem}>
-      <Text style={styles.titleText}>{props.workout.node?.name}</Text>
+      <Text style={[styles.titleText, {color: colors.text}]}>
+        {props.workout.node?.name}
+      </Text>
       {props.workout.node.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
@@ -65,15 +78,24 @@ function WorkoutItem(props: {workout: Workout}) {
 function LiftItem(props: {lift: Lift | PersistedLift}) {
   const showHeader = props.lift.sets != undefined;
   const persisted = 'id' in props.lift;
+  const {colors} = useTheme();
 
   return (
     <View style={{marginVertical: 4}}>
-      <Text style={styles.liftText}>{props.lift.name}</Text>
+      <Text style={[styles.liftText, {color: colors.text}]}>
+        {props.lift.name}
+      </Text>
       {showHeader && (
         <View style={{flexDirection: 'row'}}>
-          <Text style={[styles.liftHeader, {width: '20%'}]}>Set</Text>
-          <Text style={[styles.liftHeader, {width: '60%'}]}>Weight</Text>
-          <Text style={[styles.liftHeader, {width: '20%'}]}>Reps</Text>
+          <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+            Set
+          </Text>
+          <Text style={[styles.liftHeader, {width: '60%', color: colors.text}]}>
+            Weight
+          </Text>
+          <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+            Reps
+          </Text>
         </View>
       )}
       {persisted && (
@@ -150,8 +172,8 @@ function PersistedSetRow(props: {
   set: PersistedSet;
   onChange: (index: number, set: PersistedSet) => void;
 }) {
-  console.log('persisted set row');
-  console.log(props.set);
+  const {colors} = useTheme();
+
   return (
     <View style={{flexDirection: 'row'}}>
       <Text
@@ -159,6 +181,7 @@ function PersistedSetRow(props: {
           width: '20%',
           textAlign: 'center',
           textAlignVertical: 'center',
+          color: colors.text,
         }}>
         {props.index + 1}
       </Text>
@@ -183,6 +206,7 @@ function PersistedSetRow(props: {
             textAlign: 'right',
             textAlignVertical: 'center',
             marginRight: 4,
+            color: colors.text,
           }}>
           {props.set.weight + 'lb'}
         </Text>
@@ -213,6 +237,7 @@ function PersistedSetRow(props: {
             textAlign: 'center',
             width: '40%',
             textAlignVertical: 'center',
+            color: colors.text,
           }}>
           {props.set.reps}
         </Text>
@@ -276,7 +301,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginVertical: 4,
     padding: 8,
-    backgroundColor: 'white',
     opacity: 0.8,
   },
   counterButtonContainer: {

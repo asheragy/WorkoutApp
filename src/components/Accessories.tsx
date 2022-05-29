@@ -1,18 +1,23 @@
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import { AccessoryGroup } from '../types/types';
+import {AccessoryGroup} from '../types/types';
 
 export function AccessoryView(props: {accessories: AccessoryGroup[]}) {
+  const {colors} = useTheme();
+
   return (
     <View style={styles.main}>
       {props.accessories.map(group => (
         <View style={styles.section}>
-          <Text style={styles.header}>{group.name}</Text>
-            {group.lifts.map(x => (
-              <Text>{x}</Text>
-            ))}
+          <Text style={[styles.header, {color: colors.text}]}>
+            {group.name}
+          </Text>
+          {group.lifts.map(x => (
+            <Text style={{color: colors.text}}>{x}</Text>
+          ))}
         </View>
-        ))}
+      ))}
     </View>
   );
 }

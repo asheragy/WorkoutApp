@@ -15,6 +15,7 @@ import {
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import Repository, {Workout} from '../data/Repository';
+import {useTheme} from '@react-navigation/native';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
@@ -22,6 +23,7 @@ const MaterialHeaderButton = (props: any) => (
 
 export function WorkoutList({navigation}: any) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const {colors} = useTheme();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,8 +33,7 @@ export function WorkoutList({navigation}: any) {
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
-            )}
-          >
+            )}>
             <HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
@@ -75,8 +76,7 @@ export function WorkoutList({navigation}: any) {
     <WorkoutFlatList
       workouts={workouts}
       navigation={navigation}
-      onComplete={onComplete}
-    ></WorkoutFlatList>
+      onComplete={onComplete}></WorkoutFlatList>
   );
 }
 
@@ -98,13 +98,14 @@ function WorkoutFlatList(props: {
     </TouchableOpacity>
   );
 
+  const {colors} = useTheme();
+
   return (
     <FlatList
-      style={{backgroundColor: 'lightgray'}}
+      style={{backgroundColor: colors.background}}
       data={props.workouts}
       renderItem={renderItem}
-      keyExtractor={(_, index) => 'test' + index}
-    ></FlatList>
+      keyExtractor={(_, index) => 'test' + index}></FlatList>
   );
 }
 
@@ -113,9 +114,13 @@ interface WorkoutItemProps {
 }
 
 function WorkoutListItem(props: WorkoutItemProps) {
+  const {colors} = useTheme();
+
   return (
-    <View style={styles.workoutItem}>
-      <Text style={styles.titleText}>{props.workout.node?.name}</Text>
+    <View style={[styles.workoutItem, {backgroundColor: colors.card}]}>
+      <Text style={[styles.titleText, {color: colors.text}]}>
+        {props.workout.node?.name}
+      </Text>
       {props.workout.node.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
@@ -124,9 +129,13 @@ function WorkoutListItem(props: WorkoutItemProps) {
 }
 
 function LiftItem(props: {lift: Lift | PersistedLift}) {
+  const {colors} = useTheme();
+
   return (
     <View>
-      <Text style={styles.liftText}>{props.lift.name}</Text>
+      <Text style={[styles.liftText, {color: colors.text}]}>
+        {props.lift.name}
+      </Text>
       <View style={styles.liftSetRow}>
         {props.lift.sets?.map((set, index) => (
           <SetItem set={set} key={index}></SetItem>
@@ -137,6 +146,8 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
 }
 
 function SetItem(props: {set: LiftSet | PersistedSet}) {
+  const {colors} = useTheme();
+
   var str = '';
 
   if (props.set.weight != null) {
@@ -160,20 +171,21 @@ function SetItem(props: {set: LiftSet | PersistedSet}) {
     return (
       <Fragment>
         {arr.map((_, index) => (
-          <Text key={index}>{str}</Text>
+          <Text style={{color: colors.text}} key={index}>
+            {str}
+          </Text>
         ))}
       </Fragment>
     );
   }
 
-  return <Text>{str}</Text>;
+  return <Text style={{color: colors.text}}>{str}</Text>;
 }
 
 const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
-    color: 'black',
   },
   liftText: {
     fontSize: 16,
@@ -183,7 +195,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginVertical: 4,
     padding: 8,
-    backgroundColor: 'white',
     opacity: 0.8,
   },
   liftSetRow: {

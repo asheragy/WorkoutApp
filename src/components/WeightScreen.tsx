@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {
@@ -69,6 +70,8 @@ export function WeightScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
+  const {colors} = useTheme();
+
   return (
     <View>
       <View
@@ -82,7 +85,7 @@ export function WeightScreen({route, navigation}: Props) {
           <Text style={styles.counterButtonText}>-</Text>
         </TouchableOpacity>
 
-        <TextInput style={styles.inputText}>{current / 10}</TextInput>
+        <TextInput style={{color: colors.text}}>{current / 10}</TextInput>
         <TouchableOpacity
           style={styles.counterButtonContainer}
           onPress={() => setCurrent(current + 2)}>
@@ -95,10 +98,11 @@ export function WeightScreen({route, navigation}: Props) {
       <View>
         {entries.map((entry, index) => (
           <View style={styles.entryRow}>
-            <Text style={{width: '50%', textAlign: 'center'}}>
+            <Text
+              style={{width: '50%', textAlign: 'center', color: colors.text}}>
               {entry.date.toDateString()}
             </Text>
-            <Text>{entry.weight / 10}</Text>
+            <Text style={{color: colors.text}}>{entry.weight / 10}</Text>
           </View>
         ))}
       </View>
@@ -108,9 +112,6 @@ export function WeightScreen({route, navigation}: Props) {
 
 const styles = StyleSheet.create({
   addButton: {},
-  inputText: {
-    color: '#000',
-  },
   counterButtonContainer: {
     elevation: 8,
     backgroundColor: '#009688',

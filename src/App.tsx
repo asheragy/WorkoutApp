@@ -4,7 +4,11 @@ import {Workout} from './data/Repository';
 import {WorkoutScreen} from './components/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
 import {WeightScreen} from './components/WeightScreen';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 
@@ -20,8 +24,10 @@ export type RootStackParamList = {
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
+  const scheme = useColorScheme();
+
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       <OverflowMenuProvider>
         <Stack.Navigator>
           <Stack.Screen
