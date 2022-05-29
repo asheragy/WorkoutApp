@@ -31,7 +31,8 @@ export function WorkoutList({navigation}: any) {
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
-            )}>
+            )}
+          >
             <HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
@@ -65,8 +66,7 @@ export function WorkoutList({navigation}: any) {
   }
 
   async function onWeightLog() {
-    navigation.navigate('Weight', {
-    });
+    navigation.navigate('Weight', {});
   }
 
   useEffect(loadState, []);
@@ -75,7 +75,8 @@ export function WorkoutList({navigation}: any) {
     <WorkoutFlatList
       workouts={workouts}
       navigation={navigation}
-      onComplete={onComplete}></WorkoutFlatList>
+      onComplete={onComplete}
+    ></WorkoutFlatList>
   );
 }
 
@@ -102,7 +103,8 @@ function WorkoutFlatList(props: {
       style={{backgroundColor: 'lightgray'}}
       data={props.workouts}
       renderItem={renderItem}
-      keyExtractor={(_, index) => 'test' + index}></FlatList>
+      keyExtractor={(_, index) => 'test' + index}
+    ></FlatList>
   );
 }
 
@@ -171,6 +173,7 @@ const styles = StyleSheet.create({
   titleText: {
     textAlign: 'center',
     fontWeight: 'bold',
+    color: 'black',
   },
   liftText: {
     fontSize: 16,
