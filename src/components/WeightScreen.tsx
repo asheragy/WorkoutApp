@@ -3,6 +3,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {
   Button,
+  LogBox,
   StyleSheet,
   Text,
   TextInput,
@@ -20,6 +21,9 @@ import WeightRepository from '../data/WeightRepository';
 import {WeightEntry} from '../types/types';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
+
+// TODO warning on screen load, might be 3rd party library using deprecated method
+LogBox.ignoreLogs(['EventEmitter.removeListener']);
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
@@ -97,7 +101,7 @@ export function WeightScreen({route, navigation}: Props) {
 
       <View>
         {entries.map((entry, index) => (
-          <View style={styles.entryRow}>
+          <View key={index} style={styles.entryRow}>
             <Text
               style={{width: '50%', textAlign: 'center', color: colors.text}}>
               {entry.date.toDateString()}

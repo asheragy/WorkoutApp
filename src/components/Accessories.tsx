@@ -9,12 +9,14 @@ export function AccessoryView(props: {accessories: AccessoryGroup[]}) {
   return (
     <View style={styles.main}>
       {props.accessories.map(group => (
-        <View style={styles.section}>
+        <View key={group.name} style={styles.section}>
           <Text style={[styles.header, {color: colors.text}]}>
             {group.name}
           </Text>
           {group.lifts.map(x => (
-            <Text style={{color: colors.text}}>{x}</Text>
+            <Text key={x} style={{color: colors.text}}>
+              {x}
+            </Text>
           ))}
         </View>
       ))}
