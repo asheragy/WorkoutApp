@@ -21,6 +21,7 @@ import {
 import Repository, {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
+import {Modal} from 'react-native';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -113,6 +114,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
 
 function PersistedLiftItem(props: {lift: PersistedLift}) {
   const [lift, setLift] = useState<PersistedLift>(props.lift);
+  const [editing, setEditing] = useState(false);
 
   console.log(lift.step);
   useEffect(() => {
@@ -131,16 +133,56 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
     Repository.saveLift(updatedLift);
   };
 
+  const {colors} = useTheme();
+
   return (
     <View>
+      <Modal visible={editing} transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <View
+            style={{
+              margin: 10,
+              backgroundColor: colors.card,
+              borderRadius: 8,
+              padding: 15,
+              alignItems: 'center',
+
+              elevation: 5,
+            }}>
+            {lift.sets.map((set, index) => (
+              <PersistedSetRow
+                index={index}
+                set={set}
+                key={index}
+                step={lift.step}
+                editable={true}
+                onChange={onSetChange}></PersistedSetRow>
+            ))}
+            <Button title="Done" onPress={() => setEditing(false)}></Button>
+          </View>
+        </View>
+      </Modal>
       {lift.sets.map((set, index) => (
         <PersistedSetRow
           index={index}
           set={set}
           key={index}
           step={lift.step}
+          editable={false}
           onChange={onSetChange}></PersistedSetRow>
       ))}
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'center',
+        }}>
+        <Button title="Edit" onPress={() => setEditing(true)}></Button>
+      </View>
     </View>
   );
 }
@@ -175,6 +217,7 @@ function SetItem(props: {number: Number; set: LiftSet}) {
 function PersistedSetRow(props: {
   index: number;
   set: PersistedSet;
+  editable: Boolean;
   onChange: (index: number, set: PersistedSet) => void;
   step?: number;
 }) {
@@ -199,16 +242,18 @@ function PersistedSetRow(props: {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight - stepSize,
-              reps: props.set.reps,
-            })
-          }>
-          <Text style={styles.counterButtonText}>-</Text>
-        </TouchableOpacity>
+        {props.editable && (
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() =>
+              props.onChange(props.index, {
+                weight: props.set.weight - stepSize,
+                reps: props.set.reps,
+              })
+            }>
+            <Text style={styles.counterButtonText}>-</Text>
+          </TouchableOpacity>
+        )}
         <Text
           style={{
             textAlign: 'right',
@@ -218,28 +263,32 @@ function PersistedSetRow(props: {
           }}>
           {props.set.weight + 'lb'}
         </Text>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight + stepSize,
-              reps: props.set.reps,
-            })
-          }>
-          <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
+        {props.editable && (
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() =>
+              props.onChange(props.index, {
+                weight: props.set.weight + stepSize,
+                reps: props.set.reps,
+              })
+            }>
+            <Text style={styles.counterButtonText}>+</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={{width: '20%', flexDirection: 'row'}}>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight,
-              reps: props.set.reps - 1,
-            })
-          }>
-          <Text style={styles.counterButtonText}>-</Text>
-        </TouchableOpacity>
+        {props.editable && (
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() =>
+              props.onChange(props.index, {
+                weight: props.set.weight,
+                reps: props.set.reps - 1,
+              })
+            }>
+            <Text style={styles.counterButtonText}>-</Text>
+          </TouchableOpacity>
+        )}
         <Text
           style={{
             textAlign: 'center',
@@ -249,16 +298,18 @@ function PersistedSetRow(props: {
           }}>
           {props.set.reps}
         </Text>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight,
-              reps: props.set.reps + 1,
-            })
-          }>
-          <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
+        {props.editable && (
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() =>
+              props.onChange(props.index, {
+                weight: props.set.weight,
+                reps: props.set.reps + 1,
+              })
+            }>
+            <Text style={styles.counterButtonText}>+</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
