@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistedLift, Program, WorkoutNode} from '../types/types';
-import getProgram from '../data/programs/basic';
+import getProgram from '../data/programs/me';
 import Storage from './Storage';
 
 export type Workout = {
@@ -35,7 +35,10 @@ export default class Repository {
 
         if ('id' in lift) {
           if (map.has(lift.id)) {
-            wo.node.lifts[i] = map.get(lift.id) as PersistedLift;
+            var persisted = map.get(lift.id) as PersistedLift;
+            // Override saved value with source
+            persisted.step = lift.step;
+            wo.node.lifts[i] = persisted;
             console.log(map.get(lift.id));
           }
         }
@@ -65,7 +68,9 @@ export default class Repository {
 
   static async getLift(id: string): Promise<PersistedLift | null> {
     var value = await AsyncStorage.getItem(liftKeyPrefix + id);
-    if (value != null) return JSON.parse(value);
+    if (value != null) {
+      return JSON.parse(value);
+    }
 
     return null;
   }

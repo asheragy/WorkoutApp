@@ -18,19 +18,20 @@ export type Lift = {
 export type PersistedLift = {
   name: string;
   id: string;
+  step?: number;
   sets: PersistedSet[];
 };
 
 export type WorkoutNode = {
   name?: string;
   lifts: (Lift | PersistedLift)[];
-  accessories?: AccessoryGroup[]
+  accessories?: AccessoryGroup[];
 };
 
 export type AccessoryGroup = {
   name: string;
-  lifts: string[]
-}
+  lifts: string[];
+};
 
 export type Program = {
   workouts: WorkoutNode[];
@@ -44,4 +45,4 @@ export type Range = {
 export type WeightEntry = {
   date: Date;
   weight: number;
-}
+};

@@ -171,6 +171,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       {
         name: 'Curls',
         id: 'curls',
+        step: 10,
         sets: [
           {
             weight: 60,
@@ -189,6 +190,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       {
         name: 'Incline DB Press',
         id: 'inclineDb',
+        step: 2.5,
         sets: [
           {
             weight: 30,

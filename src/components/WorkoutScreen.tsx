@@ -114,9 +114,13 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
 function PersistedLiftItem(props: {lift: PersistedLift}) {
   const [lift, setLift] = useState<PersistedLift>(props.lift);
 
+  console.log(lift.step);
   useEffect(() => {
     Repository.getLift(props.lift.id).then(result => {
-      if (result != null) setLift(result);
+      if (result != null) {
+        result.step = lift.step;
+        setLift(result);
+      }
     });
   }, []);
 
@@ -134,6 +138,7 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
           index={index}
           set={set}
           key={index}
+          step={lift.step}
           onChange={onSetChange}></PersistedSetRow>
       ))}
     </View>
@@ -171,8 +176,11 @@ function PersistedSetRow(props: {
   index: number;
   set: PersistedSet;
   onChange: (index: number, set: PersistedSet) => void;
+  step?: number;
 }) {
   const {colors} = useTheme();
+  const stepSize = props.step == undefined ? 5 : props.step;
+  console.log(props.set.weight + ' ' + stepSize);
 
   return (
     <View style={{flexDirection: 'row'}}>
@@ -195,7 +203,7 @@ function PersistedSetRow(props: {
           style={styles.counterButtonContainer}
           onPress={() =>
             props.onChange(props.index, {
-              weight: props.set.weight - 5,
+              weight: props.set.weight - stepSize,
               reps: props.set.reps,
             })
           }>
@@ -214,7 +222,7 @@ function PersistedSetRow(props: {
           style={styles.counterButtonContainer}
           onPress={() =>
             props.onChange(props.index, {
-              weight: props.set.weight + 5,
+              weight: props.set.weight + stepSize,
               reps: props.set.reps,
             })
           }>
