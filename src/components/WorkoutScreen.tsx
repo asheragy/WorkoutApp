@@ -17,11 +17,13 @@ import {
   PersistedLift,
   PersistedSet,
   AccessoryGroup,
+  NormalizedSet,
 } from '../types/types';
 import Repository, {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
+import Utils from './Utils';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -103,7 +105,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
       )}
       {!persisted && (
         <View>
-          {normalizeSets(props.lift.sets).map((set, index) => (
+          {Utils.normalizeSets(props.lift.sets).map((set, index) => (
             <SetItem number={index + 1} set={set} key={index}></SetItem>
           ))}
         </View>
@@ -187,29 +189,16 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
   );
 }
 
-function SetItem(props: {number: Number; set: LiftSet}) {
-  var weight = '';
-  // TODO function for this somewhere since its shared
-  if (props.set.weight != null) {
-    if (typeof props.set.weight == 'number') weight += props.set.weight + 'lb';
-    else weight += props.set.weight.min + '-' + props.set.weight.max + 'lbs';
-  } else {
-    weight = 'Any';
-  }
-
-  var str = '';
-  if (typeof props.set.reps == 'number') str += props.set.reps;
-  else str += props.set.reps.min + '-' + props.set.reps.max;
-
-  if (props.set.amrap) str = str + '+';
-
+function SetItem(props: {number: Number; set: NormalizedSet}) {
   return (
     <View style={{flexDirection: 'row'}}>
       <Text style={{width: '20%', textAlign: 'center'}}>
         {props.number.toString()}
       </Text>
-      <Text style={{width: '60%', textAlign: 'center'}}>{weight}</Text>
-      <Text style={{width: '20%', textAlign: 'center'}}>{str}</Text>
+      <Text style={{width: '60%', textAlign: 'center'}}>
+        {props.set.weight}
+      </Text>
+      <Text style={{width: '20%', textAlign: 'center'}}>{props.set.reps}</Text>
     </View>
   );
 }
@@ -313,21 +302,6 @@ function PersistedSetRow(props: {
       </View>
     </View>
   );
-}
-
-function normalizeSets(sets?: LiftSet[]): LiftSet[] {
-  var result: LiftSet[] = [];
-
-  sets?.forEach(set => {
-    if (set.repeat && set.repeat > 1) {
-      var t: LiftSet[] = Array(set.repeat)
-        .fill(0)
-        .map(x => set);
-      result.push(...t);
-    } else result.push(set);
-  });
-
-  return result;
 }
 
 const styles = StyleSheet.create({

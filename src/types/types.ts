@@ -10,6 +10,14 @@ export type PersistedSet = {
   reps: number;
 };
 
+/**
+ * Generic display object for sets
+ */
+export type NormalizedSet = {
+  weight: string;
+  reps: string;
+};
+
 export type Lift = {
   name: string;
   sets?: LiftSet[];

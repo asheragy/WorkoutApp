@@ -7,7 +7,13 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {Lift, LiftSet, PersistedLift, PersistedSet} from '../types/types';
+import {
+  Lift,
+  LiftSet,
+  NormalizedSet,
+  PersistedLift,
+  PersistedSet,
+} from '../types/types';
 import {
   HeaderButton,
   HeaderButtons,
@@ -16,6 +22,7 @@ import {
 } from 'react-navigation-header-buttons';
 import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
+import Utils from './Utils';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
@@ -137,49 +144,14 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
         {props.lift.name}
       </Text>
       <View style={styles.liftSetRow}>
-        {props.lift.sets?.map((set, index) => (
-          <SetItem set={set} key={index}></SetItem>
+        {Utils.normalizeSets(props.lift.sets).map((set, index) => (
+          <Text style={{color: colors.text}} key={index}>
+            {set.weight + ' x ' + set.reps}
+          </Text>
         ))}
       </View>
     </View>
   );
-}
-
-function SetItem(props: {set: LiftSet | PersistedSet}) {
-  const {colors} = useTheme();
-
-  var str = '';
-
-  if (props.set.weight != null) {
-    if (typeof props.set.weight == 'number') str += props.set.weight + 'lb';
-    else str += props.set.weight.min + '-' + props.set.weight.max + 'lbs';
-  } else {
-    str = 'Any';
-  }
-
-  str += ' x ';
-
-  if (typeof props.set.reps == 'number') str += props.set.reps;
-  else str += props.set.reps.min + '-' + props.set.reps.max;
-
-  if ('amrap' in props.set && props.set.amrap) str = str + '+';
-
-  if ('repeat' in props.set && props.set.repeat && props.set.repeat > 1) {
-    var arr = Array(props.set.repeat).fill(0);
-
-    //console.log(arr);
-    return (
-      <Fragment>
-        {arr.map((_, index) => (
-          <Text style={{color: colors.text}} key={index}>
-            {str}
-          </Text>
-        ))}
-      </Fragment>
-    );
-  }
-
-  return <Text style={{color: colors.text}}>{str}</Text>;
 }
 
 const styles = StyleSheet.create({
