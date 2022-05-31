@@ -79,105 +79,62 @@ function WorkoutItem(props: {workout: Workout}) {
 function LiftItem(props: {lift: Lift | PersistedLift}) {
   const showHeader = props.lift.sets != undefined;
   const persisted = 'id' in props.lift;
+  const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const {colors} = useTheme();
+
+  const onLiftUpdated = (lift: PersistedLift) => {
+    setLift(lift);
+  };
 
   return (
     <View style={{marginVertical: 4}}>
       <Text style={[styles.liftText, {color: colors.text}]}>
         {props.lift.name}
       </Text>
-      {showHeader && (
-        <View style={{flexDirection: 'row'}}>
-          <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
-            Set
-          </Text>
-          <Text style={[styles.liftHeader, {width: '60%', color: colors.text}]}>
-            Weight
-          </Text>
-          <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
-            Reps
-          </Text>
-        </View>
-      )}
+      {showHeader && <SetHeader></SetHeader>}
+      <View>
+        {Utils.normalizeSets(lift.sets).map((set, index) => (
+          <SetItem number={index + 1} set={set} key={index}></SetItem>
+        ))}
+      </View>
       {persisted && (
         <PersistedLiftItem
-          lift={props.lift as PersistedLift}></PersistedLiftItem>
-      )}
-      {!persisted && (
-        <View>
-          {Utils.normalizeSets(props.lift.sets).map((set, index) => (
-            <SetItem number={index + 1} set={set} key={index}></SetItem>
-          ))}
-        </View>
+          updateLift={lift => onLiftUpdated(lift)}
+          lift={lift as PersistedLift}></PersistedLiftItem>
       )}
     </View>
   );
 }
 
-function PersistedLiftItem(props: {lift: PersistedLift}) {
-  const [lift, setLift] = useState<PersistedLift>(props.lift);
+function PersistedLiftItem(props: {
+  lift: PersistedLift;
+  updateLift: (lift: PersistedLift) => void;
+}) {
   const [editing, setEditing] = useState(false);
 
-  console.log(lift.step);
   useEffect(() => {
     Repository.getLift(props.lift.id).then(result => {
       if (result != null) {
-        result.step = lift.step;
-        setLift(result);
+        result.step = props.lift.step;
+        props.updateLift(result);
       }
     });
   }, []);
 
   const onSetChange = (index: number, set: PersistedSet) => {
-    var updatedLift = {...lift};
+    var updatedLift = {...props.lift};
     updatedLift.sets[index] = set;
-    setLift(updatedLift);
+    props.updateLift(updatedLift);
     Repository.saveLift(updatedLift);
   };
 
-  const {colors} = useTheme();
-
   return (
     <View>
-      <Modal visible={editing} transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <View
-            style={{
-              margin: 10,
-              backgroundColor: colors.card,
-              borderRadius: 8,
-              padding: 15,
-              alignItems: 'center',
-
-              elevation: 5,
-            }}>
-            {lift.sets.map((set, index) => (
-              <PersistedSetRow
-                index={index}
-                set={set}
-                key={index}
-                step={lift.step}
-                editable={true}
-                onChange={onSetChange}></PersistedSetRow>
-            ))}
-            <Button title="Done" onPress={() => setEditing(false)}></Button>
-          </View>
-        </View>
-      </Modal>
-      {lift.sets.map((set, index) => (
-        <PersistedSetRow
-          index={index}
-          set={set}
-          key={index}
-          step={lift.step}
-          editable={false}
-          onChange={onSetChange}></PersistedSetRow>
-      ))}
+      <LiftEditorModal
+        editing={editing}
+        lift={props.lift}
+        onSetChange={onSetChange}
+        onFinish={() => setEditing(false)}></LiftEditorModal>
       <View
         style={{
           flex: 1,
@@ -189,16 +146,86 @@ function PersistedLiftItem(props: {lift: PersistedLift}) {
   );
 }
 
-function SetItem(props: {number: Number; set: NormalizedSet}) {
+// TODO move this and PersistedSetRow to another file
+function LiftEditorModal(props: {
+  editing: boolean;
+  lift: PersistedLift;
+  onFinish: () => void;
+  onSetChange: (index: number, set: PersistedSet) => void;
+}) {
+  const {colors} = useTheme();
+
+  return (
+    <Modal visible={props.editing} transparent={true}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'rgba(0,0,0,0.75)',
+        }}>
+        <View
+          style={{
+            margin: 10,
+            backgroundColor: colors.card,
+            borderRadius: 8,
+            padding: 15,
+            alignItems: 'center',
+
+            elevation: 5,
+          }}>
+          <Text style={[styles.liftText, {color: colors.text}]}>
+            {props.lift.name}
+          </Text>
+          <SetHeader></SetHeader>
+          {props.lift.sets.map((set, index) => (
+            <PersistedSetRow
+              index={index}
+              set={set}
+              key={index}
+              step={props.lift.step}
+              onChange={props.onSetChange}></PersistedSetRow>
+          ))}
+          <View style={{marginTop: 10}}>
+            <Button title="Done" onPress={() => props.onFinish()}></Button>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function SetHeader() {
+  const {colors} = useTheme();
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{width: '20%', textAlign: 'center'}}>
+      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+        Set
+      </Text>
+      <Text style={[styles.liftHeader, {width: '60%', color: colors.text}]}>
+        Weight
+      </Text>
+      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+        Reps
+      </Text>
+    </View>
+  );
+}
+
+function SetItem(props: {number: Number; set: NormalizedSet}) {
+  const {colors} = useTheme();
+
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
         {props.number.toString()}
       </Text>
-      <Text style={{width: '60%', textAlign: 'center'}}>
+      <Text style={{width: '60%', textAlign: 'center', color: colors.text}}>
         {props.set.weight}
       </Text>
-      <Text style={{width: '20%', textAlign: 'center'}}>{props.set.reps}</Text>
+      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
+        {props.set.reps}
+      </Text>
     </View>
   );
 }
@@ -206,7 +233,6 @@ function SetItem(props: {number: Number; set: NormalizedSet}) {
 function PersistedSetRow(props: {
   index: number;
   set: PersistedSet;
-  editable: Boolean;
   onChange: (index: number, set: PersistedSet) => void;
   step?: number;
 }) {
@@ -215,7 +241,7 @@ function PersistedSetRow(props: {
   console.log(props.set.weight + ' ' + stepSize);
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{flexDirection: 'row', marginVertical: 4}}>
       <Text
         style={{
           width: '20%',
@@ -231,18 +257,16 @@ function PersistedSetRow(props: {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        {props.editable && (
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() =>
-              props.onChange(props.index, {
-                weight: props.set.weight - stepSize,
-                reps: props.set.reps,
-              })
-            }>
-            <Text style={styles.counterButtonText}>-</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight - stepSize,
+              reps: props.set.reps,
+            })
+          }>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
         <Text
           style={{
             textAlign: 'right',
@@ -252,32 +276,28 @@ function PersistedSetRow(props: {
           }}>
           {props.set.weight + 'lb'}
         </Text>
-        {props.editable && (
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() =>
-              props.onChange(props.index, {
-                weight: props.set.weight + stepSize,
-                reps: props.set.reps,
-              })
-            }>
-            <Text style={styles.counterButtonText}>+</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight + stepSize,
+              reps: props.set.reps,
+            })
+          }>
+          <Text style={styles.counterButtonText}>+</Text>
+        </TouchableOpacity>
       </View>
       <View style={{width: '20%', flexDirection: 'row'}}>
-        {props.editable && (
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() =>
-              props.onChange(props.index, {
-                weight: props.set.weight,
-                reps: props.set.reps - 1,
-              })
-            }>
-            <Text style={styles.counterButtonText}>-</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight,
+              reps: props.set.reps - 1,
+            })
+          }>
+          <Text style={styles.counterButtonText}>-</Text>
+        </TouchableOpacity>
         <Text
           style={{
             textAlign: 'center',
@@ -287,18 +307,16 @@ function PersistedSetRow(props: {
           }}>
           {props.set.reps}
         </Text>
-        {props.editable && (
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() =>
-              props.onChange(props.index, {
-                weight: props.set.weight,
-                reps: props.set.reps + 1,
-              })
-            }>
-            <Text style={styles.counterButtonText}>+</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={styles.counterButtonContainer}
+          onPress={() =>
+            props.onChange(props.index, {
+              weight: props.set.weight,
+              reps: props.set.reps + 1,
+            })
+          }>
+          <Text style={styles.counterButtonText}>+</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
