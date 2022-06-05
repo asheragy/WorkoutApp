@@ -24,6 +24,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
+import LiftRepository from '../data/LiftRepository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -78,7 +79,7 @@ function WorkoutItem(props: {workout: Workout}) {
 
 function LiftItem(props: {lift: Lift | PersistedLift}) {
   const showHeader = props.lift.sets != undefined;
-  const persisted = 'id' in props.lift;
+  const persisted = 'key' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const {colors} = useTheme();
 
@@ -113,7 +114,7 @@ function PersistedLiftItem(props: {
   const [editing, setEditing] = useState(false);
 
   useEffect(() => {
-    Repository.getLift(props.lift.id).then(result => {
+    LiftRepository.getLift(props.lift.key).then(result => {
       if (result != null) {
         result.step = props.lift.step;
         props.updateLift(result);
@@ -125,7 +126,7 @@ function PersistedLiftItem(props: {
     var updatedLift = {...props.lift};
     updatedLift.sets[index] = set;
     props.updateLift(updatedLift);
-    Repository.saveLift(updatedLift);
+    LiftRepository.saveLift(updatedLift);
   };
 
   return (

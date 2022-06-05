@@ -16,7 +16,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Trap Bar Deadlift (315/335x5, 365x3 405x1)',
-        id: 'deadlift',
+        key: 'deadlift',
         sets: [
           {
             weight: 275,
@@ -39,7 +39,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Calve Raises',
-        id: 'calf',
+        key: 'calf',
         sets: [
           {
             weight: 85,
@@ -61,7 +61,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Leg Extensions',
-        id: 'extensions',
+        key: 'extensions',
         sets: [
           {
             weight: 60,
@@ -75,7 +75,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Leg Curls',
-        id: 'legcurls',
+        key: 'legcurls',
         sets: [
           {
             weight: 105,
@@ -97,7 +97,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Bench Press',
-        id: 'bench',
+        key: 'bench',
         sets: [
           {
             weight: 155,
@@ -139,12 +139,12 @@ function getUpperDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Pullups',
-        id: 'pullups',
+        key: 'pullups',
         sets: pullupSets,
       },
       {
         name: 'Dips',
-        id: 'dips',
+        key: 'dips',
         sets: [
           {
             weight: 0,
@@ -170,7 +170,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Curls',
-        id: 'curls',
+        key: 'curls',
         step: 10,
         sets: [
           {
@@ -189,7 +189,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Incline DB Press',
-        id: 'inclineDb',
+        key: 'inclineDb',
         step: 2.5,
         sets: [
           {
@@ -223,7 +223,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Sumo DL (245x5/275x1)',
-        id: 'sumoDL',
+        key: 'sumoDL',
         sets: [
           {
             reps: 5,
@@ -237,7 +237,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Pause Squat (175x5)',
-        id: 'squat',
+        key: 'squat',
         sets: [
           {
             reps: 5,
@@ -247,7 +247,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Pause Squat w/Bands (225x5/275x1)',
-        id: 'squatBands',
+        key: 'squatBands',
         sets: [
           {
             reps: 5,
@@ -272,7 +272,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Overhead Press',
-        id: 'ohp',
+        key: 'ohp',
         sets: [
           {
             reps: 10,
@@ -294,7 +294,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'Dumbell Bench Press',
-        id: 'dbPress',
+        key: 'dbPress',
         sets: [
           {
             reps: 10,
@@ -341,7 +341,7 @@ function getPullDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Row Machine',
-        id: 'rows',
+        key: 'rows',
         sets: [
           {
             weight: 45,
@@ -363,7 +363,7 @@ function getPullDay(block: number, week: number): WorkoutNode {
       },
       {
         name: 'HS Pulldown (90+25 x 8-10)',
-        id: 'hsRow',
+        key: 'hsRow',
         sets: [
           {
             weight: 90,

@@ -25,7 +25,7 @@ export type Lift = {
 
 export type PersistedLift = {
   name: string;
-  id: string;
+  key: string;
   step?: number;
   sets: PersistedSet[];
 };

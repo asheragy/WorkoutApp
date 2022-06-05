@@ -29,7 +29,7 @@ function getHome1(): WorkoutNode {
       },
       {
         name: 'Front Squat (Shoulder width stance)',
-        id: 'frontSquat',
+        key: 'frontSquat',
         sets: [
           {
             weight: 0,
@@ -47,7 +47,7 @@ function getHome1(): WorkoutNode {
       },
       {
         name: 'Trap bar deadlift (high handles / small 25lb)',
-        id: 'trapBar',
+        key: 'trapBar',
         sets: [
           {
             weight: 25,
@@ -65,7 +65,7 @@ function getHome1(): WorkoutNode {
       },
       {
         name: 'Bench Press (Pyramid weight)',
-        id: 'benchPress',
+        key: 'benchPress',
         sets: [
           {
             weight: 5,
@@ -109,7 +109,7 @@ function getHome2(): WorkoutNode {
       },
       {
         name: 'Squat Bar (no hand support)',
-        id: 'ssb',
+        key: 'ssb',
         sets: [
           {
             weight: 0,
@@ -123,7 +123,7 @@ function getHome2(): WorkoutNode {
       },
       {
         name: 'Squat Bar (hands on rack)',
-        id: 'ssbAssist',
+        key: 'ssbAssist',
         sets: [
           {
             weight: 0,
@@ -133,7 +133,7 @@ function getHome2(): WorkoutNode {
       },
       {
         name: 'Deadlift (high rep)',
-        id: 'deadlift',
+        key: 'deadlift',
         sets: [
           {
             weight: 25,
@@ -147,7 +147,7 @@ function getHome2(): WorkoutNode {
       },
       {
         name: 'Overhead Press',
-        id: 'ohp',
+        key: 'ohp',
         sets: [
           {
             weight: 0,
@@ -174,7 +174,7 @@ function getGym(): WorkoutNode {
     lifts: [
       {
         name: 'Pulldowns (Pyramid)',
-        id: 'pulldowns',
+        key: 'pulldowns',
         sets: [
           {
             weight: 85,
@@ -196,7 +196,7 @@ function getGym(): WorkoutNode {
       },
       {
         name: 'Rows (Pyramid)',
-        id: 'rows',
+        key: 'rows',
         sets: [
           {
             weight: 60,

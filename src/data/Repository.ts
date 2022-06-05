@@ -2,14 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistedLift, Program, WorkoutNode} from '../types/types';
 import getProgram from '../data/programs/me';
 import Storage from './Storage';
+import LiftRepository from './LiftRepository';
 
 export type Workout = {
   node: WorkoutNode;
   position: number;
   completed: Boolean;
 };
-
-const liftKeyPrefix = '@lift_';
 
 export default class Repository {
   static async getWorkouts(): Promise<Workout[]> {
@@ -27,56 +26,25 @@ export default class Repository {
       },
     );
 
-    var map = await this.getLifts(program);
+    var map = await LiftRepository.getLifts(program);
 
     for (const wo of workouts) {
       for (let i = 0; i < wo.node.lifts.length; i++) {
         const lift = wo.node.lifts[i];
 
-        if ('id' in lift) {
-          if (map.has(lift.id)) {
-            var persisted = map.get(lift.id) as PersistedLift;
+        if ('key' in lift) {
+          if (map.has(lift.key)) {
+            var persisted = map.get(lift.key) as PersistedLift;
             // Override saved value with source
             persisted.step = lift.step;
             wo.node.lifts[i] = persisted;
-            console.log(map.get(lift.id));
+            console.log(map.get(lift.key));
           }
         }
       }
     }
 
     return workouts;
-  }
-
-  static async getLifts(program: Program): Promise<Map<string, PersistedLift>> {
-    var map = new Map<string, PersistedLift>();
-    for (const wo of program.workouts) {
-      for (let i = 0; i < wo.lifts.length; i++) {
-        const lift = wo.lifts[i];
-
-        if ('id' in lift) {
-          if (!map.has(lift.id)) {
-            var persisted = await this.getLift(lift.id);
-            if (persisted != null) map.set(lift.id, persisted);
-          }
-        }
-      }
-    }
-
-    return map;
-  }
-
-  static async getLift(id: string): Promise<PersistedLift | null> {
-    var value = await AsyncStorage.getItem(liftKeyPrefix + id);
-    if (value != null) {
-      return JSON.parse(value);
-    }
-
-    return null;
-  }
-
-  static async saveLift(lift: PersistedLift): Promise<void> {
-    return AsyncStorage.setItem(liftKeyPrefix + lift.id, JSON.stringify(lift));
   }
 
   static async complete(index: number): Promise<boolean> {
