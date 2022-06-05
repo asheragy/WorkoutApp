@@ -16,14 +16,17 @@ export default class LiftRepository {
 
   static async getLifts(program: Program): Promise<Map<string, PersistedLift>> {
     var map = new Map<string, PersistedLift>();
+    var ignore = new Set<string>(); // Prevent multiple lookup attempts for missing values
+
     for (const wo of program.workouts) {
       for (let i = 0; i < wo.lifts.length; i++) {
         const lift = wo.lifts[i];
 
         if ('key' in lift) {
-          if (!map.has(lift.key)) {
+          if (!map.has(lift.key) && !ignore.has(lift.key)) {
             var persisted = await this.getLift(lift.key);
             if (persisted != null) map.set(lift.key, persisted);
+            else ignore.add(lift.key);
           }
         }
       }
