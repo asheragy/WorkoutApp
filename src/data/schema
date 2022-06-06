@@ -1,0 +1,14 @@
+completed:<programId> -> [Date]
+- Last completed is length
+
+settings:<programId> -> ??
+
+
+lift:<programId>:<name> -> PersistedLift
+- Current is last in list
+- History is everything
+
+liftHistory:<programId>:<name> -> [{date,PersistedLift}]
+
+
+weight -> [WeightEntry]

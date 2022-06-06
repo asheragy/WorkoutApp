@@ -67,6 +67,8 @@ export function WorkoutList({navigation}: any) {
   }
 
   async function onComplete(index: number) {
+    // TODO complete should be done in child screen
+    // this event is really just a "data changed, need to reload"
     if (await Repository.complete(index)) {
       navigation.pop();
       loadState();

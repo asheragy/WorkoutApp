@@ -37,7 +37,6 @@ export default class Repository {
             // Override saved value with source
             persisted.step = lift.step;
             wo.node.lifts[i] = persisted;
-            console.log(map.get(lift.key));
           }
         }
       }

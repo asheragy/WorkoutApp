@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {PersistedLift, Program, WeightEntry, WorkoutNode} from '../types/types';
 import getProgram from '../data/programs/basic';
-import Storage from './Storage';
 
 export type Workout = {
   node: WorkoutNode;

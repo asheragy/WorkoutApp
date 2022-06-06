@@ -32,18 +32,13 @@ LogBox.ignoreLogs([
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
-type SavedData = {
-  index: number;
-  date: Date;
-};
-
 export function WorkoutScreen({route, navigation}: Props) {
   console.log(route.params);
   console.log('workout = ' + route.params.workout);
   const workout = route.params.workout;
 
   const onComplete = async (index: number) => {
-    //console.log('onComplete ' + index);
+    await LiftRepository.addAllHistory(workout.node);
     route.params.onComplete(index);
   };
 
@@ -239,7 +234,7 @@ function PersistedSetRow(props: {
 }) {
   const {colors} = useTheme();
   const stepSize = props.step == undefined ? 5 : props.step;
-  console.log(props.set.weight + ' ' + stepSize);
+  //console.log(props.set.weight + ' ' + stepSize);
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 4}}>
