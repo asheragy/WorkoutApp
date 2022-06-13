@@ -1,4 +1,9 @@
-import {PersistedSet, Program, WorkoutNode} from '../../types/types';
+import {
+  PersistedLift,
+  PersistedSet,
+  Program,
+  WorkoutNode,
+} from '../../types/types';
 
 function round5down(n: number) {
   var rounded = Math.floor(n / 5);
@@ -8,6 +13,32 @@ function round5down(n: number) {
 function round5up(n: number) {
   var rounded = Math.ceil(n / 5);
   return rounded * 5;
+}
+
+function createPersisted(
+  name: string,
+  key: string,
+  sets: PersistedSet[],
+  step?: number,
+): PersistedLift {
+  return {
+    name: name,
+    key: key,
+    sets: sets,
+  };
+}
+
+function createSets(
+  weight: number,
+  reps: number,
+  repeat: number,
+): PersistedSet[] {
+  var set: PersistedSet = {
+    weight: weight,
+    reps: reps,
+  };
+
+  return [...Array(repeat).keys()].map(_ => set);
 }
 
 function getDLDay(block: number, week: number): WorkoutNode {
@@ -270,28 +301,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Push Week ' + (week + 1) + ' Block ' + (block + 1),
     lifts: [
-      {
-        name: 'Overhead Press',
-        key: 'ohp',
-        sets: [
-          {
-            reps: 10,
-            weight: 25,
-          },
-          {
-            reps: 10,
-            weight: 25,
-          },
-          {
-            reps: 10,
-            weight: 25,
-          },
-          {
-            reps: 10,
-            weight: 25,
-          },
-        ],
-      },
+      createPersisted('Overhead Press', 'ohp', createSets(100, 10, 5)),
       {
         name: 'Dumbell Bench Press',
         key: 'dbPress',
@@ -318,19 +328,9 @@ function getPushDay(block: number, week: number): WorkoutNode {
           },
         ],
       },
-      {
-        name: 'Lat Raises',
-        sets: [
-          {
-            weight: 22,
-            reps: {min: 8, max: 12},
-            repeat: 3,
-          },
-        ],
-      },
-      {
-        name: 'Triceps',
-      },
+      createPersisted('Lat Raises', 'latRaise', createSets(20, 10, 3), 2.5),
+      createPersisted('Tricep Extensions', 'tricepExt', createSets(45, 15, 3)),
+      createPersisted('HS Press', 'hsPress', createSets(45 + 20, 10, 1)),
     ],
   };
 }
@@ -464,17 +464,17 @@ export default function getProgram(): Program {
 
   for (var block = 0; block < 5; block++) {
     for (var week = 0; week < 3; week++) {
-      workouts.push(getStretch1());
-      workouts.push(getDLDay(block, week));
-      workouts.push(getBenchDay(block, week));
-      workouts.push(getUpperDay(block, week));
-      workouts.push(getStretch2());
-      workouts.push(getLowerDay(block, week));
+      //workouts.push(getStretch1());
+      //workouts.push(getDLDay(block, week));
+      //workouts.push(getBenchDay(block, week));
+      //workouts.push(getUpperDay(block, week));
+      //workouts.push(getStretch2());
+      //workouts.push(getLowerDay(block, week));
       workouts.push(getPushDay(block, week));
-      workouts.push(getPullDay(block, week));
+      //workouts.push(getPullDay(block, week));
     }
     // Deload
-    workouts.push(getDeloadDay());
+    //workouts.push(getDeloadDay());
   }
 
   return {workouts};

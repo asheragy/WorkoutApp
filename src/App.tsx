@@ -11,6 +11,8 @@ import {
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
+import {LiftScreen} from './components/LiftScreen';
+import {PersistedLift} from './types/types';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -19,6 +21,9 @@ export type RootStackParamList = {
     onComplete: (index: number) => void;
   };
   Weight: undefined;
+  Lift: {
+    lift: PersistedLift;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -40,9 +45,10 @@ const App = () => {
           />
           <Stack.Screen
             name="Workout"
-            options={{
+            options={({route}) => ({
               headerStyle: styles.headerStyle,
-            }}
+              title: route.params.workout.node.name ?? 'Workout',
+            })}
             component={WorkoutScreen}
           />
           <Stack.Screen
@@ -51,6 +57,14 @@ const App = () => {
               headerStyle: styles.headerStyle,
             }}
             component={WeightScreen}
+          />
+          <Stack.Screen
+            name="Lift"
+            options={({route}) => ({
+              headerStyle: styles.headerStyle,
+              title: route.params.lift.name,
+            })}
+            component={LiftScreen}
           />
         </Stack.Navigator>
       </OverflowMenuProvider>

@@ -21,7 +21,7 @@ import {
 } from '../types/types';
 import Repository, {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useTheme} from '@react-navigation/native';
+import {useLinkProps, useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
@@ -42,9 +42,13 @@ export function WorkoutScreen({route, navigation}: Props) {
     route.params.onComplete(index);
   };
 
+  function onViewLog(lift: PersistedLift) {
+    navigation.navigate('Lift', {lift: lift});
+  }
+
   return (
     <ScrollView style={styles.container}>
-      <WorkoutItem workout={workout}></WorkoutItem>
+      <WorkoutItem workout={workout} onViewLog={onViewLog}></WorkoutItem>
       {workout.node.accessories != null && (
         <AccessoryView accessories={workout.node.accessories}></AccessoryView>
       )}
@@ -57,22 +61,28 @@ export function WorkoutScreen({route, navigation}: Props) {
   );
 }
 
-function WorkoutItem(props: {workout: Workout}) {
+function WorkoutItem(props: {
+  workout: Workout;
+  onViewLog: (lift: PersistedLift) => void;
+}) {
   const {colors} = useTheme();
 
   return (
     <View style={styles.workoutItem}>
-      <Text style={[styles.titleText, {color: colors.text}]}>
-        {props.workout.node?.name}
-      </Text>
       {props.workout.node.lifts.map((lift, index) => (
-        <LiftItem lift={lift} key={index}></LiftItem>
+        <LiftItem
+          lift={lift}
+          onViewLog={props.onViewLog}
+          key={index}></LiftItem>
       ))}
     </View>
   );
 }
 
-function LiftItem(props: {lift: Lift | PersistedLift}) {
+function LiftItem(props: {
+  lift: Lift | PersistedLift;
+  onViewLog: (lift: PersistedLift) => void;
+}) {
   const showHeader = props.lift.sets != undefined;
   const persisted = 'key' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
@@ -96,6 +106,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
       {persisted && (
         <PersistedLiftItem
           updateLift={lift => onLiftUpdated(lift)}
+          onViewLog={() => props.onViewLog(props.lift as PersistedLift)}
           lift={lift as PersistedLift}></PersistedLiftItem>
       )}
     </View>
@@ -105,9 +116,11 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
 function PersistedLiftItem(props: {
   lift: PersistedLift;
   updateLift: (lift: PersistedLift) => void;
+  onViewLog: () => void;
 }) {
   const [editing, setEditing] = useState(false);
 
+  console.log('Rendering persisted lift item');
   useEffect(() => {
     LiftRepository.getLift(props.lift.key).then(result => {
       if (result != null) {
@@ -130,6 +143,7 @@ function PersistedLiftItem(props: {
         editing={editing}
         lift={props.lift}
         onSetChange={onSetChange}
+        onViewLog={props.onViewLog}
         onFinish={() => setEditing(false)}></LiftEditorModal>
       <View
         style={{
@@ -147,10 +161,12 @@ function LiftEditorModal(props: {
   editing: boolean;
   lift: PersistedLift;
   onFinish: () => void;
+  onViewLog: () => void;
   onSetChange: (index: number, set: PersistedSet) => void;
 }) {
   const {colors} = useTheme();
 
+  console.log(props.lift.name + ' editing = ' + props.editing);
   return (
     <Modal visible={props.editing} transparent={true}>
       <View
@@ -182,8 +198,24 @@ function LiftEditorModal(props: {
               step={props.lift.step}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
-          <View style={{marginTop: 10}}>
-            <Button title="Done" onPress={() => props.onFinish()}></Button>
+
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+            }}>
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button
+                title="Log"
+                onPress={() => {
+                  props.onFinish(); // TODO temp to workaround broken button issue after using
+                  props.onViewLog();
+                }}></Button>
+            </View>
+
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button title="Done" onPress={() => props.onFinish()}></Button>
+            </View>
           </View>
         </View>
       </View>
