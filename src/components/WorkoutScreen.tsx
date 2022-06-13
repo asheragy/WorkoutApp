@@ -120,7 +120,6 @@ function PersistedLiftItem(props: {
 }) {
   const [editing, setEditing] = useState(false);
 
-  console.log('Rendering persisted lift item');
   useEffect(() => {
     LiftRepository.getLift(props.lift.key).then(result => {
       if (result != null) {
@@ -166,7 +165,6 @@ function LiftEditorModal(props: {
 }) {
   const {colors} = useTheme();
 
-  console.log(props.lift.name + ' editing = ' + props.editing);
   return (
     <Modal visible={props.editing} transparent={true}>
       <View
