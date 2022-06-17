@@ -1,7 +1,7 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Button,
-  Pressable,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,17 +11,10 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {
-  Lift,
-  LiftSet,
-  PersistedLift,
-  PersistedSet,
-  AccessoryGroup,
-  NormalizedSet,
-} from '../types/types';
-import Repository, {Workout} from '../data/Repository';
+import {Lift, PersistedLift, PersistedSet, NormalizedSet} from '../types/types';
+import {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
-import {useLinkProps, useTheme} from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
@@ -86,6 +79,8 @@ function LiftItem(props: {
   const showHeader = props.lift.sets != undefined;
   const persisted = 'key' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
+  const [editing, setEditing] = useState(false);
+
   const {colors} = useTheme();
 
   const onLiftUpdated = (lift: PersistedLift) => {
@@ -93,10 +88,31 @@ function LiftItem(props: {
   };
 
   return (
-    <View style={{marginVertical: 4}}>
-      <Text style={[styles.liftText, {color: colors.text}]}>
-        {props.lift.name}
-      </Text>
+    <View style={{marginVertical: 0}}>
+      <View
+        style={{
+          marginVertical: 8,
+          flexDirection: 'row',
+        }}>
+        <Text style={{width: '20%'}}></Text>
+        <Text style={[styles.liftText, {color: colors.text, width: '60%'}]}>
+          {props.lift.name}
+        </Text>
+        <View
+          style={{
+            width: '20%',
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}>
+          {persisted && (
+            <TouchableOpacity onPress={() => setEditing(true)}>
+              <Image style={{}} source={require('../icons/edit.png')} />
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
       {showHeader && <SetHeader></SetHeader>}
       <View>
         {Utils.normalizeSets(lift.sets).map((set, index) => (
@@ -106,6 +122,8 @@ function LiftItem(props: {
       {persisted && (
         <PersistedLiftItem
           updateLift={lift => onLiftUpdated(lift)}
+          editing={editing}
+          onDoneEditing={() => setEditing(false)}
           onViewLog={() => props.onViewLog(props.lift as PersistedLift)}
           lift={lift as PersistedLift}></PersistedLiftItem>
       )}
@@ -113,13 +131,14 @@ function LiftItem(props: {
   );
 }
 
+// TODO this can be moved to parent
 function PersistedLiftItem(props: {
   lift: PersistedLift;
   updateLift: (lift: PersistedLift) => void;
   onViewLog: () => void;
+  editing: boolean;
+  onDoneEditing: () => void;
 }) {
-  const [editing, setEditing] = useState(false);
-
   useEffect(() => {
     LiftRepository.getLift(props.lift.key).then(result => {
       if (result != null) {
@@ -139,18 +158,11 @@ function PersistedLiftItem(props: {
   return (
     <View>
       <LiftEditorModal
-        editing={editing}
+        editing={props.editing}
         lift={props.lift}
         onSetChange={onSetChange}
         onViewLog={props.onViewLog}
-        onFinish={() => setEditing(false)}></LiftEditorModal>
-      <View
-        style={{
-          flex: 1,
-          alignItems: 'center',
-        }}>
-        <Button title="Edit" onPress={() => setEditing(true)}></Button>
-      </View>
+        onFinish={() => props.onDoneEditing()}></LiftEditorModal>
     </View>
   );
 }
@@ -184,7 +196,8 @@ function LiftEditorModal(props: {
 
             elevation: 5,
           }}>
-          <Text style={[styles.liftText, {color: colors.text}]}>
+          <Text
+            style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
             {props.lift.name}
           </Text>
           <SetHeader></SetHeader>

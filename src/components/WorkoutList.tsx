@@ -150,6 +150,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
       <Text style={[styles.liftText, {color: colors.text}]}>
         {props.lift.name}
       </Text>
+      {/** 
       <View style={styles.liftSetRow}>
         {Utils.normalizeSets(props.lift.sets).map((set, index) => (
           <Text style={{color: colors.text}} key={index}>
@@ -157,6 +158,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
           </Text>
         ))}
       </View>
+      */}
     </View>
   );
 }
