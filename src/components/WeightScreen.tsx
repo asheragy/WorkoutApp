@@ -19,6 +19,7 @@ import {
 import {RootStackParamList} from '../App';
 import WeightRepository from '../data/WeightRepository';
 import {WeightEntry} from '../types/types';
+import {ProgressChart} from './ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
 
@@ -76,8 +77,13 @@ export function WeightScreen({route, navigation}: Props) {
 
   const {colors} = useTheme();
 
+  var dates = entries.map(x => x.date);
+  var values = entries.map(x => x.weight / 10);
+
   return (
-    <View>
+    <View style={{flex: 1, flexDirection: 'column'}}>
+      <ProgressChart dates={dates} values={values}></ProgressChart>
+
       <View
         style={{
           flexDirection: 'row',
@@ -99,6 +105,7 @@ export function WeightScreen({route, navigation}: Props) {
 
       <Button title="Add" onPress={() => onAdd()} />
 
+      {/** 
       <View>
         {entries.map((entry, index) => (
           <View key={index} style={styles.entryRow}>
@@ -110,6 +117,7 @@ export function WeightScreen({route, navigation}: Props) {
           </View>
         ))}
       </View>
+        */}
     </View>
   );
 }

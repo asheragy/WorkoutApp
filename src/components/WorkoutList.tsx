@@ -45,7 +45,6 @@ export function WorkoutList({navigation}: any) {
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
             <HiddenItem title="Reset" onPress={() => onReset()} />
-            <HiddenItem title="Temp" onPress={() => onLiftScreen()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -78,10 +77,6 @@ export function WorkoutList({navigation}: any) {
 
   async function onWeightLog() {
     navigation.navigate('Weight', {});
-  }
-
-  async function onLiftScreen() {
-    navigation.navigate('Lift', {key: 'dbPress'});
   }
 
   useEffect(loadState, []);
