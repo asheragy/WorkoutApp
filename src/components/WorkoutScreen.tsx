@@ -80,12 +80,25 @@ function LiftItem(props: {
   const persisted = 'key' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const [editing, setEditing] = useState(false);
-
   const {colors} = useTheme();
 
-  const onLiftUpdated = (lift: PersistedLift) => {
-    setLift(lift);
+  const onSetChange = (index: number, set: PersistedSet) => {
+    var updatedLift = {...(lift as PersistedLift)};
+    updatedLift.sets[index] = set;
+    setLift(updatedLift);
+    LiftRepository.saveLift(updatedLift);
   };
+
+  if (persisted) {
+    useEffect(() => {
+      LiftRepository.getLift((lift as PersistedLift).key).then(result => {
+        if (result != null) {
+          result.step = (lift as PersistedLift).step;
+          setLift(result);
+        }
+      });
+    }, []);
+  }
 
   return (
     <View style={{marginVertical: 0}}>
@@ -120,54 +133,19 @@ function LiftItem(props: {
         ))}
       </View>
       {persisted && (
-        <PersistedLiftItem
-          updateLift={lift => onLiftUpdated(lift)}
-          editing={editing}
-          onDoneEditing={() => setEditing(false)}
-          onViewLog={() => props.onViewLog(props.lift as PersistedLift)}
-          lift={lift as PersistedLift}></PersistedLiftItem>
+        <View>
+          <LiftEditorModal
+            editing={editing}
+            lift={lift as PersistedLift}
+            onSetChange={onSetChange}
+            onViewLog={() => props.onViewLog(lift as PersistedLift)}
+            onFinish={() => setEditing(false)}></LiftEditorModal>
+        </View>
       )}
     </View>
   );
 }
 
-// TODO this can be moved to parent
-function PersistedLiftItem(props: {
-  lift: PersistedLift;
-  updateLift: (lift: PersistedLift) => void;
-  onViewLog: () => void;
-  editing: boolean;
-  onDoneEditing: () => void;
-}) {
-  useEffect(() => {
-    LiftRepository.getLift(props.lift.key).then(result => {
-      if (result != null) {
-        result.step = props.lift.step;
-        props.updateLift(result);
-      }
-    });
-  }, []);
-
-  const onSetChange = (index: number, set: PersistedSet) => {
-    var updatedLift = {...props.lift};
-    updatedLift.sets[index] = set;
-    props.updateLift(updatedLift);
-    LiftRepository.saveLift(updatedLift);
-  };
-
-  return (
-    <View>
-      <LiftEditorModal
-        editing={props.editing}
-        lift={props.lift}
-        onSetChange={onSetChange}
-        onViewLog={props.onViewLog}
-        onFinish={() => props.onDoneEditing()}></LiftEditorModal>
-    </View>
-  );
-}
-
-// TODO move this and PersistedSetRow to another file
 function LiftEditorModal(props: {
   editing: boolean;
   lift: PersistedLift;
