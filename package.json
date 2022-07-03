@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "emulator": "emulator -avd Pixel_5_API_30",
+    "emulator4": "emulator -avd Pixel_4_API_30",
     "apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
