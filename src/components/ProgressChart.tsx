@@ -1,8 +1,12 @@
 import React from 'react';
-import {Dimensions, View} from 'react-native';
+import {Dimensions, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 
-export function ProgressChart(props: {dates: Date[]; values: number[]}) {
+export function ProgressChart(props: {
+  title: string;
+  dates: Date[];
+  values: number[];
+}) {
   if (props.dates.length == 0) return <View></View>;
 
   // https://www.npmjs.com/package/react-native-chart-kit
@@ -13,6 +17,7 @@ export function ProgressChart(props: {dates: Date[]; values: number[]}) {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
+      <Text>{props.title}</Text>
       <LineChart
         data={{
           labels: props.dates.map(x => x.getMonth() + 1 + '/' + x.getDate()),
@@ -23,7 +28,7 @@ export function ProgressChart(props: {dates: Date[]; values: number[]}) {
           ],
         }}
         width={Dimensions.get('window').width} // from react-native
-        height={Dimensions.get('window').height / 2}
+        height={Dimensions.get('window').height / 3}
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
           decimalPlaces: 0,
