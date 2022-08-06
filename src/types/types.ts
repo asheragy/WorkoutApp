@@ -28,6 +28,7 @@ export type PersistedLift = {
   key: string;
   step?: number;
   sets: PersistedSet[];
+  goal?: string; // This could be a list of PersistedSet
 };
 
 export type PersistedLiftHistory = {

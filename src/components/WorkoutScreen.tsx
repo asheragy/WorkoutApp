@@ -125,7 +125,6 @@ function LiftItem(props: {
           )}
         </View>
       </View>
-
       {showHeader && <SetHeader></SetHeader>}
       <View>
         {Utils.normalizeSets(lift.sets).map((set, index) => (
@@ -154,6 +153,7 @@ function LiftEditorModal(props: {
   onSetChange: (index: number, set: PersistedSet) => void;
 }) {
   const {colors} = useTheme();
+  const goal = props.lift.goal != undefined;
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -187,6 +187,21 @@ function LiftEditorModal(props: {
               step={props.lift.step}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
+
+          {goal && (
+            // TODO unsure if this should go here or the main workout screen
+            <View style={{flexDirection: 'row', marginVertical: 8}}>
+              <Text
+                style={{width: '20%', color: colors.text, textAlign: 'center'}}>
+                Goal
+              </Text>
+              <Text
+                style={{width: '60%', color: colors.text, textAlign: 'center'}}>
+                {props.lift.goal}
+              </Text>
+              <Text style={{width: '20%'}}></Text>
+            </View>
+          )}
 
           <View
             style={{

@@ -27,12 +27,14 @@ function createPersisted(
   key: string,
   sets: PersistedSet[],
   step?: number,
+  goal?: string,
 ): PersistedLift {
   return {
     name: name,
     key: key,
     sets: sets,
     step: step,
+    goal: goal,
   };
 }
 
@@ -51,7 +53,7 @@ function createSets(
 
 function getDLDay(block: number, week: number): WorkoutNode {
   return {
-    name: 'DL Week ' + (week + 1) + ' Block ' + (block + 1),
+    name: `DL Week ${week} Block ${block}`,
     accessories: [
       {
         name: 'Extra',
@@ -60,7 +62,8 @@ function getDLDay(block: number, week: number): WorkoutNode {
     ],
     lifts: [
       {
-        name: 'Trap Bar Deadlift (315x10)',
+        name: 'Trap Bar Deadlift',
+        goal: '315x10',
         key: 'deadlift',
         sets: [
           {
@@ -74,16 +77,25 @@ function getDLDay(block: number, week: number): WorkoutNode {
         ],
       },
       createPersisted(
-        'Lunges (15-20lb x 15)',
+        'Lunges',
         'lunges',
         createSets(0, 5, 3),
         2.5,
+        '15-20lb x 15',
       ),
-      createPersisted('Calf Raises (20 reps)', 'calf', createSets(70, 10, 4)),
       createPersisted(
-        'Leg Extensions (20 reps)',
+        'Calf Raises',
+        'calf',
+        createSets(70, 10, 4),
+        undefined,
+        '20 reps',
+      ),
+      createPersisted(
+        'Leg Extensions',
         'extensions',
         createSets(60, 10, 2),
+        undefined,
+        '20 reps',
       ),
       createPersisted('Leg Curls (20 reps)', 'legcurls', createSets(90, 10, 2)),
       {
@@ -117,7 +129,7 @@ function getUpperDay(block: number, week: number): WorkoutNode {
       createPersisted('Dips (5x10)', 'dips', createSets(0, 6, 5)),
       createPersisted('Curls (3x20)', 'curls', createSets(60, 10, 3), 10),
       createPersisted(
-        'Incline DB Press (3x20)',
+        'Incline DB Press (3x15)',
         'inclineDb',
         createSets(30, 10, 3),
         2.5,
