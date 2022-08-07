@@ -33,7 +33,7 @@ export type PersistedLift = {
 
 export type PersistedLiftHistory = {
   date: Date;
-  lift: PersistedLift;
+  sets: PersistedSet[];
 };
 
 export type WorkoutNode = {

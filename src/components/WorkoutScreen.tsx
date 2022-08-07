@@ -93,8 +93,8 @@ function LiftItem(props: {
     useEffect(() => {
       LiftRepository.getLift((lift as PersistedLift).key).then(result => {
         if (result != null) {
-          result.step = (lift as PersistedLift).step;
-          setLift(result);
+          lift.sets = result;
+          setLift(lift);
         }
       });
     }, []);

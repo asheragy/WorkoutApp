@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   PersistedLift,
   PersistedLiftHistory,
+  PersistedSet,
   Program,
   WorkoutNode,
 } from '../types/types';
@@ -10,7 +11,7 @@ const liftKeyPrefix = 'lift:';
 const historyKeyPrefix = 'liftHistory:';
 
 export default class LiftRepository {
-  static async getLift(key: string): Promise<PersistedLift | null> {
+  static async getLift(key: string): Promise<PersistedSet[] | null> {
     var value = await AsyncStorage.getItem(liftKeyPrefix + key);
     //console.log('GetLift ' + key + ' = ' + value);
     if (value != null) {
@@ -20,8 +21,10 @@ export default class LiftRepository {
     return null;
   }
 
-  static async getLifts(program: Program): Promise<Map<string, PersistedLift>> {
-    var map = new Map<string, PersistedLift>();
+  static async getLifts(
+    program: Program,
+  ): Promise<Map<string, PersistedSet[]>> {
+    var map = new Map<string, PersistedSet[]>();
     var ignore = new Set<string>(); // Prevent multiple lookup attempts for missing values
 
     for (const wo of program.workouts) {
@@ -42,19 +45,23 @@ export default class LiftRepository {
   }
 
   static async saveLift(lift: PersistedLift): Promise<void> {
-    return AsyncStorage.setItem(liftKeyPrefix + lift.key, JSON.stringify(lift));
+    return AsyncStorage.setItem(
+      liftKeyPrefix + lift.key,
+      JSON.stringify(lift.sets),
+    );
   }
 
   static async getHistory(key: string): Promise<PersistedLiftHistory[]> {
     var value = await AsyncStorage.getItem(historyKeyPrefix + key);
     if (value == null) return [];
 
-    var stringResult: {date: string; lift: PersistedLift}[] = JSON.parse(value);
+    var stringResult: {date: string; sets: PersistedSet[]}[] =
+      JSON.parse(value);
 
     return stringResult.map(entry => {
       var item: PersistedLiftHistory = {
         date: new Date(entry.date),
-        lift: entry.lift,
+        sets: entry.sets,
       };
 
       return item;
@@ -66,24 +73,24 @@ export default class LiftRepository {
       var lift = workout.lifts[i];
       if ('key' in lift) {
         var savedValue = await this.getLift(lift.key);
-        if (savedValue != null) this.addHistory(savedValue);
-        else this.addHistory(lift);
+        if (savedValue != null) this.addHistory(lift.key, savedValue);
+        else this.addHistory(lift.key, lift.sets);
       }
     }
   }
 
-  private static async addHistory(lift: PersistedLift): Promise<void> {
-    var history = await this.getHistory(lift.key);
+  private static async addHistory(
+    key: string,
+    sets: PersistedSet[],
+  ): Promise<void> {
+    var history = await this.getHistory(key);
     var item: PersistedLiftHistory = {
       date: new Date(),
-      lift: lift,
+      sets: sets,
     };
 
     history.push(item);
 
-    await AsyncStorage.setItem(
-      historyKeyPrefix + lift.key,
-      JSON.stringify(history),
-    );
+    await AsyncStorage.setItem(historyKeyPrefix + key, JSON.stringify(history));
   }
 }
