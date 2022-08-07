@@ -3,6 +3,9 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {
   Button,
+  Dimensions,
+  FlatList,
+  ListRenderItemInfo,
   LogBox,
   StyleSheet,
   Text,
@@ -57,6 +60,20 @@ export function WeightScreen({route, navigation}: Props) {
     loadState();
   }
 
+  async function onRemoveLast() {
+    await WeightRepository.removeLast();
+    loadState();
+  }
+
+  function onWeightChanged(input: string) {
+    var numInput: number = parseFloat(input);
+    if (!isNaN(numInput)) {
+      numInput *= 10;
+      const intInput = Math.round(numInput);
+      setCurrent(intInput);
+    }
+  }
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -67,6 +84,7 @@ export function WeightScreen({route, navigation}: Props) {
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
             <HiddenItem title="Reset" onPress={() => onReset()} />
+            <HiddenItem title="Remove Last" onPress={() => onRemoveLast()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -80,44 +98,56 @@ export function WeightScreen({route, navigation}: Props) {
   var dates = entries.map(x => x.date);
   var values = entries.map(x => x.weight / 10);
 
+  const renderItem = (item: ListRenderItemInfo<WeightEntry>) => (
+    <View key={item.index} style={styles.entryRow}>
+      <Text style={{width: '50%', textAlign: 'center', color: colors.text}}>
+        {item.item.date.toDateString()}
+      </Text>
+      <Text style={{color: colors.text}}>{item.item.weight / 10}</Text>
+    </View>
+  );
+
   return (
-    <View style={{flex: 1, flexDirection: 'column'}}>
-      <ProgressChart dates={dates} values={values}></ProgressChart>
-
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() => setCurrent(current - 2)}>
-          <Text style={styles.counterButtonText}>-</Text>
-        </TouchableOpacity>
-
-        <TextInput style={{color: colors.text}}>{current / 10}</TextInput>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() => setCurrent(current + 2)}>
-          <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
+    <View style={{flexDirection: 'column'}}>
+      <View style={{height: '40%'}}>
+        <ProgressChart
+          title="Weight"
+          dates={dates}
+          values={values}></ProgressChart>
       </View>
 
-      <Button title="Add" onPress={() => onAdd()} />
+      <FlatList
+        style={{backgroundColor: colors.background, height: '40%'}}
+        data={entries}
+        renderItem={renderItem}
+        keyExtractor={(_, index) => 'test' + index}></FlatList>
 
-      {/** 
-      <View>
-        {entries.map((entry, index) => (
-          <View key={index} style={styles.entryRow}>
-            <Text
-              style={{width: '50%', textAlign: 'center', color: colors.text}}>
-              {entry.date.toDateString()}
-            </Text>
-            <Text style={{color: colors.text}}>{entry.weight / 10}</Text>
-          </View>
-        ))}
+      <View style={{height: '10%'}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() => setCurrent(current - 2)}>
+            <Text style={styles.counterButtonText}>-</Text>
+          </TouchableOpacity>
+
+          <TextInput
+            style={{color: colors.text}}
+            onChangeText={onWeightChanged}>
+            {current / 10}
+          </TextInput>
+          <TouchableOpacity
+            style={styles.counterButtonContainer}
+            onPress={() => setCurrent(current + 2)}>
+            <Text style={styles.counterButtonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Button title="Add" onPress={() => onAdd()} />
       </View>
-        */}
     </View>
   );
 }

@@ -42,4 +42,12 @@ export default class WeightRepository {
       await AsyncStorage.removeItem(weightLogKey);
     } catch (e) {}
   }
+
+  static async removeLast(): Promise<void> {
+    var existing = await this.getAll();
+    if (existing.length > 0) {
+      existing.pop();
+      return AsyncStorage.setItem(weightLogKey, JSON.stringify(existing));
+    }
+  }
 }
