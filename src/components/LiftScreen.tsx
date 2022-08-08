@@ -18,7 +18,7 @@ export function LiftScreen({route, navigation}: Props) {
   const {colors} = useTheme();
 
   function loadState() {
-    LiftRepository.getHistory(route.params.lift.key).then(result => {
+    LiftRepository.getHistory(route.params.lift.def.id).then(result => {
       setEntries(result);
     });
   }

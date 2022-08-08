@@ -1,4 +1,11 @@
-import {LiftSet, NormalizedSet, PersistedSet, Range} from '../types/types';
+import {
+  Lift,
+  LiftSet,
+  NormalizedSet,
+  PersistedLift,
+  PersistedSet,
+  Range,
+} from '../types/types';
 
 export default class Utils {
   static normalizeSets(sets?: LiftSet[] | PersistedSet[]) {
@@ -62,5 +69,12 @@ export default class Utils {
     if (amrap) str = str + '+';
 
     return str;
+  }
+
+  // TODO this should get deprecated soon
+  static liftName(lift: Lift | PersistedLift): string {
+    if ('def' in lift) return (lift as PersistedLift).def.name;
+
+    return (lift as Lift).name;
   }
 }

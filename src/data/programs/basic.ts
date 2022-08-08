@@ -1,5 +1,6 @@
 import {WorkoutNode, Program, AccessoryGroup} from '../../types/types';
 
+/*
 export default function getProgram(): Program {
   const result: Program = {workouts: []};
   result.workouts = [];
@@ -253,3 +254,4 @@ const gymAccessories: AccessoryGroup[] = [
   {name: 'Core', lifts: core},
   {name: 'Legs', lifts: legs},
 ];
+*/

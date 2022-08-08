@@ -31,11 +31,11 @@ export default class LiftRepository {
       for (let i = 0; i < wo.lifts.length; i++) {
         const lift = wo.lifts[i];
 
-        if ('key' in lift) {
-          if (!map.has(lift.key) && !ignore.has(lift.key)) {
-            var persisted = await this.getLift(lift.key);
-            if (persisted != null) map.set(lift.key, persisted);
-            else ignore.add(lift.key);
+        if ('def' in lift) {
+          if (!map.has(lift.def.id) && !ignore.has(lift.def.id)) {
+            var persisted = await this.getLift(lift.def.id);
+            if (persisted != null) map.set(lift.def.id, persisted);
+            else ignore.add(lift.def.id);
           }
         }
       }
@@ -46,11 +46,12 @@ export default class LiftRepository {
 
   static async saveLift(lift: PersistedLift): Promise<void> {
     return AsyncStorage.setItem(
-      liftKeyPrefix + lift.key,
+      liftKeyPrefix + lift.def.id,
       JSON.stringify(lift.sets),
     );
   }
 
+  // TODO could take LiftDef to be more type safe
   static async getHistory(key: string): Promise<PersistedLiftHistory[]> {
     var value = await AsyncStorage.getItem(historyKeyPrefix + key);
     if (value == null) return [];
@@ -71,10 +72,10 @@ export default class LiftRepository {
   static async addAllHistory(workout: WorkoutNode): Promise<void> {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
-      if ('key' in lift) {
-        var savedValue = await this.getLift(lift.key);
-        if (savedValue != null) this.addHistory(lift.key, savedValue);
-        else this.addHistory(lift.key, lift.sets);
+      if ('def' in lift) {
+        var savedValue = await this.getLift(lift.def.id);
+        if (savedValue != null) this.addHistory(lift.def.id, savedValue);
+        else this.addHistory(lift.def.id, lift.sets);
       }
     }
   }

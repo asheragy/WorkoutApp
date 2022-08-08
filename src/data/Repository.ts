@@ -7,6 +7,7 @@ import {
 } from '../types/types';
 import getProgram from '../data/programs/phase1';
 import LiftRepository from './LiftRepository';
+import Utils from '../components/Utils';
 
 export type Workout = {
   node: WorkoutNode;
@@ -36,9 +37,9 @@ export default class Repository {
       for (let i = 0; i < wo.node.lifts.length; i++) {
         const lift = wo.node.lifts[i];
 
-        if ('key' in lift) {
-          if (map.has(lift.key)) {
-            var persisted = map.get(lift.key) as PersistedSet[];
+        if ('def' in lift) {
+          if (map.has(lift.def.id)) {
+            var persisted = map.get(lift.def.id) as PersistedSet[];
             lift.sets = persisted;
             wo.node.lifts[i] = lift;
           }
@@ -93,7 +94,7 @@ export default class Repository {
     program.workouts.forEach(wo => {
       console.log(wo.name);
       wo.lifts.forEach(lift => {
-        console.log('  ' + lift.name);
+        console.log('  ' + Utils.liftName(lift));
         lift.sets?.forEach(set => {
           console.log('    ' + JSON.stringify(set));
         });

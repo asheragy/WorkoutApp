@@ -11,13 +11,20 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift, PersistedLift, PersistedSet, NormalizedSet} from '../types/types';
+import {
+  Lift,
+  PersistedLift,
+  PersistedSet,
+  NormalizedSet,
+  LiftType,
+} from '../types/types';
 import {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
+import {lifts} from '../data/LiftDatabase';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -77,7 +84,7 @@ function LiftItem(props: {
   onViewLog: (lift: PersistedLift) => void;
 }) {
   const showHeader = props.lift.sets != undefined;
-  const persisted = 'key' in props.lift;
+  const persisted = 'def' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
@@ -91,7 +98,7 @@ function LiftItem(props: {
 
   if (persisted) {
     useEffect(() => {
-      LiftRepository.getLift((lift as PersistedLift).key).then(result => {
+      LiftRepository.getLift((lift as PersistedLift).def.id).then(result => {
         if (result != null) {
           lift.sets = result;
           setLift(lift);
@@ -109,7 +116,7 @@ function LiftItem(props: {
         }}>
         <Text style={{width: '20%'}}></Text>
         <Text style={[styles.liftText, {color: colors.text, width: '60%'}]}>
-          {props.lift.name}
+          {Utils.liftName(props.lift)}
         </Text>
         <View
           style={{
@@ -154,6 +161,11 @@ function LiftEditorModal(props: {
 }) {
   const {colors} = useTheme();
   const goal = props.lift.goal != undefined;
+  console.log(props.lift);
+  const type = props.lift.def.type;
+  var step = 5;
+
+  if (type == LiftType.Dumbbell || type == LiftType.Machine) step = 2.5;
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -176,7 +188,7 @@ function LiftEditorModal(props: {
           }}>
           <Text
             style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-            {props.lift.name}
+            {props.lift.def.name}
           </Text>
           <SetHeader></SetHeader>
           {props.lift.sets.map((set, index) => (
@@ -184,7 +196,7 @@ function LiftEditorModal(props: {
               index={index}
               set={set}
               key={index}
-              step={props.lift.step}
+              step={step}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
 

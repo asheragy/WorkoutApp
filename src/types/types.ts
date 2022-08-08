@@ -19,14 +19,13 @@ export type NormalizedSet = {
 };
 
 export type Lift = {
+  // TODO need some way to determine if persisted lift if LiftDef gets moved here
   name: string;
   sets?: LiftSet[];
 };
 
 export type PersistedLift = {
-  name: string;
-  key: string;
-  step?: number;
+  def: LiftDef;
   sets: PersistedSet[];
   goal?: string; // This could be a list of PersistedSet
 };
@@ -59,4 +58,19 @@ export type Range = {
 export type WeightEntry = {
   date: Date;
   weight: number;
+};
+
+export enum LiftType {
+  Barbell = 1,
+  Dumbbell,
+  // TODO plate loaded machine vs stack?
+  Machine,
+  Bodyweight, // Weight can be positive/negative with baseline on bodyweight
+  Other,
+}
+
+export type LiftDef = {
+  id: string;
+  name: string;
+  type: LiftType;
 };

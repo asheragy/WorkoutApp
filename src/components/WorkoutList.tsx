@@ -144,7 +144,7 @@ function LiftItem(props: {lift: Lift | PersistedLift}) {
   return (
     <View>
       <Text style={[styles.liftText, {color: colors.text}]}>
-        {props.lift.name + (sets > 1 ? ' (' + sets + ' Sets)' : '')}
+        {Utils.liftName(props.lift) + (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
       {/** 
       <View style={styles.liftSetRow}>
