@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Utils from '../components/Utils';
 import {
+  Lift,
   LiftDef,
-  PersistedLift,
   PersistedLiftHistory,
   PersistedSet,
   Program,
@@ -46,7 +46,8 @@ export default class LiftRepository {
     return map;
   }
 
-  static async saveLift(lift: PersistedLift): Promise<void> {
+  static async saveLift(lift: Lift): Promise<void> {
+    if (!lift.persisted) throw new Error('Cannot save this type of lift');
     return this.saveSets(lift.def, Utils.setsToPersisted(lift.sets));
   }
 
@@ -78,16 +79,11 @@ export default class LiftRepository {
   static async addAllHistory(workout: WorkoutNode): Promise<void> {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
+      // TODO may start saving everything
       if (lift.persisted) {
-        const persistedLift = lift as PersistedLift; // TODO temp
-
         var savedValue = await this.getLift(lift.def.id);
         if (savedValue != null) this.addHistory(lift.def.id, savedValue);
-        else
-          this.addHistory(
-            lift.def.id,
-            Utils.setsToPersisted(persistedLift.sets),
-          );
+        else this.addHistory(lift.def.id, Utils.setsToPersisted(lift.sets));
       }
     }
   }

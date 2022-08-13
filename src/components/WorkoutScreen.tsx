@@ -11,13 +11,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {
-  Lift,
-  PersistedLift,
-  NormalizedSet,
-  LiftType,
-  LiftSet,
-} from '../types/types';
+import {Lift, NormalizedSet, LiftType, LiftSet} from '../types/types';
 import {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
@@ -41,7 +35,7 @@ export function WorkoutScreen({route, navigation}: Props) {
     route.params.onComplete(index);
   };
 
-  function onViewLog(lift: PersistedLift) {
+  function onViewLog(lift: Lift) {
     navigation.navigate('Lift', {lift: lift});
   }
 
@@ -62,7 +56,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
 function WorkoutItem(props: {
   workout: Workout;
-  onViewLog: (lift: PersistedLift) => void;
+  onViewLog: (lift: Lift) => void;
 }) {
   const {colors} = useTheme();
 
@@ -78,18 +72,15 @@ function WorkoutItem(props: {
   );
 }
 
-function LiftItem(props: {
-  lift: Lift | PersistedLift;
-  onViewLog: (lift: PersistedLift) => void;
-}) {
+function LiftItem(props: {lift: Lift; onViewLog: (lift: Lift) => void}) {
   const showHeader = props.lift.sets.length > 0;
-  const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
+  const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
 
   const onSetChange = (index: number, weight: number, reps: number) => {
     //console.log('updating index ' + index);
-    var updatedLift = {...(lift as PersistedLift)};
+    var updatedLift = {...lift};
     //updatedLift.sets.forEach(x => console.log(x.reps.value));
     updatedLift.sets[index].weight.value = weight;
     updatedLift.sets[index].reps.value = reps;
@@ -145,9 +136,9 @@ function LiftItem(props: {
         <View>
           <LiftEditorModal
             editing={editing}
-            lift={lift as PersistedLift}
+            lift={lift}
             onSetChange={onSetChange}
-            onViewLog={() => props.onViewLog(lift as PersistedLift)}
+            onViewLog={() => props.onViewLog(lift)}
             onFinish={() => setEditing(false)}></LiftEditorModal>
         </View>
       )}
@@ -157,7 +148,7 @@ function LiftItem(props: {
 
 function LiftEditorModal(props: {
   editing: boolean;
-  lift: PersistedLift;
+  lift: Lift;
   onFinish: () => void;
   onViewLog: () => void;
   onSetChange: (index: number, weight: number, reps: number) => void;

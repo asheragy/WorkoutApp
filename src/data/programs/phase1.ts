@@ -1,13 +1,4 @@
-import {
-  Lift,
-  LiftDef,
-  LiftSet,
-  LiftType,
-  PersistedLift,
-  PersistedSet,
-  Program,
-  WorkoutNode,
-} from '../../types/types';
+import {Lift, LiftSet, Program, WorkoutNode} from '../../types/types';
 import {getLift, LiftId} from '../LiftDatabase';
 
 function round5down(n: number) {
@@ -26,11 +17,7 @@ function round5(weight: number, percentage?: number) {
   return n * 5;
 }
 
-function createPersisted(
-  id: string,
-  sets: LiftSet[],
-  goal?: string,
-): PersistedLift {
+function createPersisted(id: string, sets: LiftSet[], goal?: string): Lift {
   const def = getLift(id);
   return {
     def: def,

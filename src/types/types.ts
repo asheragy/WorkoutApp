@@ -1,4 +1,19 @@
-import {EdgeInsetsPropType} from 'react-native';
+export type Program = {
+  workouts: WorkoutNode[];
+};
+
+export type WorkoutNode = {
+  name?: string;
+  lifts: Lift[];
+  accessories?: AccessoryGroup[];
+};
+
+export type Lift = {
+  def: LiftDef;
+  sets: LiftSet[];
+  goal?: string; // This could be a list
+  persisted: boolean;
+};
 
 export type LiftSet = {
   weight: Weight;
@@ -17,67 +32,6 @@ export type Reps = {
   range?: Range; // AMRAP = 0-max
 };
 
-// For storage only, saves weight.value and reps.value
-export type PersistedSet = {
-  weight: number;
-  reps: number;
-};
-
-/**
- * Generic display object for sets
- */
-export type NormalizedSet = {
-  weight: string;
-  reps: string;
-};
-
-export type Lift = {
-  def: LiftDef;
-  sets: LiftSet[];
-  goal?: string; // This could be a list
-  persisted: boolean;
-};
-
-export type PersistedLift = {
-  def: LiftDef;
-  sets: LiftSet[];
-  goal?: string; // This could be a list
-  persisted: boolean;
-};
-
-export type PersistedLiftHistory = {
-  date: Date;
-  sets: PersistedSet[];
-};
-
-export type WorkoutNode = {
-  name?: string;
-  lifts: (Lift | PersistedLift)[];
-  accessories?: AccessoryGroup[];
-};
-
-export type AccessoryGroup = {
-  name: string;
-  lifts: string[];
-};
-
-export type Program = {
-  workouts: WorkoutNode[];
-};
-
-// Min/max weight
-// min/max reps
-// AMRAP null max, optional null min
-export type Range = {
-  min?: number;
-  max?: number;
-};
-
-export type WeightEntry = {
-  date: Date;
-  weight: number;
-};
-
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
@@ -91,4 +45,44 @@ export type LiftDef = {
   id: string;
   name: string;
   type: LiftType;
+};
+
+export type AccessoryGroup = {
+  name: string;
+  lifts: string[];
+};
+
+// Min/max weight
+// min/max reps
+// AMRAP null max, optional null min
+export type Range = {
+  min?: number;
+  max?: number;
+};
+
+// ------------- Non Program types ---------------
+
+// For storage only, saves weight.value and reps.value
+// TODO will move this to repository layer only
+export type PersistedSet = {
+  weight: number;
+  reps: number;
+};
+
+/**
+ * Generic display object for sets
+ */
+export type NormalizedSet = {
+  weight: string;
+  reps: string;
+};
+
+export type PersistedLiftHistory = {
+  date: Date;
+  sets: PersistedSet[];
+};
+
+export type WeightEntry = {
+  date: Date;
+  weight: number;
 };

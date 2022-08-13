@@ -7,13 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {
-  Lift,
-  LiftSet,
-  NormalizedSet,
-  PersistedLift,
-  PersistedSet,
-} from '../types/types';
+import {Lift} from '../types/types';
 import {
   HeaderButton,
   HeaderButtons,
@@ -137,7 +131,7 @@ function WorkoutListItem(props: WorkoutItemProps) {
   );
 }
 
-function LiftItem(props: {lift: Lift | PersistedLift}) {
+function LiftItem(props: {lift: Lift}) {
   const {colors} = useTheme();
   const sets = props.lift.sets.length;
 

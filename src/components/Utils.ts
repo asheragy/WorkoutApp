@@ -2,7 +2,6 @@ import {
   Lift,
   LiftSet,
   NormalizedSet,
-  PersistedLift,
   PersistedSet,
   Range,
   Reps,

@@ -12,7 +12,7 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {LiftScreen} from './components/LiftScreen';
-import {PersistedLift} from './types/types';
+import {Lift} from './types/types';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -22,7 +22,7 @@ export type RootStackParamList = {
   };
   Weight: undefined;
   Lift: {
-    lift: PersistedLift;
+    lift: Lift;
   };
 };
 
