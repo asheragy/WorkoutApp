@@ -83,7 +83,7 @@ function LiftItem(props: {
   lift: Lift | PersistedLift;
   onViewLog: (lift: PersistedLift) => void;
 }) {
-  const showHeader = props.lift.sets != undefined;
+  const showHeader = props.lift.sets.length > 0;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
@@ -97,7 +97,7 @@ function LiftItem(props: {
 
   if (lift.persisted) {
     useEffect(() => {
-      LiftRepository.getLift((lift as PersistedLift).def.id).then(result => {
+      LiftRepository.getLift(lift.def.id).then(result => {
         if (result != null) {
           lift.sets = result;
           setLift(lift);
@@ -115,7 +115,7 @@ function LiftItem(props: {
         }}>
         <Text style={{width: '20%'}}></Text>
         <Text style={[styles.liftText, {color: colors.text, width: '60%'}]}>
-          {Utils.liftName(props.lift)}
+          {props.lift.def.name}
         </Text>
         <View
           style={{

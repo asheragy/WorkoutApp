@@ -10,6 +10,7 @@ export function getLift(id: string): LiftDef {
 export class LiftId {
   public static readonly BenchPress = 'bench';
   public static readonly BenchPress_Dumbell = 'dumbellBench';
+  public static readonly OverheadPress = 'overheadPress';
 
   public static readonly FacePulls = 'facePulls';
   public static readonly Pullups = 'pullups';
@@ -41,12 +42,19 @@ export class LiftId {
   public static readonly LegCurls = 'legCurls';
   public static readonly LegPress = 'legPress';
   //public static readonly  = '';
+
+  public static readonly placeHolder = 'placeholder';
 }
 
 export const lifts: LiftDef[] = [
   {
     id: LiftId.BenchPress,
     name: 'Bench Press',
+    type: LiftType.Barbell,
+  },
+  {
+    id: LiftId.OverheadPress,
+    name: 'Overhead Press',
     type: LiftType.Barbell,
   },
   {
@@ -173,6 +181,11 @@ export const lifts: LiftDef[] = [
     id: LiftId.LegPress,
     name: 'Leg Press',
     type: LiftType.Machine,
+  },
+  {
+    id: LiftId.placeHolder,
+    name: 'Temp Placeholder',
+    type: LiftType.Barbell,
   },
   /* Copy paste 
   {

@@ -70,11 +70,4 @@ export default class Utils {
 
     return str;
   }
-
-  // TODO this should get deprecated soon
-  static liftName(lift: Lift | PersistedLift): string {
-    if ('def' in lift) return (lift as PersistedLift).def.name;
-
-    return (lift as Lift).name;
-  }
 }

@@ -37,8 +37,7 @@ export default class Repository {
       for (let i = 0; i < wo.node.lifts.length; i++) {
         const lift = wo.node.lifts[i];
 
-        // TODO temp def check
-        if (lift.persisted && 'def' in lift) {
+        if (lift.persisted) {
           if (map.has(lift.def.id)) {
             var persisted = map.get(lift.def.id) as PersistedSet[];
             lift.sets = persisted;
@@ -95,8 +94,8 @@ export default class Repository {
     program.workouts.forEach(wo => {
       console.log(wo.name);
       wo.lifts.forEach(lift => {
-        console.log('  ' + Utils.liftName(lift));
-        lift.sets?.forEach(set => {
+        console.log('  ' + lift.def.name);
+        lift.sets.forEach(set => {
           console.log('    ' + JSON.stringify(set));
         });
       });

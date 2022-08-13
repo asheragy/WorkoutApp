@@ -139,12 +139,12 @@ function WorkoutListItem(props: WorkoutItemProps) {
 
 function LiftItem(props: {lift: Lift | PersistedLift}) {
   const {colors} = useTheme();
-  const sets = props.lift.sets?.length ?? 0;
+  const sets = props.lift.sets.length;
 
   return (
     <View>
       <Text style={[styles.liftText, {color: colors.text}]}>
-        {Utils.liftName(props.lift) + (sets > 1 ? ' (' + sets + ' Sets)' : '')}
+        {props.lift.def.name + (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
       {/** 
       <View style={styles.liftSetRow}>

@@ -13,7 +13,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {LiftScreen} from './components/LiftScreen';
 import {PersistedLift} from './types/types';
-import Utils from './components/Utils';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -63,7 +62,7 @@ const App = () => {
             name="Lift"
             options={({route}) => ({
               headerStyle: styles.headerStyle,
-              title: Utils.liftName(route.params.lift),
+              title: route.params.lift.def.name,
             })}
             component={LiftScreen}
           />

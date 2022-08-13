@@ -1,5 +1,6 @@
 import {
   Lift,
+  LiftDef,
   LiftType,
   PersistedLift,
   PersistedSet,
@@ -62,7 +63,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
     ],
     lifts: [
       {
-        name: 'Delete me',
+        def: getLift(LiftId.placeHolder),
         persisted: false,
         sets: [
           {
@@ -98,7 +99,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
 
   return {
     name: 'Bench Week ' + week + ' Block ' + block,
-    lifts: [getPyramidLift(block, week, 'Bench Press', trainingMax)],
+    lifts: [getPyramidLift(block, week, LiftId.BenchPress, trainingMax)],
   };
 }
 
@@ -129,8 +130,10 @@ function getLowerDay(block: number, week: number): WorkoutNode {
       createPersisted(LiftId.HatfieldSquat, createSets(135, 10, 1)),
       createPersisted(LiftId.RDL, createSets(95, 10, 3), '3x15'),
       {
-        name: 'Calves',
+        // TODO this should be the at home version
+        def: getLift(LiftId.CalfRaises),
         persisted: false,
+        sets: [],
       },
     ],
   };
@@ -140,7 +143,7 @@ function getPushDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Push Week ' + week + ' Block ' + block,
     lifts: [
-      getPyramidLift(block, week, 'Overhead Press', 166),
+      getPyramidLift(block, week, LiftId.OverheadPress, 166),
       createPersisted(LiftId.BenchPress_Dumbell, createSets(55, 10, 3), '3x20'),
       createPersisted(LiftId.LatRaises, createSets(15, 10, 3), '3x20'),
       createPersisted(LiftId.TricepExtension, createSets(35, 15, 3), '3x20'),
@@ -177,92 +180,55 @@ function getPullDay(block: number, week: number): WorkoutNode {
 function getDeloadDay(): WorkoutNode {
   return {
     name: 'Deload',
-    lifts: [
+    accessories: [
       {
-        name: 'Cleans',
-        persisted: false,
-      },
-      {
-        name: 'One Hand DL',
-        persisted: false,
-      },
-      {
-        name: 'Deadlift',
-        persisted: false,
+        name: 'Extra',
+        lifts: ['Cleans', 'One Hand DL', 'Deadlift'],
       },
     ],
+    lifts: [],
   };
 }
 
 function getStretch1() {
   return {
     name: 'Stretch 1',
-    lifts: [
+    accessories: [
       {
-        name: 'Planks',
-        persisted: false,
-      },
-      {
-        name: 'Hip Thrust',
-        persisted: false,
-      },
-      {
-        name: 'Leg Balance',
-        persisted: false,
-      },
-      {
-        name: 'Squat',
-        persisted: false,
-      },
-      {
-        name: 'Hip Stretching',
-        persisted: false,
-      },
-      {
-        name: 'Camel / Cow',
-        persisted: false,
-      },
-      {
-        name: 'Toe Touch',
-        persisted: false,
+        name: 'Extra',
+        lifts: [
+          'Planks',
+          'Hip Thrust',
+          'Leg Balance',
+          'Squat',
+          'Hip Stretching',
+          'Camel / Cow',
+          'Toe Touch',
+        ],
       },
     ],
+    lifts: [],
   };
 }
 
 function getStretch2() {
   return {
     name: 'Stretch 2',
-    lifts: [
+    accessories: [
       {
-        name: 'Side Planks',
-        persisted: false,
-      },
-      {
-        name: 'Hips',
-        persisted: false,
-      },
-      {
-        name: 'Torso Twist',
-        persisted: false,
-      },
-      {
-        name: 'Squat',
-        persisted: false,
-      },
-      {
-        name: 'Hip Stretching',
-        persisted: false,
-      },
-      {
-        name: 'Camel / Cow',
-        persisted: false,
-      },
-      {
-        name: 'Toe Touch',
-        persisted: false,
+        name: 'Extra',
+        lifts: [
+          'Side Planks',
+          'Hips',
+          'Torso Twist',
+          'Squat',
+          'Hip Stretching',
+          'Camel / Cow',
+          'Toe Touch',
+        ],
       },
     ],
+    lifts: [],
   };
 }
 
@@ -294,7 +260,7 @@ export default function getProgram(): Program {
 function getPyramidLift(
   block: number,
   week: number,
-  name: string,
+  id: string,
   trainingMax: number,
 ): Lift {
   const minReps = 5 + block;
@@ -302,7 +268,7 @@ function getPyramidLift(
   const percent = 0.7 + 0.025 * Math.floor(week / 2);
 
   return {
-    name: name,
+    def: getLift(id),
     persisted: false,
     sets: [
       {

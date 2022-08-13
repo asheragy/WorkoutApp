@@ -31,9 +31,8 @@ export type NormalizedSet = {
 };
 
 export type Lift = {
-  // TODO need some way to determine if persisted lift if LiftDef gets moved here
-  name: string;
-  sets?: LiftSet[];
+  def: LiftDef;
+  sets: LiftSet[];
   goal?: string; // This could be a list
   persisted: boolean;
 };
