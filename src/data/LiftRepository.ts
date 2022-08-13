@@ -31,7 +31,8 @@ export default class LiftRepository {
       for (let i = 0; i < wo.lifts.length; i++) {
         const lift = wo.lifts[i];
 
-        if ('def' in lift) {
+        // TODO temp persisted check
+        if (lift.persisted && 'def' in lift) {
           if (!map.has(lift.def.id) && !ignore.has(lift.def.id)) {
             var persisted = await this.getLift(lift.def.id);
             if (persisted != null) map.set(lift.def.id, persisted);
@@ -72,7 +73,7 @@ export default class LiftRepository {
   static async addAllHistory(workout: WorkoutNode): Promise<void> {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
-      if ('def' in lift) {
+      if (lift.persisted && 'def' in lift) {
         var savedValue = await this.getLift(lift.def.id);
         if (savedValue != null) this.addHistory(lift.def.id, savedValue);
         else this.addHistory(lift.def.id, lift.sets);

@@ -34,6 +34,7 @@ function createPersisted(
     def: def,
     sets: sets,
     goal: goal,
+    persisted: true,
   };
 }
 
@@ -62,6 +63,7 @@ function getDLDay(block: number, week: number): WorkoutNode {
     lifts: [
       {
         name: 'Delete me',
+        persisted: false,
         sets: [
           {
             weight: {
@@ -128,6 +130,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
       createPersisted(LiftId.RDL, createSets(95, 10, 3), '3x15'),
       {
         name: 'Calves',
+        persisted: false,
       },
     ],
   };
@@ -177,12 +180,15 @@ function getDeloadDay(): WorkoutNode {
     lifts: [
       {
         name: 'Cleans',
+        persisted: false,
       },
       {
         name: 'One Hand DL',
+        persisted: false,
       },
       {
         name: 'Deadlift',
+        persisted: false,
       },
     ],
   };
@@ -194,24 +200,31 @@ function getStretch1() {
     lifts: [
       {
         name: 'Planks',
+        persisted: false,
       },
       {
         name: 'Hip Thrust',
+        persisted: false,
       },
       {
         name: 'Leg Balance',
+        persisted: false,
       },
       {
         name: 'Squat',
+        persisted: false,
       },
       {
         name: 'Hip Stretching',
+        persisted: false,
       },
       {
         name: 'Camel / Cow',
+        persisted: false,
       },
       {
         name: 'Toe Touch',
+        persisted: false,
       },
     ],
   };
@@ -223,24 +236,31 @@ function getStretch2() {
     lifts: [
       {
         name: 'Side Planks',
+        persisted: false,
       },
       {
         name: 'Hips',
+        persisted: false,
       },
       {
         name: 'Torso Twist',
+        persisted: false,
       },
       {
         name: 'Squat',
+        persisted: false,
       },
       {
         name: 'Hip Stretching',
+        persisted: false,
       },
       {
         name: 'Camel / Cow',
+        persisted: false,
       },
       {
         name: 'Toe Touch',
+        persisted: false,
       },
     ],
   };
@@ -283,6 +303,7 @@ function getPyramidLift(
 
   return {
     name: name,
+    persisted: false,
     sets: [
       {
         weight: {

@@ -34,12 +34,15 @@ export type Lift = {
   // TODO need some way to determine if persisted lift if LiftDef gets moved here
   name: string;
   sets?: LiftSet[];
+  goal?: string; // This could be a list
+  persisted: boolean;
 };
 
 export type PersistedLift = {
   def: LiftDef;
   sets: PersistedSet[];
-  goal?: string; // This could be a list of PersistedSet
+  goal?: string; // This could be a list
+  persisted: boolean;
 };
 
 export type PersistedLiftHistory = {

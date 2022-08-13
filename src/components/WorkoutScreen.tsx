@@ -84,7 +84,6 @@ function LiftItem(props: {
   onViewLog: (lift: PersistedLift) => void;
 }) {
   const showHeader = props.lift.sets != undefined;
-  const persisted = 'def' in props.lift;
   const [lift, setLift] = useState<Lift | PersistedLift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
@@ -96,7 +95,7 @@ function LiftItem(props: {
     LiftRepository.saveLift(updatedLift);
   };
 
-  if (persisted) {
+  if (lift.persisted) {
     useEffect(() => {
       LiftRepository.getLift((lift as PersistedLift).def.id).then(result => {
         if (result != null) {
@@ -125,7 +124,7 @@ function LiftItem(props: {
             alignContent: 'center',
             justifyContent: 'center',
           }}>
-          {persisted && (
+          {lift.persisted && (
             <TouchableOpacity onPress={() => setEditing(true)}>
               <Image style={{}} source={require('../icons/edit.png')} />
             </TouchableOpacity>
@@ -138,7 +137,7 @@ function LiftItem(props: {
           <SetItem number={index + 1} set={set} key={index}></SetItem>
         ))}
       </View>
-      {persisted && (
+      {lift.persisted && (
         <View>
           <LiftEditorModal
             editing={editing}

@@ -37,7 +37,8 @@ export default class Repository {
       for (let i = 0; i < wo.node.lifts.length; i++) {
         const lift = wo.node.lifts[i];
 
-        if ('def' in lift) {
+        // TODO temp def check
+        if (lift.persisted && 'def' in lift) {
           if (map.has(lift.def.id)) {
             var persisted = map.get(lift.def.id) as PersistedSet[];
             lift.sets = persisted;
