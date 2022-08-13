@@ -71,8 +71,12 @@ function getDLDay(block: number, week: number): WorkoutNode {
                 max: 120,
               },
             },
-            reps: 10,
-            amrap: true,
+            reps: {
+              value: 10,
+              range: {
+                min: 0,
+              },
+            },
           },
         ],
       },
@@ -284,31 +288,41 @@ function getPyramidLift(
         weight: {
           value: round5(trainingMax, percent - 0.1),
         },
-        reps: reps,
+        reps: {
+          value: reps,
+        },
       },
       {
         weight: {
           value: round5(trainingMax, percent - 0.05),
         },
-        reps: reps,
+        reps: {
+          value: reps,
+        },
       },
       {
         weight: {
           value: round5(trainingMax, percent),
         },
-        reps: reps,
+        reps: {
+          value: reps,
+        },
       },
       {
         weight: {
           value: round5(trainingMax, percent - 0.05),
         },
-        reps: reps,
+        reps: {
+          value: reps,
+        },
       },
       {
         weight: {
           value: round5(trainingMax, percent - 0.1),
         },
-        reps: reps,
+        reps: {
+          value: reps,
+        },
       },
     ],
   };

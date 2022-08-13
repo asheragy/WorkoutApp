@@ -5,6 +5,7 @@ import {
   PersistedLift,
   PersistedSet,
   Range,
+  Reps,
   Weight,
 } from '../types/types';
 
@@ -33,7 +34,7 @@ export default class Utils {
   private static normalizePersistedSet(set: PersistedSet): NormalizedSet {
     return {
       weight: set.weight.toString(),
-      reps: Utils.repsToString(set.reps, false),
+      reps: set.reps.toString(),
     };
   }
 
@@ -42,7 +43,7 @@ export default class Utils {
 
     var normalized: NormalizedSet = {
       weight: Utils.weightToString(set.weight),
-      reps: Utils.repsToString(set.reps, set.amrap ? set.amrap : false),
+      reps: Utils.repsToString(set.reps),
     };
 
     result.push(normalized);
@@ -58,12 +59,14 @@ export default class Utils {
     return weight.value + 'lb';
   }
 
-  static repsToString(reps: number | Range, amrap: Boolean): string {
-    var str = '';
-    if (typeof reps == 'number') str += reps;
-    else str += reps.min + '-' + reps.max;
+  static repsToString(reps: Reps): string {
+    var str = reps.value.toString();
 
-    if (amrap) str = str + '+';
+    if (reps.range != undefined) {
+      if (reps.range.min == 0 && reps.range.max == undefined) str = str + '+';
+      else if (reps.range.min != undefined && reps.range.max != undefined)
+        str += reps.range.min + '-' + reps.range.max;
+    }
 
     return str;
   }

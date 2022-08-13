@@ -2,8 +2,7 @@ import {EdgeInsetsPropType} from 'react-native';
 
 export type LiftSet = {
   weight: Weight;
-  reps: number | Range;
-  amrap?: boolean;
+  reps: Reps;
 };
 
 export type Weight = {
@@ -14,8 +13,7 @@ export type Weight = {
 };
 
 export type Reps = {
-  value?: number;
-  editable: boolean;
+  value: number;
   range?: Range; // AMRAP = 0-max
 };
 
