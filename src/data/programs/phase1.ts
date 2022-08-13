@@ -60,6 +60,23 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
     ],
     lifts: [
+      {
+        name: 'Delete me',
+        sets: [
+          {
+            weight: {
+              value: 100,
+              range: {
+                min: 100,
+                max: 120,
+              },
+            },
+            reps: 10,
+            amrap: true,
+          },
+        ],
+      },
+
       createPersisted(LiftId.DeadLift_TrapBar, createSets(225, 5, 2), '315x10'),
       createPersisted(LiftId.Lunges, createSets(0, 5, 3), '15-20lb x 15'),
       createPersisted(LiftId.CalfRaises, createSets(70, 10, 4), '20 reps'),
@@ -264,23 +281,33 @@ function getPyramidLift(
     name: name,
     sets: [
       {
-        weight: round5(trainingMax, percent - 0.1),
+        weight: {
+          value: round5(trainingMax, percent - 0.1),
+        },
         reps: reps,
       },
       {
-        weight: round5(trainingMax, percent - 0.05),
+        weight: {
+          value: round5(trainingMax, percent - 0.05),
+        },
         reps: reps,
       },
       {
-        weight: round5(trainingMax, percent),
+        weight: {
+          value: round5(trainingMax, percent),
+        },
         reps: reps,
       },
       {
-        weight: round5(trainingMax, percent - 0.05),
+        weight: {
+          value: round5(trainingMax, percent - 0.05),
+        },
         reps: reps,
       },
       {
-        weight: round5(trainingMax, percent - 0.1),
+        weight: {
+          value: round5(trainingMax, percent - 0.1),
+        },
         reps: reps,
       },
     ],

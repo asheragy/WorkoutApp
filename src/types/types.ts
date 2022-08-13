@@ -1,8 +1,22 @@
+import {EdgeInsetsPropType} from 'react-native';
+
 export type LiftSet = {
-  weight?: number | Range;
+  weight: Weight;
   reps: number | Range;
-  repeat?: number;
   amrap?: boolean;
+};
+
+export type Weight = {
+  // TODO for custom lifts no default should be required so value could be nullable
+  value: number;
+  // Editable if range exists, default is unlimited
+  range?: Range;
+};
+
+export type Reps = {
+  value?: number;
+  editable: boolean;
+  range?: Range; // AMRAP = 0-max
 };
 
 export type PersistedSet = {
@@ -50,9 +64,12 @@ export type Program = {
   workouts: WorkoutNode[];
 };
 
+// Min/max weight
+// min/max reps
+// AMRAP null max, optional null min
 export type Range = {
-  min: number;
-  max: number;
+  min?: number;
+  max?: number;
 };
 
 export type WeightEntry = {
