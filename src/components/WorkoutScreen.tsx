@@ -14,9 +14,9 @@ import {LogBox} from 'react-native';
 import {
   Lift,
   PersistedLift,
-  PersistedSet,
   NormalizedSet,
   LiftType,
+  LiftSet,
 } from '../types/types';
 import {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -24,7 +24,6 @@ import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
-import {lifts} from '../data/LiftDatabase';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -88,9 +87,13 @@ function LiftItem(props: {
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
 
-  const onSetChange = (index: number, set: PersistedSet) => {
+  const onSetChange = (index: number, weight: number, reps: number) => {
+    //console.log('updating index ' + index);
     var updatedLift = {...(lift as PersistedLift)};
-    updatedLift.sets[index] = set;
+    //updatedLift.sets.forEach(x => console.log(x.reps.value));
+    updatedLift.sets[index].weight.value = weight;
+    updatedLift.sets[index].reps.value = reps;
+    //updatedLift.sets.forEach(x => console.log(x.reps.value));
     setLift(updatedLift);
     LiftRepository.saveLift(updatedLift);
   };
@@ -99,7 +102,8 @@ function LiftItem(props: {
     useEffect(() => {
       LiftRepository.getLift(lift.def.id).then(result => {
         if (result != null) {
-          lift.sets = result;
+          // TODO this loses the range
+          lift.sets = Utils.persistedToSets(result);
           setLift(lift);
         }
       });
@@ -156,7 +160,7 @@ function LiftEditorModal(props: {
   lift: PersistedLift;
   onFinish: () => void;
   onViewLog: () => void;
-  onSetChange: (index: number, set: PersistedSet) => void;
+  onSetChange: (index: number, weight: number, reps: number) => void;
 }) {
   const {colors} = useTheme();
   const goal = props.lift.goal != undefined;
@@ -275,8 +279,8 @@ function SetItem(props: {number: Number; set: NormalizedSet}) {
 
 function PersistedSetRow(props: {
   index: number;
-  set: PersistedSet;
-  onChange: (index: number, set: PersistedSet) => void;
+  set: LiftSet;
+  onChange: (index: number, weight: number, reps: number) => void;
   step?: number;
 }) {
   const {colors} = useTheme();
@@ -303,10 +307,11 @@ function PersistedSetRow(props: {
         <TouchableOpacity
           style={styles.counterButtonContainer}
           onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight - stepSize,
-              reps: props.set.reps,
-            })
+            props.onChange(
+              props.index,
+              props.set.weight.value - stepSize,
+              props.set.reps.value,
+            )
           }>
           <Text style={styles.counterButtonText}>-</Text>
         </TouchableOpacity>
@@ -317,15 +322,16 @@ function PersistedSetRow(props: {
             marginRight: 4,
             color: colors.text,
           }}>
-          {props.set.weight + 'lb'}
+          {props.set.weight.value + 'lb'}
         </Text>
         <TouchableOpacity
           style={styles.counterButtonContainer}
           onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight + stepSize,
-              reps: props.set.reps,
-            })
+            props.onChange(
+              props.index,
+              props.set.weight.value + stepSize,
+              props.set.reps.value,
+            )
           }>
           <Text style={styles.counterButtonText}>+</Text>
         </TouchableOpacity>
@@ -334,10 +340,11 @@ function PersistedSetRow(props: {
         <TouchableOpacity
           style={styles.counterButtonContainer}
           onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight,
-              reps: props.set.reps - 1,
-            })
+            props.onChange(
+              props.index,
+              props.set.weight.value,
+              props.set.reps.value - 1,
+            )
           }>
           <Text style={styles.counterButtonText}>-</Text>
         </TouchableOpacity>
@@ -348,15 +355,16 @@ function PersistedSetRow(props: {
             textAlignVertical: 'center',
             color: colors.text,
           }}>
-          {props.set.reps}
+          {props.set.reps.value}
         </Text>
         <TouchableOpacity
           style={styles.counterButtonContainer}
           onPress={() =>
-            props.onChange(props.index, {
-              weight: props.set.weight,
-              reps: props.set.reps + 1,
-            })
+            props.onChange(
+              props.index,
+              props.set.weight.value,
+              props.set.reps.value + 1,
+            )
           }>
           <Text style={styles.counterButtonText}>+</Text>
         </TouchableOpacity>

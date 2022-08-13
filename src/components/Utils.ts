@@ -14,28 +14,10 @@ export default class Utils {
     var result: NormalizedSet[] = [];
 
     sets?.forEach(set => {
-      if (this.isPersisted(set))
-        result.push(this.normalizePersistedSet(set as PersistedSet));
-      else result.push(...this.normalizeLiftSet(set as LiftSet));
+      result.push(...this.normalizeLiftSet(set as LiftSet));
     });
 
     return result;
-  }
-
-  private static isPersisted(set: LiftSet | PersistedSet): boolean {
-    if ('amrap' in set || 'repeat' in set) return false;
-
-    if (typeof set.reps === 'number' && typeof set.weight === 'number')
-      return true;
-
-    return false;
-  }
-
-  private static normalizePersistedSet(set: PersistedSet): NormalizedSet {
-    return {
-      weight: set.weight.toString(),
-      reps: set.reps.toString(),
-    };
   }
 
   private static normalizeLiftSet(set: LiftSet): NormalizedSet[] {
@@ -52,10 +34,6 @@ export default class Utils {
   }
 
   static weightToString(weight: Weight): string {
-    console.log(weight);
-    if (weight.range != undefined)
-      return weight.range.min + '-' + weight.range.max + 'lbs';
-
     return weight.value + 'lb';
   }
 
@@ -69,5 +47,33 @@ export default class Utils {
     }
 
     return str;
+  }
+
+  static persistedToSets(sets: PersistedSet[]): LiftSet[] {
+    return sets.map(set => this.persistedToSet(set));
+  }
+
+  static persistedToSet(set: PersistedSet): LiftSet {
+    return {
+      weight: {
+        value: set.weight,
+      },
+      reps: {
+        value: set.reps,
+      },
+    };
+  }
+
+  static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
+    return sets.map(set => {
+      // TODO assert range is set since thats what is used to determine persisted
+      // Whatever calls this should be doing that as well
+      var res: PersistedSet = {
+        weight: set.weight.value,
+        reps: set.reps.value,
+      };
+
+      return res;
+    });
   }
 }

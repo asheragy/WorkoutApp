@@ -17,6 +17,7 @@ export type Reps = {
   range?: Range; // AMRAP = 0-max
 };
 
+// For storage only, saves weight.value and reps.value
 export type PersistedSet = {
   weight: number;
   reps: number;
@@ -39,7 +40,7 @@ export type Lift = {
 
 export type PersistedLift = {
   def: LiftDef;
-  sets: PersistedSet[];
+  sets: LiftSet[];
   goal?: string; // This could be a list
   persisted: boolean;
 };

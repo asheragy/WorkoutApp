@@ -1,6 +1,7 @@
 import {
   Lift,
   LiftDef,
+  LiftSet,
   LiftType,
   PersistedLift,
   PersistedSet,
@@ -27,7 +28,7 @@ function round5(weight: number, percentage?: number) {
 
 function createPersisted(
   id: string,
-  sets: PersistedSet[],
+  sets: LiftSet[],
   goal?: string,
 ): PersistedLift {
   const def = getLift(id);
@@ -39,14 +40,16 @@ function createPersisted(
   };
 }
 
-function createSets(
-  weight: number,
-  reps: number,
-  repeat: number,
-): PersistedSet[] {
-  var set: PersistedSet = {
-    weight: weight,
-    reps: reps,
+function createSets(weight: number, reps: number, repeat: number): LiftSet[] {
+  var set: LiftSet = {
+    weight: {
+      value: weight,
+      range: {},
+    },
+    reps: {
+      value: reps,
+      range: {},
+    },
   };
 
   return [...Array(repeat).keys()].map(_ => set);

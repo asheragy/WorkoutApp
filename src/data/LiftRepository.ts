@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Utils from '../components/Utils';
 import {
+  LiftDef,
   PersistedLift,
   PersistedLiftHistory,
   PersistedSet,
@@ -13,7 +15,7 @@ const historyKeyPrefix = 'liftHistory:';
 export default class LiftRepository {
   static async getLift(key: string): Promise<PersistedSet[] | null> {
     var value = await AsyncStorage.getItem(liftKeyPrefix + key);
-    //console.log('GetLift ' + key + ' = ' + value);
+    console.log('GetLift ' + key + ' = ' + value);
     if (value != null) {
       return JSON.parse(value);
     }
@@ -45,10 +47,14 @@ export default class LiftRepository {
   }
 
   static async saveLift(lift: PersistedLift): Promise<void> {
-    return AsyncStorage.setItem(
-      liftKeyPrefix + lift.def.id,
-      JSON.stringify(lift.sets),
-    );
+    return this.saveSets(lift.def, Utils.setsToPersisted(lift.sets));
+  }
+
+  private static async saveSets(
+    def: LiftDef,
+    sets: PersistedSet[],
+  ): Promise<void> {
+    return AsyncStorage.setItem(liftKeyPrefix + def.id, JSON.stringify(sets));
   }
 
   // TODO could take LiftDef to be more type safe
@@ -77,7 +83,11 @@ export default class LiftRepository {
 
         var savedValue = await this.getLift(lift.def.id);
         if (savedValue != null) this.addHistory(lift.def.id, savedValue);
-        else this.addHistory(lift.def.id, persistedLift.sets);
+        else
+          this.addHistory(
+            lift.def.id,
+            Utils.setsToPersisted(persistedLift.sets),
+          );
       }
     }
   }
