@@ -11,13 +11,20 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift, NormalizedSet, LiftType, LiftSet} from '../types/types';
+import {
+  Lift,
+  NormalizedSet,
+  LiftType,
+  LiftSet,
+  GlobalSettings,
+} from '../types/types';
 import {Workout} from '../data/Repository';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
+import {lifts} from '../data/LiftDatabase';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -41,7 +48,10 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      <WorkoutItem workout={workout} onViewLog={onViewLog}></WorkoutItem>
+      <WorkoutItem
+        workout={workout}
+        settings={route.params.settings}
+        onViewLog={onViewLog}></WorkoutItem>
       {workout.node.accessories != null && (
         <AccessoryView accessories={workout.node.accessories}></AccessoryView>
       )}
@@ -56,6 +66,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
 function WorkoutItem(props: {
   workout: Workout;
+  settings: GlobalSettings;
   onViewLog: (lift: Lift) => void;
 }) {
   const {colors} = useTheme();
@@ -65,6 +76,7 @@ function WorkoutItem(props: {
       {props.workout.node.lifts.map((lift, index) => (
         <LiftItem
           lift={lift}
+          settings={props.settings}
           onViewLog={props.onViewLog}
           key={index}></LiftItem>
       ))}
@@ -72,7 +84,11 @@ function WorkoutItem(props: {
   );
 }
 
-function LiftItem(props: {lift: Lift; onViewLog: (lift: Lift) => void}) {
+function LiftItem(props: {
+  lift: Lift;
+  onViewLog: (lift: Lift) => void;
+  settings: GlobalSettings;
+}) {
   const showHeader = props.lift.sets.length > 0;
   const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
@@ -137,6 +153,7 @@ function LiftItem(props: {lift: Lift; onViewLog: (lift: Lift) => void}) {
           <LiftEditorModal
             editing={editing}
             lift={lift}
+            settings={props.settings}
             onSetChange={onSetChange}
             onViewLog={() => props.onViewLog(lift)}
             onFinish={() => setEditing(false)}></LiftEditorModal>
@@ -149,6 +166,7 @@ function LiftItem(props: {lift: Lift; onViewLog: (lift: Lift) => void}) {
 function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
+  settings: GlobalSettings;
   onFinish: () => void;
   onViewLog: () => void;
   onSetChange: (index: number, weight: number, reps: number) => void;
@@ -157,9 +175,6 @@ function LiftEditorModal(props: {
   const goal = props.lift.goal != undefined;
   console.log(props.lift);
   const type = props.lift.def.type;
-  var step = 5;
-
-  if (type == LiftType.Dumbbell || type == LiftType.Machine) step = 2.5;
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -189,8 +204,9 @@ function LiftEditorModal(props: {
             <PersistedSetRow
               index={index}
               set={set}
+              settings={props.settings}
+              liftType={props.lift.def.type}
               key={index}
-              step={step}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
 
@@ -271,12 +287,11 @@ function SetItem(props: {number: Number; set: NormalizedSet}) {
 function PersistedSetRow(props: {
   index: number;
   set: LiftSet;
+  settings: GlobalSettings;
+  liftType: LiftType;
   onChange: (index: number, weight: number, reps: number) => void;
-  step?: number;
 }) {
   const {colors} = useTheme();
-  const stepSize = props.step == undefined ? 5 : props.step;
-  //console.log(props.set.weight + ' ' + stepSize);
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 4}}>
@@ -300,7 +315,11 @@ function PersistedSetRow(props: {
           onPress={() =>
             props.onChange(
               props.index,
-              props.set.weight.value - stepSize,
+              Utils.decrementWeight(
+                props.set.weight.value,
+                props.liftType,
+                props.settings,
+              ),
               props.set.reps.value,
             )
           }>
@@ -320,7 +339,11 @@ function PersistedSetRow(props: {
           onPress={() =>
             props.onChange(
               props.index,
-              props.set.weight.value + stepSize,
+              Utils.incrementWeight(
+                props.set.weight.value,
+                props.liftType,
+                props.settings,
+              ),
               props.set.reps.value,
             )
           }>

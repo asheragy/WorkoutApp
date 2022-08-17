@@ -12,12 +12,13 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {LiftScreen} from './components/LiftScreen';
-import {Lift} from './types/types';
+import {GlobalSettings, Lift} from './types/types';
 
 export type RootStackParamList = {
   Home: undefined;
   Workout: {
     workout: Workout;
+    settings: GlobalSettings;
     onComplete: (index: number) => void;
   };
   Weight: undefined;

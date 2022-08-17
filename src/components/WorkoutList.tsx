@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {Lift} from '../types/types';
+import {Lift, GlobalSettings} from '../types/types';
 import {
   HeaderButton,
   HeaderButtons,
@@ -17,6 +17,7 @@ import {
 import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import Utils from './Utils';
+import SettingsRepository from '../data/SettingsRepository';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
@@ -24,6 +25,7 @@ const MaterialHeaderButton = (props: any) => (
 
 export function WorkoutList({navigation}: any) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
+  const [settings, setSettings] = useState<GlobalSettings>({});
   const {colors} = useTheme();
 
   React.useLayoutEffect(() => {
@@ -50,6 +52,8 @@ export function WorkoutList({navigation}: any) {
       var uncompletedWorkouts = result.filter(wo => !wo.completed);
       setWorkouts(uncompletedWorkouts);
     });
+
+    SettingsRepository.get().then(result => setSettings(result));
   }
 
   async function onUndo() {
@@ -78,6 +82,7 @@ export function WorkoutList({navigation}: any) {
   return (
     <WorkoutFlatList
       workouts={workouts}
+      settings={settings}
       navigation={navigation}
       onComplete={onComplete}></WorkoutFlatList>
   );
@@ -86,11 +91,13 @@ export function WorkoutList({navigation}: any) {
 function WorkoutFlatList(props: {
   workouts: Workout[];
   navigation: any;
+  settings: GlobalSettings;
   onComplete: (index: number) => void;
 }) {
   function actionOnRow(index: number, item: Workout) {
     props.navigation.navigate('Workout', {
       workout: item,
+      settings: props.settings,
       onComplete: props.onComplete,
     });
   }

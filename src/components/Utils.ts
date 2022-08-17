@@ -1,6 +1,8 @@
 import {
+  GlobalSettings,
   Lift,
   LiftSet,
+  LiftType,
   NormalizedSet,
   PersistedSet,
   Range,
@@ -74,5 +76,40 @@ export default class Utils {
 
       return res;
     });
+  }
+
+  static incrementWeight(
+    current: number,
+    liftType: LiftType,
+    settings: GlobalSettings,
+  ): number {
+    var step = 5;
+    if (liftType == LiftType.Machine) step = 2.5;
+    else if (
+      liftType == LiftType.Dumbbell &&
+      settings.largestHalfPoundDumbbell != undefined
+    ) {
+      if (current <= settings.largestHalfPoundDumbbell) step = 2.5;
+    }
+
+    return current + step;
+  }
+
+  static decrementWeight(
+    current: number,
+    liftType: LiftType,
+    settings: GlobalSettings,
+  ): number {
+    var step = 5;
+    if (liftType == LiftType.Machine) step = 2.5;
+    else if (
+      liftType == LiftType.Dumbbell &&
+      settings.largestHalfPoundDumbbell != undefined
+    ) {
+      if (current <= settings.largestHalfPoundDumbbell) step = 2.5;
+      else if (current - 2.5 == settings.largestHalfPoundDumbbell) step = 2.5;
+    }
+
+    return current - step;
   }
 }
