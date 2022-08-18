@@ -1,7 +1,10 @@
 import {ListViewBase} from 'react-native';
 import {LiftDef, LiftType} from '../types/types';
 
-export function getLift(id: string): LiftDef {
+export function lookupDef(id: string, overrides: LiftDef[]): LiftDef {
+  var override = overrides.find(x => x.id == id);
+  if (override != undefined) return override;
+
   var match = lifts.find(x => x.id == id);
   if (match == undefined) throw new Error('No lift matching id=' + id);
   return match;

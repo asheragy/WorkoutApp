@@ -1,15 +1,12 @@
-import {Lift, LiftSet, Program, WorkoutNode} from '../../types/types';
-import {getLift, LiftId} from '../LiftDatabase';
-
-function round5down(n: number) {
-  var rounded = Math.floor(n / 5);
-  return rounded * 5;
-}
-
-function round5up(n: number) {
-  var rounded = Math.ceil(n / 5);
-  return rounded * 5;
-}
+import {
+  Lift,
+  LiftDef,
+  LiftSet,
+  LiftType,
+  Program,
+  WorkoutNode,
+} from '../../types/types';
+import {LiftId, lookupDef} from '../LiftDatabase';
 
 function round5(weight: number, percentage?: number) {
   var n = weight * (percentage || 1);
@@ -17,8 +14,13 @@ function round5(weight: number, percentage?: number) {
   return n * 5;
 }
 
+function getLift(id: string): LiftDef {
+  return lookupDef(id, CustomLifts);
+}
+
 function createPersisted(id: string, sets: LiftSet[], goal?: string): Lift {
-  const def = getLift(id);
+  var def = getLift(id);
+
   return {
     def: def,
     sets: sets,
@@ -52,28 +54,6 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
     ],
     lifts: [
-      {
-        def: getLift(LiftId.placeHolder),
-        persisted: false,
-        sets: [
-          {
-            weight: {
-              value: 100,
-              range: {
-                min: 100,
-                max: 120,
-              },
-            },
-            reps: {
-              value: 10,
-              range: {
-                min: 0,
-              },
-            },
-          },
-        ],
-      },
-
       createPersisted(LiftId.DeadLift_TrapBar, createSets(225, 5, 2), '315x10'),
       createPersisted(LiftId.Lunges, createSets(0, 5, 3), '15-20lb x 15'),
       createPersisted(LiftId.CalfRaises, createSets(70, 10, 4), '20 reps'),
@@ -99,12 +79,12 @@ function getUpperDay(block: number, week: number): WorkoutNode {
     lifts: [
       createPersisted(LiftId.Pullups, createSets(0, 2, 6), '3x5, 3x10'),
       createPersisted(LiftId.Dips, createSets(0, 6, 5), '5x10'),
-      createPersisted(LiftId.Curls_EzBar, createSets(60, 10, 3), '3x20'),
       createPersisted(
         LiftId.InclinePress_Dumbell,
         createSets(30, 10, 3),
         '3x15',
       ),
+      createPersisted(LiftId.Curls_EzBar, createSets(60, 10, 3), '3x20'),
       createPersisted(LiftId.FacePulls, createSets(50, 15, 2), '2x30'),
     ],
   };
@@ -119,12 +99,7 @@ function getLowerDay(block: number, week: number): WorkoutNode {
       createPersisted(LiftId.SSBSquat, createSets(95, 10, 1)),
       createPersisted(LiftId.HatfieldSquat, createSets(135, 10, 1)),
       createPersisted(LiftId.RDL, createSets(95, 10, 3), '3x15'),
-      {
-        // TODO this should be the at home version
-        def: getLift(LiftId.CalfRaises),
-        persisted: false,
-        sets: [],
-      },
+      createPersisted(CustomLift_HomeCalfRaises, createSets(0, 20, 3)),
     ],
   };
 }
@@ -244,7 +219,9 @@ export default function getProgram(): Program {
     workouts.push(getDeloadDay());
   }
 
-  return {workouts};
+  return {
+    workouts: workouts,
+  };
 }
 
 function getPyramidLift(
@@ -304,3 +281,13 @@ function getPyramidLift(
     ],
   };
 }
+
+const CustomLift_HomeCalfRaises = 'homeCalfRaises';
+
+const CustomLifts = [
+  {
+    id: CustomLift_HomeCalfRaises,
+    name: 'Calf Raises',
+    type: LiftType.Bodyweight,
+  },
+];

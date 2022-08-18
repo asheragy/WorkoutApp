@@ -95,13 +95,33 @@ function LiftItem(props: {
   const {colors} = useTheme();
 
   const onSetChange = (index: number, weight: number, reps: number) => {
-    //console.log('updating index ' + index);
+    // TODO temp logging
+    console.log('onSetChange index=' + index);
     var updatedLift = {...lift};
-    //updatedLift.sets.forEach(x => console.log(x.reps.value));
-    updatedLift.sets[index].weight.value = weight;
-    updatedLift.sets[index].reps.value = reps;
-    //updatedLift.sets.forEach(x => console.log(x.reps.value));
-    setLift(updatedLift);
+    updatedLift.sets.forEach(x =>
+      console.log('  ' + x.weight.value + ' x ' + x.reps.value),
+    );
+
+    var updatedSets = lift.sets.map((set, idx) => {
+      if (index == idx) {
+        set.reps.value = reps;
+        set.weight.value = weight;
+      }
+
+      return set;
+    });
+    //updatedLift.sets[index].weight.value = weight;
+    //updatedLift.sets[index].reps.value = reps;
+    console.log('after value changes');
+    updatedLift.sets.forEach(x =>
+      console.log('  ' + x.weight.value + ' x ' + x.reps.value),
+    );
+
+    setLift(prevState => ({
+      ...prevState,
+      sets: updatedSets,
+    }));
+
     LiftRepository.saveLift(updatedLift);
   };
 
