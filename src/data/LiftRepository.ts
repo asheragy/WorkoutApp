@@ -51,6 +51,17 @@ export default class LiftRepository {
     return this.saveSets(lift.def, Utils.setsToPersisted(lift.sets));
   }
 
+  static async clearAllLifts(): Promise<void> {
+    var keys = await AsyncStorage.getAllKeys();
+
+    keys.forEach(async key => {
+      if (key.startsWith(liftKeyPrefix)) {
+        console.log('Deleting: ' + key);
+        await AsyncStorage.removeItem(key);
+      }
+    });
+  }
+
   private static async saveSets(
     def: LiftDef,
     sets: PersistedSet[],

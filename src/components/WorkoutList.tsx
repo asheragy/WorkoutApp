@@ -18,6 +18,7 @@ import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import Utils from './Utils';
 import SettingsRepository from '../data/SettingsRepository';
+import LiftRepository from '../data/LiftRepository';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
@@ -41,6 +42,10 @@ export function WorkoutList({navigation}: any) {
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
             <HiddenItem title="Reset" onPress={() => onReset()} />
+            <HiddenItem
+              title="Reset Lifts"
+              onPress={() => LiftRepository.clearAllLifts()}
+            />
           </OverflowMenu>
         </HeaderButtons>
       ),

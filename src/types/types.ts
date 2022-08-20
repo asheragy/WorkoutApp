@@ -29,7 +29,12 @@ export type Weight = {
 
 export type Reps = {
   value: number;
-  range?: Range; // AMRAP = 0-max
+  // AMRAP    = 0 / undefined
+  // AMRAP 5+ = 5 / undefined
+  // Any      = undefined / undefined
+  // Range    = 8 / 12
+  // Up to    = undefined / 12
+  range?: Range;
 };
 
 export enum LiftType {
