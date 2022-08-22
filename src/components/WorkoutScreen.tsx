@@ -24,7 +24,6 @@ import {useTheme} from '@react-navigation/native';
 import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
-import {lifts} from '../data/LiftDatabase';
 import {useSelector} from 'react-redux';
 
 LogBox.ignoreLogs([

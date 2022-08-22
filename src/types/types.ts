@@ -67,24 +67,12 @@ export type Range = {
 
 // ------------- Non Program types ---------------
 
-// For storage only, saves weight.value and reps.value
-// TODO will move this to repository layer only
-export type PersistedSet = {
-  weight: number;
-  reps: number;
-};
-
 /**
  * Generic display object for sets
  */
 export type NormalizedSet = {
   weight: string;
   reps: string;
-};
-
-export type PersistedLiftHistory = {
-  date: Date;
-  sets: PersistedSet[];
 };
 
 export type WeightEntry = {

@@ -1,17 +1,15 @@
+import {PersistedSet} from '../data/LiftRepository';
 import {
   GlobalSettings,
-  Lift,
   LiftSet,
   LiftType,
   NormalizedSet,
-  PersistedSet,
-  Range,
   Reps,
   Weight,
 } from '../types/types';
 
 export default class Utils {
-  static normalizeSets(sets?: LiftSet[] | PersistedSet[]) {
+  static normalizeSets(sets?: LiftSet[]): NormalizedSet[] {
     var result: NormalizedSet[] = [];
 
     sets?.forEach(set => {
@@ -63,19 +61,6 @@ export default class Utils {
         value: set.reps,
       },
     };
-  }
-
-  static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
-    return sets.map(set => {
-      // TODO assert range is set since thats what is used to determine persisted
-      // Whatever calls this should be doing that as well
-      var res: PersistedSet = {
-        weight: set.weight.value,
-        reps: set.reps.value,
-      };
-
-      return res;
-    });
   }
 
   static incrementWeight(

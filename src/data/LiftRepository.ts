@@ -1,16 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Utils from '../components/Utils';
-import {
-  Lift,
-  LiftDef,
-  PersistedLiftHistory,
-  PersistedSet,
-  Program,
-  WorkoutNode,
-} from '../types/types';
+import {Lift, LiftDef, LiftSet, Program, WorkoutNode} from '../types/types';
 
 const liftKeyPrefix = 'lift:';
 const historyKeyPrefix = 'liftHistory:';
+
+export type PersistedLiftHistory = {
+  date: Date;
+  sets: PersistedSet[];
+};
+
+export type PersistedSet = {
+  weight: number;
+  reps: number;
+};
 
 export default class LiftRepository {
   static async getLift(key: string): Promise<PersistedSet[] | null> {
@@ -48,7 +51,7 @@ export default class LiftRepository {
 
   static async saveLift(lift: Lift): Promise<void> {
     if (!lift.persisted) throw new Error('Cannot save this type of lift');
-    return this.saveSets(lift.def, Utils.setsToPersisted(lift.sets));
+    return this.saveSets(lift.def, LiftRepository.setsToPersisted(lift.sets));
   }
 
   static async clearAllLifts(): Promise<void> {
@@ -94,9 +97,26 @@ export default class LiftRepository {
       if (lift.persisted) {
         var savedValue = await this.getLift(lift.def.id);
         if (savedValue != null) this.addHistory(lift.def.id, savedValue);
-        else this.addHistory(lift.def.id, Utils.setsToPersisted(lift.sets));
+        else
+          this.addHistory(
+            lift.def.id,
+            LiftRepository.setsToPersisted(lift.sets),
+          );
       }
     }
+  }
+
+  private static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
+    return sets.map(set => {
+      // TODO assert range is set since thats what is used to determine persisted
+      // Whatever calls this should be doing that as well
+      var res: PersistedSet = {
+        weight: set.weight.value,
+        reps: set.reps.value,
+      };
+
+      return res;
+    });
   }
 
   private static async addHistory(
