@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,18 +16,32 @@ import {
 } from 'react-navigation-header-buttons';
 import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
-import Utils from './Utils';
 import SettingsRepository from '../data/SettingsRepository';
 import LiftRepository from '../data/LiftRepository';
+import {connect, useDispatch, useSelector} from 'react-redux';
+import {StackScreenProps} from '@react-navigation/stack';
+import {RootStackParamList} from '../App';
+import {updateSettings} from '../state/settingsAction';
 
 const MaterialHeaderButton = (props: any) => (
   <HeaderButton {...props} iconSize={23} color="blue" />
 );
 
-export function WorkoutList({navigation}: any) {
+const mapStateToProps = (state: any) => {
+  const {settings} = state;
+  return {settings};
+};
+
+export default connect(mapStateToProps)(WorkoutList);
+
+type Props = StackScreenProps<RootStackParamList, 'Home'> & {
+  props: {settings: GlobalSettings};
+};
+
+export function WorkoutList({navigation, route, props}: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const [settings, setSettings] = useState<GlobalSettings>({});
   const {colors} = useTheme();
+  const dispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -58,7 +72,8 @@ export function WorkoutList({navigation}: any) {
       setWorkouts(uncompletedWorkouts);
     });
 
-    SettingsRepository.get().then(result => setSettings(result));
+    // TODO should this go in App.txs?
+    SettingsRepository.get().then(result => dispatch(updateSettings(result)));
   }
 
   async function onUndo() {
@@ -79,7 +94,7 @@ export function WorkoutList({navigation}: any) {
   }
 
   async function onWeightLog() {
-    navigation.navigate('Weight', {});
+    navigation.navigate('Weight');
   }
 
   useEffect(loadState, []);
@@ -87,7 +102,6 @@ export function WorkoutList({navigation}: any) {
   return (
     <WorkoutFlatList
       workouts={workouts}
-      settings={settings}
       navigation={navigation}
       onComplete={onComplete}></WorkoutFlatList>
   );
@@ -96,13 +110,11 @@ export function WorkoutList({navigation}: any) {
 function WorkoutFlatList(props: {
   workouts: Workout[];
   navigation: any;
-  settings: GlobalSettings;
   onComplete: (index: number) => void;
 }) {
   function actionOnRow(index: number, item: Workout) {
     props.navigation.navigate('Workout', {
       workout: item,
-      settings: props.settings,
       onComplete: props.onComplete,
     });
   }

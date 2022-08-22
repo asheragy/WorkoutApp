@@ -13,12 +13,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {LiftScreen} from './components/LiftScreen';
 import {GlobalSettings, Lift} from './types/types';
+import {createStore} from 'redux';
+import settingsReducer from './state/settingsReducer';
+import {Provider} from 'react-redux';
 
 export type RootStackParamList = {
-  Home: undefined;
+  Home: {
+    settings: GlobalSettings;
+  };
   Workout: {
     workout: Workout;
-    settings: GlobalSettings;
     onComplete: (index: number) => void;
   };
   Weight: undefined;
@@ -28,48 +32,51 @@ export type RootStackParamList = {
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
+const store = createStore(settingsReducer);
 
 const App = () => {
   const scheme = useColorScheme();
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <OverflowMenuProvider>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            component={WorkoutList}
-            options={{
-              title: 'Workouts',
-              headerStyle: styles.headerStyle,
-            }}
-          />
-          <Stack.Screen
-            name="Workout"
-            options={({route}) => ({
-              headerStyle: styles.headerStyle,
-              title: route.params.workout.node.name ?? 'Workout',
-            })}
-            component={WorkoutScreen}
-          />
-          <Stack.Screen
-            name="Weight"
-            options={{
-              headerStyle: styles.headerStyle,
-            }}
-            component={WeightScreen}
-          />
-          <Stack.Screen
-            name="Lift"
-            options={({route}) => ({
-              headerStyle: styles.headerStyle,
-              title: route.params.lift.def.name,
-            })}
-            component={LiftScreen}
-          />
-        </Stack.Navigator>
-      </OverflowMenuProvider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <OverflowMenuProvider>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={WorkoutList}
+              options={{
+                title: 'Workouts',
+                headerStyle: styles.headerStyle,
+              }}
+            />
+            <Stack.Screen
+              name="Workout"
+              options={({route}) => ({
+                headerStyle: styles.headerStyle,
+                title: route.params.workout.node.name ?? 'Workout',
+              })}
+              component={WorkoutScreen}
+            />
+            <Stack.Screen
+              name="Weight"
+              options={{
+                headerStyle: styles.headerStyle,
+              }}
+              component={WeightScreen}
+            />
+            <Stack.Screen
+              name="Lift"
+              options={({route}) => ({
+                headerStyle: styles.headerStyle,
+                title: route.params.lift.def.name,
+              })}
+              component={LiftScreen}
+            />
+          </Stack.Navigator>
+        </OverflowMenuProvider>
+      </NavigationContainer>
+    </Provider>
   );
 };
 

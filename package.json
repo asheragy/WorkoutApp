@@ -25,7 +25,9 @@
     "react-native-safe-area-view": "^1.1.1",
     "react-native-screens": "^3.13.1",
     "react-native-svg": "^12.3.0",
-    "react-navigation-header-buttons": "^9.0.1"
+    "react-navigation-header-buttons": "^9.0.1",
+    "react-redux": "^7.2.8",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.2",
