@@ -3,14 +3,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {
   Button,
-  Dimensions,
   FlatList,
   ListRenderItemInfo,
   LogBox,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {
@@ -22,6 +19,7 @@ import {
 import {RootStackParamList} from '../App';
 import WeightRepository from '../data/WeightRepository';
 import {WeightEntry} from '../types/types';
+import {NumberControl} from './NumberControl';
 import {ProgressChart} from './ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
@@ -34,7 +32,7 @@ const MaterialHeaderButton = (props: any) => (
 );
 
 export function WeightScreen({route, navigation}: Props) {
-  const [current, setCurrent] = useState<number>(1800);
+  const [current, setCurrent] = useState<number>(180);
   const [entries, setEntries] = useState<WeightEntry[]>([]);
 
   function loadState() {
@@ -65,15 +63,6 @@ export function WeightScreen({route, navigation}: Props) {
     loadState();
   }
 
-  function onWeightChanged(input: string) {
-    var numInput: number = parseFloat(input);
-    if (!isNaN(numInput)) {
-      numInput *= 10;
-      const intInput = Math.round(numInput);
-      setCurrent(intInput);
-    }
-  }
-
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -96,14 +85,14 @@ export function WeightScreen({route, navigation}: Props) {
   const {colors} = useTheme();
 
   var dates = entries.map(x => x.date);
-  var values = entries.map(x => x.weight / 10);
+  var values = entries.map(x => x.weight);
 
   const renderItem = (item: ListRenderItemInfo<WeightEntry>) => (
     <View key={item.index} style={styles.entryRow}>
       <Text style={{width: '50%', textAlign: 'center', color: colors.text}}>
         {item.item.date.toDateString()}
       </Text>
-      <Text style={{color: colors.text}}>{item.item.weight / 10}</Text>
+      <Text style={{color: colors.text}}>{item.item.weight}</Text>
     </View>
   );
 
@@ -123,29 +112,11 @@ export function WeightScreen({route, navigation}: Props) {
         keyExtractor={(_, index) => 'test' + index}></FlatList>
 
       <View style={{height: '10%'}}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() => setCurrent(current - 2)}>
-            <Text style={styles.counterButtonText}>-</Text>
-          </TouchableOpacity>
-
-          <TextInput
-            style={{color: colors.text}}
-            onChangeText={onWeightChanged}>
-            {current / 10}
-          </TextInput>
-          <TouchableOpacity
-            style={styles.counterButtonContainer}
-            onPress={() => setCurrent(current + 2)}>
-            <Text style={styles.counterButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-
+        <NumberControl
+          value={current}
+          onChange={newValue => setCurrent(newValue)}
+          decrementBy={() => 0.2}
+          incrementBy={() => 0.2}></NumberControl>
         <Button title="Add" onPress={() => onAdd()} />
       </View>
     </View>
@@ -154,22 +125,6 @@ export function WeightScreen({route, navigation}: Props) {
 
 const styles = StyleSheet.create({
   addButton: {},
-  counterButtonContainer: {
-    elevation: 8,
-    backgroundColor: '#009688',
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    margin: 1,
-    height: 30,
-    alignSelf: 'center',
-  },
-  counterButtonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
-  },
   entryRow: {
     flexDirection: 'row',
   },

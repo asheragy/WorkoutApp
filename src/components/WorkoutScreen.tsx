@@ -25,6 +25,7 @@ import {Modal} from 'react-native';
 import Utils from './Utils';
 import LiftRepository from '../data/LiftRepository';
 import {useSelector} from 'react-redux';
+import {NumberControl} from './NumberControl';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -299,6 +300,7 @@ function PersistedSetRow(props: {
   set: LiftSet;
   liftType: LiftType;
   settings: GlobalSettings;
+  // TODO this should just pass back the modified LiftSet
   onChange: (index: number, weight: number, reps: number) => void;
 }) {
   const {colors} = useTheme();
@@ -320,78 +322,36 @@ function PersistedSetRow(props: {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(
-              props.index,
-              Utils.decrementWeight(
-                props.set.weight.value,
-                props.liftType,
-                props.settings,
-              ),
-              props.set.reps.value,
+        <NumberControl
+          value={props.set.weight.value}
+          onChange={newWeightValue =>
+            props.onChange(props.index, newWeightValue, props.set.reps.value)
+          }
+          decrementBy={() =>
+            props.set.weight.value -
+            Utils.decrementWeight(
+              props.set.weight.value,
+              props.liftType,
+              props.settings,
             )
-          }>
-          <Text style={styles.counterButtonText}>-</Text>
-        </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: 'right',
-            textAlignVertical: 'center',
-            marginRight: 4,
-            color: colors.text,
-          }}>
-          {props.set.weight.value + 'lb'}
-        </Text>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(
-              props.index,
-              Utils.incrementWeight(
-                props.set.weight.value,
-                props.liftType,
-                props.settings,
-              ),
-              props.set.reps.value,
-            )
-          }>
-          <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
+          }
+          incrementBy={() =>
+            Utils.incrementWeight(
+              props.set.weight.value,
+              props.liftType,
+              props.settings,
+            ) - props.set.weight.value
+          }></NumberControl>
       </View>
       <View style={{width: '20%', flexDirection: 'row'}}>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(
-              props.index,
-              props.set.weight.value,
-              props.set.reps.value - 1,
-            )
-          }>
-          <Text style={styles.counterButtonText}>-</Text>
-        </TouchableOpacity>
-        <Text
-          style={{
-            textAlign: 'center',
-            width: '40%',
-            textAlignVertical: 'center',
-            color: colors.text,
-          }}>
-          {props.set.reps.value}
-        </Text>
-        <TouchableOpacity
-          style={styles.counterButtonContainer}
-          onPress={() =>
-            props.onChange(
-              props.index,
-              props.set.weight.value,
-              props.set.reps.value + 1,
-            )
-          }>
-          <Text style={styles.counterButtonText}>+</Text>
-        </TouchableOpacity>
+        <NumberControl
+          precision={0}
+          value={props.set.reps.value}
+          onChange={newRepsValue =>
+            props.onChange(props.index, props.set.weight.value, newRepsValue)
+          }
+          decrementBy={() => 1}
+          incrementBy={() => 1}></NumberControl>
       </View>
     </View>
   );
@@ -428,19 +388,5 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     padding: 8,
     opacity: 0.8,
-  },
-  counterButtonContainer: {
-    elevation: 8,
-    backgroundColor: '#009688',
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    margin: 1,
-  },
-  counterButtonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-    textTransform: 'uppercase',
   },
 });

@@ -26,7 +26,7 @@ export function NumberControl(props: {
   }
 
   function setValue(value: number) {
-    // Correct to number of digits
+    // Fix floating point issues by rounding to digits
     var strValue = value.toFixed(digits);
     props.onChange(parseFloat(strValue));
   }
@@ -43,7 +43,9 @@ export function NumberControl(props: {
         <Text style={styles.counterButtonText}>-</Text>
       </TouchableOpacity>
 
-      <TextInput style={{color: colors.text}} onChangeText={onInput}>
+      <TextInput
+        style={{color: colors.text, padding: 4, textAlign: 'center'}}
+        onChangeText={onInput}>
         {props.value}
       </TextInput>
       <TouchableOpacity
@@ -56,7 +58,6 @@ export function NumberControl(props: {
 }
 
 const styles = StyleSheet.create({
-  addButton: {},
   counterButtonContainer: {
     elevation: 8,
     backgroundColor: '#009688',
@@ -72,8 +73,5 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     textTransform: 'uppercase',
-  },
-  entryRow: {
-    flexDirection: 'row',
   },
 });
