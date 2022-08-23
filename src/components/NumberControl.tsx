@@ -44,7 +44,7 @@ export function NumberControl(props: {
       </TouchableOpacity>
 
       <TextInput
-        style={{color: colors.text, padding: 4, textAlign: 'center'}}
+        style={{color: colors.text, paddingVertical: 0, textAlign: 'center'}}
         onChangeText={onInput}>
         {props.value}
       </TextInput>

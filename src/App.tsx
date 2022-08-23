@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
 import {Workout} from './data/Repository';
-import {WorkoutScreen} from './components/WorkoutScreen';
+import {WorkoutScreen} from './components/workout/WorkoutScreen';
 import {WorkoutList} from './components/WorkoutList';
 import {WeightScreen} from './components/WeightScreen';
 import {

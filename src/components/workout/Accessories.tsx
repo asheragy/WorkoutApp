@@ -1,7 +1,7 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AccessoryGroup} from '../types/types';
+import {AccessoryGroup} from '../../types/types';
 
 export function AccessoryView(props: {accessories: AccessoryGroup[]}) {
   const {colors} = useTheme();
