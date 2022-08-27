@@ -2,7 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {Lift, GlobalSettings} from '../../types/types';
+import {Lift, GlobalSettings, LiftSet} from '../../types/types';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow} from './SetRows';
 
@@ -11,7 +11,7 @@ export default function LiftEditorModal(props: {
   lift: Lift;
   onFinish: () => void;
   onViewLog: () => void;
-  onSetChange: (index: number, weight: number, reps: number) => void;
+  onSetChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
   const goal = props.lift.goal != undefined;

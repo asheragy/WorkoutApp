@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginBottom: 36,
   },
+
   workoutItem: {
     marginHorizontal: 8,
     marginVertical: 4,

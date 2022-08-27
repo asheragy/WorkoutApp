@@ -2,7 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import LiftRepository from '../../data/LiftRepository';
-import {Lift} from '../../types/types';
+import {Lift, LiftSet} from '../../types/types';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
@@ -17,32 +17,25 @@ export default function LiftItem(props: {
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
 
-  const onSetChange = (index: number, weight: number, reps: number) => {
-    // TODO temp logging
+  const onSetChange = (index: number, updatedSet: LiftSet) => {
     console.log('onSetChange index=' + index);
     var updatedLift = {...lift};
+
+    console.log('before update');
+
     updatedLift.sets.forEach(x =>
       console.log('  ' + x.weight.value + ' x ' + x.reps.value),
     );
 
-    var updatedSets = lift.sets.map((set, idx) => {
-      if (index == idx) {
-        set.reps.value = reps;
-        set.weight.value = weight;
-      }
-
-      return set;
-    });
-    //updatedLift.sets[index].weight.value = weight;
-    //updatedLift.sets[index].reps.value = reps;
-    console.log('after value changes');
+    updatedLift.sets[index] = updatedSet;
+    console.log('after update');
     updatedLift.sets.forEach(x =>
       console.log('  ' + x.weight.value + ' x ' + x.reps.value),
     );
 
     setLift(prevState => ({
       ...prevState,
-      sets: updatedSets,
+      sets: updatedLift.sets,
     }));
 
     LiftRepository.saveLift(updatedLift);

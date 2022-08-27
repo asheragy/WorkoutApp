@@ -50,10 +50,25 @@ export function PersistedSetRow(props: {
   set: LiftSet;
   liftType: LiftType;
   settings: GlobalSettings;
-  // TODO this should just pass back the modified LiftSet
-  onChange: (index: number, weight: number, reps: number) => void;
+  onChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
+
+  const update = (weight: number, reps: number) => {
+    // TODO full object copy needed here
+    var updatedSet: LiftSet = {
+      weight: {
+        value: weight,
+        range: props.set.weight.range,
+      },
+      reps: {
+        value: reps,
+        range: props.set.reps.range,
+      },
+    };
+
+    props.onChange(props.index, updatedSet);
+  };
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 4}}>
@@ -75,7 +90,7 @@ export function PersistedSetRow(props: {
         <NumberControl
           value={props.set.weight.value}
           onChange={newWeightValue =>
-            props.onChange(props.index, newWeightValue, props.set.reps.value)
+            update(newWeightValue, props.set.reps.value)
           }
           decrementBy={() =>
             props.set.weight.value -
@@ -98,7 +113,7 @@ export function PersistedSetRow(props: {
           precision={0}
           value={props.set.reps.value}
           onChange={newRepsValue =>
-            props.onChange(props.index, props.set.weight.value, newRepsValue)
+            update(props.set.weight.value, newRepsValue)
           }
           decrementBy={() => 1}
           incrementBy={() => 1}></NumberControl>

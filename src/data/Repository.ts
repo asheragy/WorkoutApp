@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Program, WorkoutNode} from '../types/types';
-import getProgram from '../data/programs/testProgram';
+import getProgram from '../data/programs/phase1';
 import LiftRepository, {PersistedSet} from './LiftRepository';
 import Utils from '../components/Utils';
 
