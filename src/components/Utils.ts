@@ -11,25 +11,24 @@ import {
 export default class Utils {
   static normalizeSets(sets?: LiftSet[]): NormalizedSet[] {
     var result: NormalizedSet[] = [];
+    var counter = 1;
 
     sets?.forEach(set => {
-      result.push(...this.normalizeLiftSet(set as LiftSet));
+      var t = this.normalizeLiftSet(set);
+      if (t.label == '') t.label = (counter++).toString();
+
+      result.push(t);
     });
 
     return result;
   }
 
-  private static normalizeLiftSet(set: LiftSet): NormalizedSet[] {
-    var result: NormalizedSet[] = [];
-
-    var normalized: NormalizedSet = {
+  private static normalizeLiftSet(set: LiftSet): NormalizedSet {
+    return {
       weight: Utils.weightToString(set.weight),
       reps: Utils.repsToString(set.reps),
+      label: set.warmup ? 'W' : '',
     };
-
-    result.push(normalized);
-
-    return result;
   }
 
   static weightToString(weight: Weight): string {
@@ -48,8 +47,20 @@ export default class Utils {
     return str;
   }
 
-  static persistedToSets(sets: PersistedSet[]): LiftSet[] {
-    return sets.map(set => this.persistedToSet(set));
+  static persistedToSets(
+    sets: PersistedSet[],
+    definedSets: LiftSet[],
+  ): LiftSet[] {
+    return sets.map((set, index) => {
+      if (index < definedSets.length) {
+        var modifiedSet = definedSets[index];
+        modifiedSet.reps.value = set.reps;
+        modifiedSet.weight.value = set.weight;
+        return modifiedSet;
+      }
+
+      return this.persistedToSet(set);
+    });
   }
 
   static persistedToSet(set: PersistedSet): LiftSet {

@@ -96,18 +96,30 @@ export default class LiftRepository {
       // TODO may start saving everything
       if (lift.persisted) {
         var savedValue = await this.getLift(lift.def.id);
-        if (savedValue != null) this.addHistory(lift.def.id, savedValue);
-        else
-          this.addHistory(
-            lift.def.id,
-            LiftRepository.setsToPersisted(lift.sets),
-          );
+        var persistedSets: PersistedSet[] = [];
+
+        if (savedValue != null) persistedSets = savedValue;
+        else persistedSets = LiftRepository.setsToPersisted(lift.sets);
+
+        // Don't save warmups to history
+        var filtered = persistedSets.filter((set, index) => {
+          if (index < lift.sets.length) {
+            return lift.sets[index].warmup != true;
+          }
+
+          return true;
+        });
+
+        this.addHistory(lift.def.id, filtered);
       }
     }
   }
 
   private static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
-    return sets.map(set => {
+    var filtered = sets.filter(x => x.warmup != true);
+    if (sets.length != filtered.length) console.log('Filtered out lifts');
+
+    return filtered.map(set => {
       // TODO assert range is set since thats what is used to determine persisted
       // Whatever calls this should be doing that as well
       var res: PersistedSet = {

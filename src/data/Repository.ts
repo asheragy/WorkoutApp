@@ -35,7 +35,7 @@ export default class Repository {
         if (lift.persisted) {
           if (map.has(lift.def.id)) {
             var persisted = map.get(lift.def.id) as PersistedSet[];
-            lift.sets = Utils.persistedToSets(persisted);
+            lift.sets = Utils.persistedToSets(persisted, lift.sets);
             wo.node.lifts[i] = lift;
           }
         }

@@ -27,13 +27,13 @@ export function SetHeader() {
   );
 }
 
-export function SetItem(props: {number: Number; set: NormalizedSet}) {
+export function SetItem(props: {set: NormalizedSet}) {
   const {colors} = useTheme();
 
   return (
     <View style={{flexDirection: 'row'}}>
       <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
-        {props.number.toString()}
+        {props.set.label}
       </Text>
       <Text style={{width: '60%', textAlign: 'center', color: colors.text}}>
         {props.set.weight}
@@ -50,6 +50,7 @@ export function PersistedSetRow(props: {
   set: LiftSet;
   liftType: LiftType;
   settings: GlobalSettings;
+  warmupOffset: number;
   onChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
@@ -65,6 +66,7 @@ export function PersistedSetRow(props: {
         value: reps,
         range: props.set.reps.range,
       },
+      warmup: props.set.warmup,
     };
 
     props.onChange(props.index, updatedSet);
@@ -79,7 +81,7 @@ export function PersistedSetRow(props: {
           textAlignVertical: 'center',
           color: colors.text,
         }}>
-        {props.index + 1}
+        {props.set.warmup ? 'W' : props.index + 1 - props.warmupOffset}
       </Text>
       <View
         style={{

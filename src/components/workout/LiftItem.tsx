@@ -24,13 +24,17 @@ export default function LiftItem(props: {
     console.log('before update');
 
     updatedLift.sets.forEach(x =>
-      console.log('  ' + x.weight.value + ' x ' + x.reps.value),
+      console.log(
+        '  ' + x.weight.value + ' x ' + x.reps.value + ' ' + x.warmup,
+      ),
     );
 
     updatedLift.sets[index] = updatedSet;
     console.log('after update');
     updatedLift.sets.forEach(x =>
-      console.log('  ' + x.weight.value + ' x ' + x.reps.value),
+      console.log(
+        '  ' + x.weight.value + ' x ' + x.reps.value + ' ' + x.warmup,
+      ),
     );
 
     setLift(prevState => ({
@@ -45,8 +49,7 @@ export default function LiftItem(props: {
     useEffect(() => {
       LiftRepository.getLift(lift.def.id).then(result => {
         if (result != null) {
-          // TODO this loses the range
-          lift.sets = Utils.persistedToSets(result);
+          lift.sets = Utils.persistedToSets(result, lift.sets);
           setLift(lift);
         }
       });
@@ -81,7 +84,7 @@ export default function LiftItem(props: {
       {showHeader && <SetHeader></SetHeader>}
       <View>
         {Utils.normalizeSets(lift.sets).map((set, index) => (
-          <SetItem number={index + 1} set={set} key={index}></SetItem>
+          <SetItem set={set} key={index}></SetItem>
         ))}
       </View>
       {lift.persisted && (

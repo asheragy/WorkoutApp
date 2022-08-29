@@ -2,6 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
+import {lifts} from '../../data/LiftDatabase';
 import {Lift, GlobalSettings, LiftSet} from '../../types/types';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow} from './SetRows';
@@ -17,6 +18,7 @@ export default function LiftEditorModal(props: {
   const goal = props.lift.goal != undefined;
   console.log(props.lift);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const warmups = props.lift.sets.filter(x => x.warmup == true).length;
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -46,6 +48,7 @@ export default function LiftEditorModal(props: {
             <PersistedSetRow
               index={index}
               set={set}
+              warmupOffset={warmups}
               settings={settings}
               liftType={props.lift.def.type}
               key={index}

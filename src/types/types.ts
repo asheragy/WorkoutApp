@@ -18,6 +18,8 @@ export type Lift = {
 export type LiftSet = {
   weight: Weight;
   reps: Reps;
+  // TODO validate these are all at the beginning, some logic assumes that
+  warmup?: boolean;
 };
 
 export type Weight = {
@@ -73,6 +75,7 @@ export type Range = {
 export type NormalizedSet = {
   weight: string;
   reps: string;
+  label: string;
 };
 
 export type WeightEntry = {

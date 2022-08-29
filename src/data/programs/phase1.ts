@@ -30,18 +30,22 @@ function createPersisted(id: string, sets: LiftSet[], goal?: string): Lift {
 }
 
 function createSets(weight: number, reps: number, repeat: number): LiftSet[] {
-  var set: LiftSet = {
-    weight: {
-      value: weight,
-      range: {},
-    },
-    reps: {
-      value: reps,
-      range: {},
-    },
-  };
+  var result: LiftSet[] = [];
 
-  return [...Array(repeat).keys()].map(_ => set);
+  for (var i = 0; i < repeat; i++) {
+    result.push({
+      weight: {
+        value: weight,
+        range: {},
+      },
+      reps: {
+        value: reps,
+        range: {},
+      },
+    });
+  }
+
+  return result;
 }
 
 function getDLDay(block: number, week: number): WorkoutNode {
@@ -105,15 +109,26 @@ function getLowerDay(block: number, week: number): WorkoutNode {
 }
 
 function getPushDay(block: number, week: number): WorkoutNode {
+  var mainLift = getPyramidLift(block, week, LiftId.OverheadPress, 166);
+  var customDef = {...mainLift.def};
+  customDef.id += '2';
+
+  var customLift = createPersisted(LiftId.OverheadPress, createSets(95, 5, 2));
+  customLift.def = customDef;
+
+  var dumbellPress = createPersisted(
+    LiftId.BenchPress_Dumbell,
+    createSets(55, 10, 4),
+    '70 x 18',
+  );
+  dumbellPress.sets[0].warmup = true;
+
   return {
     name: 'Push Week ' + week + ' Block ' + block,
     lifts: [
-      getPyramidLift(block, week, LiftId.OverheadPress, 166),
-      createPersisted(
-        LiftId.BenchPress_Dumbell,
-        createSets(55, 10, 3),
-        '70 x 18',
-      ),
+      mainLift,
+      customLift,
+      dumbellPress,
       createPersisted(LiftId.LatRaises, createSets(15, 10, 3), '3x18'),
       createPersisted(LiftId.TricepExtension, createSets(35, 15, 3), '3x25'),
       createPersisted(
