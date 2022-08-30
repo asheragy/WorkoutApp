@@ -86,3 +86,8 @@ export type WeightEntry = {
 export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
 };
+
+export type PersistedSet = {
+  weight: number;
+  reps: number;
+};

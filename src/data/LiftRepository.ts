@@ -1,6 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Utils from '../components/Utils';
-import {Lift, LiftDef, LiftSet, Program, WorkoutNode} from '../types/types';
+import {
+  Lift,
+  LiftDef,
+  LiftSet,
+  PersistedSet,
+  Program,
+  WorkoutNode,
+} from '../types/types';
 
 const liftKeyPrefix = 'lift:';
 const historyKeyPrefix = 'liftHistory:';
@@ -8,11 +15,6 @@ const historyKeyPrefix = 'liftHistory:';
 export type PersistedLiftHistory = {
   date: Date;
   sets: PersistedSet[];
-};
-
-export type PersistedSet = {
-  weight: number;
-  reps: number;
 };
 
 export default class LiftRepository {

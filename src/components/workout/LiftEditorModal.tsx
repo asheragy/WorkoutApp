@@ -1,11 +1,11 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {lifts} from '../../data/LiftDatabase';
-import {Lift, GlobalSettings, LiftSet} from '../../types/types';
+import GoalRepository from '../../data/GoalRepository';
+import {Lift, GlobalSettings, LiftSet, PersistedSet} from '../../types/types';
 import {Style_LiftText} from './Common';
-import {SetHeader, PersistedSetRow} from './SetRows';
+import {SetHeader, PersistedSetRow, GoalSetRow} from './SetRows';
 
 export default function LiftEditorModal(props: {
   editing: boolean;
@@ -15,10 +15,54 @@ export default function LiftEditorModal(props: {
   onSetChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
+  const [goals, setGoals] = useState<PersistedSet[]>([]);
+
   const goal = props.lift.goal != undefined;
   console.log(props.lift);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
   const warmups = props.lift.sets.filter(x => x.warmup == true).length;
+
+  useEffect(() => {
+    GoalRepository.getGoal(props.lift.def.id).then(result => setGoals(result));
+  }, []);
+
+  function addGoal() {
+    // Default to last goal OR last item in lifts
+    var newGoal: PersistedSet;
+    if (goals.length > 0) newGoal = goals[goals.length - 1];
+    else {
+      var lastLift = props.lift.sets[props.lift.sets.length - 1];
+      newGoal = {
+        weight: lastLift.weight.value,
+        reps: lastLift.reps.value,
+      };
+    }
+
+    setGoals([
+      ...goals,
+      {
+        weight: newGoal.weight,
+        reps: newGoal.reps,
+      },
+    ]);
+  }
+
+  function removeGoal() {
+    setGoals(prev => prev.slice(0, -1));
+  }
+
+  function onGoalChanged(index: number, updatedSet: PersistedSet) {
+    console.log('onChanged');
+    var updatedGoals = [...goals];
+    updatedGoals[index] = updatedSet;
+
+    setGoals(updatedGoals);
+  }
+
+  async function onDone() {
+    await GoalRepository.saveGoal(props.lift.def, goals);
+    props.onFinish();
+  }
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -70,6 +114,41 @@ export default function LiftEditorModal(props: {
             </View>
           )}
 
+          {goals.length > 0 && (
+            <Text
+              style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
+              Goals
+            </Text>
+          )}
+          {goals.length > 0 && <SetHeader></SetHeader>}
+
+          {goals.map((set, index) => (
+            <GoalSetRow
+              index={index}
+              set={set}
+              settings={settings}
+              liftType={props.lift.def.type}
+              key={index}
+              onChange={onGoalChanged}></GoalSetRow>
+          ))}
+
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+            }}>
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button
+                disabled={goals.length == 0}
+                title="Remove Goal"
+                onPress={() => removeGoal()}></Button>
+            </View>
+
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button title="Add Goal" onPress={() => addGoal()}></Button>
+            </View>
+          </View>
+
           <View
             style={{
               marginTop: 10,
@@ -85,7 +164,7 @@ export default function LiftEditorModal(props: {
             </View>
 
             <View style={{width: '50%', marginHorizontal: 10}}>
-              <Button title="Done" onPress={() => props.onFinish()}></Button>
+              <Button title="Done" onPress={onDone}></Button>
             </View>
           </View>
         </View>

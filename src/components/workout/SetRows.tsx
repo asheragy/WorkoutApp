@@ -6,6 +6,7 @@ import {
   LiftSet,
   LiftType,
   GlobalSettings,
+  PersistedSet,
 } from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
@@ -117,6 +118,71 @@ export function PersistedSetRow(props: {
           onChange={newRepsValue =>
             update(props.set.weight.value, newRepsValue)
           }
+          decrementBy={() => 1}
+          incrementBy={() => 1}></NumberControl>
+      </View>
+    </View>
+  );
+}
+
+// TODO this could maybe be shared with PersistedSetRow but need to refactor a few things
+export function GoalSetRow(props: {
+  index: number;
+  set: PersistedSet;
+  liftType: LiftType;
+  settings: GlobalSettings;
+  onChange: (index: number, updatedSet: PersistedSet) => void;
+}) {
+  const {colors} = useTheme();
+
+  const update = (weight: number, reps: number) => {
+    var updatedSet: PersistedSet = {
+      weight: weight,
+      reps: reps,
+    };
+
+    props.onChange(props.index, updatedSet);
+  };
+
+  return (
+    <View style={{flexDirection: 'row', marginVertical: 4}}>
+      <Text
+        style={{
+          width: '20%',
+          textAlign: 'center',
+          textAlignVertical: 'center',
+          color: colors.text,
+        }}></Text>
+      <View
+        style={{
+          width: '60%',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <NumberControl
+          value={props.set.weight}
+          onChange={newWeightValue => update(newWeightValue, props.set.reps)}
+          decrementBy={() =>
+            props.set.weight -
+            Utils.decrementWeight(
+              props.set.weight,
+              props.liftType,
+              props.settings,
+            )
+          }
+          incrementBy={() =>
+            Utils.incrementWeight(
+              props.set.weight,
+              props.liftType,
+              props.settings,
+            ) - props.set.weight
+          }></NumberControl>
+      </View>
+      <View style={{width: '20%', flexDirection: 'row'}}>
+        <NumberControl
+          precision={0}
+          value={props.set.reps}
+          onChange={newRepsValue => update(props.set.weight, newRepsValue)}
           decrementBy={() => 1}
           incrementBy={() => 1}></NumberControl>
       </View>
