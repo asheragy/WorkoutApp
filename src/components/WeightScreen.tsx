@@ -19,6 +19,7 @@ import {
 import {RootStackParamList} from '../App';
 import WeightRepository from '../data/WeightRepository';
 import {WeightEntry} from '../types/types';
+import {MaterialHeaderButton} from './Common';
 import {NumberControl} from './NumberControl';
 import {ProgressChart} from './ProgressChart';
 
@@ -26,10 +27,6 @@ type Props = StackScreenProps<RootStackParamList, 'Weight'>;
 
 // TODO warning on screen load, might be 3rd party library using deprecated method
 LogBox.ignoreLogs(['EventEmitter.removeListener']);
-
-const MaterialHeaderButton = (props: any) => (
-  <HeaderButton {...props} iconSize={23} color="blue" />
-);
 
 export function WeightScreen({route, navigation}: Props) {
   const [current, setCurrent] = useState<number>(180);

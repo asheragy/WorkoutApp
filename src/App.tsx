@@ -12,10 +12,11 @@ import {
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {LiftScreen} from './components/LiftScreen';
-import {GlobalSettings, Lift} from './types/types';
+import {GlobalSettings, Lift, LiftDef} from './types/types';
 import {createStore} from 'redux';
 import settingsReducer from './state/settingsReducer';
 import {Provider} from 'react-redux';
+import {LiftListScreen} from './components/LiftListScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -27,8 +28,9 @@ export type RootStackParamList = {
   };
   Weight: undefined;
   Lift: {
-    lift: Lift;
+    lift: LiftDef;
   };
+  LiftList: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -69,9 +71,17 @@ const App = () => {
               name="Lift"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
-                title: route.params.lift.def.name,
+                title: route.params.lift.name,
               })}
               component={LiftScreen}
+            />
+            <Stack.Screen
+              name="LiftList"
+              options={{
+                title: 'Lifts',
+                headerStyle: styles.headerStyle,
+              }}
+              component={LiftListScreen}
             />
           </Stack.Navigator>
         </OverflowMenuProvider>

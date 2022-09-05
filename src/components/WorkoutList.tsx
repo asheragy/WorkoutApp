@@ -22,10 +22,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {updateSettings} from '../state/settingsAction';
-
-const MaterialHeaderButton = (props: any) => (
-  <HeaderButton {...props} iconSize={23} color="blue" />
-);
+import {MaterialHeaderButton} from './Common';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -56,10 +53,7 @@ export function WorkoutList({navigation, route, props}: Props) {
             <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
             <HiddenItem title="Reset" onPress={() => onReset()} />
-            <HiddenItem
-              title="Reset Lifts"
-              onPress={() => LiftRepository.clearAllLifts()}
-            />
+            <HiddenItem title="Lifts" onPress={() => onLifts()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -82,6 +76,10 @@ export function WorkoutList({navigation, route, props}: Props) {
 
   async function onReset() {
     if (await Repository.resetProgram()) loadState();
+  }
+
+  async function onLifts() {
+    navigation.navigate('LiftList');
   }
 
   async function onComplete(index: number) {

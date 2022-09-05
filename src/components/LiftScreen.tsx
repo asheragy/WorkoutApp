@@ -13,16 +13,16 @@ type Props = StackScreenProps<RootStackParamList, 'Lift'>;
 export function LiftScreen({route, navigation}: Props) {
   const [entries, setEntries] = useState<PersistedLiftHistory[]>([]);
   const {colors} = useTheme();
+  const def = route.params.lift;
 
   function loadState() {
-    LiftRepository.getHistory(route.params.lift.def.id).then(result => {
+    LiftRepository.getHistory(def.id).then(result => {
       setEntries(result);
     });
   }
 
   useEffect(loadState, []);
 
-  var def = route.params.lift.def;
   var dates = entries.map(x => x.date);
   var values = entries.map(x => calculateEstimated1RM(def, x.sets));
   var volume = entries.map(x => calculateVolume(def, x.sets));
