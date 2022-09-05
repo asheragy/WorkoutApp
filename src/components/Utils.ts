@@ -1,9 +1,9 @@
-import {PersistedSet} from '../data/LiftRepository';
 import {
   GlobalSettings,
   LiftSet,
   LiftType,
   NormalizedSet,
+  PersistedSet,
   Reps,
   Weight,
 } from '../types/types';

@@ -3,10 +3,8 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../App';
-import LiftRepository, {
-  PersistedLiftHistory,
-  PersistedSet,
-} from '../data/LiftRepository';
+import LiftRepository, {PersistedLiftHistory} from '../data/LiftRepository';
+import {PersistedSet} from '../types/types';
 import {ProgressChart} from './ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Lift'>;
