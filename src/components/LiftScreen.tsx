@@ -4,8 +4,9 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import LiftRepository, {PersistedLiftHistory} from '../data/LiftRepository';
-import {PersistedSet} from '../types/types';
+import {LiftDef, PersistedSet} from '../types/types';
 import {ProgressChart} from './ProgressChart';
+import Utils from './Utils';
 
 type Props = StackScreenProps<RootStackParamList, 'Lift'>;
 
@@ -21,9 +22,10 @@ export function LiftScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
+  var def = route.params.lift.def;
   var dates = entries.map(x => x.date);
-  var values = entries.map(x => calculateEstimated1RM(x.sets));
-  var volume = entries.map(x => calculateVolume(x.sets));
+  var values = entries.map(x => calculateEstimated1RM(def, x.sets));
+  var volume = entries.map(x => calculateVolume(def, x.sets));
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -36,21 +38,21 @@ export function LiftScreen({route, navigation}: Props) {
   );
 }
 
-function calculateEstimated1RM(sets: PersistedSet[]): number {
+function calculateEstimated1RM(def: LiftDef, sets: PersistedSet[]): number {
   var sum = 0;
   for (var i = 0; i < sets.length; i++) {
     var set = sets[i];
-    sum += set.weight + set.weight * 0.0333 * set.reps;
+    sum += Utils.calculate1RM(def, set);
   }
 
   return Math.round(sum / sets.length);
 }
 
-function calculateVolume(sets: PersistedSet[]): number {
+function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
   var sum = 0;
   for (var i = 0; i < sets.length; i++) {
     var set = sets[i];
-    sum += set.weight * set.reps;
+    sum += Utils.calculateVolume(def, set);
   }
 
   return sum;

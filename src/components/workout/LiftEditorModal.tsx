@@ -3,7 +3,14 @@ import React, {useEffect, useState} from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import GoalRepository from '../../data/GoalRepository';
-import {Lift, GlobalSettings, LiftSet, PersistedSet} from '../../types/types';
+import {
+  Lift,
+  GlobalSettings,
+  LiftSet,
+  PersistedSet,
+  LiftDef,
+} from '../../types/types';
+import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow, GoalSetRow} from './SetRows';
 
@@ -117,7 +124,9 @@ export default function LiftEditorModal(props: {
           {goals.length > 0 && (
             <Text
               style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-              {'Goals ' + goalPercentage(goals, props.lift.sets) + '%'}
+              {'Goals ' +
+                goalPercentage(props.lift.def, goals, props.lift.sets) +
+                '%'}
             </Text>
           )}
           {goals.length > 0 && <SetHeader></SetHeader>}
@@ -173,13 +182,17 @@ export default function LiftEditorModal(props: {
   );
 }
 
-function goalPercentage(goals: PersistedSet[], current: LiftSet[]): string {
+function goalPercentage(
+  def: LiftDef,
+  goals: PersistedSet[],
+  current: LiftSet[],
+): string {
   // Sort with highest first
   var goal1rm = goals
-    .map(set => set.weight + set.weight * 0.0333 * set.reps)
+    .map(set => Utils.calculate1RM(def, set))
     .sort((a, b) => b - a);
   var current1rm = current
-    .map(set => set.weight.value + set.weight.value * 0.0333 * set.reps.value)
+    .map(set => Utils.calculate1RM(def, set))
     .sort((a, b) => b - a);
 
   const size = Math.min(goal1rm.length, current1rm.length);

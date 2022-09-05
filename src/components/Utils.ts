@@ -1,5 +1,6 @@
 import {
   GlobalSettings,
+  LiftDef,
   LiftSet,
   LiftType,
   NormalizedSet,
@@ -107,5 +108,24 @@ export default class Utils {
     }
 
     return current - step;
+  }
+
+  static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
+    // TODO bodyweight as parameter that is based on last tracked weight
+    const bodyweight = 200;
+    var weight = typeof set.weight === 'number' ? set.weight : set.weight.value;
+    const reps = typeof set.reps === 'number' ? set.reps : set.reps.value;
+
+    if (def.type == LiftType.Bodyweight) weight += bodyweight;
+
+    return weight + weight * 0.0333 * reps;
+  }
+
+  static calculateVolume(def: LiftDef, set: PersistedSet): number {
+    const bodyweight = 200;
+    var weight = set.weight + (bodyweight ? 200 : 0);
+    var reps = set.reps;
+
+    return weight * reps;
   }
 }
