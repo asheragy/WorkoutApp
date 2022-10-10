@@ -52,16 +52,24 @@ export default class Utils {
     sets: PersistedSet[],
     definedSets: LiftSet[],
   ): LiftSet[] {
-    return sets.map((set, index) => {
-      if (index < definedSets.length) {
-        var modifiedSet = definedSets[index];
-        modifiedSet.reps.value = set.reps;
-        modifiedSet.weight.value = set.weight;
+    const warmups = definedSets.filter(x => x.warmup == true);
+    const workSets = definedSets.filter(
+      x => x.warmup == undefined || x.warmup == false,
+    );
+
+    const mapped = workSets.map((set, index) => {
+      if (index < sets.length) {
+        var persisted = sets[index];
+        var modifiedSet = set;
+        modifiedSet.reps.value = persisted.reps;
+        modifiedSet.weight.value = persisted.weight;
         return modifiedSet;
       }
 
-      return this.persistedToSet(set);
+      return set;
     });
+
+    return warmups.concat(mapped);
   }
 
   static persistedToSet(set: PersistedSet): LiftSet {

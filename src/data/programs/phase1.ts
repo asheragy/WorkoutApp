@@ -73,7 +73,7 @@ function getBenchDay(block: number, week: number): WorkoutNode {
 
   return {
     name: 'Bench Week ' + week + ' Block ' + block,
-    lifts: [getPyramidLift(block, week, LiftId.BenchPress, trainingMax)],
+    lifts: [createPersisted(LiftId.BenchPress, createSets(185, 5, 5))],
   };
 }
 
@@ -109,25 +109,18 @@ function getLowerDay(block: number, week: number): WorkoutNode {
 }
 
 function getPushDay(block: number, week: number): WorkoutNode {
-  var mainLift = getPyramidLift(block, week, LiftId.OverheadPress, 166);
-  var customDef = {...mainLift.def};
-  customDef.id += '2';
-
-  var customLift = createPersisted(LiftId.OverheadPress, createSets(95, 5, 2));
-  customLift.def = customDef;
-
   var dumbellPress = createPersisted(
     LiftId.BenchPress_Dumbell,
     createSets(55, 10, 4),
     '70 x 18',
   );
+
   dumbellPress.sets[0].warmup = true;
 
   return {
     name: 'Push Week ' + week + ' Block ' + block,
     lifts: [
-      mainLift,
-      customLift,
+      createPersisted(LiftId.OverheadPress, createSets(115, 5, 5)),
       dumbellPress,
       createPersisted(LiftId.LatRaises, createSets(15, 10, 3), '3x18'),
       createPersisted(LiftId.TricepExtension, createSets(35, 15, 3), '3x25'),
@@ -220,7 +213,7 @@ export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
   var counter = 0;
 
-  for (var block = 1; block <= 3; block++) {
+  for (var block = 2; block <= 3; block++) {
     for (var week = 1; week <= 5; week++) {
       workouts.push(counter++ % 2 == 0 ? getStretch1() : getStretch2());
       workouts.push(getDLDay(block, week));

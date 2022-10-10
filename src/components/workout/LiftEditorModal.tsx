@@ -201,7 +201,7 @@ function goalPercentage(
     sum += current1rm[i] / goal1rm[i];
   }
 
-  return (sum / size).toFixed(2);
+  return ((100 * sum) / size).toFixed(1);
 }
 
 const styles = StyleSheet.create({
