@@ -40,8 +40,8 @@ export default function LiftEditorModal(props: {
     else {
       var lastLift = props.lift.sets[props.lift.sets.length - 1];
       newGoal = {
-        weight: lastLift.weight.value,
-        reps: lastLift.reps.value,
+        weight: lastLift.weight || 0,
+        reps: lastLift.reps || 0,
       };
     }
 

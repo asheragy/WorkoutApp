@@ -24,17 +24,13 @@ export default function LiftItem(props: {
     console.log('before update');
 
     updatedLift.sets.forEach(x =>
-      console.log(
-        '  ' + x.weight.value + ' x ' + x.reps.value + ' ' + x.warmup,
-      ),
+      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
     );
 
     updatedLift.sets[index] = updatedSet;
     console.log('after update');
     updatedLift.sets.forEach(x =>
-      console.log(
-        '  ' + x.weight.value + ' x ' + x.reps.value + ' ' + x.warmup,
-      ),
+      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
     );
 
     setLift(prevState => ({

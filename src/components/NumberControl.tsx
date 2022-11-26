@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 
 export function NumberControl(props: {
-  value: number;
+  value?: number;
   precision?: number;
   decrementBy: () => number;
   incrementBy: () => number;
@@ -31,6 +31,8 @@ export function NumberControl(props: {
     props.onChange(parseFloat(strValue));
   }
 
+  var currValue = props.value || 0;
+
   return (
     <View
       style={{
@@ -39,7 +41,7 @@ export function NumberControl(props: {
       }}>
       <TouchableOpacity
         style={styles.counterButtonContainer}
-        onPress={() => setValue(props.value - props.decrementBy())}>
+        onPress={() => setValue(currValue - props.decrementBy())}>
         <Text style={styles.counterButtonText}>-</Text>
       </TouchableOpacity>
 
@@ -50,7 +52,7 @@ export function NumberControl(props: {
       </TextInput>
       <TouchableOpacity
         style={styles.counterButtonContainer}
-        onPress={() => setValue(props.value + props.incrementBy())}>
+        onPress={() => setValue(currValue + props.incrementBy())}>
         <Text style={styles.counterButtonText}>+</Text>
       </TouchableOpacity>
     </View>

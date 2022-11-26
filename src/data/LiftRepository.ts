@@ -119,14 +119,14 @@ export default class LiftRepository {
 
   private static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
     var filtered = sets.filter(x => x.warmup != true);
+    filtered = sets.filter(x => x.reps != undefined && x.weight != undefined);
+
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
     return filtered.map(set => {
-      // TODO assert range is set since thats what is used to determine persisted
-      // Whatever calls this should be doing that as well
       var res: PersistedSet = {
-        weight: set.weight.value,
-        reps: set.reps.value,
+        weight: set.weight!!,
+        reps: set.reps!!,
       };
 
       return res;

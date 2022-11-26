@@ -6,36 +6,20 @@ export {};
 test('normalizeSets repeated lifts', () => {
   var sets: LiftSet[] = [
     {
-      weight: {
-        value: 100,
-      },
-      reps: {
-        value: 5,
-      },
+      weight: 100,
+      reps: 5,
     },
     {
-      weight: {
-        value: 110,
-      },
-      reps: {
-        value: 10,
-      },
+      weight: 110,
+      reps: 10,
     },
     {
-      weight: {
-        value: 110,
-      },
-      reps: {
-        value: 10,
-      },
+      weight: 110,
+      reps: 10,
     },
     {
-      weight: {
-        value: 110,
-      },
-      reps: {
-        value: 10,
-      },
+      weight: 110,
+      reps: 10,
     },
   ];
 

@@ -34,14 +34,8 @@ function createSets(weight: number, reps: number, repeat: number): LiftSet[] {
 
   for (var i = 0; i < repeat; i++) {
     result.push({
-      weight: {
-        value: weight,
-        range: {},
-      },
-      reps: {
-        value: reps,
-        range: {},
-      },
+      weight: weight,
+      reps: reps,
     });
   }
 
@@ -233,64 +227,6 @@ export default function getProgram(): Program {
 
   return {
     workouts: workouts,
-  };
-}
-
-function getPyramidLift(
-  block: number,
-  week: number,
-  id: string,
-  trainingMax: number,
-): Lift {
-  const minReps = 5 + block;
-  const reps = minReps + Math.floor((week - 1) / 2);
-  const percent = 0.7 + 0.025 * Math.floor(week / 2);
-
-  return {
-    def: getLift(id),
-    persisted: false,
-    sets: [
-      {
-        weight: {
-          value: round5(trainingMax, percent - 0.1),
-        },
-        reps: {
-          value: reps,
-        },
-      },
-      {
-        weight: {
-          value: round5(trainingMax, percent - 0.05),
-        },
-        reps: {
-          value: reps,
-        },
-      },
-      {
-        weight: {
-          value: round5(trainingMax, percent),
-        },
-        reps: {
-          value: reps,
-        },
-      },
-      {
-        weight: {
-          value: round5(trainingMax, percent - 0.05),
-        },
-        reps: {
-          value: reps,
-        },
-      },
-      {
-        weight: {
-          value: round5(trainingMax, percent - 0.1),
-        },
-        reps: {
-          value: reps,
-        },
-      },
-    ],
   };
 }
 

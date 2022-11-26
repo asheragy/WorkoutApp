@@ -5,8 +5,6 @@ import {
   LiftType,
   NormalizedSet,
   PersistedSet,
-  Reps,
-  Weight,
 } from '../types/types';
 
 export default class Utils {
@@ -26,26 +24,11 @@ export default class Utils {
 
   private static normalizeLiftSet(set: LiftSet): NormalizedSet {
     return {
-      weight: Utils.weightToString(set.weight),
-      reps: Utils.repsToString(set.reps),
+      // TODO depending on usages not sure if 0 is the correct default here
+      weight: (set.weight || 0) + 'lb',
+      reps: (set.reps || 0) + '',
       label: set.warmup ? 'W' : '',
     };
-  }
-
-  static weightToString(weight: Weight): string {
-    return weight.value + 'lb';
-  }
-
-  static repsToString(reps: Reps): string {
-    var str = reps.value.toString();
-
-    if (reps.range != undefined) {
-      if (reps.range.min == 0 && reps.range.max == undefined) str = str + '+';
-      else if (reps.range.min != undefined && reps.range.max != undefined)
-        str += reps.range.min + '-' + reps.range.max;
-    }
-
-    return str;
   }
 
   static persistedToSets(
@@ -61,8 +44,8 @@ export default class Utils {
       if (index < sets.length) {
         var persisted = sets[index];
         var modifiedSet = set;
-        modifiedSet.reps.value = persisted.reps;
-        modifiedSet.weight.value = persisted.weight;
+        modifiedSet.reps = persisted.reps;
+        modifiedSet.weight = persisted.weight;
         return modifiedSet;
       }
 
@@ -74,12 +57,8 @@ export default class Utils {
 
   static persistedToSet(set: PersistedSet): LiftSet {
     return {
-      weight: {
-        value: set.weight,
-      },
-      reps: {
-        value: set.reps,
-      },
+      weight: set.weight,
+      reps: set.reps,
     };
   }
 
@@ -121,8 +100,8 @@ export default class Utils {
   static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
-    var weight = typeof set.weight === 'number' ? set.weight : set.weight.value;
-    const reps = typeof set.reps === 'number' ? set.reps : set.reps.value;
+    var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
+    const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
 
     if (def.type == LiftType.Bodyweight) weight += bodyweight;
 

@@ -56,17 +56,11 @@ export function PersistedSetRow(props: {
 }) {
   const {colors} = useTheme();
 
-  const update = (weight: number, reps: number) => {
+  const update = (weight?: number, reps?: number) => {
     // TODO full object copy needed here
     var updatedSet: LiftSet = {
-      weight: {
-        value: weight,
-        range: props.set.weight.range,
-      },
-      reps: {
-        value: reps,
-        range: props.set.reps.range,
-      },
+      weight: weight,
+      reps: reps,
       warmup: props.set.warmup,
     };
 
@@ -91,33 +85,29 @@ export function PersistedSetRow(props: {
           justifyContent: 'center',
         }}>
         <NumberControl
-          value={props.set.weight.value}
-          onChange={newWeightValue =>
-            update(newWeightValue, props.set.reps.value)
-          }
+          value={props.set.weight}
+          onChange={newWeightValue => update(newWeightValue, props.set.reps)}
           decrementBy={() =>
-            props.set.weight.value -
+            (props.set.weight || 0) -
             Utils.decrementWeight(
-              props.set.weight.value,
+              props.set.weight || 0,
               props.liftType,
               props.settings,
             )
           }
           incrementBy={() =>
             Utils.incrementWeight(
-              props.set.weight.value,
+              props.set.weight || 0,
               props.liftType,
               props.settings,
-            ) - props.set.weight.value
+            ) - (props.set.weight || 0)
           }></NumberControl>
       </View>
       <View style={{width: '20%', flexDirection: 'row'}}>
         <NumberControl
           precision={0}
-          value={props.set.reps.value}
-          onChange={newRepsValue =>
-            update(props.set.weight.value, newRepsValue)
-          }
+          value={props.set.reps}
+          onChange={newRepsValue => update(props.set.weight, newRepsValue)}
           decrementBy={() => 1}
           incrementBy={() => 1}></NumberControl>
       </View>

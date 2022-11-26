@@ -11,32 +11,16 @@ export type WorkoutNode = {
 export type Lift = {
   def: LiftDef;
   sets: LiftSet[];
-  goal?: string; // This could be a list
-  persisted: boolean;
+  goal?: string; // This could be a list // TODO this might be obsolete
+  persisted: boolean; // TODO remove this, everything is persisted now
 };
 
 export type LiftSet = {
-  weight: Weight;
-  reps: Reps;
+  weight?: number;
+  reps?: number;
+  // TODO this is no longer true for warmups
   // TODO validate these are all at the beginning, some logic assumes that
   warmup?: boolean;
-};
-
-export type Weight = {
-  // TODO for custom lifts no default should be required so value could be nullable
-  value: number;
-  // Editable if range exists, default is unlimited
-  range?: Range;
-};
-
-export type Reps = {
-  value: number;
-  // AMRAP    = 0 / undefined
-  // AMRAP 5+ = 5 / undefined
-  // Any      = undefined / undefined
-  // Range    = 8 / 12
-  // Up to    = undefined / 12
-  range?: Range;
 };
 
 export enum LiftType {
@@ -90,4 +74,5 @@ export type GlobalSettings = {
 export type PersistedSet = {
   weight: number;
   reps: number;
+  // TODO start saving warmup
 };
