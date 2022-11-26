@@ -11,8 +11,6 @@ export type WorkoutNode = {
 export type Lift = {
   def: LiftDef;
   sets: LiftSet[];
-  goal?: string; // This could be a list // TODO this might be obsolete
-  persisted: boolean; // TODO remove this, everything is persisted now
 };
 
 export type LiftSet = {

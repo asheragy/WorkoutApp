@@ -41,16 +41,14 @@ export default function LiftItem(props: {
     LiftRepository.saveLift(updatedLift);
   };
 
-  if (lift.persisted) {
-    useEffect(() => {
-      LiftRepository.getLift(lift.def.id).then(result => {
-        if (result != null) {
-          lift.sets = Utils.persistedToSets(result);
-          setLift(lift);
-        }
-      });
-    }, []);
-  }
+  useEffect(() => {
+    LiftRepository.getLift(lift.def.id).then(result => {
+      if (result != null) {
+        lift.sets = Utils.persistedToSets(result);
+        setLift(lift);
+      }
+    });
+  }, []);
 
   return (
     <View style={{marginVertical: 0}}>
@@ -70,11 +68,9 @@ export default function LiftItem(props: {
             alignContent: 'center',
             justifyContent: 'center',
           }}>
-          {lift.persisted && (
-            <TouchableOpacity onPress={() => setEditing(true)}>
-              <Image style={{}} source={require('../../icons/edit.png')} />
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity onPress={() => setEditing(true)}>
+            <Image style={{}} source={require('../../icons/edit.png')} />
+          </TouchableOpacity>
         </View>
       </View>
       {showHeader && <SetHeader></SetHeader>}
@@ -83,16 +79,14 @@ export default function LiftItem(props: {
           <SetItem set={set} key={index}></SetItem>
         ))}
       </View>
-      {lift.persisted && (
-        <View>
-          <LiftEditorModal
-            editing={editing}
-            lift={lift}
-            onSetChange={onSetChange}
-            onViewLog={() => props.onViewLog(lift)}
-            onFinish={() => setEditing(false)}></LiftEditorModal>
-        </View>
-      )}
+      <View>
+        <LiftEditorModal
+          editing={editing}
+          lift={lift}
+          onSetChange={onSetChange}
+          onViewLog={() => props.onViewLog(lift)}
+          onFinish={() => setEditing(false)}></LiftEditorModal>
+      </View>
     </View>
   );
 }

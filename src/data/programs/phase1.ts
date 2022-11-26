@@ -18,14 +18,12 @@ function getLift(id: string): LiftDef {
   return lookupDef(id, CustomLifts);
 }
 
-function createPersisted(id: string, sets: LiftSet[], goal?: string): Lift {
+function createPersisted(id: string, sets: LiftSet[]): Lift {
   var def = getLift(id);
 
   return {
     def: def,
     sets: sets,
-    goal: goal,
-    persisted: true,
   };
 }
 
@@ -52,12 +50,12 @@ function getDLDay(block: number, week: number): WorkoutNode {
       },
     ],
     lifts: [
-      createPersisted(LiftId.DeadLift_TrapBar, createSets(225, 5, 2), '315x10'),
-      createPersisted(LiftId.Lunges, createSets(0, 5, 3), '15-20lb x 15'),
-      createPersisted(LiftId.CalfRaises, createSets(70, 10, 4), '15 reps'),
-      createPersisted(LiftId.LegExtensions, createSets(60, 10, 2), '18 reps'),
-      createPersisted(LiftId.LegCurls, createSets(90, 10, 2), '18 reps'),
-      createPersisted(LiftId.LegPress, createSets(45, 10, 1), '20 reps'),
+      createPersisted(LiftId.DeadLift_TrapBar, createSets(225, 5, 2)),
+      createPersisted(LiftId.Lunges, createSets(0, 5, 3)),
+      createPersisted(LiftId.CalfRaises, createSets(70, 10, 4)),
+      createPersisted(LiftId.LegExtensions, createSets(60, 10, 2)),
+      createPersisted(LiftId.LegCurls, createSets(90, 10, 2)),
+      createPersisted(LiftId.LegPress, createSets(45, 10, 1)),
     ],
   };
 }
@@ -75,15 +73,11 @@ function getUpperDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Upper Week ' + week + ' Block ' + block,
     lifts: [
-      createPersisted(LiftId.Pullups, createSets(0, 2, 6), '3x5, 3x10'),
-      createPersisted(LiftId.Dips, createSets(0, 6, 5), '5x10'),
-      createPersisted(
-        LiftId.InclinePress_Dumbell,
-        createSets(30, 10, 3),
-        '3x15',
-      ),
-      createPersisted(LiftId.Curls_EzBar, createSets(60, 10, 3), '3x18'),
-      createPersisted(LiftId.FacePulls, createSets(50, 15, 2), '2x25'),
+      createPersisted(LiftId.Pullups, createSets(0, 2, 6)),
+      createPersisted(LiftId.Dips, createSets(0, 6, 5)),
+      createPersisted(LiftId.InclinePress_Dumbell, createSets(30, 10, 3)),
+      createPersisted(LiftId.Curls_EzBar, createSets(60, 10, 3)),
+      createPersisted(LiftId.FacePulls, createSets(50, 15, 2)),
     ],
   };
 }
@@ -92,11 +86,11 @@ function getLowerDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Lower Week ' + week + ' Block ' + block,
     lifts: [
-      createPersisted(LiftId.DeadLift_Sumo, createSets(135, 10, 1), '225 x 10'),
-      createPersisted(LiftId.FrontSquat, createSets(45, 10, 1), '115 x 15'),
-      createPersisted(LiftId.SSBSquat, createSets(95, 10, 1), '135 x 15'),
-      createPersisted(LiftId.HatfieldSquat, createSets(135, 10, 1), '155 x 15'),
-      createPersisted(LiftId.RDL, createSets(95, 10, 3), '3x15'),
+      createPersisted(LiftId.DeadLift_Sumo, createSets(135, 10, 1)),
+      createPersisted(LiftId.FrontSquat, createSets(45, 10, 1)),
+      createPersisted(LiftId.SSBSquat, createSets(95, 10, 1)),
+      createPersisted(LiftId.HatfieldSquat, createSets(135, 10, 1)),
+      createPersisted(LiftId.RDL, createSets(95, 10, 3)),
       createPersisted(CustomLift_HomeCalfRaises, createSets(0, 20, 3)),
     ],
   };
@@ -106,7 +100,6 @@ function getPushDay(block: number, week: number): WorkoutNode {
   var dumbellPress = createPersisted(
     LiftId.BenchPress_Dumbell,
     createSets(55, 10, 4),
-    '70 x 18',
   );
 
   dumbellPress.sets[0].warmup = true;
@@ -116,12 +109,11 @@ function getPushDay(block: number, week: number): WorkoutNode {
     lifts: [
       createPersisted(LiftId.OverheadPress, createSets(115, 5, 5)),
       dumbellPress,
-      createPersisted(LiftId.LatRaises, createSets(15, 10, 3), '3x18'),
-      createPersisted(LiftId.TricepExtension, createSets(35, 15, 3), '3x25'),
+      createPersisted(LiftId.LatRaises, createSets(15, 10, 3)),
+      createPersisted(LiftId.TricepExtension, createSets(35, 15, 3)),
       createPersisted(
         LiftId.HammerStrength_OverheadPress,
         createSets(25, 10, 1),
-        '45lb x 20',
       ),
     ],
   };
@@ -131,19 +123,14 @@ function getPullDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Pull Week ' + week + ' Block ' + block,
     lifts: [
-      createPersisted(LiftId.DumbellRows, createSets(80, 6, 5), '5x10'),
+      createPersisted(LiftId.DumbellRows, createSets(80, 6, 5)),
       createPersisted(
         LiftId.HammerStrength_Pulldown,
         createSets(45 + 25, 10, 3),
-        '90lb x 15',
       ),
-      createPersisted(
-        LiftId.Curls_ReverseBarbell,
-        createSets(55, 10, 3),
-        '3x15',
-      ),
-      createPersisted(LiftId.ReverseFlys, createSets(70, 15, 3), '3x25'),
-      createPersisted(LiftId.HammerCurls, createSets(25, 10, 3), '3x15'),
+      createPersisted(LiftId.Curls_ReverseBarbell, createSets(55, 10, 3)),
+      createPersisted(LiftId.ReverseFlys, createSets(70, 15, 3)),
+      createPersisted(LiftId.HammerCurls, createSets(25, 10, 3)),
     ],
   };
 }

@@ -32,12 +32,10 @@ export default class Repository {
       for (let i = 0; i < wo.node.lifts.length; i++) {
         const lift = wo.node.lifts[i];
 
-        if (lift.persisted) {
-          if (map.has(lift.def.id)) {
-            var persisted = map.get(lift.def.id) as PersistedSet[];
-            lift.sets = Utils.persistedToSets(persisted);
-            wo.node.lifts[i] = lift;
-          }
+        if (map.has(lift.def.id)) {
+          var persisted = map.get(lift.def.id) as PersistedSet[];
+          lift.sets = Utils.persistedToSets(persisted);
+          wo.node.lifts[i] = lift;
         }
       }
     }

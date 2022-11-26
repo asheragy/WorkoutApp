@@ -24,7 +24,6 @@ export default function LiftEditorModal(props: {
   const {colors} = useTheme();
   const [goals, setGoals] = useState<PersistedSet[]>([]);
 
-  const goal = props.lift.goal != undefined;
   console.log(props.lift);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
   const warmups = props.lift.sets.filter(x => x.warmup == true).length;
@@ -105,21 +104,6 @@ export default function LiftEditorModal(props: {
               key={index}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
-
-          {goal && (
-            // TODO unsure if this should go here or the main workout screen
-            <View style={{flexDirection: 'row', marginVertical: 8}}>
-              <Text
-                style={{width: '20%', color: colors.text, textAlign: 'center'}}>
-                Goal
-              </Text>
-              <Text
-                style={{width: '60%', color: colors.text, textAlign: 'center'}}>
-                {props.lift.goal}
-              </Text>
-              <Text style={{width: '20%'}}></Text>
-            </View>
-          )}
 
           {goals.length > 0 && (
             <Text

@@ -38,12 +38,10 @@ export default class LiftRepository {
       for (let i = 0; i < wo.lifts.length; i++) {
         const lift = wo.lifts[i];
 
-        if (lift.persisted) {
-          if (!map.has(lift.def.id) && !ignore.has(lift.def.id)) {
-            var persisted = await this.getLift(lift.def.id);
-            if (persisted != null) map.set(lift.def.id, persisted);
-            else ignore.add(lift.def.id);
-          }
+        if (!map.has(lift.def.id) && !ignore.has(lift.def.id)) {
+          var persisted = await this.getLift(lift.def.id);
+          if (persisted != null) map.set(lift.def.id, persisted);
+          else ignore.add(lift.def.id);
         }
       }
     }
@@ -52,7 +50,6 @@ export default class LiftRepository {
   }
 
   static async saveLift(lift: Lift): Promise<void> {
-    if (!lift.persisted) throw new Error('Cannot save this type of lift');
     return this.saveSets(lift.def, LiftRepository.setsToPersisted(lift.sets));
   }
 
@@ -95,17 +92,15 @@ export default class LiftRepository {
   static async addAllHistory(workout: WorkoutNode): Promise<void> {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
-      // TODO may start saving everything
-      if (lift.persisted) {
-        // TODO why is this needed?
-        var savedValue = await this.getLift(lift.def.id);
-        var persistedSets: PersistedSet[] = [];
 
-        if (savedValue != null) persistedSets = savedValue;
-        else persistedSets = LiftRepository.setsToPersisted(lift.sets);
+      // TODO why is this needed?
+      var savedValue = await this.getLift(lift.def.id);
+      var persistedSets: PersistedSet[] = [];
 
-        this.addHistory(lift.def.id, persistedSets);
-      }
+      if (savedValue != null) persistedSets = savedValue;
+      else persistedSets = LiftRepository.setsToPersisted(lift.sets);
+
+      await this.addHistory(lift.def.id, persistedSets);
     }
   }
 
