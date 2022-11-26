@@ -192,6 +192,7 @@ function goalPercentage(
     .map(set => Utils.calculate1RM(def, set))
     .sort((a, b) => b - a);
   var current1rm = current
+    .filter(set => set.warmup != true)
     .map(set => Utils.calculate1RM(def, set))
     .sort((a, b) => b - a);
 

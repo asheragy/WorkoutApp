@@ -42,7 +42,7 @@ function calculateEstimated1RM(def: LiftDef, sets: PersistedSet[]): number {
   var sum = 0;
   for (var i = 0; i < sets.length; i++) {
     var set = sets[i];
-    sum += Utils.calculate1RM(def, set);
+    if (set.warmup != true) sum += Utils.calculate1RM(def, set);
   }
 
   return Math.round(sum / sets.length);
@@ -52,7 +52,7 @@ function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
   var sum = 0;
   for (var i = 0; i < sets.length; i++) {
     var set = sets[i];
-    sum += Utils.calculateVolume(def, set);
+    if (set.warmup != true) sum += Utils.calculateVolume(def, set);
   }
 
   return sum;

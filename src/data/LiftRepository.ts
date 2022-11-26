@@ -97,29 +97,22 @@ export default class LiftRepository {
       var lift = workout.lifts[i];
       // TODO may start saving everything
       if (lift.persisted) {
+        // TODO why is this needed?
         var savedValue = await this.getLift(lift.def.id);
         var persistedSets: PersistedSet[] = [];
 
         if (savedValue != null) persistedSets = savedValue;
         else persistedSets = LiftRepository.setsToPersisted(lift.sets);
 
-        // Don't save warmups to history
-        var filtered = persistedSets.filter((set, index) => {
-          if (index < lift.sets.length) {
-            return lift.sets[index].warmup != true;
-          }
-
-          return true;
-        });
-
-        this.addHistory(lift.def.id, filtered);
+        this.addHistory(lift.def.id, persistedSets);
       }
     }
   }
 
   private static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
-    var filtered = sets.filter(x => x.warmup != true);
-    filtered = sets.filter(x => x.reps != undefined && x.weight != undefined);
+    var filtered = sets.filter(
+      x => x.reps != undefined && x.weight != undefined,
+    );
 
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
@@ -127,6 +120,7 @@ export default class LiftRepository {
       var res: PersistedSet = {
         weight: set.weight!!,
         reps: set.reps!!,
+        warmup: set.warmup || false,
       };
 
       return res;

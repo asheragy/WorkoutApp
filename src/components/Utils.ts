@@ -31,34 +31,23 @@ export default class Utils {
     };
   }
 
-  static persistedToSets(
-    sets: PersistedSet[],
-    definedSets: LiftSet[],
-  ): LiftSet[] {
-    const warmups = definedSets.filter(x => x.warmup == true);
-    const workSets = definedSets.filter(
-      x => x.warmup == undefined || x.warmup == false,
-    );
+  static persistedToSets(sets: PersistedSet[]): LiftSet[] {
+    return sets.map(set => {
+      var result: LiftSet = {
+        weight: set.weight,
+        reps: set.reps,
+        warmup: set.warmup,
+      };
 
-    const mapped = workSets.map((set, index) => {
-      if (index < sets.length) {
-        var persisted = sets[index];
-        var modifiedSet = set;
-        modifiedSet.reps = persisted.reps;
-        modifiedSet.weight = persisted.weight;
-        return modifiedSet;
-      }
-
-      return set;
+      return result;
     });
-
-    return warmups.concat(mapped);
   }
 
   static persistedToSet(set: PersistedSet): LiftSet {
     return {
       weight: set.weight,
       reps: set.reps,
+      warmup: set.warmup,
     };
   }
 
@@ -98,6 +87,7 @@ export default class Utils {
   }
 
   static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
+    if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
     var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
@@ -109,6 +99,8 @@ export default class Utils {
   }
 
   static calculateVolume(def: LiftDef, set: PersistedSet): number {
+    if (set.warmup == true) throw new Error('Volume calculation on warmup');
+
     const bodyweight = 200;
     var weight = set.weight + (bodyweight ? 200 : 0);
     var reps = set.reps;

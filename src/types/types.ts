@@ -74,5 +74,5 @@ export type GlobalSettings = {
 export type PersistedSet = {
   weight: number;
   reps: number;
-  // TODO start saving warmup
+  warmup?: boolean;
 };

@@ -45,7 +45,7 @@ export default function LiftItem(props: {
     useEffect(() => {
       LiftRepository.getLift(lift.def.id).then(result => {
         if (result != null) {
-          lift.sets = Utils.persistedToSets(result, lift.sets);
+          lift.sets = Utils.persistedToSets(result);
           setLift(lift);
         }
       });
