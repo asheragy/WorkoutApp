@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import {Lift, GlobalSettings} from '../types/types';
 import {
-  HeaderButton,
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
@@ -17,8 +16,7 @@ import {
 import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import SettingsRepository from '../data/SettingsRepository';
-import LiftRepository from '../data/LiftRepository';
-import {connect, useDispatch, useSelector} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {updateSettings} from '../state/settingsAction';

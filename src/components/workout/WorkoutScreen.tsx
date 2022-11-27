@@ -28,7 +28,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   };
 
   function onViewLog(lift: Lift) {
-    navigation.navigate('Lift', {lift: lift.def});
+    navigation.navigate('LiftLog', {lift: lift.def});
   }
 
   return (

@@ -44,7 +44,7 @@ export function LiftListScreen({route, navigation}: Props) {
   useEffect(loadState, []);
 
   function onClick(def: LiftDef) {
-    navigation.navigate('Lift', {
+    navigation.navigate('LiftLog', {
       lift: def,
     });
   }

@@ -8,9 +8,9 @@ import {LiftDef, PersistedSet} from '../types/types';
 import {ProgressChart} from './ProgressChart';
 import Utils from './Utils';
 
-type Props = StackScreenProps<RootStackParamList, 'Lift'>;
+type Props = StackScreenProps<RootStackParamList, 'LiftChart'>;
 
-export function LiftScreen({route, navigation}: Props) {
+export function LiftChartScreen({route, navigation}: Props) {
   const [entries, setEntries] = useState<PersistedLiftHistory[]>([]);
   const {colors} = useTheme();
   const def = route.params.lift;
