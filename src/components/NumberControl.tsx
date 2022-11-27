@@ -47,6 +47,7 @@ export function NumberControl(props: {
 
       <TextInput
         style={{color: colors.text, paddingVertical: 0, textAlign: 'center'}}
+        keyboardType="numeric"
         onChangeText={onInput}>
         {props.value}
       </TextInput>

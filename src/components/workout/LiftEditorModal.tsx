@@ -75,7 +75,7 @@ export default function LiftEditorModal(props: {
       <View
         style={{
           flex: 1,
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           backgroundColor: 'rgba(0,0,0,0.75)',
         }}>
