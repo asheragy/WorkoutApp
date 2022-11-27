@@ -8,27 +8,22 @@ import {
 } from '../types/types';
 
 export default class Utils {
-  static normalizeSets(sets?: LiftSet[]): NormalizedSet[] {
+  static normalizeSets(sets: LiftSet[]): NormalizedSet[] {
     var result: NormalizedSet[] = [];
     var counter = 1;
 
-    sets?.forEach(set => {
-      var t = this.normalizeLiftSet(set);
-      if (t.label == '') t.label = (counter++).toString();
+    sets.forEach(set => {
+      var t: NormalizedSet = {
+        // TODO depending on usages not sure if 0 is the correct default here
+        weight: (set.weight || 0) + 'lb',
+        reps: (set.reps || 0) + '',
+        label: set.warmup ? 'W' : (counter++).toString(),
+      };
 
       result.push(t);
     });
 
     return result;
-  }
-
-  private static normalizeLiftSet(set: LiftSet): NormalizedSet {
-    return {
-      // TODO depending on usages not sure if 0 is the correct default here
-      weight: (set.weight || 0) + 'lb',
-      reps: (set.reps || 0) + '',
-      label: set.warmup ? 'W' : '',
-    };
   }
 
   static persistedToSets(sets: PersistedSet[]): LiftSet[] {

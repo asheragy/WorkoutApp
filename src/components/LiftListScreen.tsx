@@ -19,7 +19,7 @@ import Repository from '../data/Repository';
 import {LiftDef} from '../types/types';
 import {MaterialHeaderButton} from './Common';
 
-type Props = StackScreenProps<RootStackParamList, 'ListList'>;
+type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
 export function LiftListScreen({route, navigation}: Props) {
   const [lifts, setLifts] = useState<LiftDef[]>([]);

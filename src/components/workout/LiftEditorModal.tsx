@@ -26,7 +26,7 @@ export default function LiftEditorModal(props: {
 
   console.log(props.lift);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
-  const warmups = props.lift.sets.filter(x => x.warmup == true).length;
+  const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
 
   useEffect(() => {
     GoalRepository.getGoal(props.lift.def.id).then(result => setGoals(result));
@@ -98,7 +98,7 @@ export default function LiftEditorModal(props: {
             <PersistedSetRow
               index={index}
               set={set}
-              warmupOffset={warmups}
+              label={labels[index]}
               settings={settings}
               liftType={props.lift.def.type}
               key={index}

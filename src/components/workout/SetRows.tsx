@@ -1,6 +1,6 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   NormalizedSet,
   LiftSet,
@@ -51,7 +51,7 @@ export function PersistedSetRow(props: {
   set: LiftSet;
   liftType: LiftType;
   settings: GlobalSettings;
-  warmupOffset: number;
+  label: string;
   onChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
@@ -67,17 +67,34 @@ export function PersistedSetRow(props: {
     props.onChange(props.index, updatedSet);
   };
 
+  const toggleWarmup = () => {
+    var updatedSet: LiftSet = {
+      weight: props.set.weight,
+      reps: props.set.reps,
+      warmup: !props.set.warmup,
+    };
+
+    props.onChange(props.index, updatedSet);
+  };
+
   return (
     <View style={{flexDirection: 'row', marginVertical: 4}}>
-      <Text
+      <TouchableOpacity
         style={{
           width: '20%',
-          textAlign: 'center',
-          textAlignVertical: 'center',
-          color: colors.text,
-        }}>
-        {props.set.warmup ? 'W' : props.index + 1 - props.warmupOffset}
-      </Text>
+          alignSelf: 'center',
+        }}
+        onPress={toggleWarmup}>
+        <Text
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            color: colors.text,
+          }}>
+          {props.label}
+        </Text>
+      </TouchableOpacity>
+
       <View
         style={{
           width: '60%',
