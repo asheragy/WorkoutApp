@@ -41,6 +41,31 @@ export default function LiftItem(props: {
     LiftRepository.saveLift(updatedLift);
   };
 
+  const onSetRemove = () => {
+    var updatedLift = {...lift};
+
+    setLift(prevState => ({
+      ...prevState,
+      sets: updatedLift.sets.slice(0, updatedLift.sets.length - 1),
+    }));
+  };
+
+  const onSetAdd = () => {
+    var updatedLift = {...lift};
+    var addedSet: LiftSet =
+      updatedLift.sets.length > 0
+        ? updatedLift.sets[updatedLift.sets.length - 1]
+        : {
+            weight: 0,
+            reps: 0,
+          };
+
+    setLift(prevState => ({
+      ...prevState,
+      sets: updatedLift.sets.concat(addedSet),
+    }));
+  };
+
   useEffect(() => {
     LiftRepository.getLift(lift.def.id).then(result => {
       if (result != null) {
@@ -85,6 +110,8 @@ export default function LiftItem(props: {
           lift={lift}
           onSetChange={onSetChange}
           onViewLog={() => props.onViewLog(lift)}
+          onSetAdd={onSetAdd}
+          onSetRemove={onSetRemove}
           onFinish={() => setEditing(false)}></LiftEditorModal>
       </View>
     </View>

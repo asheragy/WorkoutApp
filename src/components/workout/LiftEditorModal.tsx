@@ -20,6 +20,8 @@ export default function LiftEditorModal(props: {
   onFinish: () => void;
   onViewLog: () => void;
   onSetChange: (index: number, updatedSet: LiftSet) => void;
+  onSetAdd: () => void;
+  onSetRemove: () => void;
 }) {
   const {colors} = useTheme();
   const [goals, setGoals] = useState<PersistedSet[]>([]);
@@ -104,6 +106,23 @@ export default function LiftEditorModal(props: {
               key={index}
               onChange={props.onSetChange}></PersistedSetRow>
           ))}
+
+          <View
+            style={{
+              marginTop: 10,
+              flexDirection: 'row',
+            }}>
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button
+                disabled={goals.length == 0}
+                title="Remove Set"
+                onPress={() => props.onSetRemove()}></Button>
+            </View>
+
+            <View style={{width: '50%', marginHorizontal: 10}}>
+              <Button title="Add Set" onPress={() => props.onSetAdd()}></Button>
+            </View>
+          </View>
 
           {goals.length > 0 && (
             <Text
