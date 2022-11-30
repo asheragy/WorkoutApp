@@ -1,12 +1,11 @@
 import React from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {Button, ScrollView, StyleSheet, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
 import {Lift} from '../../types/types';
 import {Workout} from '../../data/Repository';
-import {ScrollView} from 'react-native-gesture-handler';
 import {useTheme} from '@react-navigation/native';
 import LiftRepository from '../../data/LiftRepository';
 import LiftItem from './LiftItem';
