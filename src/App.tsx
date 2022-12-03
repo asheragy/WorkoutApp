@@ -11,13 +11,12 @@ import {
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
-import {LiftChartScreen} from './components/LiftChartScreen';
 import {GlobalSettings, Lift, LiftDef} from './types/types';
 import {createStore} from 'redux';
 import settingsReducer from './state/settingsReducer';
 import {Provider} from 'react-redux';
 import {LiftListScreen} from './components/LiftListScreen';
-import {LiftLogScreen} from './components/LiftLogScreen';
+import {LiftHistoryScreen} from './components/LiftHistory/LiftHistoryScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -32,6 +31,9 @@ export type RootStackParamList = {
     lift: LiftDef;
   };
   LiftLog: {
+    lift: LiftDef;
+  };
+  LiftHistory: {
     lift: LiftDef;
   };
   LiftList: undefined;
@@ -72,20 +74,12 @@ const App = () => {
               component={WeightScreen}
             />
             <Stack.Screen
-              name="LiftChart"
+              name="LiftHistory"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
                 title: route.params.lift.name,
               })}
-              component={LiftChartScreen}
-            />
-            <Stack.Screen
-              name="LiftLog"
-              options={({route}) => ({
-                headerStyle: styles.headerStyle,
-                title: route.params.lift.name,
-              })}
-              component={LiftLogScreen}
+              component={LiftHistoryScreen}
             />
             <Stack.Screen
               name="LiftList"
