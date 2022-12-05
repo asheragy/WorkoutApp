@@ -17,53 +17,16 @@ export default function LiftItem(props: {
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
 
-  const onSetChange = (index: number, updatedSet: LiftSet) => {
-    console.log('onSetChange index=' + index);
-    var updatedLift = {...lift};
-
-    console.log('before update');
-
-    updatedLift.sets.forEach(x =>
-      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
-    );
-
-    updatedLift.sets[index] = updatedSet;
-    console.log('after update');
-    updatedLift.sets.forEach(x =>
-      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
-    );
+  const onSetsChanged = (updatedSets: LiftSet[]) => {
+    var updatedLift: Lift = {...lift};
+    updatedLift.sets = updatedSets;
 
     setLift(prevState => ({
       ...prevState,
-      sets: updatedLift.sets,
+      sets: updatedSets,
     }));
 
     LiftRepository.saveLift(updatedLift);
-  };
-
-  const onSetRemove = () => {
-    var updatedLift = {...lift};
-
-    setLift(prevState => ({
-      ...prevState,
-      sets: updatedLift.sets.slice(0, updatedLift.sets.length - 1),
-    }));
-  };
-
-  const onSetAdd = () => {
-    var updatedLift = {...lift};
-    var addedSet: LiftSet =
-      updatedLift.sets.length > 0
-        ? updatedLift.sets[updatedLift.sets.length - 1]
-        : {
-            weight: 0,
-            reps: 0,
-          };
-
-    setLift(prevState => ({
-      ...prevState,
-      sets: updatedLift.sets.concat(addedSet),
-    }));
   };
 
   useEffect(() => {
@@ -108,10 +71,8 @@ export default function LiftItem(props: {
         <LiftEditorModal
           editing={editing}
           lift={lift}
-          onSetChange={onSetChange}
+          onSetsChanged={onSetsChanged}
           onViewLog={() => props.onViewLog(lift)}
-          onSetAdd={onSetAdd}
-          onSetRemove={onSetRemove}
           onFinish={() => setEditing(false)}></LiftEditorModal>
       </View>
     </View>

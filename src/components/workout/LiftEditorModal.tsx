@@ -19,9 +19,7 @@ export default function LiftEditorModal(props: {
   lift: Lift;
   onFinish: () => void;
   onViewLog: () => void;
-  onSetChange: (index: number, updatedSet: LiftSet) => void;
-  onSetAdd: () => void;
-  onSetRemove: () => void;
+  onSetsChanged: (sets: LiftSet[]) => void;
 }) {
   const {colors} = useTheme();
   const [goals, setGoals] = useState<PersistedSet[]>([]);
@@ -33,6 +31,43 @@ export default function LiftEditorModal(props: {
   useEffect(() => {
     GoalRepository.getGoal(props.lift.def.id).then(result => setGoals(result));
   }, []);
+
+  function onSetChange(index: number, updatedSet: LiftSet) {
+    console.log('onSetChange index=' + index);
+    var updatedSets: LiftSet[] = props.lift.sets;
+
+    console.log('before update');
+
+    updatedSets.forEach(x =>
+      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
+    );
+
+    updatedSets[index] = updatedSet;
+    console.log('after update');
+    updatedSets.forEach(x =>
+      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
+    );
+
+    props.onSetsChanged(updatedSets);
+  }
+
+  function onSetRemove() {
+    var sets = props.lift.sets;
+    props.onSetsChanged(sets.slice(0, sets.length - 1));
+  }
+
+  function onSetAdd() {
+    var sets = props.lift.sets;
+    var addedSet: LiftSet =
+      sets.length > 0
+        ? sets[sets.length - 1]
+        : {
+            weight: 0,
+            reps: 0,
+          };
+
+    props.onSetsChanged(sets.concat(addedSet));
+  }
 
   function addGoal() {
     // Default to last goal OR last item in lifts
@@ -104,7 +139,7 @@ export default function LiftEditorModal(props: {
               settings={settings}
               liftType={props.lift.def.type}
               key={index}
-              onChange={props.onSetChange}></PersistedSetRow>
+              onChange={onSetChange}></PersistedSetRow>
           ))}
 
           <View
@@ -116,11 +151,11 @@ export default function LiftEditorModal(props: {
               <Button
                 disabled={goals.length == 0}
                 title="Remove Set"
-                onPress={() => props.onSetRemove()}></Button>
+                onPress={() => onSetRemove()}></Button>
             </View>
 
             <View style={{width: '50%', marginHorizontal: 10}}>
-              <Button title="Add Set" onPress={() => props.onSetAdd()}></Button>
+              <Button title="Add Set" onPress={() => onSetAdd()}></Button>
             </View>
           </View>
 
