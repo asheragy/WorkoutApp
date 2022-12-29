@@ -20,6 +20,7 @@ export class LiftId {
   public static readonly Dips = 'dips';
   public static readonly Curls_EzBar = 'curlsEzBar';
   public static readonly InclinePress_Dumbell = 'inclineDbPress';
+  public static readonly InclinePress_Barbell = 'inclineBBPress';
 
   public static readonly DumbellRows = 'dbRows';
   public static readonly HammerStrength_Pulldown = 'hsPulldown';
@@ -87,8 +88,13 @@ export const lifts: LiftDef[] = [
   },
   {
     id: LiftId.InclinePress_Dumbell,
-    name: 'Incline DB Press',
+    name: 'Incline Press (Dumbell)',
     type: LiftType.Dumbbell,
+  },
+  {
+    id: LiftId.InclinePress_Barbell,
+    name: 'Incline Press (Barbell)',
+    type: LiftType.Barbell,
   },
   {
     id: LiftId.DumbellRows,

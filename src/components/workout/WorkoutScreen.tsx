@@ -17,8 +17,6 @@ LogBox.ignoreLogs([
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
 export function WorkoutScreen({route, navigation}: Props) {
-  console.log(route.params);
-  console.log('workout = ' + route.params.workout);
   const workout = route.params.workout;
 
   const onComplete = async (index: number) => {

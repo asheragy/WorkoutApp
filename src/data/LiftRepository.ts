@@ -20,7 +20,7 @@ export type PersistedLiftHistory = {
 export default class LiftRepository {
   static async getLift(key: string): Promise<PersistedSet[] | null> {
     var value = await AsyncStorage.getItem(liftKeyPrefix + key);
-    console.log('GetLift ' + key + ' = ' + value);
+    //console.log('GetLift ' + key + ' = ' + value);
     if (value != null) {
       return JSON.parse(value);
     }

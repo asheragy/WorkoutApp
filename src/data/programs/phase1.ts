@@ -8,12 +8,6 @@ import {
 } from '../../types/types';
 import {LiftId, lookupDef} from '../LiftDatabase';
 
-function round5(weight: number, percentage?: number) {
-  var n = weight * (percentage || 1);
-  n = Math.round(n / 5);
-  return n * 5;
-}
-
 function getLift(id: string): LiftDef {
   return lookupDef(id, CustomLifts);
 }
@@ -60,24 +54,15 @@ function getDLDay(block: number, week: number): WorkoutNode {
   };
 }
 
-function getBenchDay(block: number, week: number): WorkoutNode {
-  const trainingMax = 273;
-
-  return {
-    name: 'Bench Week ' + week + ' Block ' + block,
-    lifts: [createPersisted(LiftId.BenchPress, createSets(185, 5, 5))],
-  };
-}
-
 function getUpperDay(block: number, week: number): WorkoutNode {
   return {
     name: 'Upper Week ' + week + ' Block ' + block,
     lifts: [
       createPersisted(LiftId.Pullups, createSets(0, 2, 6)),
-      createPersisted(LiftId.Dips, createSets(0, 6, 5)),
-      createPersisted(LiftId.InclinePress_Dumbell, createSets(30, 10, 3)),
+      createPersisted(LiftId.InclinePress_Barbell, createSets(135, 10, 3)),
       createPersisted(LiftId.Curls_EzBar, createSets(60, 10, 3)),
-      createPersisted(LiftId.FacePulls, createSets(50, 15, 2)),
+      createPersisted(LiftId.Dips, createSets(0, 8, 5)),
+      createPersisted(LiftId.FacePulls, createSets(35, 15, 2)),
     ],
   };
 }
@@ -192,22 +177,19 @@ function getStretch2() {
 
 export default function getProgram(): Program {
   const workouts: WorkoutNode[] = [];
-  var counter = 0;
 
-  for (var block = 2; block <= 3; block++) {
-    for (var week = 1; week <= 5; week++) {
-      workouts.push(counter++ % 2 == 0 ? getStretch1() : getStretch2());
+  for (var block = 1; block <= 5; block++) {
+    for (var week = 1; week <= 3; week++) {
       workouts.push(getDLDay(block, week));
-      workouts.push(getBenchDay(block, week));
-
-      workouts.push(counter++ % 2 == 0 ? getStretch1() : getStretch2());
       workouts.push(getUpperDay(block, week));
-      workouts.push(getLowerDay(block, week));
+      workouts.push(getStretch1());
 
-      workouts.push(counter++ % 2 == 0 ? getStretch1() : getStretch2());
+      workouts.push(getLowerDay(block, week));
       workouts.push(getPushDay(block, week));
       workouts.push(getPullDay(block, week));
+      workouts.push(getStretch2());
     }
+
     // Deload
     workouts.push(getDeloadDay());
   }

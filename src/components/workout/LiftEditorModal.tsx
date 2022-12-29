@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import GoalRepository from '../../data/GoalRepository';
+import {lifts} from '../../data/LiftDatabase';
 import {
   Lift,
   GlobalSettings,
@@ -10,6 +11,7 @@ import {
   PersistedSet,
   LiftDef,
 } from '../../types/types';
+import Log from '../../utils/Log';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow, GoalSetRow} from './SetRows';
@@ -24,7 +26,6 @@ export default function LiftEditorModal(props: {
   const {colors} = useTheme();
   const [goals, setGoals] = useState<PersistedSet[]>([]);
 
-  console.log(props.lift);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
   const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
 
@@ -33,20 +34,10 @@ export default function LiftEditorModal(props: {
   }, []);
 
   function onSetChange(index: number, updatedSet: LiftSet) {
-    console.log('onSetChange index=' + index);
+    //console.log('onSetChange index=' + index);
     var updatedSets: LiftSet[] = props.lift.sets;
 
-    console.log('before update');
-
-    updatedSets.forEach(x =>
-      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
-    );
-
     updatedSets[index] = updatedSet;
-    console.log('after update');
-    updatedSets.forEach(x =>
-      console.log('  ' + x.weight + ' x ' + x.reps + ' ' + x.warmup),
-    );
 
     props.onSetsChanged(updatedSets);
   }

@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import LiftRepository from '../../data/LiftRepository';
 import {Lift, LiftSet} from '../../types/types';
+import Log from '../../utils/Log';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
@@ -26,6 +27,7 @@ export default function LiftItem(props: {
       sets: updatedSets,
     }));
 
+    Log.lift(updatedLift);
     LiftRepository.saveLift(updatedLift);
   };
 
@@ -33,6 +35,7 @@ export default function LiftItem(props: {
     LiftRepository.getLift(lift.def.id).then(result => {
       if (result != null) {
         lift.sets = Utils.persistedToSets(result);
+        Log.lift(lift);
         setLift(lift);
       }
     });
