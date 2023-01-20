@@ -180,13 +180,13 @@ export default function getProgram(): Program {
 
   for (var block = 1; block <= 5; block++) {
     for (var week = 1; week <= 3; week++) {
-      workouts.push(getDLDay(block, week));
-      workouts.push(getUpperDay(block, week));
-      workouts.push(getStretch1());
-
       workouts.push(getLowerDay(block, week));
       workouts.push(getPushDay(block, week));
       workouts.push(getPullDay(block, week));
+      workouts.push(getStretch1());
+
+      workouts.push(getDLDay(block, week));
+      workouts.push(getUpperDay(block, week));
       workouts.push(getStretch2());
     }
 

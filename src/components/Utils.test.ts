@@ -1,4 +1,11 @@
-import {GlobalSettings, LiftSet, LiftType} from '../types/types';
+import {TextPropTypes} from 'react-native';
+import {
+  GlobalSettings,
+  LiftDef,
+  LiftSet,
+  LiftType,
+  PersistedSet,
+} from '../types/types';
 import Utils from './Utils';
 
 export {};
@@ -57,4 +64,31 @@ test('increment/decrement dumbbell - maxSet', () => {
   expect(currentWeight).toBe(47.5);
   currentWeight = Utils.decrementWeight(currentWeight, liftType, settings);
   expect(currentWeight).toBe(45);
+});
+
+test('goal percentage', () => {
+  const def: LiftDef = {
+    id: '',
+    name: '',
+    type: LiftType.Barbell,
+  };
+
+  const goal: PersistedSet[] = [
+    {weight: 85, reps: 12},
+    {weight: 80, reps: 12},
+    {weight: 75, reps: 12},
+  ];
+  const current: LiftSet[] = [
+    {weight: 80, reps: 10},
+    {weight: 75, reps: 10},
+    {weight: 70, reps: 15},
+  ];
+  var percentage = Utils.goalPercentage(def, goal, current);
+  expect(percentage).toBe('92.8');
+
+  current[1].reps = 15;
+  current[2].reps = 10;
+
+  percentage = Utils.goalPercentage(def, goal, current);
+  expect(percentage).toBe('93.0');
 });

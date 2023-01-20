@@ -154,7 +154,7 @@ export default function LiftEditorModal(props: {
             <Text
               style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
               {'Goals ' +
-                goalPercentage(props.lift.def, goals, props.lift.sets) +
+                Utils.goalPercentage(props.lift.def, goals, props.lift.sets) +
                 '%'}
             </Text>
           )}
@@ -209,29 +209,6 @@ export default function LiftEditorModal(props: {
       </View>
     </Modal>
   );
-}
-
-function goalPercentage(
-  def: LiftDef,
-  goals: PersistedSet[],
-  current: LiftSet[],
-): string {
-  // Sort with highest first
-  var goal1rm = goals
-    .map(set => Utils.calculate1RM(def, set))
-    .sort((a, b) => b - a);
-  var current1rm = current
-    .filter(set => set.warmup != true)
-    .map(set => Utils.calculate1RM(def, set))
-    .sort((a, b) => b - a);
-
-  const size = Math.min(goal1rm.length, current1rm.length);
-  var sum = 0;
-  for (var i = 0; i < size; i++) {
-    sum += current1rm[i] / goal1rm[i];
-  }
-
-  return ((100 * sum) / size).toFixed(1);
 }
 
 const styles = StyleSheet.create({

@@ -102,4 +102,21 @@ export default class Utils {
 
     return weight * reps;
   }
+
+  static goalPercentage(
+    def: LiftDef,
+    goals: PersistedSet[],
+    current: LiftSet[],
+  ): string {
+    var goal1rm = goals.map(set => Utils.calculate1RM(def, set));
+
+    var current1rm = current
+      .filter(set => set.warmup != true)
+      .map(set => Utils.calculate1RM(def, set));
+
+    const average = (array: number[]) =>
+      array.reduce((a, b) => a + b) / array.length;
+
+    return ((average(current1rm) / average(goal1rm)) * 100).toFixed(1);
+  }
 }
