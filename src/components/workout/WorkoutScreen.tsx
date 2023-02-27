@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, Button, ScrollView, StyleSheet, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App';
 import {AccessoryView} from './Accessories';
@@ -19,6 +19,16 @@ type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 export function WorkoutScreen({route, navigation}: Props) {
   const workout = route.params.workout;
 
+  const confirmComplete = (index: number) => {
+    Alert.alert('Complete?', 'Are you sure', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => onComplete(index)},
+    ]);
+  };
+
   const onComplete = async (index: number) => {
     await LiftRepository.addAllHistory(workout.node);
     route.params.onComplete(index);
@@ -37,7 +47,9 @@ export function WorkoutScreen({route, navigation}: Props) {
       <View style={styles.bottom}>
         <Button
           title="Complete"
-          onPress={() => onComplete(route.params.workout.position)}></Button>
+          onPress={() =>
+            confirmComplete(route.params.workout.position)
+          }></Button>
       </View>
     </ScrollView>
   );
