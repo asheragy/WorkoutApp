@@ -17,6 +17,8 @@ import settingsReducer from './state/settingsReducer';
 import {Provider} from 'react-redux';
 import {LiftListScreen} from './components/LiftListScreen';
 import {LiftHistoryScreen} from './components/LiftHistory/LiftHistoryScreen';
+import { LiftDefEditScreen } from './components/lifts/LiftDefEditScreen';
+import { LiftDefListScreen } from './components/lifts/LiftDefListScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -37,6 +39,10 @@ export type RootStackParamList = {
     lift: LiftDef;
   };
   LiftList: undefined;
+  LiftDefEdit: {
+    onChanged: () => void
+  }
+  LiftDefList: undefined
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -88,6 +94,22 @@ const App = () => {
                 headerStyle: styles.headerStyle,
               }}
               component={LiftListScreen}
+            />
+            <Stack.Screen
+              name="LiftDefEdit"
+              options={{
+                title: 'Edit Lift Defintion',
+                headerStyle: styles.headerStyle,
+              }}
+              component={LiftDefEditScreen}
+            />
+            <Stack.Screen
+              name="LiftDefList"
+              options={{
+                title: 'Lift Definitions',
+                headerStyle: styles.headerStyle,
+              }}
+              component={LiftDefListScreen}
             />
           </Stack.Navigator>
         </OverflowMenuProvider>

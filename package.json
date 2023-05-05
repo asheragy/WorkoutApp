@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "emulator": "emulator -avd Pixel_5_API_30",
+    "emulator3": "emulator -avd Pixel_3a_API_33_x86_64",
     "emulator4": "emulator -avd Pixel_4_API_30",
     "apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
@@ -21,6 +22,7 @@
     "react": "18.1.0",
     "react-native": "0.68.2",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-gesture-handler": "^2.8.0",
     "react-native-pager-view": "^6.1.2",
     "react-native-safe-area-context": "^4.2.5",
