@@ -14,6 +14,13 @@ export default class LiftDefRepository {
             await this.update(def)
     }
 
+    static async delete(id: string) {
+        var items = await this.getAll()
+        items = items.filter(item => item.id != id)
+
+        await AsyncStorage.setItem(key, JSON.stringify(items)); 
+    }
+
     private static async insert(def: LiftDef) {
         def.id = Utils.generate_uuidv4()
 

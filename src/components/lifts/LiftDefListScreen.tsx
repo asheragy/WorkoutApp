@@ -15,7 +15,6 @@ export function LiftDefListScreen({route, navigation}: Props) {
     const [lifts, setLifts] = useState<LiftDef[]>([])
 
     function onRefresh() {
-        console.log("loading")
         LiftDefRepository.getAll().then(lifts => setLifts(lifts))
     }
 
@@ -55,7 +54,7 @@ function DefListItem(props: DefItemProps) {
     const {colors} = useTheme();
 
 
-    return (<View>
+    return (<View style={{padding: 8}}>
         <Text>{props.def.name + " (" + LiftType[props.def.type] + ")"}</Text>
     </View>)
 
