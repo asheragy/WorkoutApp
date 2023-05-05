@@ -5,33 +5,35 @@ import { RootStackParamList } from "../../App";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { LiftDef, LiftType } from '../../types/types';
 import LiftDefRepository from '../../data/LiftDefRepository';
+import { lifts } from '../../data/LiftDatabase';
 
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 
 export function LiftDefEditScreen({route, navigation}: Props) {
-    const items = Object.values(LiftType).map(value => {
-        const result = {label: value.toString(), value: value.toString()}
-        return result
-        })
+    const items = Object.values(LiftType)
+        .filter(value => typeof value !== 'number')
+        .map(value => {
+            const result = {label: value.toString(), value: LiftType[value]}
+            return result
+            })
 
-    const [name, setName] = useState("")
+    const [def, setDef] = useState(route.params.def == undefined ? {
+        id: "",
+        name: "",
+        type: LiftType.Machine
+    } : route.params.def)
+
+    console.log(def)
+
     const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(items[0].value)
+    const [selected, setSelected] = useState(def.type)
 
     async function onSave() {
-        var item = items.find(item => item.value == selected)
-        var index = items.indexOf(item)
-        var type = Object.values(LiftType)[index] as LiftType
+        def.type = selected
 
-        const def: LiftDef = {
-            id: "",
-            name: name,
-            type: type
-        }
-        
-        await LiftDefRepository.insert(def)
+        await LiftDefRepository.upsert(def)
         route.params.onChanged()
         navigation.goBack()
     }
@@ -39,7 +41,10 @@ export function LiftDefEditScreen({route, navigation}: Props) {
     return <View>
         <View>
             <Text>Name:</Text>
-            <TextInput onChangeText={setName}></TextInput>
+            <TextInput onChangeText={newName => setDef(prevState => ({
+                ...prevState,
+                name: newName
+            }))}>{def.name}</TextInput>
         </View>
 
         <View>
