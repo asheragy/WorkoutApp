@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from 
 import { StackScreenProps } from "@react-navigation/stack";
 import { Button, Text, TextInput, View } from "react-native";
 import { RootStackParamList } from "../../App";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
 import { LiftDef, LiftType } from '../../types/types';
 import LiftDefRepository from '../../data/LiftDefRepository';
 
@@ -14,7 +14,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
     const items = Object.values(LiftType)
         .filter(value => typeof value !== 'number')
         .map(value => {
-            const result = {label: value.toString(), value: LiftType[value]}
+            const result: ItemType<LiftType> = {label: value.toString(), value: LiftType[value]}
             return result
             })
 
@@ -66,7 +66,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
             def.id.length > 0 &&
             <Button title='Delete' onPress={onDelete}></Button>
         }
-        <Button title='Save' onPress={onSave}></Button>
+        <Button title='Save' onPress={onSave} disabled={def.name.length == 0}></Button>
 
     </View>
 }

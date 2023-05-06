@@ -3,7 +3,6 @@ import {
   LiftDef,
   LiftSet,
   LiftType,
-  Program,
   WorkoutNode,
 } from '../../types/types';
 import {LiftId, lookupDef} from '../LiftDatabase';
@@ -175,7 +174,7 @@ function getStretch2() {
   };
 }
 
-export default function getProgram(): Program {
+export default function getProgram(): WorkoutNode[] {
   const workouts: WorkoutNode[] = [];
 
   for (var block = 1; block <= 5; block++) {
@@ -194,9 +193,7 @@ export default function getProgram(): Program {
     workouts.push(getDeloadDay());
   }
 
-  return {
-    workouts: workouts,
-  };
+  return workouts
 }
 
 const CustomLift_HomeCalfRaises = 'homeCalfRaises';

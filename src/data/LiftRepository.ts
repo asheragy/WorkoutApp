@@ -5,7 +5,6 @@ import {
   LiftDef,
   LiftSet,
   PersistedSet,
-  Program,
   WorkoutNode,
 } from '../types/types';
 
@@ -28,13 +27,11 @@ export default class LiftRepository {
     return null;
   }
 
-  static async getLifts(
-    program: Program,
-  ): Promise<Map<string, PersistedSet[]>> {
+  static async getLifts(workouts: WorkoutNode[]): Promise<Map<string, PersistedSet[]>> {
     var map = new Map<string, PersistedSet[]>();
     var ignore = new Set<string>(); // Prevent multiple lookup attempts for missing values
 
-    for (const wo of program.workouts) {
+    for (const wo of workouts) {
       for (let i = 0; i < wo.lifts.length; i++) {
         const lift = wo.lifts[i];
 

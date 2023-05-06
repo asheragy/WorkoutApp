@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {PersistedSet, Program, WorkoutNode} from '../types/types';
+import {PersistedSet, WorkoutNode} from '../types/types';
 import getProgram from '../data/programs/phase1';
 import LiftRepository from './LiftRepository';
 import Utils from '../components/Utils';
@@ -17,7 +17,7 @@ export default class Repository {
     const program = getProgram();
 
     var workouts = await this.getLastCompletedIndex().then(completedIndex => {
-      return program.workouts.map((wo, index) => {
+      return program.map((wo, index) => {
         return {
           node: wo,
           position: index,
@@ -79,20 +79,6 @@ export default class Repository {
       return true;
     } catch (e) {}
     return false;
-  }
-
-  static logProgram(program: Program) {
-    //console.log(JSON.stringify(program, null, 2));
-
-    program.workouts.forEach(wo => {
-      console.log(wo.name);
-      wo.lifts.forEach(lift => {
-        console.log('  ' + lift.def.name);
-        lift.sets.forEach(set => {
-          console.log('    ' + JSON.stringify(set));
-        });
-      });
-    });
   }
 
   private static async getLastCompletedIndex(): Promise<number> {

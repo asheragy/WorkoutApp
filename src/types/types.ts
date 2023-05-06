@@ -1,7 +1,3 @@
-export type Program = {
-  workouts: WorkoutNode[];
-};
-
 export type WorkoutNode = {
   name?: string;
   lifts: Lift[];

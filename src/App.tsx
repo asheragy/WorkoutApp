@@ -41,6 +41,7 @@ export type RootStackParamList = {
   LiftList: undefined;
   LiftDefEdit: {
     onChanged: () => void
+    def?: LiftDef
   }
   LiftDefList: undefined
 };
