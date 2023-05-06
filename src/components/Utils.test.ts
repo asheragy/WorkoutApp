@@ -2,11 +2,11 @@ import {TextPropTypes} from 'react-native';
 import {
   GlobalSettings,
   LiftDef,
-  LiftSet,
   LiftType,
   PersistedSet,
 } from '../types/types';
 import Utils from './Utils';
+import { LiftSet } from '../types/workout';
 
 export {};
 

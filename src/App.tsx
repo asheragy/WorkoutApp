@@ -11,7 +11,7 @@ import {
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {OverflowMenuProvider} from 'react-navigation-header-buttons';
-import {GlobalSettings, Lift, LiftDef} from './types/types';
+import {GlobalSettings, LiftDef} from './types/types';
 import {createStore} from 'redux';
 import settingsReducer from './state/settingsReducer';
 import {Provider} from 'react-redux';
@@ -69,7 +69,7 @@ const App = () => {
               name="Workout"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
-                title: route.params.workout.node.name ?? 'Workout',
+                title: route.params.workout.node.name,
               })}
               component={WorkoutScreen}
             />

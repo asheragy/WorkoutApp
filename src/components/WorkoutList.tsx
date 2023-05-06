@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {Lift, GlobalSettings} from '../types/types';
+import {GlobalSettings} from '../types/types';
 import {
   HeaderButtons,
   HiddenItem,
@@ -21,6 +21,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {updateSettings} from '../state/settingsAction';
 import {MaterialHeaderButton} from './Common';
+import { Lift } from '../types/workout';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -147,7 +148,7 @@ function WorkoutListItem(props: WorkoutItemProps) {
   return (
     <View style={[styles.workoutItem, {backgroundColor: colors.card}]}>
       <Text style={[styles.titleText, {color: colors.text}]}>
-        {props.workout.node?.name}
+        {props.workout.node.name}
       </Text>
       {props.workout.node.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
