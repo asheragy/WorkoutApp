@@ -5,6 +5,7 @@ import { RootStackParamList } from "../../App";
 import { LiftDef, LiftType } from '../../types/types';
 import LiftDefRepository from '../../data/LiftDefRepository';
 import { useTheme } from '@react-navigation/native';
+import { SystemLifts } from '../../data/LiftDatabase';
 
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
@@ -15,7 +16,14 @@ export function LiftDefListScreen({route, navigation}: Props) {
     const [lifts, setLifts] = useState<LiftDef[]>([])
 
     function onRefresh() {
-        LiftDefRepository.getAll().then(lifts => setLifts(lifts))
+        LiftDefRepository.getAll().then(lifts => {
+          var result = lifts
+          if (isSelection)
+            result = result.concat(SystemLifts)
+
+          result = result.sort((a, b) => a.name.localeCompare(b.name))
+          setLifts(result)
+        })
     }
 
     function onAdd() {

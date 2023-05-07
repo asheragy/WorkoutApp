@@ -204,3 +204,6 @@ export const lifts: LiftDef[] = [
   },
   */
 ];
+
+// TODO use this name instead of the other
+export const SystemLifts = lifts
