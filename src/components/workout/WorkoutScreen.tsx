@@ -4,11 +4,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Lift} from '../../types/types';
 import {Workout} from '../../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import LiftRepository from '../../data/LiftRepository';
 import LiftItem from './LiftItem';
+import { Lift } from '../../types/workout';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',

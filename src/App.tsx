@@ -19,6 +19,7 @@ import {LiftListScreen} from './components/LiftListScreen';
 import {LiftHistoryScreen} from './components/LiftHistory/LiftHistoryScreen';
 import { LiftDefEditScreen } from './components/lifts/LiftDefEditScreen';
 import { LiftDefListScreen } from './components/lifts/LiftDefListScreen';
+import { WorkoutEditScreen } from './components/workout/WorkoutEditScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -43,7 +44,10 @@ export type RootStackParamList = {
     onChanged: () => void
     def?: LiftDef
   }
-  LiftDefList: undefined
+  LiftDefList: {
+    onSelect?: (def: LiftDef) => void;
+  }
+  WorkoutEdit: undefined
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -111,6 +115,14 @@ const App = () => {
                 headerStyle: styles.headerStyle,
               }}
               component={LiftDefListScreen}
+            />
+            <Stack.Screen
+              name="WorkoutEdit"
+              options={{
+                title: 'Edit Workout',
+                headerStyle: styles.headerStyle,
+              }}
+              component={WorkoutEditScreen}
             />
           </Stack.Navigator>
         </OverflowMenuProvider>

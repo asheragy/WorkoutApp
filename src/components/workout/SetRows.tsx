@@ -3,13 +3,13 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {
   NormalizedSet,
-  LiftSet,
   LiftType,
   GlobalSettings,
   PersistedSet,
 } from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
+import { LiftSet } from '../../types/workout';
 
 export function SetHeader() {
   const {colors} = useTheme();

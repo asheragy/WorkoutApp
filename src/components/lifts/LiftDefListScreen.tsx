@@ -11,7 +11,7 @@ type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
 
 export function LiftDefListScreen({route, navigation}: Props) {
-
+    const isSelection = route.params.onSelect != undefined
     const [lifts, setLifts] = useState<LiftDef[]>([])
 
     function onRefresh() {
@@ -22,9 +22,15 @@ export function LiftDefListScreen({route, navigation}: Props) {
         navigation.navigate('LiftDefEdit', { onChanged: onRefresh});
       }
 
-      function onEdit(def: LiftDef) {
+    function onEdit(def: LiftDef) {
+      if (isSelection) {
+        route.params.onSelect(def)
+        navigation.pop()
+      }
+      else {
         navigation.navigate('LiftDefEdit', { onChanged: onRefresh, def: def});
       }
+    }
 
     useEffect(onRefresh, []);
 

@@ -54,6 +54,7 @@ export function WorkoutList({navigation, route, props}: Props) {
             <HiddenItem title="Reset" onPress={() => onReset()} />
             <HiddenItem title="Lifts" onPress={() => onLifts()} />
             <HiddenItem title="LiftDefs" onPress={() => onLiftDefs()} />
+            <HiddenItem title="Workout Editor" onPress={() => navigation.navigate('WorkoutEdit')} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -83,7 +84,7 @@ export function WorkoutList({navigation, route, props}: Props) {
   }
 
   async function onLiftDefs() {
-    navigation.navigate('LiftDefList');
+    navigation.navigate('LiftDefList', {});
   }
 
   async function onComplete(index: number) {
