@@ -21,21 +21,22 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {updateSettings} from '../state/settingsAction';
 import {MaterialHeaderButton} from './Common';
-import {Lift} from '../types/workout';
+import {Lift, WorkoutNode} from '../types/workout';
+import WorkoutRepository from '../data/WorkoutRepository';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
   return {settings};
 };
 
-export default connect(mapStateToProps)(WorkoutList);
+export default connect(mapStateToProps)(WorkoutListNew);
 
 type Props = StackScreenProps<RootStackParamList, 'Home'> & {
   props: {settings: GlobalSettings};
 };
 
-export function WorkoutList({navigation, route, props}: Props) {
-  const [workouts, setWorkouts] = useState<Workout[]>([]);
+export function WorkoutListNew({navigation, route, props}: Props) {
+  const [workouts, setWorkouts] = useState<WorkoutNode[]>([]);
   const {colors} = useTheme();
   const dispatch = useDispatch();
 
@@ -49,13 +50,11 @@ export function WorkoutList({navigation, route, props}: Props) {
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
             <HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
-            <HiddenItem title="Undo Complete" onPress={() => onUndo()} />
             <HiddenItem title="Refresh" onPress={() => loadState()} />
-            <HiddenItem title="Reset" onPress={() => onReset()} />
             <HiddenItem title="Lifts" onPress={() => onLifts()} />
             <HiddenItem title="LiftDefs" onPress={() => onLiftDefs()} />
             <HiddenItem
-              title="Workout Editor"
+              title="Add"
               onPress={() => navigation.navigate('WorkoutEdit')}
             />
           </OverflowMenu>
@@ -65,21 +64,12 @@ export function WorkoutList({navigation, route, props}: Props) {
   }, [navigation]);
 
   function loadState() {
-    Repository.getWorkouts().then(result => {
-      var uncompletedWorkouts = result.filter(wo => !wo.completed);
-      setWorkouts(uncompletedWorkouts);
+    WorkoutRepository.getAll().then(result => {
+      setWorkouts(result);
     });
 
     // TODO should this go in App.txs?
     SettingsRepository.get().then(result => dispatch(updateSettings(result)));
-  }
-
-  async function onUndo() {
-    if (await Repository.undoComplete()) loadState();
-  }
-
-  async function onReset() {
-    if (await Repository.resetProgram()) loadState();
   }
 
   async function onLifts() {
@@ -114,18 +104,18 @@ export function WorkoutList({navigation, route, props}: Props) {
 }
 
 function WorkoutFlatList(props: {
-  workouts: Workout[];
+  workouts: WorkoutNode[];
   navigation: any;
   onComplete: (index: number) => void;
 }) {
-  function actionOnRow(index: number, item: Workout) {
+  function actionOnRow(index: number, item: WorkoutNode) {
     props.navigation.navigate('Workout', {
       workout: item,
       onComplete: props.onComplete,
     });
   }
 
-  const renderItem = (item: ListRenderItemInfo<Workout>) => (
+  const renderItem = (item: ListRenderItemInfo<WorkoutNode>) => (
     <TouchableOpacity onPress={() => actionOnRow(item.index, item.item)}>
       <WorkoutListItem workout={item.item}></WorkoutListItem>
     </TouchableOpacity>
@@ -143,7 +133,7 @@ function WorkoutFlatList(props: {
 }
 
 interface WorkoutItemProps {
-  workout: Workout;
+  workout: WorkoutNode;
 }
 
 function WorkoutListItem(props: WorkoutItemProps) {
@@ -152,9 +142,9 @@ function WorkoutListItem(props: WorkoutItemProps) {
   return (
     <View style={[styles.workoutItem, {backgroundColor: colors.card}]}>
       <Text style={[styles.titleText, {color: colors.text}]}>
-        {props.workout.node.name}
+        {props.workout.name}
       </Text>
-      {props.workout.node.lifts.map((lift, index) => (
+      {props.workout.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
     </View>
