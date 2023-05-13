@@ -21,6 +21,7 @@ import {LiftDefEditScreen} from './components/lifts/LiftDefEditScreen';
 import {LiftDefListScreen} from './components/lifts/LiftDefListScreen';
 import {WorkoutEditScreen} from './components/workout/WorkoutEditScreen';
 import WorkoutListNew from './components/WorkoutListNew';
+import {WorkoutNode} from './types/workout';
 
 export type RootStackParamList = {
   Home: {
@@ -48,7 +49,10 @@ export type RootStackParamList = {
   LiftDefList: {
     onSelect?: (def: LiftDef) => void;
   };
-  WorkoutEdit: undefined;
+  WorkoutEdit: {
+    workout?: WorkoutNode;
+    onChanged: () => void;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

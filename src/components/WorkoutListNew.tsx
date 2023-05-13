@@ -13,7 +13,6 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import Repository, {Workout} from '../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import SettingsRepository from '../data/SettingsRepository';
 import {connect, useDispatch} from 'react-redux';
@@ -55,7 +54,9 @@ export function WorkoutListNew({navigation, route, props}: Props) {
             <HiddenItem title="LiftDefs" onPress={() => onLiftDefs()} />
             <HiddenItem
               title="Add"
-              onPress={() => navigation.navigate('WorkoutEdit')}
+              onPress={() =>
+                navigation.navigate('WorkoutEdit', {onChanged: loadState})
+              }
             />
           </OverflowMenu>
         </HeaderButtons>
@@ -72,61 +73,29 @@ export function WorkoutListNew({navigation, route, props}: Props) {
     SettingsRepository.get().then(result => dispatch(updateSettings(result)));
   }
 
-  async function onLifts() {
-    navigation.navigate('LiftList');
-  }
-
-  async function onLiftDefs() {
-    navigation.navigate('LiftDefList', {});
-  }
-
-  async function onComplete(index: number) {
-    // TODO complete should be done in child screen
-    // this event is really just a "data changed, need to reload"
-    if (await Repository.complete(index)) {
-      navigation.pop();
-      loadState();
-    }
-  }
-
-  async function onWeightLog() {
-    navigation.navigate('Weight');
-  }
+  const onLifts = () => navigation.navigate('LiftList');
+  const onLiftDefs = () => navigation.navigate('LiftDefList', {});
+  const onWeightLog = () => navigation.navigate('Weight');
 
   useEffect(loadState, []);
 
-  return (
-    <WorkoutFlatList
-      workouts={workouts}
-      navigation={navigation}
-      onComplete={onComplete}></WorkoutFlatList>
-  );
-}
-
-function WorkoutFlatList(props: {
-  workouts: WorkoutNode[];
-  navigation: any;
-  onComplete: (index: number) => void;
-}) {
-  function actionOnRow(index: number, item: WorkoutNode) {
-    props.navigation.navigate('Workout', {
+  function onSelect(item: WorkoutNode) {
+    navigation.navigate('WorkoutEdit', {
       workout: item,
-      onComplete: props.onComplete,
+      onChanged: loadState,
     });
   }
 
   const renderItem = (item: ListRenderItemInfo<WorkoutNode>) => (
-    <TouchableOpacity onPress={() => actionOnRow(item.index, item.item)}>
+    <TouchableOpacity onPress={() => onSelect(item.item)}>
       <WorkoutListItem workout={item.item}></WorkoutListItem>
     </TouchableOpacity>
   );
 
-  const {colors} = useTheme();
-
   return (
     <FlatList
       style={{backgroundColor: colors.background}}
-      data={props.workouts}
+      data={workouts}
       renderItem={renderItem}
       keyExtractor={(_, index) => 'test' + index}></FlatList>
   );
