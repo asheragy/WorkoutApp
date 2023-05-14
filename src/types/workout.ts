@@ -3,8 +3,7 @@ import {LiftDef} from './types';
 export type WorkoutNode = {
   // TODO require this if the editor screen makes sense to always have it
   id?: string;
-  // id
-  // last completed
+  lastCompleted?: Date;
   name: string;
   lifts: Lift[];
   accessories?: AccessoryGroup[];

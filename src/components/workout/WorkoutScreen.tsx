@@ -8,7 +8,8 @@ import {Workout} from '../../data/Repository';
 import {useTheme} from '@react-navigation/native';
 import LiftRepository from '../../data/LiftRepository';
 import LiftItem from './LiftItem';
-import { Lift } from '../../types/workout';
+import {Lift, WorkoutNode} from '../../types/workout';
+import WorkoutRepository from '../../data/WorkoutRepository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -17,21 +18,26 @@ LogBox.ignoreLogs([
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
 export function WorkoutScreen({route, navigation}: Props) {
+  console.log('WorkoutScreen');
+  console.log(route.params);
   const workout = route.params.workout;
 
-  const confirmComplete = (index: number) => {
+  const confirmComplete = () => {
     Alert.alert('Complete?', 'Are you sure', [
       {
         text: 'No',
         style: 'cancel',
       },
-      {text: 'Yes', onPress: () => onComplete(index)},
+      {text: 'Yes', onPress: () => onComplete()},
     ]);
   };
 
-  const onComplete = async (index: number) => {
-    await LiftRepository.addAllHistory(workout.node);
-    route.params.onComplete(index);
+  const onComplete = async () => {
+    workout.lastCompleted = new Date();
+    await WorkoutRepository.upsert(workout);
+    //await LiftRepository.addAllHistory(workout);
+    route.params.onComplete();
+    navigation.pop();
   };
 
   function onViewLog(lift: Lift) {
@@ -41,29 +47,25 @@ export function WorkoutScreen({route, navigation}: Props) {
   return (
     <ScrollView style={styles.container}>
       <WorkoutItem workout={workout} onViewLog={onViewLog}></WorkoutItem>
-      {workout.node.accessories != null && (
-        <AccessoryView accessories={workout.node.accessories}></AccessoryView>
+      {workout.accessories != null && (
+        <AccessoryView accessories={workout.accessories}></AccessoryView>
       )}
       <View style={styles.bottom}>
-        <Button
-          title="Complete"
-          onPress={() =>
-            confirmComplete(route.params.workout.position)
-          }></Button>
+        <Button title="Complete" onPress={() => confirmComplete()}></Button>
       </View>
     </ScrollView>
   );
 }
 
 function WorkoutItem(props: {
-  workout: Workout;
+  workout: WorkoutNode;
   onViewLog: (lift: Lift) => void;
 }) {
   const {colors} = useTheme();
 
   return (
     <View style={styles.workoutItem}>
-      {props.workout.node.lifts.map((lift, index) => (
+      {props.workout.lifts.map((lift, index) => (
         <LiftItem
           lift={lift}
           onViewLog={props.onViewLog}

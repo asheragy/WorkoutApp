@@ -28,8 +28,8 @@ export type RootStackParamList = {
     settings: GlobalSettings;
   };
   Workout: {
-    workout: Workout;
-    onComplete: (index: number) => void;
+    workout: WorkoutNode;
+    onComplete: () => void;
   };
   Weight: undefined;
   LiftChart: {
@@ -78,7 +78,7 @@ const App = () => {
               name="Workout"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
-                title: route.params.workout.node.name,
+                title: route.params.workout.name,
               })}
               component={WorkoutScreen}
             />

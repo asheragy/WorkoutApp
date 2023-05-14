@@ -80,6 +80,13 @@ export function WorkoutListNew({navigation, route, props}: Props) {
   useEffect(loadState, []);
 
   function onSelect(item: WorkoutNode) {
+    navigation.navigate('Workout', {
+      workout: item,
+      onComplete: loadState,
+    });
+  }
+
+  function onEdit(item: WorkoutNode) {
     navigation.navigate('WorkoutEdit', {
       workout: item,
       onChanged: loadState,
@@ -87,7 +94,9 @@ export function WorkoutListNew({navigation, route, props}: Props) {
   }
 
   const renderItem = (item: ListRenderItemInfo<WorkoutNode>) => (
-    <TouchableOpacity onPress={() => onSelect(item.item)}>
+    <TouchableOpacity
+      onPress={() => onSelect(item.item)}
+      onLongPress={() => onEdit(item.item)}>
       <WorkoutListItem workout={item.item}></WorkoutListItem>
     </TouchableOpacity>
   );
@@ -105,15 +114,15 @@ interface WorkoutItemProps {
   workout: WorkoutNode;
 }
 
-function WorkoutListItem(props: WorkoutItemProps) {
+function WorkoutListItem({workout}: WorkoutItemProps) {
   const {colors} = useTheme();
 
   return (
     <View style={[styles.workoutItem, {backgroundColor: colors.card}]}>
       <Text style={[styles.titleText, {color: colors.text}]}>
-        {props.workout.name}
+        {workout.name}
       </Text>
-      {props.workout.lifts.map((lift, index) => (
+      {workout.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
     </View>

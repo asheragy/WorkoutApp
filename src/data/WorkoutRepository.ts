@@ -9,7 +9,20 @@ export default class WorkoutRepository {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
-    return JSON.parse(value);
+    var json: WorkoutNode[] = JSON.parse(value);
+
+    // Fix deserialized date
+    json = json.map(wo => {
+      const result: WorkoutNode = {
+        ...wo,
+        lastCompleted: wo.lastCompleted
+          ? new Date(wo.lastCompleted)
+          : undefined,
+      };
+      return result;
+    });
+
+    return json;
   }
 
   static async upsert(workout: WorkoutNode) {
