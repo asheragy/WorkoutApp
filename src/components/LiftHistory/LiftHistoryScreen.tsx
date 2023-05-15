@@ -4,7 +4,9 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {RootStackParamList} from '../../App';
-import LiftRepository, {PersistedLiftHistory} from '../../data/LiftRepository';
+import LiftRepository, {
+  PersistedLiftHistory,
+} from '../../repository/LiftRepository';
 import {LiftChartTab} from './LiftChartTab';
 import {LiftLogTab} from './LiftLogTab';
 

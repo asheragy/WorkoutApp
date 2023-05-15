@@ -1,7 +1,7 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import LiftRepository from '../../data/LiftRepository';
+import LiftRepository from '../../repository/LiftRepository';
 import {Lift, LiftSet} from '../../types/workout';
 import Log from '../../utils/Log';
 import Utils from '../Utils';

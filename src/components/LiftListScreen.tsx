@@ -14,8 +14,7 @@ import {
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import {RootStackParamList} from '../App';
-import LiftRepository from '../data/LiftRepository';
-import Repository from '../data/Repository';
+import LiftRepository from '../repository/LiftRepository';
 import {LiftDef} from '../types/types';
 import {MaterialHeaderButton} from './Common';
 
@@ -26,6 +25,8 @@ export function LiftListScreen({route, navigation}: Props) {
   const {colors} = useTheme();
 
   function loadState() {
+    // TODO get by another means
+    /*
     Repository.getWorkouts().then(result => {
       const map = new Map();
       result.forEach(workout => {
@@ -39,6 +40,7 @@ export function LiftListScreen({route, navigation}: Props) {
 
       setLifts(arr);
     });
+    */
   }
 
   useEffect(loadState, []);

@@ -2,15 +2,12 @@ import {useTheme} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import GoalRepository from '../../data/GoalRepository';
-import {
-  GlobalSettings,
-  PersistedSet,
-} from '../../types/types';
+import GoalRepository from '../../repository/GoalRepository';
+import {GlobalSettings, PersistedSet} from '../../types/types';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow, GoalSetRow} from './SetRows';
-import { Lift, LiftSet } from '../../types/workout';
+import {Lift, LiftSet} from '../../types/workout';
 
 export default function LiftEditorModal(props: {
   editing: boolean;

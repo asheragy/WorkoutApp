@@ -7,35 +7,35 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {GlobalSettings} from '../types/types';
+import {GlobalSettings} from '../../types/types';
 import {
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import {useTheme} from '@react-navigation/native';
-import SettingsRepository from '../data/SettingsRepository';
+import SettingsRepository from '../../repository/SettingsRepository';
 import {connect, useDispatch} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
-import {updateSettings} from '../state/settingsAction';
-import {MaterialHeaderButton} from './Common';
-import {Lift, WorkoutNode} from '../types/workout';
-import WorkoutRepository from '../data/WorkoutRepository';
+import {RootStackParamList} from '../../App';
+import {updateSettings} from '../../state/settingsAction';
+import {MaterialHeaderButton} from '../Common';
+import {Lift, Workout} from '../../types/workout';
+import WorkoutRepository from '../../repository/WorkoutRepository';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
   return {settings};
 };
 
-export default connect(mapStateToProps)(WorkoutListNew);
+export default connect(mapStateToProps)(WorkoutList);
 
 type Props = StackScreenProps<RootStackParamList, 'Home'> & {
   props: {settings: GlobalSettings};
 };
 
-export function WorkoutListNew({navigation, route, props}: Props) {
-  const [workouts, setWorkouts] = useState<WorkoutNode[]>([]);
+export function WorkoutList({navigation, route, props}: Props) {
+  const [workouts, setWorkouts] = useState<Workout[]>([]);
   const {colors} = useTheme();
   const dispatch = useDispatch();
 
@@ -79,21 +79,21 @@ export function WorkoutListNew({navigation, route, props}: Props) {
 
   useEffect(loadState, []);
 
-  function onSelect(item: WorkoutNode) {
+  function onSelect(item: Workout) {
     navigation.navigate('Workout', {
       workout: item,
       onComplete: loadState,
     });
   }
 
-  function onEdit(item: WorkoutNode) {
+  function onEdit(item: Workout) {
     navigation.navigate('WorkoutEdit', {
       workout: item,
       onChanged: loadState,
     });
   }
 
-  const renderItem = (item: ListRenderItemInfo<WorkoutNode>) => (
+  const renderItem = (item: ListRenderItemInfo<Workout>) => (
     <TouchableOpacity
       onPress={() => onSelect(item.item)}
       onLongPress={() => onEdit(item.item)}>
@@ -111,7 +111,7 @@ export function WorkoutListNew({navigation, route, props}: Props) {
 }
 
 interface WorkoutItemProps {
-  workout: WorkoutNode;
+  workout: Workout;
 }
 
 function WorkoutListItem({workout}: WorkoutItemProps) {

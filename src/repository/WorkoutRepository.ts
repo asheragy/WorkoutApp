@@ -1,19 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {WorkoutNode} from '../types/workout';
+import {Workout} from '../types/workout';
 import Utils from '../components/Utils';
 
 const key = 'workouts';
 
 export default class WorkoutRepository {
-  static async getAll(): Promise<WorkoutNode[]> {
+  static async getAll(): Promise<Workout[]> {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
-    var json: WorkoutNode[] = JSON.parse(value);
+    var json: Workout[] = JSON.parse(value);
 
     // Fix deserialized date
     json = json.map(wo => {
-      const result: WorkoutNode = {
+      const result: Workout = {
         ...wo,
         lastCompleted: wo.lastCompleted
           ? new Date(wo.lastCompleted)
@@ -25,12 +25,12 @@ export default class WorkoutRepository {
     return json;
   }
 
-  static async upsert(workout: WorkoutNode) {
+  static async upsert(workout: Workout) {
     if (workout.id == undefined) await this.insert(workout);
     else await this.update(workout);
   }
 
-  private static async insert(workout: WorkoutNode) {
+  private static async insert(workout: Workout) {
     workout.id = Utils.generate_uuidv4();
 
     var items = await this.getAll();
@@ -39,7 +39,7 @@ export default class WorkoutRepository {
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
 
-  private static async update(workout: WorkoutNode) {
+  private static async update(workout: Workout) {
     var items = await this.getAll();
     var index = items.findIndex(item => item.id == workout.id);
     if (index < 0) throw new Error('Unable to find id ' + workout.id);

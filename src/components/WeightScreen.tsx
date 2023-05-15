@@ -17,7 +17,7 @@ import {
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import {RootStackParamList} from '../App';
-import WeightRepository from '../data/WeightRepository';
+import WeightRepository from '../repository/WeightRepository';
 import {WeightEntry} from '../types/types';
 import {MaterialHeaderButton} from './Common';
 import {NumberControl} from './NumberControl';

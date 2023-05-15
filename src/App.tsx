@@ -1,8 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
-import {Workout} from './data/Repository';
 import {WorkoutScreen} from './components/workout/WorkoutScreen';
-import {WorkoutList} from './components/WorkoutList';
 import {WeightScreen} from './components/WeightScreen';
 import {
   DarkTheme,
@@ -20,15 +18,15 @@ import {LiftHistoryScreen} from './components/LiftHistory/LiftHistoryScreen';
 import {LiftDefEditScreen} from './components/lifts/LiftDefEditScreen';
 import {LiftDefListScreen} from './components/lifts/LiftDefListScreen';
 import {WorkoutEditScreen} from './components/workout/WorkoutEditScreen';
-import WorkoutListNew from './components/WorkoutListNew';
-import {WorkoutNode} from './types/workout';
+import {WorkoutList} from './components/workout/WorkoutList';
+import {Workout} from './types/workout';
 
 export type RootStackParamList = {
   Home: {
     settings: GlobalSettings;
   };
   Workout: {
-    workout: WorkoutNode;
+    workout: Workout;
     onComplete: () => void;
   };
   Weight: undefined;
@@ -50,7 +48,7 @@ export type RootStackParamList = {
     onSelect?: (def: LiftDef) => void;
   };
   WorkoutEdit: {
-    workout?: WorkoutNode;
+    workout?: Workout;
     onChanged: () => void;
   };
 };
@@ -68,7 +66,7 @@ const App = () => {
           <Stack.Navigator>
             <Stack.Screen
               name="Home"
-              component={WorkoutListNew}
+              component={WorkoutList}
               options={{
                 title: 'Workouts',
                 headerStyle: styles.headerStyle,

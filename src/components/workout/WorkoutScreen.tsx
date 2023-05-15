@@ -4,12 +4,10 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App';
 import {AccessoryView} from './Accessories';
 import {LogBox} from 'react-native';
-import {Workout} from '../../data/Repository';
 import {useTheme} from '@react-navigation/native';
-import LiftRepository from '../../data/LiftRepository';
 import LiftItem from './LiftItem';
-import {Lift, WorkoutNode} from '../../types/workout';
-import WorkoutRepository from '../../data/WorkoutRepository';
+import {Lift, Workout} from '../../types/workout';
+import WorkoutRepository from '../../repository/WorkoutRepository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -58,7 +56,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 }
 
 function WorkoutItem(props: {
-  workout: WorkoutNode;
+  workout: Workout;
   onViewLog: (lift: Lift) => void;
 }) {
   const {colors} = useTheme();

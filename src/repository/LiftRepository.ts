@@ -1,9 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  LiftDef,
-  PersistedSet,
-} from '../types/types';
-import { Lift, LiftSet, WorkoutNode } from '../types/workout';
+import {LiftDef, PersistedSet} from '../types/types';
+import {Lift, LiftSet, Workout} from '../types/workout';
 
 const liftKeyPrefix = 'lift:';
 const historyKeyPrefix = 'liftHistory:';
@@ -24,7 +21,9 @@ export default class LiftRepository {
     return null;
   }
 
-  static async getLifts(workouts: WorkoutNode[]): Promise<Map<string, PersistedSet[]>> {
+  static async getLifts(
+    workouts: Workout[],
+  ): Promise<Map<string, PersistedSet[]>> {
     var map = new Map<string, PersistedSet[]>();
     var ignore = new Set<string>(); // Prevent multiple lookup attempts for missing values
 
@@ -83,7 +82,7 @@ export default class LiftRepository {
     });
   }
 
-  static async addAllHistory(workout: WorkoutNode): Promise<void> {
+  static async addAllHistory(workout: Workout): Promise<void> {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
 

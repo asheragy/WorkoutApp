@@ -13,12 +13,12 @@ import {GlobalSettings, LiftDef, LiftType} from '../../types/types';
 import {useTheme} from '@react-navigation/native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Style_LiftText} from './Common';
-import {Lift, LiftSet, WorkoutNode} from '../../types/workout';
+import {Lift, LiftSet, Workout} from '../../types/workout';
 import {PersistedSetRow} from './SetRows';
 import {useSelector} from 'react-redux';
 import Utils from '../Utils';
 import Log from '../../utils/Log';
-import WorkoutRepository from '../../data/WorkoutRepository';
+import WorkoutRepository from '../../repository/WorkoutRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
@@ -31,7 +31,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   const [lifts, setLifts] = useState<Lift[]>(existing ? existing.lifts : []);
 
   async function onSave() {
-    const workout: WorkoutNode = {
+    const workout: Workout = {
       id: existing ? existing.id : undefined,
       name: title,
       lifts: lifts,
