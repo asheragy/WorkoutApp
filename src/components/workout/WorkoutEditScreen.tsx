@@ -70,12 +70,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   return (
     <View>
       <TextInput onChangeText={setTitle}>{title}</TextInput>
-      <Text>
-        {'Last Completed: ' +
-          (existing?.lastCompleted
-            ? existing?.lastCompleted.toLocaleDateString()
-            : 'Never')}
-      </Text>
+      {existing != undefined && (
+        <Text>
+          {'Last Completed: ' + Utils.lastCompleted(existing.lastCompleted)}
+        </Text>
+      )}
       <FlatList
         data={lifts}
         renderItem={renderItem}

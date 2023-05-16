@@ -1,4 +1,3 @@
-
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
@@ -13,7 +12,6 @@ export type LiftDef = {
   name: string;
   type: LiftType;
 };
-
 
 /**
  * Generic display object for sets
@@ -37,4 +35,9 @@ export type PersistedSet = {
   weight: number;
   reps: number;
   warmup?: boolean;
+};
+
+export type TrainingMax = {
+  id: string;
+  max: number;
 };

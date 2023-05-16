@@ -1,7 +1,6 @@
 import {LiftDef} from './types';
 
 export type Workout = {
-  // TODO require this if the editor screen makes sense to always have it
   id?: string;
   lastCompleted?: Date;
   name: string;
@@ -20,6 +19,7 @@ export type LiftSet = {
   // TODO this is no longer true for warmups
   // TODO validate these are all at the beginning, some logic assumes that
   warmup?: boolean;
+  percentage?: boolean; // Weight is a percentage of training max
 };
 
 export type AccessoryGroup = {

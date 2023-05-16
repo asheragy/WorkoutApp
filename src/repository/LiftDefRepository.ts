@@ -5,33 +5,37 @@ import Utils from '../components/Utils';
 const key = 'liftdefs';
 
 export default class LiftDefRepository {
-  static async upsert(def: LiftDef) {
-    if (def.id.length == 0) await this.insert(def);
-    else await this.update(def);
+  static async upsert(def: LiftDef): Promise<LiftDef> {
+    if (def.id.length == 0) return await this.insert(def);
+    else return await this.update(def);
   }
 
-  static async delete(id: string) {
-    var items = await this.getAll();
-    items = items.filter(item => item.id != id);
-
-    await AsyncStorage.setItem(key, JSON.stringify(items));
-  }
-
-  private static async insert(def: LiftDef) {
+  private static async insert(def: LiftDef): Promise<LiftDef> {
     def.id = Utils.generate_uuidv4();
 
     var items = await this.getAll();
     items.push(def);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
+
+    return def;
   }
 
-  private static async update(def: LiftDef) {
+  private static async update(def: LiftDef): Promise<LiftDef> {
     var items = await this.getAll();
     var index = items.findIndex(item => item.id == def.id);
     if (index < 0) throw new Error('Unable to find id ' + def.id);
 
     items[index] = def;
+    await AsyncStorage.setItem(key, JSON.stringify(items));
+
+    return def;
+  }
+
+  static async delete(id: string) {
+    var items = await this.getAll();
+    items = items.filter(item => item.id != id);
+
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
 
