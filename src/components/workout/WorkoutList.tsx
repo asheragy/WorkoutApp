@@ -72,12 +72,11 @@ export function WorkoutList({navigation, route, props}: Props) {
     // TODO should this go in App.txs?
     SettingsRepository.get().then(result => dispatch(updateSettings(result)));
   }
+  useEffect(loadState, []);
 
   const onLifts = () => navigation.navigate('LiftList');
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
-
-  useEffect(loadState, []);
 
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {

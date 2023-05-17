@@ -8,9 +8,11 @@ import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
 import {SetHeader, SetItem} from './SetRows';
+import {TrainingMax} from '../../types/types';
 
 export default function LiftItem(props: {
   lift: Lift;
+  tm?: TrainingMax;
   onViewLog: (lift: Lift) => void;
 }) {
   const showHeader = props.lift.sets.length > 0;
@@ -66,7 +68,7 @@ export default function LiftItem(props: {
       </View>
       {showHeader && <SetHeader></SetHeader>}
       <View>
-        {Utils.normalizeSets(lift.sets).map((set, index) => (
+        {Utils.normalizeSets(lift.sets, props.tm).map((set, index) => (
           <SetItem set={set} key={index}></SetItem>
         ))}
       </View>
@@ -74,6 +76,7 @@ export default function LiftItem(props: {
         <LiftEditorModal
           editing={editing}
           lift={lift}
+          tm={props.tm}
           onSetsChanged={onSetsChanged}
           onViewLog={() => props.onViewLog(lift)}
           onFinish={() => setEditing(false)}></LiftEditorModal>

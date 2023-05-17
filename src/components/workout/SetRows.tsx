@@ -9,7 +9,7 @@ import {
 } from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
-import { LiftSet } from '../../types/workout';
+import {LiftSet} from '../../types/workout';
 
 export function SetHeader() {
   const {colors} = useTheme();
@@ -67,12 +67,15 @@ export function PersistedSetRow(props: {
     props.onChange(props.index, updatedSet);
   };
 
-  const toggleWarmup = () => {
+  // Iterate normal set => warmup => percentage
+  const onSetLabelChange = () => {
     var updatedSet: LiftSet = {
-      weight: props.set.weight,
-      reps: props.set.reps,
-      warmup: !props.set.warmup,
+      ...props.set,
+      warmup: !props.set.warmup && !props.set.percentage,
+      percentage: props.set.warmup,
     };
+
+    console.log(updatedSet);
 
     props.onChange(props.index, updatedSet);
   };
@@ -84,7 +87,7 @@ export function PersistedSetRow(props: {
           width: '20%',
           alignSelf: 'center',
         }}
-        onPress={toggleWarmup}>
+        onPress={onSetLabelChange}>
         <Text
           style={{
             textAlign: 'center',

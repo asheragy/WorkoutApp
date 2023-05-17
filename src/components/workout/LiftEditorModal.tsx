@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Modal, View, Text, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import GoalRepository from '../../repository/GoalRepository';
-import {GlobalSettings, PersistedSet} from '../../types/types';
+import {GlobalSettings, PersistedSet, TrainingMax} from '../../types/types';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import {SetHeader, PersistedSetRow, GoalSetRow} from './SetRows';
@@ -12,6 +12,7 @@ import {Lift, LiftSet} from '../../types/workout';
 export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
+  tm?: TrainingMax;
   onFinish: () => void;
   onViewLog: () => void;
   onSetsChanged: (sets: LiftSet[]) => void;
@@ -20,7 +21,9 @@ export default function LiftEditorModal(props: {
   const [goals, setGoals] = useState<PersistedSet[]>([]);
 
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
-  const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
+  const labels = Utils.normalizeSets(props.lift.sets, props.tm).map(
+    set => set.label,
+  );
 
   useEffect(() => {
     GoalRepository.getGoal(props.lift.def.id).then(result => setGoals(result));

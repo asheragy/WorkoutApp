@@ -4,20 +4,38 @@ import {
   LiftType,
   NormalizedSet,
   PersistedSet,
+  TrainingMax,
 } from '../types/types';
 import {LiftSet} from '../types/workout';
 
 export default class Utils {
-  static normalizeSets(sets: LiftSet[]): NormalizedSet[] {
+  static round(x: number): number {
+    return Math.round(x / 5) * 5;
+  }
+
+  static normalizeSets(sets: LiftSet[], tm?: TrainingMax): NormalizedSet[] {
     var result: NormalizedSet[] = [];
     var counter = 1;
 
     sets.forEach(set => {
+      var label = counter.toString();
+      if (set.warmup) label = 'W';
+      else if (set.percentage) label = '%';
+      else counter++;
+
+      var weight = set.weight;
+      if (set.percentage && set.weight) {
+        if (tm == undefined) {
+          //console.error('Training max required for percentage');
+          weight = -1;
+        } else weight = this.round((tm.max * set.weight) / 100);
+      }
+
       var t: NormalizedSet = {
         // TODO depending on usages not sure if 0 is the correct default here
-        weight: (set.weight || 0) + 'lb',
+        weight: (weight || 0) + 'lb',
         reps: (set.reps || 0) + '',
-        label: set.warmup ? 'W' : (counter++).toString(),
+        label: label,
       };
 
       result.push(t);

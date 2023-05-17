@@ -16,8 +16,6 @@ export type Lift = {
 export type LiftSet = {
   weight?: number;
   reps?: number;
-  // TODO this is no longer true for warmups
-  // TODO validate these are all at the beginning, some logic assumes that
   warmup?: boolean;
   percentage?: boolean; // Weight is a percentage of training max
 };
