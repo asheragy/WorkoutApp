@@ -2,46 +2,17 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LiftDef, PersistedSet} from '../types/types';
 import {Lift, LiftSet, Workout} from '../types/workout';
 
-const liftKeyPrefix = 'lift:';
-const historyKeyPrefix = 'liftHistory:';
+const keyPrefix = 'liftHistory:';
 
 export type PersistedLiftHistory = {
   date: Date;
   sets: PersistedSet[];
 };
 
-export default class LiftRepository {
-  static async getLift(key: string): Promise<PersistedSet[] | null> {
-    var value = await AsyncStorage.getItem(liftKeyPrefix + key);
-    //console.log('GetLift ' + key + ' = ' + value);
-    if (value != null) {
-      return JSON.parse(value);
-    }
-
-    return null;
-  }
-
-  static async clearAllLifts(): Promise<void> {
-    var keys = await AsyncStorage.getAllKeys();
-
-    keys.forEach(async key => {
-      if (key.startsWith(liftKeyPrefix)) {
-        console.log('Deleting: ' + key);
-        await AsyncStorage.removeItem(key);
-      }
-    });
-  }
-
-  private static async saveSets(
-    def: LiftDef,
-    sets: PersistedSet[],
-  ): Promise<void> {
-    return AsyncStorage.setItem(liftKeyPrefix + def.id, JSON.stringify(sets));
-  }
-
+export default class LiftHistoryRepository {
   // TODO could take LiftDef to be more type safe
   static async getHistory(key: string): Promise<PersistedLiftHistory[]> {
-    var value = await AsyncStorage.getItem(historyKeyPrefix + key);
+    var value = await AsyncStorage.getItem(keyPrefix + key);
     if (value == null) return [];
 
     var stringResult: {date: string; sets: PersistedSet[]}[] =
@@ -61,12 +32,7 @@ export default class LiftRepository {
     for (var i = 0; i < workout.lifts.length; i++) {
       var lift = workout.lifts[i];
 
-      // TODO why is this needed?
-      var savedValue = await this.getLift(lift.def.id);
-      var persistedSets: PersistedSet[] = [];
-
-      if (savedValue != null) persistedSets = savedValue;
-      else persistedSets = LiftRepository.setsToPersisted(lift.sets);
+      var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets);
 
       await this.addHistory(lift.def.id, persistedSets);
     }
@@ -102,6 +68,6 @@ export default class LiftRepository {
 
     history.push(item);
 
-    await AsyncStorage.setItem(historyKeyPrefix + key, JSON.stringify(history));
+    await AsyncStorage.setItem(keyPrefix + key, JSON.stringify(history));
   }
 }

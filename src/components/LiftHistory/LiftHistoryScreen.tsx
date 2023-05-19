@@ -4,7 +4,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {RootStackParamList} from '../../App';
-import LiftRepository, {
+import LiftHistoryRepository, {
   PersistedLiftHistory,
 } from '../../repository/LiftRepository';
 import {LiftChartTab} from './LiftChartTab';
@@ -20,7 +20,7 @@ export function LiftHistoryScreen({route, navigation}: Props) {
   const def = route.params.lift;
 
   function loadState() {
-    LiftRepository.getHistory(def.id).then(result => {
+    LiftHistoryRepository.getHistory(def.id).then(result => {
       setEntries(result);
     });
   }

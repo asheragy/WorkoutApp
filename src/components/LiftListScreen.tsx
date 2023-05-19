@@ -14,9 +14,9 @@ import {
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import {RootStackParamList} from '../App';
-import LiftRepository from '../repository/LiftRepository';
 import {LiftDef} from '../types/types';
 import {MaterialHeaderButton} from './Common';
+import WorkoutRepository from '../repository/WorkoutRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
@@ -25,12 +25,10 @@ export function LiftListScreen({route, navigation}: Props) {
   const {colors} = useTheme();
 
   function loadState() {
-    // TODO get by another means
-    /*
-    Repository.getWorkouts().then(result => {
+    WorkoutRepository.getAll().then(result => {
       const map = new Map();
       result.forEach(workout => {
-        workout.node.lifts.forEach(lift => {
+        workout.lifts.forEach(lift => {
           map.set(lift.def.id, lift.def);
         });
       });
@@ -40,19 +38,18 @@ export function LiftListScreen({route, navigation}: Props) {
 
       setLifts(arr);
     });
-    */
   }
 
   useEffect(loadState, []);
 
   function onClick(def: LiftDef) {
-    navigation.navigate('LiftLog', {
+    navigation.navigate('LiftHistory', {
       lift: def,
     });
   }
 
   function onReset() {
-    LiftRepository.clearAllLifts();
+    // TODO probably don't want to keep this
   }
 
   React.useLayoutEffect(() => {

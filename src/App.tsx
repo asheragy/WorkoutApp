@@ -33,9 +33,6 @@ export type RootStackParamList = {
   LiftChart: {
     lift: LiftDef;
   };
-  LiftLog: {
-    lift: LiftDef;
-  };
   LiftHistory: {
     lift: LiftDef;
   };

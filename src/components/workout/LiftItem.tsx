@@ -1,9 +1,7 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
-import LiftRepository from '../../repository/LiftRepository';
 import {Lift, LiftSet} from '../../types/workout';
-import Log from '../../utils/Log';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
@@ -27,18 +25,6 @@ export default function LiftItem(props: {
 
     props.onLiftChanged(updatedLift);
   };
-
-  /*
-  useEffect(() => {
-    LiftRepository.getLift(lift.def.id).then(result => {
-      if (result != null) {
-        lift.sets = Utils.persistedToSets(result);
-        Log.lift(lift);
-        setLift(lift);
-      }
-    });
-  }, []);
-  */
 
   return (
     <View style={{marginVertical: 0}}>
