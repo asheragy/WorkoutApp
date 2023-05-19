@@ -26,7 +26,7 @@ export type RootStackParamList = {
     settings: GlobalSettings;
   };
   Workout: {
-    workout: Workout;
+    workoutId: string;
     onComplete: () => void;
   };
   Weight: undefined;
@@ -76,7 +76,6 @@ const App = () => {
               name="Workout"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
-                title: route.params.workout.name,
               })}
               component={WorkoutScreen}
             />

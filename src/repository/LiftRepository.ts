@@ -21,31 +21,6 @@ export default class LiftRepository {
     return null;
   }
 
-  static async getLifts(
-    workouts: Workout[],
-  ): Promise<Map<string, PersistedSet[]>> {
-    var map = new Map<string, PersistedSet[]>();
-    var ignore = new Set<string>(); // Prevent multiple lookup attempts for missing values
-
-    for (const wo of workouts) {
-      for (let i = 0; i < wo.lifts.length; i++) {
-        const lift = wo.lifts[i];
-
-        if (!map.has(lift.def.id) && !ignore.has(lift.def.id)) {
-          var persisted = await this.getLift(lift.def.id);
-          if (persisted != null) map.set(lift.def.id, persisted);
-          else ignore.add(lift.def.id);
-        }
-      }
-    }
-
-    return map;
-  }
-
-  static async saveLift(lift: Lift): Promise<void> {
-    return this.saveSets(lift.def, LiftRepository.setsToPersisted(lift.sets));
-  }
-
   static async clearAllLifts(): Promise<void> {
     var keys = await AsyncStorage.getAllKeys();
 

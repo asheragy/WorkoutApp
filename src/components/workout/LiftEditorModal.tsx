@@ -13,47 +13,42 @@ export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
   tm?: TrainingMax;
-  onFinish: () => void;
+  onFinish: (sets: LiftSet[]) => void;
   onViewLog: () => void;
-  onSetsChanged: (sets: LiftSet[]) => void;
 }) {
+  const [sets, setSets] = useState<LiftSet[]>(props.lift.sets);
   const {colors} = useTheme();
   const [goals, setGoals] = useState<PersistedSet[]>([]);
 
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
-  const labels = Utils.normalizeSets(props.lift.sets, props.tm).map(
-    set => set.label,
-  );
+  const labels = Utils.normalizeSets(sets, props.tm).map(set => set.label);
 
   useEffect(() => {
     GoalRepository.getGoal(props.lift.def.id).then(result => setGoals(result));
   }, []);
 
   function onSetChange(index: number, updatedSet: LiftSet) {
-    //console.log('onSetChange index=' + index);
-    var updatedSets: LiftSet[] = props.lift.sets;
-
+    var updatedSets: LiftSet[] = [...sets];
     updatedSets[index] = updatedSet;
 
-    props.onSetsChanged(updatedSets);
+    setSets(updatedSets);
   }
 
   function onSetRemove() {
-    var sets = props.lift.sets;
-    props.onSetsChanged(sets.slice(0, sets.length - 1));
+    var updatedSets = [...sets];
+    setSets(updatedSets.slice(0, updatedSets.length - 1));
   }
 
   function onSetAdd() {
-    var sets = props.lift.sets;
     var addedSet: LiftSet =
       sets.length > 0
-        ? sets[sets.length - 1]
+        ? [...sets][sets.length - 1]
         : {
             weight: 0,
             reps: 0,
           };
 
-    props.onSetsChanged(sets.concat(addedSet));
+    setSets(sets.concat(addedSet));
   }
 
   function addGoal() {
@@ -61,7 +56,7 @@ export default function LiftEditorModal(props: {
     var newGoal: PersistedSet;
     if (goals.length > 0) newGoal = goals[goals.length - 1];
     else {
-      var lastLift = props.lift.sets[props.lift.sets.length - 1];
+      var lastLift = sets[sets.length - 1];
       newGoal = {
         weight: lastLift.weight || 0,
         reps: lastLift.reps || 0,
@@ -91,7 +86,7 @@ export default function LiftEditorModal(props: {
 
   async function onDone() {
     await GoalRepository.saveGoal(props.lift.def, goals);
-    props.onFinish();
+    props.onFinish(sets);
   }
 
   return (
@@ -118,7 +113,7 @@ export default function LiftEditorModal(props: {
             {props.lift.def.name}
           </Text>
           <SetHeader></SetHeader>
-          {props.lift.sets.map((set, index) => (
+          {sets.map((set, index) => (
             <PersistedSetRow
               index={index}
               set={set}
@@ -150,7 +145,7 @@ export default function LiftEditorModal(props: {
             <Text
               style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
               {'Goals ' +
-                Utils.goalPercentage(props.lift.def, goals, props.lift.sets) +
+                Utils.goalPercentage(props.lift.def, goals, sets) +
                 '%'}
             </Text>
           )}
@@ -192,7 +187,7 @@ export default function LiftEditorModal(props: {
               <Button
                 title="Log"
                 onPress={() => {
-                  props.onFinish(); // TODO temp to workaround broken button issue after using
+                  props.onFinish(sets); // TODO temp to workaround broken button issue after using
                   props.onViewLog();
                 }}></Button>
             </View>

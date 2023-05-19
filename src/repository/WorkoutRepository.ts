@@ -5,6 +5,11 @@ import Utils from '../components/Utils';
 const key = 'workouts';
 
 export default class WorkoutRepository {
+  static async get(id: string): Promise<Workout | undefined> {
+    var workouts = await this.getAll();
+    return workouts.find(x => x.id == id);
+  }
+
   static async getAll(): Promise<Workout[]> {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];

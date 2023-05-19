@@ -13,26 +13,22 @@ import {TrainingMax} from '../../types/types';
 export default function LiftItem(props: {
   lift: Lift;
   tm?: TrainingMax;
+  onLiftChanged: (lift: Lift) => void;
   onViewLog: (lift: Lift) => void;
 }) {
   const showHeader = props.lift.sets.length > 0;
-  const [lift, setLift] = useState<Lift>(props.lift);
+  //const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
 
   const onSetsChanged = (updatedSets: LiftSet[]) => {
-    var updatedLift: Lift = {...lift};
+    var updatedLift: Lift = {...props.lift};
     updatedLift.sets = updatedSets;
 
-    setLift(prevState => ({
-      ...prevState,
-      sets: updatedSets,
-    }));
-
-    Log.lift(updatedLift);
-    LiftRepository.saveLift(updatedLift);
+    props.onLiftChanged(updatedLift);
   };
 
+  /*
   useEffect(() => {
     LiftRepository.getLift(lift.def.id).then(result => {
       if (result != null) {
@@ -42,6 +38,7 @@ export default function LiftItem(props: {
       }
     });
   }, []);
+  */
 
   return (
     <View style={{marginVertical: 0}}>
@@ -68,18 +65,20 @@ export default function LiftItem(props: {
       </View>
       {showHeader && <SetHeader></SetHeader>}
       <View>
-        {Utils.normalizeSets(lift.sets, props.tm).map((set, index) => (
+        {Utils.normalizeSets(props.lift.sets, props.tm).map((set, index) => (
           <SetItem set={set} key={index}></SetItem>
         ))}
       </View>
       <View>
         <LiftEditorModal
           editing={editing}
-          lift={lift}
+          lift={props.lift}
           tm={props.tm}
-          onSetsChanged={onSetsChanged}
-          onViewLog={() => props.onViewLog(lift)}
-          onFinish={() => setEditing(false)}></LiftEditorModal>
+          onViewLog={() => props.onViewLog(props.lift)}
+          onFinish={sets => {
+            onSetsChanged(sets);
+            setEditing(false);
+          }}></LiftEditorModal>
       </View>
     </View>
   );

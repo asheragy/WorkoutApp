@@ -10,6 +10,7 @@ import {Lift, Workout} from '../../types/workout';
 import WorkoutRepository from '../../repository/WorkoutRepository';
 import {TrainingMax} from '../../types/types';
 import TrainingMaxRepository from '../../repository/TrainingMaxRepository';
+import Log from '../../utils/Log';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -18,10 +19,11 @@ LogBox.ignoreLogs([
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
 export function WorkoutScreen({route, navigation}: Props) {
-  console.log('WorkoutScreen');
-  console.log(route.params);
-  const workout = route.params.workout;
   const [tms, setTMs] = useState<TrainingMax[]>([]);
+  const [workout, setWorkout] = useState<Workout>({
+    name: '',
+    lifts: [],
+  });
 
   const confirmComplete = () => {
     Alert.alert('Complete?', 'Are you sure', [
@@ -45,7 +47,25 @@ export function WorkoutScreen({route, navigation}: Props) {
     navigation.navigate('LiftHistory', {lift: lift.def});
   }
 
+  function onLiftChanged(lift: Lift) {
+    var index = workout.lifts.findIndex(x => x.def.id == lift.def.id);
+    var lifts = [...workout.lifts];
+    lifts[index] = lift;
+
+    lifts.forEach(x => Log.lift(x));
+
+    const updatedWorkout = {
+      ...workout,
+      lifts: lifts,
+    };
+    setWorkout(updatedWorkout);
+    WorkoutRepository.upsert(updatedWorkout);
+  }
+
   function loadState() {
+    WorkoutRepository.get(route.params.workoutId).then(result => {
+      if (result !== undefined) setWorkout(result);
+    });
     TrainingMaxRepository.getInstance()
       .getAll()
       .then(result => {
@@ -56,10 +76,17 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      <WorkoutItem
-        workout={workout}
-        onViewLog={onViewLog}
-        tms={tms}></WorkoutItem>
+      <View style={styles.workoutItem}>
+        {workout.lifts.map((lift, index) => (
+          <LiftItem
+            lift={lift}
+            tm={tms.find(x => x.id == lift.def.id)}
+            onViewLog={onViewLog}
+            onLiftChanged={onLiftChanged}
+            key={index}></LiftItem>
+        ))}
+      </View>
+
       {workout.accessories != null && (
         <AccessoryView accessories={workout.accessories}></AccessoryView>
       )}
@@ -67,26 +94,6 @@ export function WorkoutScreen({route, navigation}: Props) {
         <Button title="Complete" onPress={() => confirmComplete()}></Button>
       </View>
     </ScrollView>
-  );
-}
-
-function WorkoutItem(props: {
-  workout: Workout;
-  tms: TrainingMax[];
-  onViewLog: (lift: Lift) => void;
-}) {
-  const {colors} = useTheme();
-
-  return (
-    <View style={styles.workoutItem}>
-      {props.workout.lifts.map((lift, index) => (
-        <LiftItem
-          lift={lift}
-          tm={props.tms.find(x => x.id == lift.def.id)}
-          onViewLog={props.onViewLog}
-          key={index}></LiftItem>
-      ))}
-    </View>
   );
 }
 

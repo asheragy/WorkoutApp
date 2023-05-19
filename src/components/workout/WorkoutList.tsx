@@ -80,7 +80,7 @@ export function WorkoutList({navigation, route, props}: Props) {
 
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {
-      workout: item,
+      workoutId: item.id!,
       onComplete: loadState,
     });
   }
