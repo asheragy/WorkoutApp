@@ -10,6 +10,9 @@ import TrainingMaxRepository from '../../repository/TrainingMaxRepository';
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 export function LiftDefEditScreen({route, navigation}: Props) {
+  const userDefined = route.params.def?.id.length == 36;
+  const tmRepo = TrainingMaxRepository.getInstance();
+
   const items = Object.values(LiftType)
     .filter(value => typeof value === 'string')
     .map(value => {
@@ -35,29 +38,38 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   const [tm, setTM] = useState(0.0);
 
   function loadState() {
-    TrainingMaxRepository.getInstance()
-      .get(def.id)
-      .then(result => {
-        if (result !== undefined) setTM(result.max);
-      });
+    tmRepo.get(def.id).then(result => {
+      if (result !== undefined) setTM(result.max);
+    });
   }
 
   useEffect(loadState, []);
 
   async function onSave() {
-    def.type = type;
+    var defId: string;
+    if (userDefined) {
+      def.type = type;
+      var liftDef = await LiftDefRepository.upsert(def);
+      defId = liftDef.id;
+    } else {
+      defId = def.id;
+    }
 
-    var liftDef = await LiftDefRepository.upsert(def);
-    await TrainingMaxRepository.getInstance().upsert({
-      id: liftDef.id,
-      max: tm,
-    });
+    if (tm == 0) await tmRepo.delete(defId);
+    else {
+      await TrainingMaxRepository.getInstance().upsert({
+        id: defId,
+        max: tm,
+      });
+    }
+
     route.params.onChanged();
     navigation.goBack();
   }
 
   async function onDelete() {
-    await LiftDefRepository.delete(def.id);
+    if (userDefined) await LiftDefRepository.delete(def.id);
+
     route.params.onChanged();
     navigation.goBack();
   }
@@ -67,6 +79,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       <View>
         <Text>Name:</Text>
         <TextInput
+          editable={userDefined}
           onChangeText={newName =>
             setDef(prevState => ({
               ...prevState,
@@ -81,6 +94,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         <Text>Type:</Text>
 
         <DropDownPicker
+          disabled={!userDefined}
           items={items}
           open={open}
           value={type}

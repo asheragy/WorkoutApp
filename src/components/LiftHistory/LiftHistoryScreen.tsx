@@ -6,7 +6,7 @@ import {StyleSheet} from 'react-native';
 import {RootStackParamList} from '../../App';
 import LiftHistoryRepository, {
   PersistedLiftHistory,
-} from '../../repository/LiftRepository';
+} from '../../repository/LiftHistoryRepository';
 import {LiftChartTab} from './LiftChartTab';
 import {LiftLogTab} from './LiftLogTab';
 

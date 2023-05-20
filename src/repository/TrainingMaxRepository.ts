@@ -38,4 +38,11 @@ export default class TrainingMaxRepository {
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
+
+  async delete(id: string): Promise<void> {
+    var items = await this.getAll();
+    items = items.filter(x => x.id != id);
+
+    await AsyncStorage.setItem(key, JSON.stringify(items));
+  }
 }

@@ -9,6 +9,10 @@ import {
 import {LiftSet} from '../types/workout';
 
 export default class Utils {
+  static calcPercentage(weight: number, tm: TrainingMax): number {
+    return this.round((tm.max * weight) / 100);
+  }
+
   static round(x: number): number {
     return Math.round(x / 5) * 5;
   }

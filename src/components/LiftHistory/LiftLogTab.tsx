@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import {PersistedLiftHistory} from '../../repository/LiftRepository';
+import {PersistedLiftHistory} from '../../repository/LiftHistoryRepository';
 
 export function LiftLogTab(props: {entries: PersistedLiftHistory[]}) {
   const {colors} = useTheme();

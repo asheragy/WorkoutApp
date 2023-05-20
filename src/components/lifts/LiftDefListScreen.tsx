@@ -22,8 +22,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
 
   function onRefresh() {
     LiftDefRepository.getAll().then(lifts => {
-      var result = lifts;
-      if (isSelection) result = result.concat(SystemLifts);
+      var result = lifts.concat(SystemLifts);
 
       result = result.sort((a, b) => a.name.localeCompare(b.name));
       setLifts(result);
