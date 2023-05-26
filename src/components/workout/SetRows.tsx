@@ -57,12 +57,9 @@ export function PersistedSetRow(props: {
   const {colors} = useTheme();
 
   const update = (weight?: number, reps?: number) => {
-    // TODO full object copy needed here
-    var updatedSet: LiftSet = {
-      weight: weight,
-      reps: reps,
-      warmup: props.set.warmup,
-    };
+    var updatedSet = {...props.set};
+    updatedSet.weight = weight;
+    updatedSet.reps = reps;
 
     props.onChange(props.index, updatedSet);
   };

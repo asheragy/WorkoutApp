@@ -145,7 +145,7 @@ export default function LiftEditorModal(props: {
             <Text
               style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
               {'Goals ' +
-                Utils.goalPercentage(props.lift.def, goals, sets) +
+                Utils.goalPercentage(props.lift.def, goals, sets, props.tm) +
                 '%'}
             </Text>
           )}

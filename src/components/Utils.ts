@@ -4,6 +4,7 @@ import {
   LiftType,
   NormalizedSet,
   PersistedSet,
+  PlateCount,
   TrainingMax,
 } from '../types/types';
 import {LiftSet} from '../types/workout';
@@ -103,12 +104,21 @@ export default class Utils {
     return current - step;
   }
 
-  static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
+  static calculate1RM(
+    def: LiftDef,
+    set: LiftSet | PersistedSet,
+    tm?: TrainingMax,
+  ): number {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
     var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
     const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
+
+    if ('percentage' in set && set.percentage == true) {
+      if (tm === undefined) weight = -1;
+      else weight = Utils.calcPercentage(weight, tm);
+    }
 
     if (def.type == LiftType.Bodyweight) weight += bodyweight;
 
@@ -129,12 +139,13 @@ export default class Utils {
     def: LiftDef,
     goals: PersistedSet[],
     current: LiftSet[],
+    tm?: TrainingMax,
   ): string {
     var goal1rm = goals.map(set => Utils.calculate1RM(def, set));
 
     var current1rm = current
       .filter(set => set.warmup != true)
-      .map(set => Utils.calculate1RM(def, set));
+      .map(set => Utils.calculate1RM(def, set, tm));
 
     const average = (array: number[]) =>
       array.reduce((a, b) => a + b) / array.length;
@@ -166,5 +177,40 @@ export default class Utils {
     return `${date.getMonth() + 1}/${date.getDate()} at ${hour % 12}:${
       minutes > 9 ? minutes : '0' + minutes
     }${ampm}`;
+  }
+
+  static calcPlates(type: LiftType, weight: number): PlateCount {
+    var result: PlateCount = {};
+    if (type == LiftType.Barbell) {
+      var remaining = weight - 45;
+
+      while (remaining >= 90) {
+        result.p45 = result.p45 ? result.p45 + 1 : 1;
+        remaining -= 90;
+      }
+
+      if (remaining >= 50) {
+        result.p25 = 1;
+        remaining -= 50;
+      }
+
+      while (remaining >= 20) {
+        result.p10 = result.p10 ? result.p10 + 1 : 1;
+        remaining -= 20;
+      }
+
+      if (remaining >= 10) {
+        result.p5 = 1;
+        remaining -= 10;
+      }
+
+      if (remaining == 5) {
+        result.p2point5 = 1;
+      }
+
+      return result;
+    }
+
+    throw new Error('Unable to calculate plates for ' + type.toString());
   }
 }

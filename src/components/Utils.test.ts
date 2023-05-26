@@ -4,9 +4,11 @@ import {
   LiftDef,
   LiftType,
   PersistedSet,
+  PlateCount,
+  TrainingMax,
 } from '../types/types';
 import Utils from './Utils';
-import { LiftSet } from '../types/workout';
+import {LiftSet} from '../types/workout';
 
 export {};
 
@@ -66,6 +68,30 @@ test('increment/decrement dumbbell - maxSet', () => {
   expect(currentWeight).toBe(45);
 });
 
+test('calc 1RM', () => {
+  const def: LiftDef = {
+    id: '',
+    name: '',
+    type: LiftType.Barbell,
+  };
+
+  var set: LiftSet = {
+    weight: 100,
+    reps: 10,
+  };
+
+  var oneRM = Utils.calculate1RM(def, set);
+  expect(oneRM).toBe(133.3);
+
+  // Percentage
+  set.percentage = true;
+  set.weight = 50;
+
+  const tm: TrainingMax = {id: '', max: 200};
+  var oneRM = Utils.calculate1RM(def, set, tm);
+  expect(oneRM).toBe(133.3);
+});
+
 test('goal percentage', () => {
   const def: LiftDef = {
     id: '',
@@ -91,4 +117,39 @@ test('goal percentage', () => {
 
   percentage = Utils.goalPercentage(def, goal, current);
   expect(percentage).toBe('93.0');
+
+  // Percentage lift
+  /*
+  const tm: TrainingMax = {id: '', max: 85};
+  current[0].percentage = true;
+  current[0].weight = 100;
+  percentage = Utils.goalPercentage(def, goal, current, tm);
+  expect(percentage).toBe('93.0');
+  */
+});
+
+test('plate calculator', () => {
+  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 135);
+  expect(plates).toStrictEqual({
+    p45: 1,
+  });
+
+  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 405);
+  expect(plates).toStrictEqual({
+    p45: 4,
+  });
+
+  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 130);
+  expect(plates).toStrictEqual({
+    p25: 1,
+    p10: 1,
+    p5: 1,
+    p2point5: 1,
+  });
+
+  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 175);
+  expect(plates).toStrictEqual({
+    p45: 1,
+    p10: 2,
+  });
 });

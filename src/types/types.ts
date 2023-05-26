@@ -41,3 +41,11 @@ export type TrainingMax = {
   id: string;
   max: number;
 };
+
+export type PlateCount = {
+  p45?: number;
+  p25?: number;
+  p10?: number;
+  p5?: number;
+  p2point5?: number;
+};
