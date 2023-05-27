@@ -129,17 +129,17 @@ test('goal percentage', () => {
 });
 
 test('plate calculator', () => {
-  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 135);
+  var plates = Utils.calcPlates(LiftType.Barbell, 135);
   expect(plates).toStrictEqual({
     p45: 1,
   });
 
-  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 405);
+  plates = Utils.calcPlates(LiftType.Barbell, 405);
   expect(plates).toStrictEqual({
     p45: 4,
   });
 
-  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 130);
+  plates = Utils.calcPlates(LiftType.Barbell, 130);
   expect(plates).toStrictEqual({
     p25: 1,
     p10: 1,
@@ -147,9 +147,22 @@ test('plate calculator', () => {
     p2point5: 1,
   });
 
-  var plates: PlateCount = Utils.calcPlates(LiftType.Barbell, 175);
+  plates = Utils.calcPlates(LiftType.Barbell, 175);
   expect(plates).toStrictEqual({
     p45: 1,
     p10: 2,
+  });
+
+  // Special bars
+  plates = Utils.calcPlates(LiftType.TrapBar, 200);
+  expect(plates).toStrictEqual({
+    p45: 1,
+    p25: 1,
+  });
+
+  plates = Utils.calcPlates(LiftType.SSB, 300);
+  expect(plates).toStrictEqual({
+    p45: 2,
+    p25: 1,
   });
 });

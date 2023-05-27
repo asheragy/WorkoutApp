@@ -6,6 +6,7 @@ import {
   LiftType,
   GlobalSettings,
   PersistedSet,
+  PlateCount,
 } from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
@@ -28,8 +29,21 @@ export function SetHeader() {
   );
 }
 
-export function SetItem(props: {set: NormalizedSet}) {
+export function SetItem(props: {set: NormalizedSet; plates?: PlateCount}) {
   const {colors} = useTheme();
+  var weight = props.set.weight;
+
+  /*
+  TODO disabling for now but need setting
+  if (props.plates !== undefined) {
+    console.log(props.plates);
+    if (props.plates.p45) weight += ' 45(' + props.plates.p45 + ')';
+    if (props.plates.p25) weight += ' 25(' + props.plates.p25 + ')';
+    if (props.plates.p10) weight += ' 10(' + props.plates.p10 + ')';
+    if (props.plates.p5) weight += ' 5(' + props.plates.p5 + ')';
+    if (props.plates.p2point5) weight += ' 2.5(' + props.plates.p2point5 + ')';
+  }
+  */
 
   return (
     <View style={{flexDirection: 'row'}}>
@@ -37,7 +51,7 @@ export function SetItem(props: {set: NormalizedSet}) {
         {props.set.label}
       </Text>
       <Text style={{width: '60%', textAlign: 'center', color: colors.text}}>
-        {props.set.weight}
+        {weight}
       </Text>
       <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
         {props.set.reps}

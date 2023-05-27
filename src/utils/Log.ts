@@ -1,4 +1,4 @@
-import {Lift, LiftSet} from '../types/types';
+import {Lift} from '../types/workout';
 
 export default class Log {
   static lift(lift: Lift) {

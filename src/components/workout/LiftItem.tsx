@@ -6,7 +6,7 @@ import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
 import {SetHeader, SetItem} from './SetRows';
-import {TrainingMax} from '../../types/types';
+import {PlateCount, TrainingMax} from '../../types/types';
 
 export default function LiftItem(props: {
   lift: Lift;
@@ -25,6 +25,12 @@ export default function LiftItem(props: {
 
     props.onLiftChanged(updatedLift);
   };
+
+  function calcPlates(lift: Lift, weight: string): PlateCount | undefined {
+    // Just using string since it already accounts for percentage lifts
+    var n = parseInt(weight.replace('lb', ''));
+    return Utils.calcPlates(lift.def.type, n);
+  }
 
   return (
     <View style={{marginVertical: 0}}>
@@ -52,7 +58,10 @@ export default function LiftItem(props: {
       {showHeader && <SetHeader></SetHeader>}
       <View>
         {Utils.normalizeSets(props.lift.sets, props.tm).map((set, index) => (
-          <SetItem set={set} key={index}></SetItem>
+          <SetItem
+            set={set}
+            key={index}
+            plates={calcPlates(props.lift, set.weight)}></SetItem>
         ))}
       </View>
       <View>

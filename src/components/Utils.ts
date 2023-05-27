@@ -18,6 +18,7 @@ export default class Utils {
     return Math.round(x / 5) * 5;
   }
 
+  // TODO if this took lift type it could add PlateCount as well
   static normalizeSets(sets: LiftSet[], tm?: TrainingMax): NormalizedSet[] {
     var result: NormalizedSet[] = [];
     var counter = 1;
@@ -179,10 +180,18 @@ export default class Utils {
     }${ampm}`;
   }
 
-  static calcPlates(type: LiftType, weight: number): PlateCount {
+  static calcPlates(type: LiftType, weight: number): PlateCount | undefined {
     var result: PlateCount = {};
-    if (type == LiftType.Barbell) {
-      var remaining = weight - 45;
+    if (
+      type == LiftType.Barbell ||
+      type == LiftType.SSB ||
+      type == LiftType.TrapBar
+    ) {
+      var remaining = weight;
+
+      if (type == LiftType.Barbell) remaining -= 45;
+      else if (type == LiftType.SSB) remaining -= 70;
+      else if (type == LiftType.TrapBar) remaining -= 60;
 
       while (remaining >= 90) {
         result.p45 = result.p45 ? result.p45 + 1 : 1;
@@ -211,6 +220,6 @@ export default class Utils {
       return result;
     }
 
-    throw new Error('Unable to calculate plates for ' + type.toString());
+    return undefined;
   }
 }

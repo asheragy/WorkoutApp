@@ -4,6 +4,8 @@ export enum LiftType {
   // TODO plate loaded machine vs stack?
   Machine,
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
+  SSB,
+  TrapBar,
   Other,
 }
 
