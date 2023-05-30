@@ -29,6 +29,28 @@ export function SetHeader() {
   );
 }
 
+export function PersistedSetHeader() {
+  const {colors} = useTheme();
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <Text style={[styles.liftHeader, {width: '10%', color: colors.text}]}>
+        Set
+      </Text>
+      <Text style={[styles.liftHeader, {width: '35%', color: colors.text}]}>
+        Weight
+      </Text>
+      <Text
+        style={[styles.liftHeader, {width: '10%', color: colors.text}]}></Text>
+      <Text style={[styles.liftHeader, {width: '35%', color: colors.text}]}>
+        Reps
+      </Text>
+      <Text style={[styles.liftHeader, {width: '10%', color: colors.text}]}>
+        1RM
+      </Text>
+    </View>
+  );
+}
+
 export function SetItem(props: {set: NormalizedSet; plates?: PlateCount}) {
   const {colors} = useTheme();
   var weight = props.set.weight;
@@ -95,7 +117,7 @@ export function PersistedSetRow(props: {
     <View style={{flexDirection: 'row', marginVertical: 4}}>
       <TouchableOpacity
         style={{
-          width: '20%',
+          width: '10%',
           alignSelf: 'center',
         }}
         onPress={onSetLabelChange}>
@@ -111,7 +133,7 @@ export function PersistedSetRow(props: {
 
       <View
         style={{
-          width: '60%',
+          width: '35%',
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
@@ -134,13 +156,35 @@ export function PersistedSetRow(props: {
             ) - (props.set.weight || 0)
           }></NumberControl>
       </View>
-      <View style={{width: '20%', flexDirection: 'row'}}>
+      <View
+        style={{
+          width: '10%',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Text>TEST</Text>
+      </View>
+
+      <View
+        style={{
+          width: '35%',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
         <NumberControl
           precision={0}
           value={props.set.reps}
           onChange={newRepsValue => update(props.set.weight, newRepsValue)}
           decrementBy={() => 1}
           incrementBy={() => 1}></NumberControl>
+      </View>
+      <View
+        style={{
+          width: '10%',
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Text>TEST</Text>
       </View>
     </View>
   );
