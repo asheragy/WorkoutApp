@@ -74,9 +74,10 @@ export default class Utils {
     current: number,
     liftType: LiftType,
     settings: GlobalSettings,
+    percentage?: Boolean,
   ): number {
     var step = 5;
-    if (liftType == LiftType.Machine) step = 2.5;
+    if (liftType == LiftType.Machine || percentage) step = 2.5;
     else if (
       liftType == LiftType.Dumbbell &&
       settings.largestHalfPoundDumbbell != undefined
@@ -91,9 +92,10 @@ export default class Utils {
     current: number,
     liftType: LiftType,
     settings: GlobalSettings,
+    percentage?: Boolean,
   ): number {
     var step = 5;
-    if (liftType == LiftType.Machine) step = 2.5;
+    if (liftType == LiftType.Machine || percentage) step = 2.5;
     else if (
       liftType == LiftType.Dumbbell &&
       settings.largestHalfPoundDumbbell != undefined
@@ -106,7 +108,7 @@ export default class Utils {
   }
 
   static calculate1RM(
-    def: LiftDef,
+    defOrType: LiftDef | LiftType,
     set: LiftSet | PersistedSet,
     tm?: TrainingMax,
   ): number {
@@ -115,13 +117,16 @@ export default class Utils {
     const bodyweight = 200;
     var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
     const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
+    const type: LiftType = (defOrType as LiftDef).id
+      ? (defOrType as LiftDef).type
+      : (defOrType as LiftType);
 
     if ('percentage' in set && set.percentage == true) {
       if (tm === undefined) weight = -1;
       else weight = Utils.calcPercentage(weight, tm);
     }
 
-    if (def.type == LiftType.Bodyweight) weight += bodyweight;
+    if (type == LiftType.Bodyweight) weight += bodyweight;
 
     return weight + weight * 0.0333 * reps;
   }

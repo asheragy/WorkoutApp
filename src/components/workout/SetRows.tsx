@@ -7,6 +7,7 @@ import {
   GlobalSettings,
   PersistedSet,
   PlateCount,
+  TrainingMax,
 } from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
@@ -88,6 +89,7 @@ export function PersistedSetRow(props: {
   liftType: LiftType;
   settings: GlobalSettings;
   label: string;
+  tm?: TrainingMax;
   onChange: (index: number, updatedSet: LiftSet) => void;
 }) {
   const {colors} = useTheme();
@@ -112,6 +114,11 @@ export function PersistedSetRow(props: {
 
     props.onChange(props.index, updatedSet);
   };
+
+  var percentageWeight = '';
+  if (props.set.percentage && props.set.weight && props.tm) {
+    percentageWeight = Utils.calcPercentage(props.set.weight, props.tm) + '';
+  }
 
   return (
     <View style={{flexDirection: 'row', marginVertical: 4}}>
@@ -146,6 +153,7 @@ export function PersistedSetRow(props: {
               props.set.weight || 0,
               props.liftType,
               props.settings,
+              props.set.percentage,
             )
           }
           incrementBy={() =>
@@ -153,6 +161,7 @@ export function PersistedSetRow(props: {
               props.set.weight || 0,
               props.liftType,
               props.settings,
+              props.set.percentage,
             ) - (props.set.weight || 0)
           }></NumberControl>
       </View>
@@ -162,7 +171,14 @@ export function PersistedSetRow(props: {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <Text>TEST</Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            color: colors.text,
+          }}>
+          {percentageWeight}
+        </Text>
       </View>
 
       <View
@@ -184,72 +200,14 @@ export function PersistedSetRow(props: {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <Text>TEST</Text>
-      </View>
-    </View>
-  );
-}
-
-// TODO this could maybe be shared with PersistedSetRow but need to refactor a few things
-export function GoalSetRow(props: {
-  index: number;
-  set: PersistedSet;
-  liftType: LiftType;
-  settings: GlobalSettings;
-  onChange: (index: number, updatedSet: PersistedSet) => void;
-}) {
-  const {colors} = useTheme();
-
-  const update = (weight: number, reps: number) => {
-    var updatedSet: PersistedSet = {
-      weight: weight,
-      reps: reps,
-    };
-
-    props.onChange(props.index, updatedSet);
-  };
-
-  return (
-    <View style={{flexDirection: 'row', marginVertical: 4}}>
-      <Text
-        style={{
-          width: '20%',
-          textAlign: 'center',
-          textAlignVertical: 'center',
-          color: colors.text,
-        }}></Text>
-      <View
-        style={{
-          width: '60%',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <NumberControl
-          value={props.set.weight}
-          onChange={newWeightValue => update(newWeightValue, props.set.reps)}
-          decrementBy={() =>
-            props.set.weight -
-            Utils.decrementWeight(
-              props.set.weight,
-              props.liftType,
-              props.settings,
-            )
-          }
-          incrementBy={() =>
-            Utils.incrementWeight(
-              props.set.weight,
-              props.liftType,
-              props.settings,
-            ) - props.set.weight
-          }></NumberControl>
-      </View>
-      <View style={{width: '20%', flexDirection: 'row'}}>
-        <NumberControl
-          precision={0}
-          value={props.set.reps}
-          onChange={newRepsValue => update(props.set.weight, newRepsValue)}
-          decrementBy={() => 1}
-          incrementBy={() => 1}></NumberControl>
+        <Text
+          style={{
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            color: colors.text,
+          }}>
+          {Math.round(Utils.calculate1RM(props.liftType, props.set, props.tm))}
+        </Text>
       </View>
     </View>
   );

@@ -83,6 +83,7 @@ export default function LiftEditorModal(props: {
               settings={settings}
               liftType={props.lift.def.type}
               key={index}
+              tm={props.tm}
               onChange={onSetChange}></PersistedSetRow>
           ))}
 
