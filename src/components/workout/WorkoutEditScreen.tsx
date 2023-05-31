@@ -14,11 +14,11 @@ import {useTheme} from '@react-navigation/native';
 import {TextInput} from 'react-native-gesture-handler';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet, Workout} from '../../types/workout';
-import {PersistedSetRow} from './SetRows';
 import {useSelector} from 'react-redux';
 import Utils from '../Utils';
 import Log from '../../utils/Log';
 import WorkoutRepository from '../../repository/WorkoutRepository';
+import {PersistedSetRow} from './EditableSetRows';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 

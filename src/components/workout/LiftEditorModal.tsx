@@ -5,8 +5,8 @@ import {useSelector} from 'react-redux';
 import {GlobalSettings, TrainingMax} from '../../types/types';
 import Utils from '../Utils';
 import {Style_LiftText} from './Common';
-import {PersistedSetRow, PersistedSetHeader} from './SetRows';
 import {Lift, LiftSet} from '../../types/workout';
+import {PersistedSetHeader, PersistedSetRow} from './EditableSetRows';
 
 export default function LiftEditorModal(props: {
   editing: boolean;

@@ -1,84 +1,29 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import {
-  NormalizedSet,
-  LiftType,
-  GlobalSettings,
-  PersistedSet,
-  PlateCount,
-  TrainingMax,
-} from '../../types/types';
+import {LiftType, GlobalSettings, TrainingMax} from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
 import {LiftSet} from '../../types/workout';
 
-export function SetHeader() {
-  const {colors} = useTheme();
-  return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
-        Set
-      </Text>
-      <Text style={[styles.liftHeader, {width: '60%', color: colors.text}]}>
-        Weight
-      </Text>
-      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
-        Reps
-      </Text>
-    </View>
-  );
-}
+const Widths = ['10%', '35%', '10%', '35%', '10%'];
 
 export function PersistedSetHeader() {
   const {colors} = useTheme();
-  return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={[styles.liftHeader, {width: '10%', color: colors.text}]}>
-        Set
-      </Text>
-      <Text style={[styles.liftHeader, {width: '35%', color: colors.text}]}>
-        Weight
-      </Text>
-      <Text
-        style={[styles.liftHeader, {width: '10%', color: colors.text}]}></Text>
-      <Text style={[styles.liftHeader, {width: '35%', color: colors.text}]}>
-        Reps
-      </Text>
-      <Text style={[styles.liftHeader, {width: '10%', color: colors.text}]}>
-        1RM
-      </Text>
-    </View>
-  );
-}
-
-export function SetItem(props: {set: NormalizedSet; plates?: PlateCount}) {
-  const {colors} = useTheme();
-  var weight = props.set.weight;
-
-  /*
-  TODO disabling for now but need setting
-  if (props.plates !== undefined) {
-    console.log(props.plates);
-    if (props.plates.p45) weight += ' 45(' + props.plates.p45 + ')';
-    if (props.plates.p25) weight += ' 25(' + props.plates.p25 + ')';
-    if (props.plates.p10) weight += ' 10(' + props.plates.p10 + ')';
-    if (props.plates.p5) weight += ' 5(' + props.plates.p5 + ')';
-    if (props.plates.p2point5) weight += ' 2.5(' + props.plates.p2point5 + ')';
-  }
-  */
+  const labels = ['Set', 'Weight', '', 'Reps', '1RM'];
 
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
-        {props.set.label}
-      </Text>
-      <Text style={{width: '60%', textAlign: 'center', color: colors.text}}>
-        {weight}
-      </Text>
-      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
-        {props.set.reps}
-      </Text>
+      {labels.map((label, index) => (
+        <Text
+          key={index}
+          style={[
+            styles.liftHeader,
+            {width: Widths[index], color: colors.text},
+          ]}>
+          {label}
+        </Text>
+      ))}
     </View>
   );
 }
@@ -124,7 +69,7 @@ export function PersistedSetRow(props: {
     <View style={{flexDirection: 'row', marginVertical: 4}}>
       <TouchableOpacity
         style={{
-          width: '10%',
+          width: Widths[0],
           alignSelf: 'center',
         }}
         onPress={onSetLabelChange}>
@@ -140,7 +85,7 @@ export function PersistedSetRow(props: {
 
       <View
         style={{
-          width: '35%',
+          width: Widths[1],
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
@@ -167,7 +112,7 @@ export function PersistedSetRow(props: {
       </View>
       <View
         style={{
-          width: '10%',
+          width: Widths[2],
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
@@ -183,7 +128,7 @@ export function PersistedSetRow(props: {
 
       <View
         style={{
-          width: '35%',
+          width: Widths[3],
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
@@ -196,7 +141,7 @@ export function PersistedSetRow(props: {
       </View>
       <View
         style={{
-          width: '10%',
+          width: Widths[4],
           flexDirection: 'row',
           justifyContent: 'center',
         }}>

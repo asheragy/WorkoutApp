@@ -2,11 +2,10 @@ import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {Lift, LiftSet} from '../../types/workout';
-import Utils from '../Utils';
 import {Style_LiftText} from './Common';
 import LiftEditorModal from './LiftEditorModal';
-import {SetHeader, SetItem} from './SetRows';
-import {PlateCount, TrainingMax} from '../../types/types';
+import {ReadOnlySetTable} from './ReadOnlySetTable';
+import {TrainingMax} from '../../types/types';
 
 export default function LiftItem(props: {
   lift: Lift;
@@ -14,7 +13,6 @@ export default function LiftItem(props: {
   onLiftChanged: (lift: Lift) => void;
   onViewLog: (lift: Lift) => void;
 }) {
-  const showHeader = props.lift.sets.length > 0;
   //const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
@@ -25,12 +23,6 @@ export default function LiftItem(props: {
 
     props.onLiftChanged(updatedLift);
   };
-
-  function calcPlates(lift: Lift, weight: string): PlateCount | undefined {
-    // Just using string since it already accounts for percentage lifts
-    var n = parseInt(weight.replace('lb', ''));
-    return Utils.calcPlates(lift.def.type, n);
-  }
 
   return (
     <View style={{marginVertical: 0}}>
@@ -55,15 +47,7 @@ export default function LiftItem(props: {
           </TouchableOpacity>
         </View>
       </View>
-      {showHeader && <SetHeader></SetHeader>}
-      <View>
-        {Utils.normalizeSets(props.lift.sets, props.tm).map((set, index) => (
-          <SetItem
-            set={set}
-            key={index}
-            plates={calcPlates(props.lift, set.weight)}></SetItem>
-        ))}
-      </View>
+      <ReadOnlySetTable lift={props.lift} tm={props.tm}></ReadOnlySetTable>
       <View>
         <LiftEditorModal
           editing={editing}
