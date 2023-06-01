@@ -70,6 +70,7 @@ export default function LiftEditorModal(props: {
 
             elevation: 5,
           }}>
+          {/* TODO use EditableLiftItem here*/}
           <Text
             style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
             {props.lift.def.name}

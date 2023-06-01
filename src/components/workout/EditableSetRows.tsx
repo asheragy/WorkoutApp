@@ -5,8 +5,34 @@ import {LiftType, GlobalSettings, TrainingMax} from '../../types/types';
 import {NumberControl} from '../NumberControl';
 import Utils from '../Utils';
 import {LiftSet} from '../../types/workout';
+import {useSelector} from 'react-redux';
 
 const Widths = ['10%', '35%', '10%', '35%', '10%'];
+
+export function EditableSetTable(props: {
+  sets: LiftSet[];
+  liftType: LiftType;
+  onChange: (index: number, updatedSet: LiftSet) => void;
+}) {
+  const labels = Utils.normalizeSets(props.sets).map(set => set.label);
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+
+  return (
+    <View>
+      <PersistedSetHeader></PersistedSetHeader>
+      {props.sets.map((set, index) => (
+        <PersistedSetRow
+          index={index}
+          set={set}
+          label={labels[index]}
+          settings={settings}
+          liftType={props.liftType}
+          key={index}
+          onChange={props.onChange}></PersistedSetRow>
+      ))}
+    </View>
+  );
+}
 
 export function PersistedSetHeader() {
   const {colors} = useTheme();
