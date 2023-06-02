@@ -8,11 +8,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {RootStackParamList} from '../../App';
-import {LiftDef, LiftType} from '../../types/types';
-import LiftDefRepository from '../../repository/LiftDefRepository';
+import {RootStackParamList} from '../App';
+import {LiftDef, LiftType} from '../types/types';
+import LiftDefRepository from '../repository/LiftDefRepository';
 import {useTheme} from '@react-navigation/native';
-import {SystemLifts} from '../../repository/LiftDatabase';
+import {SystemLifts} from '../repository/LiftDatabase';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 

@@ -2,8 +2,8 @@ import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PersistedLiftHistory} from '../../repository/LiftHistoryRepository';
 import {LiftDef, PersistedSet} from '../../types/types';
-import {ProgressChart} from '../ProgressChart';
-import Utils from '../Utils';
+import {ProgressChart} from '../../components/ProgressChart';
+import Utils from '../../components/Utils';
 
 export function LiftChartTab(props: {
   def: LiftDef;

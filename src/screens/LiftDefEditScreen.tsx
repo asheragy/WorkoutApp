@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Button, Text, TextInput, View} from 'react-native';
-import {RootStackParamList} from '../../App';
+import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {LiftType, TrainingMax} from '../../types/types';
-import LiftDefRepository from '../../repository/LiftDefRepository';
-import TrainingMaxRepository from '../../repository/TrainingMaxRepository';
+import {LiftType, TrainingMax} from '../types/types';
+import LiftDefRepository from '../repository/LiftDefRepository';
+import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 

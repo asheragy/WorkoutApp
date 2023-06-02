@@ -19,9 +19,9 @@ import {
 import {RootStackParamList} from '../App';
 import WeightRepository from '../repository/WeightRepository';
 import {WeightEntry} from '../types/types';
-import {MaterialHeaderButton} from './Common';
-import {NumberControl} from './NumberControl';
-import {ProgressChart} from './ProgressChart';
+import {MaterialHeaderButton} from '../components/Common';
+import {NumberControl} from '../components/NumberControl';
+import {ProgressChart} from '../components/ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
 

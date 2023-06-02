@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
 import {WorkoutScreen} from './components/workout/WorkoutScreen';
-import {WeightScreen} from './components/WeightScreen';
+import {WeightScreen} from './screens/WeightScreen';
 import {
   DarkTheme,
   DefaultTheme,
@@ -14,12 +14,12 @@ import {createStore} from 'redux';
 import settingsReducer from './state/settingsReducer';
 import {Provider} from 'react-redux';
 import {LiftListScreen} from './components/LiftListScreen';
-import {LiftHistoryScreen} from './components/LiftHistory/LiftHistoryScreen';
-import {LiftDefEditScreen} from './components/lifts/LiftDefEditScreen';
-import {LiftDefListScreen} from './components/lifts/LiftDefListScreen';
+import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
+import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
 import {WorkoutEditScreen} from './components/workout/WorkoutEditScreen';
 import {WorkoutList} from './components/workout/WorkoutList';
 import {Workout} from './types/workout';
+import {LiftDefListScreen} from './screens/LiftDefListScreen';
 
 export type RootStackParamList = {
   Home: {
