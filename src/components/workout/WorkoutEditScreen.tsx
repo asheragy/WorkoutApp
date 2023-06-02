@@ -53,8 +53,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   const renderItem = (item: ListRenderItemInfo<Lift>) => (
     <EditableLiftItem
       lift={item.item}
-      index={item.index}
-      onChange={onLiftChanged}></EditableLiftItem>
+      onChange={lift => onLiftChanged(item.index, lift)}></EditableLiftItem>
   );
 
   return (
