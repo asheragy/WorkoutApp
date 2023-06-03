@@ -1,7 +1,7 @@
 import {useTheme} from '@react-navigation/native';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {AccessoryGroup} from '../../types/workout';
+import {AccessoryGroup} from '../types/workout';
 
 export function AccessoryView(props: {accessories: AccessoryGroup[]}) {
   const {colors} = useTheme();

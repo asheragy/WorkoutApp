@@ -1,11 +1,69 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import {NormalizedSet, PlateCount, TrainingMax} from '../../types/types';
-import Utils from '../Utils';
-import {Lift} from '../../types/workout';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {Lift, LiftSet} from '../types/workout';
+import LiftEditorModal from './workout/LiftEditorModal';
+import {NormalizedSet, PlateCount, TrainingMax} from '../types/types';
+import Utils from './Utils';
+import {Style_LiftText} from './workout/Common';
 
-export function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax}) {
+export default function LiftItem(props: {
+  lift: Lift;
+  tm?: TrainingMax;
+  onLiftChanged: (lift: Lift) => void;
+  onViewLog: (lift: Lift) => void;
+}) {
+  //const [lift, setLift] = useState<Lift>(props.lift);
+  const [editing, setEditing] = useState(false);
+  const {colors} = useTheme();
+
+  const onSetsChanged = (updatedSets: LiftSet[]) => {
+    var updatedLift: Lift = {...props.lift};
+    updatedLift.sets = updatedSets;
+
+    props.onLiftChanged(updatedLift);
+  };
+
+  return (
+    <View style={{marginVertical: 0}}>
+      <View
+        style={{
+          marginVertical: 8,
+          flexDirection: 'row',
+        }}>
+        <Text style={{width: '20%'}}></Text>
+        <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
+          {props.lift.def.name}
+        </Text>
+        <View
+          style={{
+            width: '20%',
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity onPress={() => setEditing(true)}>
+            <Image style={{}} source={require('../icons/edit.png')} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <ReadOnlySetTable lift={props.lift} tm={props.tm}></ReadOnlySetTable>
+      <View>
+        <LiftEditorModal
+          editing={editing}
+          lift={props.lift}
+          tm={props.tm}
+          onViewLog={() => props.onViewLog(props.lift)}
+          onFinish={sets => {
+            onSetsChanged(sets);
+            setEditing(false);
+          }}></LiftEditorModal>
+      </View>
+    </View>
+  );
+}
+
+function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax}) {
   function calcPlates(lift: Lift, weight: string): PlateCount | undefined {
     // Just using string since it already accounts for percentage lifts
     var n = parseInt(weight.replace('lb', ''));
