@@ -7,21 +7,21 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {GlobalSettings} from '../../types/types';
+import {GlobalSettings} from '../types/types';
 import {
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
 import {useTheme} from '@react-navigation/native';
-import SettingsRepository from '../../repository/SettingsRepository';
+import SettingsRepository from '../repository/SettingsRepository';
 import {connect, useDispatch} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App';
-import {updateSettings} from '../../state/settingsAction';
-import {MaterialHeaderButton} from '../Common';
-import {Lift, Workout} from '../../types/workout';
-import WorkoutRepository from '../../repository/WorkoutRepository';
+import {RootStackParamList} from '../App';
+import {updateSettings} from '../state/settingsAction';
+import {MaterialHeaderButton} from '../components/Common';
+import {Lift, Workout} from '../types/workout';
+import WorkoutRepository from '../repository/WorkoutRepository';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;

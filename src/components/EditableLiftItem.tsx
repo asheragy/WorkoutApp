@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../types/workout';
-import {Style_LiftText} from './workout/Common';
+import {Style_LiftText} from './Common';
 import {GlobalSettings, LiftType, TrainingMax} from '../types/types';
 import {NumberControl} from './NumberControl';
 import Utils from './Utils';

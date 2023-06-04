@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {Alert, Button, ScrollView, StyleSheet, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App';
-import {AccessoryView} from '../Accessories';
+import {RootStackParamList} from '../App';
+import {AccessoryView} from '../components/Accessories';
 import {LogBox} from 'react-native';
-import {useTheme} from '@react-navigation/native';
-import {Lift, Workout} from '../../types/workout';
-import WorkoutRepository from '../../repository/WorkoutRepository';
-import {TrainingMax} from '../../types/types';
-import TrainingMaxRepository from '../../repository/TrainingMaxRepository';
-import Log from '../../utils/Log';
-import LiftHistoryRepository from '../../repository/LiftHistoryRepository';
-import LiftItem from '../LiftItem';
+import {Lift, Workout} from '../types/workout';
+import WorkoutRepository from '../repository/WorkoutRepository';
+import {TrainingMax} from '../types/types';
+import TrainingMaxRepository from '../repository/TrainingMaxRepository';
+import Log from '../utils/Log';
+import LiftHistoryRepository from '../repository/LiftHistoryRepository';
+import LiftItem from '../components/LiftItem';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',

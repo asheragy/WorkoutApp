@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, useColorScheme} from 'react-native';
-import {WorkoutScreen} from './components/workout/WorkoutScreen';
+import {WorkoutScreen} from './screens/WorkoutScreen';
 import {WeightScreen} from './screens/WeightScreen';
 import {
   DarkTheme,
@@ -16,8 +16,8 @@ import {Provider} from 'react-redux';
 import {LiftListScreen} from './components/LiftListScreen';
 import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
 import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
-import {WorkoutEditScreen} from './components/workout/WorkoutEditScreen';
-import {WorkoutList} from './components/workout/WorkoutList';
+import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
+import {WorkoutList} from './screens/WorkoutListScreen';
 import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
 

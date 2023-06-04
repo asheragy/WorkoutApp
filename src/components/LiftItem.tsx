@@ -2,10 +2,10 @@ import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Lift, LiftSet} from '../types/workout';
-import LiftEditorModal from './workout/LiftEditorModal';
+import LiftEditorModal from './LiftEditorModal';
 import {NormalizedSet, PlateCount, TrainingMax} from '../types/types';
 import Utils from './Utils';
-import {Style_LiftText} from './workout/Common';
+import {Style_LiftText} from './Common';
 
 export default function LiftItem(props: {
   lift: Lift;

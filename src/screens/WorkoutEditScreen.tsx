@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Button, FlatList, ListRenderItemInfo, Text, View} from 'react-native';
-import {RootStackParamList} from '../../App';
-import {LiftDef} from '../../types/types';
+import {RootStackParamList} from '../App';
+import {LiftDef} from '../types/types';
 import {TextInput} from 'react-native-gesture-handler';
-import {Lift, Workout} from '../../types/workout';
-import Utils from '../Utils';
-import WorkoutRepository from '../../repository/WorkoutRepository';
-import EditableLiftItem from '../EditableLiftItem';
+import {Lift, Workout} from '../types/workout';
+import Utils from '../components/Utils';
+import WorkoutRepository from '../repository/WorkoutRepository';
+import EditableLiftItem from '../components/EditableLiftItem';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
