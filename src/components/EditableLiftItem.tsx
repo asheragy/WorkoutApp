@@ -1,5 +1,13 @@
-import React from 'react';
-import {Button, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useRef} from 'react';
+import {
+  Alert,
+  Animated,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../types/workout';
 import {Style_LiftText} from './Common';
@@ -7,6 +15,7 @@ import {GlobalSettings, LiftType, TrainingMax} from '../types/types';
 import {NumberControl} from './NumberControl';
 import Utils from './Utils';
 import {useSelector} from 'react-redux';
+import {Swipeable} from 'react-native-gesture-handler';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -16,6 +25,8 @@ interface EditableLiftItemProps {
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
   const {colors} = useTheme();
+  const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   function addSet() {
     var set: LiftSet = {weight: 0, reps: 0};
@@ -25,9 +36,9 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  function removeSet() {
+  function onRemoveSet(index: number) {
     var updatedLift = {...props.lift};
-    updatedLift.sets = props.lift.sets.slice(0, props.lift.sets.length - 1);
+    updatedLift.sets.splice(index, 1);
 
     props.onChange(updatedLift);
   }
@@ -44,64 +55,36 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
       <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
         {props.lift.def.name}
       </Text>
-      <EditableSetTable
-        sets={props.lift.sets}
-        onChange={onSetChange}
-        tm={props.tm}
-        liftType={props.lift.def.type}></EditableSetTable>
+
+      <View>
+        <PersistedSetHeader></PersistedSetHeader>
+        {props.lift.sets.map((set, index) => (
+          <PersistedSetRow
+            set={set}
+            label={labels[index]}
+            settings={settings}
+            liftType={props.lift.def.type}
+            key={index}
+            tm={props.tm}
+            onDelete={() => onRemoveSet(index)}
+            onChange={set => onSetChange(index, set)}></PersistedSetRow>
+        ))}
+      </View>
 
       <View
         style={{
           marginTop: 10,
+          flex: 1,
           flexDirection: 'row',
+          justifyContent: 'center',
         }}>
-        <View
-          style={{
-            width: '45%',
-            marginHorizontal: 10,
-          }}>
-          <Button
-            disabled={props.lift.sets.length == 0}
-            title="Remove Set"
-            onPress={removeSet}></Button>
-        </View>
-
-        <View style={{width: '45%', marginHorizontal: 10}}>
-          <Button title="Add Set" onPress={addSet}></Button>
-        </View>
+        <Button title="Add Set" onPress={addSet}></Button>
       </View>
     </View>
   );
 }
 
 const Widths = ['10%', '35%', '10%', '35%', '10%'];
-
-export function EditableSetTable(props: {
-  sets: LiftSet[];
-  liftType: LiftType;
-  tm?: TrainingMax;
-  onChange: (index: number, updatedSet: LiftSet) => void;
-}) {
-  const labels = Utils.normalizeSets(props.sets).map(set => set.label);
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
-
-  return (
-    <View>
-      <PersistedSetHeader></PersistedSetHeader>
-      {props.sets.map((set, index) => (
-        <PersistedSetRow
-          index={index}
-          set={set}
-          label={labels[index]}
-          settings={settings}
-          liftType={props.liftType}
-          key={index}
-          tm={props.tm}
-          onChange={props.onChange}></PersistedSetRow>
-      ))}
-    </View>
-  );
-}
 
 function PersistedSetHeader() {
   const {colors} = useTheme();
@@ -124,13 +107,13 @@ function PersistedSetHeader() {
 }
 
 function PersistedSetRow(props: {
-  index: number;
   set: LiftSet;
   liftType: LiftType;
   settings: GlobalSettings;
   label: string;
   tm?: TrainingMax;
-  onChange: (index: number, updatedSet: LiftSet) => void;
+  onChange: (updatedSet: LiftSet) => void;
+  onDelete: () => void;
 }) {
   const {colors} = useTheme();
 
@@ -139,7 +122,7 @@ function PersistedSetRow(props: {
     updatedSet.weight = weight;
     updatedSet.reps = reps;
 
-    props.onChange(props.index, updatedSet);
+    props.onChange(updatedSet);
   };
 
   // Iterate normal set => warmup => percentage
@@ -152,7 +135,7 @@ function PersistedSetRow(props: {
 
     console.log(updatedSet);
 
-    props.onChange(props.index, updatedSet);
+    props.onChange(updatedSet);
   };
 
   var percentageWeight = '';
@@ -160,96 +143,148 @@ function PersistedSetRow(props: {
     percentageWeight = Utils.calcPercentage(props.set.weight, props.tm) + '';
   }
 
+  const swipeableRef: React.MutableRefObject<Swipeable | null> = useRef(null);
+
+  function confirmDelete() {
+    Alert.alert(
+      'Delete set?',
+      undefined,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => swipeableRef.current?.close(),
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            swipeableRef.current?.close();
+            props.onDelete();
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+
+  const renderRightActions = (
+    progress: Animated.AnimatedInterpolation,
+    dragAnimatedValue: Animated.AnimatedInterpolation,
+  ) => {
+    const opacity = dragAnimatedValue.interpolate({
+      inputRange: [-150, 0],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    });
+
+    return (
+      <Animated.View
+        style={{
+          flexDirection: 'row',
+          flex: 1,
+          backgroundColor: 'red',
+          opacity: opacity,
+        }}></Animated.View>
+    );
+  };
+
   return (
-    <View style={{flexDirection: 'row', marginVertical: 4}}>
-      <TouchableOpacity
-        style={{
-          width: Widths[0],
-          alignSelf: 'center',
-        }}
-        onPress={onSetLabelChange}>
-        <Text
+    <Swipeable
+      renderRightActions={renderRightActions}
+      ref={swipeableRef}
+      onSwipeableWillOpen={confirmDelete}>
+      <View style={{flexDirection: 'row', marginVertical: 4}}>
+        <TouchableOpacity
           style={{
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            color: colors.text,
-          }}>
-          {props.label}
-        </Text>
-      </TouchableOpacity>
+            width: Widths[0],
+            alignSelf: 'center',
+          }}
+          onPress={onSetLabelChange}>
+          <Text
+            style={{
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              color: colors.text,
+            }}>
+            {props.label}
+          </Text>
+        </TouchableOpacity>
 
-      <View
-        style={{
-          width: Widths[1],
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <NumberControl
-          value={props.set.weight}
-          onChange={newWeightValue => update(newWeightValue, props.set.reps)}
-          decrementBy={() =>
-            (props.set.weight || 0) -
-            Utils.decrementWeight(
-              props.set.weight || 0,
-              props.liftType,
-              props.settings,
-              props.set.percentage,
-            )
-          }
-          incrementBy={() =>
-            Utils.incrementWeight(
-              props.set.weight || 0,
-              props.liftType,
-              props.settings,
-              props.set.percentage,
-            ) - (props.set.weight || 0)
-          }></NumberControl>
-      </View>
-      <View
-        style={{
-          width: Widths[2],
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <Text
+        <View
           style={{
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            color: colors.text,
+            width: Widths[1],
+            flexDirection: 'row',
+            justifyContent: 'center',
           }}>
-          {percentageWeight}
-        </Text>
-      </View>
+          <NumberControl
+            value={props.set.weight}
+            onChange={newWeightValue => update(newWeightValue, props.set.reps)}
+            decrementBy={() =>
+              (props.set.weight || 0) -
+              Utils.decrementWeight(
+                props.set.weight || 0,
+                props.liftType,
+                props.settings,
+                props.set.percentage,
+              )
+            }
+            incrementBy={() =>
+              Utils.incrementWeight(
+                props.set.weight || 0,
+                props.liftType,
+                props.settings,
+                props.set.percentage,
+              ) - (props.set.weight || 0)
+            }></NumberControl>
+        </View>
+        <View
+          style={{
+            width: Widths[2],
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              color: colors.text,
+            }}>
+            {percentageWeight}
+          </Text>
+        </View>
 
-      <View
-        style={{
-          width: Widths[3],
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <NumberControl
-          precision={0}
-          value={props.set.reps}
-          onChange={newRepsValue => update(props.set.weight, newRepsValue)}
-          decrementBy={() => 1}
-          incrementBy={() => 1}></NumberControl>
-      </View>
-      <View
-        style={{
-          width: Widths[4],
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <Text
+        <View
           style={{
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            color: colors.text,
+            width: Widths[3],
+            flexDirection: 'row',
+            justifyContent: 'center',
           }}>
-          {Math.round(Utils.calculate1RM(props.liftType, props.set, props.tm))}
-        </Text>
+          <NumberControl
+            precision={0}
+            value={props.set.reps}
+            onChange={newRepsValue => update(props.set.weight, newRepsValue)}
+            decrementBy={() => 1}
+            incrementBy={() => 1}></NumberControl>
+        </View>
+        <View
+          style={{
+            width: Widths[4],
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              textAlignVertical: 'center',
+              color: colors.text,
+            }}>
+            {Math.round(
+              Utils.calculate1RM(props.liftType, props.set, props.tm),
+            )}
+          </Text>
+        </View>
       </View>
-    </View>
+    </Swipeable>
   );
 }
 
