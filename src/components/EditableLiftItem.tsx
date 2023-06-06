@@ -51,7 +51,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   }
 
   return (
-    <View style={{padding: 8}}>
+    <View style={{margin: 8}}>
       <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
         {props.lift.def.name}
       </Text>
@@ -73,10 +73,9 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
       <View
         style={{
-          marginTop: 10,
-          flex: 1,
-          flexDirection: 'row',
+          margin: 10,
           justifyContent: 'center',
+          alignItems: 'center',
         }}>
         <Button title="Add Set" onPress={addSet}></Button>
       </View>
