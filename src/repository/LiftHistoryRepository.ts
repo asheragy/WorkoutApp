@@ -1,19 +1,18 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LiftDef, PersistedSet, TrainingMax} from '../types/types';
-import {Lift, LiftSet, Workout} from '../types/workout';
+import {PersistedSet, TrainingMax} from '../types/types';
+import {Lift, LiftSet} from '../types/workout';
 import TrainingMaxRepository from './TrainingMaxRepository';
 import Utils from '../components/Utils';
 
 const keyPrefix = 'liftHistory:';
 
-export type PersistedLiftHistory = {
-  date: Date;
+export type LiftHistory = {
+  timestamp: Date;
   sets: PersistedSet[];
 };
 
 export default class LiftHistoryRepository {
-  // TODO could take LiftDef to be more type safe
-  static async getHistory(key: string): Promise<PersistedLiftHistory[]> {
+  static async getHistory(key: string): Promise<LiftHistory[]> {
     var value = await AsyncStorage.getItem(keyPrefix + key);
     if (value == null) return [];
 
@@ -21,8 +20,8 @@ export default class LiftHistoryRepository {
       JSON.parse(value);
 
     return stringResult.map(entry => {
-      var item: PersistedLiftHistory = {
-        date: new Date(entry.date),
+      var item: LiftHistory = {
+        timestamp: new Date(entry.date),
         sets: entry.sets,
       };
 
@@ -30,22 +29,18 @@ export default class LiftHistoryRepository {
     });
   }
 
-  static async addAllHistory(workout: Workout): Promise<void> {
-    for (var i = 0; i < workout.lifts.length; i++) {
-      var lift = workout.lifts[i];
-
-      var tm: TrainingMax | undefined;
-      if (lift.sets.filter(x => x.percentage).length > 0) {
-        tm = await TrainingMaxRepository.getInstance().get(lift.def.id);
-        console.log(tm);
-        if (tm == undefined)
-          console.error('Training max required for persisted lift');
-      }
-
-      var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets, tm);
-
-      await this.addHistory(lift.def.id, persistedSets);
+  static async add(lift: Lift, timestamp: Date) {
+    var tm: TrainingMax | undefined;
+    if (lift.sets.filter(x => x.percentage).length > 0) {
+      tm = await TrainingMaxRepository.getInstance().get(lift.def.id);
+      console.log(tm);
+      if (tm == undefined)
+        console.error('Training max required for persisted lift');
     }
+
+    var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets, tm);
+
+    await this.addHistory(lift.def.id, persistedSets, timestamp);
   }
 
   private static setsToPersisted(
@@ -78,10 +73,11 @@ export default class LiftHistoryRepository {
   private static async addHistory(
     key: string,
     sets: PersistedSet[],
+    timestamp: Date,
   ): Promise<void> {
     var history = await this.getHistory(key);
-    var item: PersistedLiftHistory = {
-      date: new Date(),
+    var item: LiftHistory = {
+      timestamp: timestamp,
       sets: sets,
     };
 

@@ -7,14 +7,14 @@ import {
   Text,
   View,
 } from 'react-native';
-import {PersistedLiftHistory} from '../../repository/LiftHistoryRepository';
+import {LiftHistory} from '../../repository/LiftHistoryRepository';
 
-export function LiftLogTab(props: {entries: PersistedLiftHistory[]}) {
+export function LiftLogTab(props: {entries: LiftHistory[]}) {
   const {colors} = useTheme();
 
-  const renderItem = (item: ListRenderItemInfo<PersistedLiftHistory>) => (
+  const renderItem = (item: ListRenderItemInfo<LiftHistory>) => (
     <View style={{padding: 4}}>
-      <Text>{item.item.date.toDateString()}</Text>
+      <Text>{item.item.timestamp.toDateString()}</Text>
       {item.item.sets.map((set, index) => (
         <Text key={index.toString()}>
           {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}

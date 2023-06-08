@@ -20,6 +20,7 @@ import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
 import {WorkoutList} from './screens/WorkoutListScreen';
 import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
+import {SettingsScreen} from './screens/SettingsScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -48,6 +49,7 @@ export type RootStackParamList = {
     workout?: Workout;
     onChanged: () => void;
   };
+  Settings: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -82,6 +84,13 @@ const App = () => {
                 headerStyle: styles.headerStyle,
               }}
               component={WeightScreen}
+            />
+            <Stack.Screen
+              name="Settings"
+              options={{
+                headerStyle: styles.headerStyle,
+              }}
+              component={SettingsScreen}
             />
             <Stack.Screen
               name="LiftHistory"

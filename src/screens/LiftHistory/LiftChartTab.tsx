@@ -1,15 +1,12 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {PersistedLiftHistory} from '../../repository/LiftHistoryRepository';
+import {LiftHistory} from '../../repository/LiftHistoryRepository';
 import {LiftDef, PersistedSet} from '../../types/types';
 import {ProgressChart} from '../../components/ProgressChart';
 import Utils from '../../components/Utils';
 
-export function LiftChartTab(props: {
-  def: LiftDef;
-  entries: PersistedLiftHistory[];
-}) {
-  var dates = props.entries.map(x => x.date);
+export function LiftChartTab(props: {def: LiftDef; entries: LiftHistory[]}) {
+  var dates = props.entries.map(x => x.timestamp);
   var values = props.entries.map(x => calculateEstimated1RM(props.def, x.sets));
   var volume = props.entries.map(x => calculateVolume(props.def, x.sets));
 

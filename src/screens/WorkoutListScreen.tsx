@@ -22,6 +22,7 @@ import {updateSettings} from '../state/settingsAction';
 import {MaterialHeaderButton} from '../components/Common';
 import {Lift, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
+import Utils from '../components/Utils';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -48,7 +49,9 @@ export function WorkoutList({navigation, route, props}: Props) {
             OverflowIcon={({color}) => (
               <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
             )}>
-            <HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
+            {
+              //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
+            }
             <HiddenItem title="Refresh" onPress={() => loadState()} />
             <HiddenItem title="Lifts" onPress={() => onLifts()} />
             <HiddenItem title="LiftDefs" onPress={() => onLiftDefs()} />
@@ -58,6 +61,7 @@ export function WorkoutList({navigation, route, props}: Props) {
                 navigation.navigate('WorkoutEdit', {onChanged: loadState})
               }
             />
+            <HiddenItem title="Settings" onPress={() => onSettings()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -66,7 +70,16 @@ export function WorkoutList({navigation, route, props}: Props) {
 
   function loadState() {
     WorkoutRepository.getAll().then(result => {
-      setWorkouts(result);
+      // Sort by oldest completed first
+      setWorkouts(
+        result.sort((a, b) => {
+          if (a.lastCompleted === undefined) return -1;
+          else if (b.lastCompleted === undefined) return 1;
+          else if (a.lastCompleted < b.lastCompleted) return -1;
+          else if (a.lastCompleted > b.lastCompleted) return 1;
+          else return 0;
+        }),
+      );
     });
 
     // TODO should this go in App.txs?
@@ -77,6 +90,7 @@ export function WorkoutList({navigation, route, props}: Props) {
   const onLifts = () => navigation.navigate('LiftList');
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
+  const onSettings = () => navigation.navigate('Settings');
 
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {
@@ -121,9 +135,13 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
       <Text style={[styles.titleText, {color: colors.text}]}>
         {workout.name}
       </Text>
+
       {workout.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
+      <Text style={{paddingTop: 8}}>
+        {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
+      </Text>
     </View>
   );
 }

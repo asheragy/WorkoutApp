@@ -9,8 +9,8 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import {TrainingMax} from '../types/types';
 import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 import Log from '../utils/Log';
-import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import LiftItem from '../components/LiftItem';
+import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -38,7 +38,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   const onComplete = async () => {
     workout.lastCompleted = new Date();
     await WorkoutRepository.upsert(workout);
-    await LiftHistoryRepository.addAllHistory(workout);
+    await WorkoutHistoryRepository.add(workout);
     route.params.onComplete();
     navigation.pop();
   };
