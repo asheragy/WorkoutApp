@@ -8,6 +8,7 @@ const keyPrefix = 'liftHistory:';
 
 export type LiftHistory = {
   timestamp: Date;
+  workoutId: string;
   sets: PersistedSet[];
 };
 
@@ -16,20 +17,14 @@ export default class LiftHistoryRepository {
     var value = await AsyncStorage.getItem(keyPrefix + key);
     if (value == null) return [];
 
-    var stringResult: {date: string; sets: PersistedSet[]}[] =
-      JSON.parse(value);
+    return JSON.parse(value, (key, value) => {
+      if (key == 'timestamp') return new Date(value);
 
-    return stringResult.map(entry => {
-      var item: LiftHistory = {
-        timestamp: new Date(entry.date),
-        sets: entry.sets,
-      };
-
-      return item;
+      return value;
     });
   }
 
-  static async add(lift: Lift, timestamp: Date) {
+  static async add(lift: Lift, timestamp: Date, workoutId: string) {
     var tm: TrainingMax | undefined;
     if (lift.sets.filter(x => x.percentage).length > 0) {
       tm = await TrainingMaxRepository.getInstance().get(lift.def.id);
@@ -40,7 +35,7 @@ export default class LiftHistoryRepository {
 
     var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets, tm);
 
-    await this.addHistory(lift.def.id, persistedSets, timestamp);
+    await this.addHistory(lift.def.id, persistedSets, timestamp, workoutId);
   }
 
   private static setsToPersisted(
@@ -74,11 +69,13 @@ export default class LiftHistoryRepository {
     key: string,
     sets: PersistedSet[],
     timestamp: Date,
+    workoutId: string,
   ): Promise<void> {
     var history = await this.getHistory(key);
     var item: LiftHistory = {
       timestamp: timestamp,
       sets: sets,
+      workoutId: workoutId,
     };
 
     history.push(item);

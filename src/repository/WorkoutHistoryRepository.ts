@@ -13,17 +13,31 @@ export default class WorkoutHistoryRepository {
   static async getHistory(key: string): Promise<WorkoutHistory[]> {
     var value = await AsyncStorage.getItem(keyPrefix + key);
 
-    // TODO
-    return [];
+    if (value == null) return [];
+
+    return JSON.parse(value, (key, value) => {
+      if (key == 'timestamp') return new Date(value);
+
+      return value;
+    });
   }
 
   static async add(workout: Workout) {
     const timestamp = new Date();
+    var key = workout.id!;
+    var history = await this.getHistory(key);
 
-    // TODO save workoutHistory
+    var ids = workout.lifts.map(lift => lift.def.id);
+    var entry: WorkoutHistory = {
+      timestamp: timestamp,
+      liftIds: Array.from(new Set(ids)),
+    };
+
+    history.push(entry);
+    await AsyncStorage.setItem(keyPrefix + key, JSON.stringify(history));
 
     for (var i = 0; i < workout.lifts.length; i++) {
-      await LiftHistoryRepository.add(workout.lifts[i], timestamp);
+      await LiftHistoryRepository.add(workout.lifts[i], timestamp, key);
     }
   }
 }

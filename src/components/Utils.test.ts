@@ -1,10 +1,8 @@
-import {TextPropTypes} from 'react-native';
 import {
   GlobalSettings,
   LiftDef,
   LiftType,
   PersistedSet,
-  PlateCount,
   TrainingMax,
 } from '../types/types';
 import Utils from './Utils';
