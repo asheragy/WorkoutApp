@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Button, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from '../components/Accessories';
@@ -11,6 +11,12 @@ import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 import Log from '../utils/Log';
 import LiftItem from '../components/LiftItem';
 import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
+import {
+  HeaderButtons,
+  OverflowMenu,
+  HiddenItem,
+} from 'react-navigation-header-buttons';
+import {MaterialHeaderButton} from '../components/Common';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
@@ -24,6 +30,22 @@ export function WorkoutScreen({route, navigation}: Props) {
     name: '',
     lifts: [],
   });
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+          <OverflowMenu
+            style={{marginHorizontal: 10}}
+            OverflowIcon={({color}) => (
+              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+            )}>
+            <HiddenItem title="History" onPress={() => onHistory()} />
+          </OverflowMenu>
+        </HeaderButtons>
+      ),
+    });
+  }, [navigation]);
 
   const confirmComplete = () => {
     Alert.alert('Complete?', 'Are you sure', [
@@ -72,6 +94,11 @@ export function WorkoutScreen({route, navigation}: Props) {
         setTMs(result);
       });
   }
+
+  function onHistory() {
+    navigation.navigate('WorkoutHistory', {workoutId: route.params.workoutId});
+  }
+
   useEffect(loadState, []);
 
   return (

@@ -10,8 +10,8 @@ export type WorkoutHistory = {
 };
 
 export default class WorkoutHistoryRepository {
-  static async getHistory(key: string): Promise<WorkoutHistory[]> {
-    var value = await AsyncStorage.getItem(keyPrefix + key);
+  static async get(workoutId: string): Promise<WorkoutHistory[]> {
+    var value = await AsyncStorage.getItem(keyPrefix + workoutId);
 
     if (value == null) return [];
 
@@ -25,7 +25,7 @@ export default class WorkoutHistoryRepository {
   static async add(workout: Workout) {
     const timestamp = new Date();
     var key = workout.id!;
-    var history = await this.getHistory(key);
+    var history = await this.get(key);
 
     var ids = workout.lifts.map(lift => lift.def.id);
     var entry: WorkoutHistory = {

@@ -21,6 +21,7 @@ import {WorkoutList} from './screens/WorkoutListScreen';
 import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
+import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
 
 export type RootStackParamList = {
   Home: {
@@ -36,6 +37,9 @@ export type RootStackParamList = {
   };
   LiftHistory: {
     lift: LiftDef;
+  };
+  WorkoutHistory: {
+    workoutId: string;
   };
   LiftList: undefined;
   LiftDefEdit: {
@@ -99,6 +103,14 @@ const App = () => {
                 title: route.params.lift.name,
               })}
               component={LiftHistoryScreen}
+            />
+            <Stack.Screen
+              name="WorkoutHistory"
+              options={({route}) => ({
+                headerStyle: styles.headerStyle,
+                title: 'Workout History',
+              })}
+              component={WorkoutHistoryScreen}
             />
             <Stack.Screen
               name="LiftList"

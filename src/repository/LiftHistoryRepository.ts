@@ -13,7 +13,7 @@ export type LiftHistory = {
 };
 
 export default class LiftHistoryRepository {
-  static async getHistory(key: string): Promise<LiftHistory[]> {
+  static async get(key: string): Promise<LiftHistory[]> {
     var value = await AsyncStorage.getItem(keyPrefix + key);
     if (value == null) return [];
 
@@ -71,7 +71,7 @@ export default class LiftHistoryRepository {
     timestamp: Date,
     workoutId: string,
   ): Promise<void> {
-    var history = await this.getHistory(key);
+    var history = await this.get(key);
     var item: LiftHistory = {
       timestamp: timestamp,
       sets: sets,

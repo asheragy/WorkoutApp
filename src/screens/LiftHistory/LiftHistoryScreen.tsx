@@ -20,7 +20,7 @@ export function LiftHistoryScreen({route, navigation}: Props) {
   const def = route.params.lift;
 
   function loadState() {
-    LiftHistoryRepository.getHistory(def.id).then(result => {
+    LiftHistoryRepository.get(def.id).then(result => {
       setEntries(result);
     });
   }
