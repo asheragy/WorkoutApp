@@ -8,7 +8,6 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {OverflowMenuProvider} from 'react-navigation-header-buttons';
 import {GlobalSettings, LiftDef} from './types/types';
 import {createStore} from 'redux';
 import settingsReducer from './state/settingsReducer';
@@ -22,6 +21,7 @@ import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
 import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
+import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
 
 export type RootStackParamList = {
   Home: {
@@ -65,7 +65,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <OverflowMenuProvider>
+        <HeaderButtonsProvider stackType={'native'}>
           <Stack.Navigator>
             <Stack.Screen
               name="Home"
@@ -145,7 +145,7 @@ const App = () => {
               component={WorkoutEditScreen}
             />
           </Stack.Navigator>
-        </OverflowMenuProvider>
+        </HeaderButtonsProvider>
       </NavigationContainer>
     </Provider>
   );
