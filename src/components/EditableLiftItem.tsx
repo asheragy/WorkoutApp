@@ -15,7 +15,7 @@ import {GlobalSettings, LiftType, TrainingMax} from '../types/types';
 import {NumberControl} from './NumberControl';
 import Utils from './Utils';
 import {useSelector} from 'react-redux';
-import {Swipeable} from 'react-native-gesture-handler';
+import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -188,102 +188,106 @@ function PersistedSetRow(props: {
   };
 
   return (
-    <Swipeable
-      renderRightActions={renderRightActions}
-      ref={swipeableRef}
-      onSwipeableWillOpen={confirmDelete}>
-      <View style={{flexDirection: 'row', marginVertical: 4}}>
-        <TouchableOpacity
-          style={{
-            width: Widths[0],
-            alignSelf: 'center',
-          }}
-          onPress={onSetLabelChange}>
-          <Text
+    <GestureHandlerRootView>
+      <Swipeable
+        renderRightActions={renderRightActions}
+        ref={swipeableRef}
+        onSwipeableWillOpen={confirmDelete}>
+        <View style={{flexDirection: 'row', marginVertical: 4}}>
+          <TouchableOpacity
             style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              color: colors.text,
-            }}>
-            {props.label}
-          </Text>
-        </TouchableOpacity>
+              width: Widths[0],
+              alignSelf: 'center',
+            }}
+            onPress={onSetLabelChange}>
+            <Text
+              style={{
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                color: colors.text,
+              }}>
+              {props.label}
+            </Text>
+          </TouchableOpacity>
 
-        <View
-          style={{
-            width: Widths[1],
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <NumberControl
-            value={props.set.weight}
-            onChange={newWeightValue => update(newWeightValue, props.set.reps)}
-            decrementBy={() =>
-              (props.set.weight || 0) -
-              Utils.decrementWeight(
-                props.set.weight || 0,
-                props.liftType,
-                props.settings,
-                props.set.percentage,
-              )
-            }
-            incrementBy={() =>
-              Utils.incrementWeight(
-                props.set.weight || 0,
-                props.liftType,
-                props.settings,
-                props.set.percentage,
-              ) - (props.set.weight || 0)
-            }></NumberControl>
-        </View>
-        <View
-          style={{
-            width: Widths[2],
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text
+          <View
             style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              color: colors.text,
+              width: Widths[1],
+              flexDirection: 'row',
+              justifyContent: 'center',
             }}>
-            {percentageWeight}
-          </Text>
-        </View>
+            <NumberControl
+              value={props.set.weight}
+              onChange={newWeightValue =>
+                update(newWeightValue, props.set.reps)
+              }
+              decrementBy={() =>
+                (props.set.weight || 0) -
+                Utils.decrementWeight(
+                  props.set.weight || 0,
+                  props.liftType,
+                  props.settings,
+                  props.set.percentage,
+                )
+              }
+              incrementBy={() =>
+                Utils.incrementWeight(
+                  props.set.weight || 0,
+                  props.liftType,
+                  props.settings,
+                  props.set.percentage,
+                ) - (props.set.weight || 0)
+              }></NumberControl>
+          </View>
+          <View
+            style={{
+              width: Widths[2],
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                color: colors.text,
+              }}>
+              {percentageWeight}
+            </Text>
+          </View>
 
-        <View
-          style={{
-            width: Widths[3],
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <NumberControl
-            precision={0}
-            value={props.set.reps}
-            onChange={newRepsValue => update(props.set.weight, newRepsValue)}
-            decrementBy={() => 1}
-            incrementBy={() => 1}></NumberControl>
-        </View>
-        <View
-          style={{
-            width: Widths[4],
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text
+          <View
             style={{
-              textAlign: 'center',
-              textAlignVertical: 'center',
-              color: colors.text,
+              width: Widths[3],
+              flexDirection: 'row',
+              justifyContent: 'center',
             }}>
-            {Math.round(
-              Utils.calculate1RM(props.liftType, props.set, props.tm),
-            )}
-          </Text>
+            <NumberControl
+              precision={0}
+              value={props.set.reps}
+              onChange={newRepsValue => update(props.set.weight, newRepsValue)}
+              decrementBy={() => 1}
+              incrementBy={() => 1}></NumberControl>
+          </View>
+          <View
+            style={{
+              width: Widths[4],
+              flexDirection: 'row',
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                textAlignVertical: 'center',
+                color: colors.text,
+              }}>
+              {Math.round(
+                Utils.calculate1RM(props.liftType, props.set, props.tm),
+              )}
+            </Text>
+          </View>
         </View>
-      </View>
-    </Swipeable>
+      </Swipeable>
+    </GestureHandlerRootView>
   );
 }
 
