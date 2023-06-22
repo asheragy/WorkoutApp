@@ -31,11 +31,9 @@ const mapStateToProps = (state: any) => {
 
 export default connect(mapStateToProps)(WorkoutList);
 
-type Props = StackScreenProps<RootStackParamList, 'Home'> & {
-  props: {settings: GlobalSettings};
-};
+type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
-export function WorkoutList({navigation, route, props}: Props) {
+export function WorkoutList({navigation, route}: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const {colors} = useTheme();
   const dispatch = useDispatch();

@@ -167,8 +167,8 @@ function PersistedSetRow(props: {
   }
 
   const renderRightActions = (
-    progress: Animated.AnimatedInterpolation,
-    dragAnimatedValue: Animated.AnimatedInterpolation,
+    progress: Animated.AnimatedInterpolation<number>,
+    dragAnimatedValue: Animated.AnimatedInterpolation<number>,
   ) => {
     const opacity = dragAnimatedValue.interpolate({
       inputRange: [-150, 0],

@@ -18,11 +18,11 @@ import {
 } from 'react-navigation-header-buttons';
 import {MaterialHeaderButton} from '../components/Common';
 
+type Props = StackScreenProps<RootStackParamList, 'Workout'>;
+
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
-
-type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
 export function WorkoutScreen({route, navigation}: Props) {
   const [tms, setTMs] = useState<TrainingMax[]>([]);

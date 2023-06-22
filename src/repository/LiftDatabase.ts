@@ -1,4 +1,3 @@
-import {ListViewBase} from 'react-native';
 import {LiftDef, LiftType} from '../types/types';
 
 export function lookupDef(id: string, overrides: LiftDef[]): LiftDef {
@@ -206,4 +205,4 @@ export const lifts: LiftDef[] = [
 ];
 
 // TODO use this name instead of the other
-export const SystemLifts = lifts
+export const SystemLifts = lifts;
