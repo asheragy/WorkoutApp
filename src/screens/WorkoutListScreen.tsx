@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {GlobalSettings} from '../types/types';
+import {GlobalSettings, LiftDef} from '../types/types';
 import {
   HeaderButtons,
   HiddenItem,
@@ -15,14 +15,18 @@ import {
 } from 'react-navigation-header-buttons';
 import {useTheme} from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
-import {connect, useDispatch} from 'react-redux';
+import {connect, useDispatch, useSelector} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {updateSettings} from '../state/settingsAction';
 import {MaterialHeaderButton} from '../components/Common';
 import {Lift, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
+import {updateSettings} from '../state/settings';
+import {updateLiftDefs} from '../state/liftDefs';
+import {SystemLifts} from '../repository/LiftDatabase';
+import LiftDefRepository from '../repository/LiftDefRepository';
+import {AppState} from '../state/store';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -67,6 +71,10 @@ export function WorkoutList({navigation, route}: Props) {
   }, [navigation]);
 
   function loadState() {
+    LiftDefRepository.getLookupMap().then(result => {
+      dispatch(updateLiftDefs(result));
+    });
+
     WorkoutRepository.getAll().then(result => {
       // Sort by oldest completed first
       setWorkouts(
@@ -147,11 +155,13 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
 function LiftItem(props: {lift: Lift}) {
   const {colors} = useTheme();
   const sets = props.lift.sets.length;
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
   return (
     <View>
       <Text style={[styles.liftText, {color: colors.text}]}>
-        {props.lift.def.name + (sets > 1 ? ' (' + sets + ' Sets)' : '')}
+        {defs.get(props.lift.def.id)?.name +
+          (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
       {/** 
       <View style={styles.liftSetRow}>

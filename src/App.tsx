@@ -9,8 +9,7 @@ import {
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {GlobalSettings, LiftDef} from './types/types';
-import {createStore} from 'redux';
-import settingsReducer from './state/settingsReducer';
+import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
 import {LiftListScreen} from './components/LiftListScreen';
 import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
@@ -22,6 +21,9 @@ import {LiftDefListScreen} from './screens/LiftDefListScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
 import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
 import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
+import {settingsReducer} from './state/settings';
+import {liftDefsReducer} from './state/liftDefs';
+import {rootReducer} from './state/store';
 
 export type RootStackParamList = {
   Home: {
@@ -57,7 +59,7 @@ export type RootStackParamList = {
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
-const store = createStore(settingsReducer);
+const store = createStore(rootReducer);
 
 const App = () => {
   const scheme = useColorScheme();

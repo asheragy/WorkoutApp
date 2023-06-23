@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LiftDef} from '../types/types';
 import Utils from '../components/Utils';
+import {SystemLifts} from './LiftDatabase';
 
 const key = 'liftdefs';
 
@@ -44,5 +45,14 @@ export default class LiftDefRepository {
     if (value == null) return [];
 
     return JSON.parse(value);
+  }
+
+  static async getLookupMap(): Promise<Map<string, LiftDef>> {
+    const all = (await this.getAll()).concat(SystemLifts);
+    const result = new Map<string, LiftDef>();
+
+    all.forEach(def => result.set(def.id, def));
+
+    return result;
   }
 }
