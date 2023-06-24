@@ -27,7 +27,7 @@ export default class LiftHistoryRepository {
   static async add(lift: Lift, timestamp: Date, workoutId: string) {
     var tm: TrainingMax | undefined;
     if (lift.sets.filter(x => x.percentage).length > 0) {
-      tm = await TrainingMaxRepository.getInstance().get(lift.def.id);
+      tm = await TrainingMaxRepository.getInstance().get(lift.id);
       console.log(tm);
       if (tm == undefined)
         console.error('Training max required for persisted lift');
@@ -35,7 +35,7 @@ export default class LiftHistoryRepository {
 
     var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets, tm);
 
-    await this.addHistory(lift.def.id, persistedSets, timestamp, workoutId);
+    await this.addHistory(lift.id, persistedSets, timestamp, workoutId);
   }
 
   private static setsToPersisted(

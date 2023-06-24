@@ -66,11 +66,11 @@ export function WorkoutScreen({route, navigation}: Props) {
   };
 
   function onViewLog(lift: Lift) {
-    navigation.navigate('LiftHistory', {lift: lift.def});
+    navigation.navigate('LiftHistory', {liftId: lift.id});
   }
 
   function onLiftChanged(lift: Lift) {
-    var index = workout.lifts.findIndex(x => x.def.id == lift.def.id);
+    var index = workout.lifts.findIndex(x => x.id == lift.id);
     var lifts = [...workout.lifts];
     lifts[index] = lift;
 
@@ -107,7 +107,7 @@ export function WorkoutScreen({route, navigation}: Props) {
         {workout.lifts.map((lift, index) => (
           <LiftItem
             lift={lift}
-            tm={tms.find(x => x.id == lift.def.id)}
+            tm={tms.find(x => x.id == lift.id)}
             onViewLog={onViewLog}
             onLiftChanged={onLiftChanged}
             key={index}></LiftItem>

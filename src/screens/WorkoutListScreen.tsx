@@ -160,7 +160,7 @@ function LiftItem(props: {lift: Lift}) {
   return (
     <View>
       <Text style={[styles.liftText, {color: colors.text}]}>
-        {defs.get(props.lift.def.id)?.name +
+        {defs.get(props.lift.id)?.name +
           (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
       {/** 

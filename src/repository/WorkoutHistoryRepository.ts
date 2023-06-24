@@ -27,7 +27,7 @@ export default class WorkoutHistoryRepository {
     var key = workout.id!;
     var history = await this.get(key);
 
-    var ids = workout.lifts.map(lift => lift.def.id);
+    var ids = workout.lifts.map(lift => lift.id);
     var entry: WorkoutHistory = {
       timestamp: timestamp,
       liftIds: Array.from(new Set(ids)),

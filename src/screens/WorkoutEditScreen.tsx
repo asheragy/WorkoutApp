@@ -59,6 +59,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   function onExerciseAdded(def: LiftDef) {
     const lift: Lift = {
+      id: def.id,
       def: def,
       sets: [],
     };

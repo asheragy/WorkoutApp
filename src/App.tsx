@@ -11,7 +11,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {GlobalSettings, LiftDef} from './types/types';
 import {combineReducers, createStore} from 'redux';
 import {Provider} from 'react-redux';
-import {LiftListScreen} from './components/LiftListScreen';
+import {LiftListScreen} from './screens/LiftListScreen';
 import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
 import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
 import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
@@ -38,7 +38,7 @@ export type RootStackParamList = {
     lift: LiftDef;
   };
   LiftHistory: {
-    lift: LiftDef;
+    liftId: string;
   };
   WorkoutHistory: {
     workoutId: string;
@@ -102,7 +102,7 @@ const App = () => {
               name="LiftHistory"
               options={({route}) => ({
                 headerStyle: styles.headerStyle,
-                title: route.params.lift.name,
+                title: 'TODO',
               })}
               component={LiftHistoryScreen}
             />

@@ -4,11 +4,16 @@ import {LiftHistory} from '../../repository/LiftHistoryRepository';
 import {LiftDef, PersistedSet} from '../../types/types';
 import {ProgressChart} from '../../components/ProgressChart';
 import Utils from '../../components/Utils';
+import {useSelector} from 'react-redux';
+import {AppState} from '../../state/store';
 
 export function LiftChartTab(props: {def: LiftDef; entries: LiftHistory[]}) {
-  var dates = props.entries.map(x => x.timestamp);
-  var values = props.entries.map(x => calculateEstimated1RM(props.def, x.sets));
-  var volume = props.entries.map(x => calculateVolume(props.def, x.sets));
+  // TODO remove after resetting database
+  var entries = props.entries.filter(x => x.hasOwnProperty('timestamp'));
+
+  var dates = entries.map(x => x.timestamp);
+  var values = entries.map(x => calculateEstimated1RM(props.def, x.sets));
+  var volume = entries.map(x => calculateVolume(props.def, x.sets));
 
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>

@@ -8,20 +8,28 @@ import {
   View,
 } from 'react-native';
 import {LiftHistory} from '../../repository/LiftHistoryRepository';
+import Utils from '../../components/Utils';
 
 export function LiftLogTab(props: {entries: LiftHistory[]}) {
   const {colors} = useTheme();
 
-  const renderItem = (item: ListRenderItemInfo<LiftHistory>) => (
-    <View style={{padding: 4}}>
-      <Text>{item.item.timestamp.toDateString()}</Text>
-      {item.item.sets.map((set, index) => (
-        <Text key={index.toString()}>
-          {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
-        </Text>
-      ))}
-    </View>
-  );
+  const renderItem = (item: ListRenderItemInfo<LiftHistory>) => {
+    // TODO remove after resetting database
+    var ts = item.item.hasOwnProperty('timestamp')
+      ? item.item.timestamp.toDateString()
+      : 'old data';
+
+    return (
+      <View style={{padding: 4}}>
+        <Text>{ts}</Text>
+        {item.item.sets.map((set, index) => (
+          <Text key={index.toString()}>
+            {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
+          </Text>
+        ))}
+      </View>
+    );
+  };
 
   return (
     <FlatList

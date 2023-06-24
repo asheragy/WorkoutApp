@@ -15,7 +15,7 @@ import {
 } from 'react-navigation-header-buttons';
 import {RootStackParamList} from '../App';
 import {LiftDef} from '../types/types';
-import {MaterialHeaderButton} from './Common';
+import {MaterialHeaderButton} from '../components/Common';
 import WorkoutRepository from '../repository/WorkoutRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
@@ -29,7 +29,7 @@ export function LiftListScreen({route, navigation}: Props) {
       const map = new Map();
       result.forEach(workout => {
         workout.lifts.forEach(lift => {
-          map.set(lift.def.id, lift.def);
+          map.set(lift.id, lift.def);
         });
       });
 
@@ -44,7 +44,7 @@ export function LiftListScreen({route, navigation}: Props) {
 
   function onClick(def: LiftDef) {
     navigation.navigate('LiftHistory', {
-      lift: def,
+      liftId: def.id,
     });
   }
 

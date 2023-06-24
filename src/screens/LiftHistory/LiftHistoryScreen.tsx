@@ -9,6 +9,8 @@ import LiftHistoryRepository, {
 } from '../../repository/LiftHistoryRepository';
 import {LiftChartTab} from './LiftChartTab';
 import {LiftLogTab} from './LiftLogTab';
+import {useSelector} from 'react-redux';
+import {AppState} from '../../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftHistory'>;
 
@@ -17,10 +19,15 @@ const Tab = createMaterialTopTabNavigator();
 export function LiftHistoryScreen({route, navigation}: Props) {
   const [entries, setEntries] = useState<LiftHistory[]>([]);
   const {colors} = useTheme();
-  const def = route.params.lift;
+  const defs = useSelector((store: AppState) => store.liftDefs);
+
+  const liftId = route.params.liftId;
+  var def = defs.get(liftId)!;
+
+  navigation.setOptions({title: def.name});
 
   function loadState() {
-    LiftHistoryRepository.get(def.id).then(result => {
+    LiftHistoryRepository.get(liftId).then(result => {
       setEntries(result);
     });
   }
