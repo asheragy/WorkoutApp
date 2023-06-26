@@ -3,6 +3,7 @@ import {
   Alert,
   Animated,
   Button,
+  DimensionValue,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -85,7 +86,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   );
 }
 
-const Widths = ['10%', '35%', '10%', '35%', '10%'];
+const Widths: DimensionValue[] = ['10%', '35%', '10%', '35%', '10%'];
 
 function PersistedSetHeader() {
   const {colors} = useTheme();
