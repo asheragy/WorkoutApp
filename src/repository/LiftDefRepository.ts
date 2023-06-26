@@ -2,52 +2,69 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LiftDef} from '../types/types';
 import Utils from '../components/Utils';
 import {SystemLifts} from './LiftDatabase';
+import {Dispatch} from 'react';
+import {AnyAction} from 'redux';
+import {updateLiftDefs} from '../state/liftDefs';
 
 const key = 'liftdefs';
 
 export default class LiftDefRepository {
-  static async upsert(def: LiftDef): Promise<LiftDef> {
+  private dispatch: Dispatch<AnyAction>;
+
+  constructor(dispatch: Dispatch<AnyAction>) {
+    this.dispatch = dispatch;
+  }
+
+  async init(): Promise<void> {
+    const data = await LiftDefRepository.getLookupMap();
+    this.dispatch(updateLiftDefs(data));
+  }
+
+  async upsert(def: LiftDef): Promise<LiftDef> {
     if (def.id.length == 0) return await this.insert(def);
     else return await this.update(def);
   }
 
-  private static async insert(def: LiftDef): Promise<LiftDef> {
+  async delete(id: string) {
+    var items = await LiftDefRepository.getAll();
+    items = items.filter(item => item.id != id);
+
+    await AsyncStorage.setItem(key, JSON.stringify(items));
+    await this.init();
+  }
+
+  private async insert(def: LiftDef): Promise<LiftDef> {
     def.id = Utils.generate_uuidv4();
 
-    var items = await this.getAll();
+    var items = await LiftDefRepository.getAll();
     items.push(def);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
+    await this.init();
 
     return def;
   }
 
-  private static async update(def: LiftDef): Promise<LiftDef> {
-    var items = await this.getAll();
+  private async update(def: LiftDef): Promise<LiftDef> {
+    var items = await LiftDefRepository.getAll();
     var index = items.findIndex(item => item.id == def.id);
     if (index < 0) throw new Error('Unable to find id ' + def.id);
 
     items[index] = def;
     await AsyncStorage.setItem(key, JSON.stringify(items));
+    await this.init();
 
     return def;
   }
 
-  static async delete(id: string) {
-    var items = await this.getAll();
-    items = items.filter(item => item.id != id);
-
-    await AsyncStorage.setItem(key, JSON.stringify(items));
-  }
-
-  static async getAll(): Promise<LiftDef[]> {
+  private static async getAll(): Promise<LiftDef[]> {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
     return JSON.parse(value);
   }
 
-  static async getLookupMap(): Promise<Map<string, LiftDef>> {
+  private static async getLookupMap(): Promise<Map<string, LiftDef>> {
     const all = (await this.getAll()).concat(SystemLifts);
     const result = new Map<string, LiftDef>();
 

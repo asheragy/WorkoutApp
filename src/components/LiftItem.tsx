@@ -6,6 +6,8 @@ import LiftEditorModal from './LiftEditorModal';
 import {NormalizedSet, PlateCount, TrainingMax} from '../types/types';
 import Utils from './Utils';
 import {Style_LiftText} from './Common';
+import {useSelector} from 'react-redux';
+import {AppState} from '../state/store';
 
 export default function LiftItem(props: {
   lift: Lift;
@@ -16,6 +18,7 @@ export default function LiftItem(props: {
   //const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
   const onSetsChanged = (updatedSets: LiftSet[]) => {
     var updatedLift: Lift = {...props.lift};
@@ -33,7 +36,7 @@ export default function LiftItem(props: {
         }}>
         <Text style={{width: '20%'}}></Text>
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
-          {props.lift.def.name}
+          {defs.get(props.lift.id)!.name}
         </Text>
         <View
           style={{

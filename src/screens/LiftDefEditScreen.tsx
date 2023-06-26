@@ -6,12 +6,15 @@ import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {LiftType, TrainingMax} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import TrainingMaxRepository from '../repository/TrainingMaxRepository';
+import {useDispatch} from 'react-redux';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 export function LiftDefEditScreen({route, navigation}: Props) {
   const userDefined = route.params.def?.id.length == 36;
   const tmRepo = TrainingMaxRepository.getInstance();
+  const dispatch = useDispatch();
+  const repo = new LiftDefRepository(dispatch);
 
   const items = Object.values(LiftType)
     .filter(value => typeof value === 'string')
@@ -49,7 +52,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
     var defId: string;
     if (userDefined) {
       def.type = type;
-      var liftDef = await LiftDefRepository.upsert(def);
+      var liftDef = await repo.upsert(def);
       defId = liftDef.id;
     } else {
       defId = def.id;
@@ -63,14 +66,12 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       });
     }
 
-    route.params.onChanged();
     navigation.goBack();
   }
 
   async function onDelete() {
-    if (userDefined) await LiftDefRepository.delete(def.id);
+    if (userDefined) await repo.delete(def.id);
 
-    route.params.onChanged();
     navigation.goBack();
   }
 

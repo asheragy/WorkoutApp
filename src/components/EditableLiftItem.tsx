@@ -16,6 +16,7 @@ import {NumberControl} from './NumberControl';
 import Utils from './Utils';
 import {useSelector} from 'react-redux';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
+import {AppState} from '../state/store';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -27,6 +28,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   const {colors} = useTheme();
   const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
   function addSet() {
     var set: LiftSet = {weight: 0, reps: 0};
@@ -53,7 +55,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   return (
     <View style={{margin: 8}}>
       <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-        {props.lift.def.name}
+        {defs.get(props.lift.id)!.name}
       </Text>
 
       <View>

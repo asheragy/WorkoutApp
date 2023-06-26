@@ -13,36 +13,31 @@ import {LiftDef, LiftType} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {useTheme} from '@react-navigation/native';
 import {SystemLifts} from '../repository/LiftDatabase';
+import {useSelector} from 'react-redux';
+import {AppState} from '../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
 export function LiftDefListScreen({route, navigation}: Props) {
   const isSelection = route.params.onSelect != undefined;
-  const [lifts, setLifts] = useState<LiftDef[]>([]);
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
-  function onRefresh() {
-    LiftDefRepository.getAll().then(lifts => {
-      var result = lifts.concat(SystemLifts);
-
-      result = result.sort((a, b) => a.name.localeCompare(b.name));
-      setLifts(result);
-    });
-  }
-
-  function onAdd() {
-    navigation.navigate('LiftDefEdit', {onChanged: onRefresh});
-  }
+  const lifts = Array.from(defs.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
 
   function onEdit(def: LiftDef) {
     if (isSelection) {
       route.params.onSelect(def);
       navigation.pop();
     } else {
-      navigation.navigate('LiftDefEdit', {onChanged: onRefresh, def: def});
+      navigation.navigate('LiftDefEdit', {def: def});
     }
   }
 
-  useEffect(onRefresh, []);
+  function onAdd() {
+    navigation.navigate('LiftDefEdit', {});
+  }
 
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
     <TouchableOpacity onPress={() => onEdit(item.item)}>

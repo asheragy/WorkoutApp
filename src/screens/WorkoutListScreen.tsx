@@ -71,9 +71,11 @@ export function WorkoutList({navigation, route}: Props) {
   }, [navigation]);
 
   function loadState() {
+    /*
     LiftDefRepository.getLookupMap().then(result => {
       dispatch(updateLiftDefs(result));
     });
+    */
 
     WorkoutRepository.getAll().then(result => {
       // Sort by oldest completed first

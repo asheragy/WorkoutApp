@@ -12,6 +12,8 @@ import {LiftDef, PersistedSet} from '../types/types';
 import Utils from '../components/Utils';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {SystemLifts} from '../repository/LiftDatabase';
+import {useSelector} from 'react-redux';
+import {AppState} from '../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutHistory'>;
 
@@ -38,13 +40,13 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
   const workoutId = route.params.workoutId;
   const [entries, setEntries] = useState<WorkoutEntry[]>([]);
   const {colors} = useTheme();
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
   function loadState() {
     buildHistory().then(history => setEntries(history));
   }
 
   async function buildHistory(): Promise<WorkoutEntry[]> {
-    const defs = (await LiftDefRepository.getAll()).concat(SystemLifts);
     var history = await WorkoutHistoryRepository.get(workoutId);
 
     // Lookup history for each lift and add it to history of this workout
@@ -79,7 +81,7 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
         return {
           liftId: id,
           sets: match != undefined ? match.sets : [],
-          name: defs.find(x => x.id == id)?.name!,
+          name: defs.get(id)!.name,
         };
       });
 
