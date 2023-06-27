@@ -24,15 +24,16 @@ export function LiftHistoryScreen({route, navigation}: Props) {
   const liftId = route.params.liftId;
   var def = defs.get(liftId)!;
 
-  navigation.setOptions({title: def.name});
-
   function loadState() {
     LiftHistoryRepository.get(liftId).then(result => {
       setEntries(result);
     });
   }
 
-  useEffect(loadState, []);
+  useEffect(() => {
+    loadState();
+    navigation.setOptions({title: def.name});
+  }, []);
 
   return (
     <Tab.Navigator>

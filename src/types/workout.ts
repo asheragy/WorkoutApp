@@ -10,10 +10,6 @@ export type Workout = {
 
 export type Lift = {
   id: string;
-  /**
-   * @deprecated use id instead
-   */
-  def: LiftDef;
   sets: LiftSet[];
 };
 

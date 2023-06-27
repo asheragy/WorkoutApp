@@ -6,6 +6,7 @@ export default class Log {
       set => set.weight + 'x' + set.reps + (set.warmup == true ? ' W' : ''),
     );
 
-    console.log(lift.def.name + ': ' + sets.join(', '));
+    // TODO pass def so name can be logged
+    console.log(lift.id + ': ' + sets.join(', '));
   }
 }

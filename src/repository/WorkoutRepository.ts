@@ -27,13 +27,6 @@ export default class WorkoutRepository {
       return result;
     });
 
-    // TODO temp
-    json.forEach(wo => {
-      wo.lifts.forEach(lift => {
-        if (!lift.hasOwnProperty('id')) throw new Error('Missing ID');
-      });
-    });
-
     return json;
   }
 

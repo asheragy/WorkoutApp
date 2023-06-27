@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Lift, LiftSet} from '../types/workout';
 import LiftEditorModal from './LiftEditorModal';
-import {NormalizedSet, PlateCount, TrainingMax} from '../types/types';
+import {LiftDef, NormalizedSet, PlateCount, TrainingMax} from '../types/types';
 import Utils from './Utils';
 import {Style_LiftText} from './Common';
 import {useSelector} from 'react-redux';
@@ -50,7 +50,10 @@ export default function LiftItem(props: {
           </TouchableOpacity>
         </View>
       </View>
-      <ReadOnlySetTable lift={props.lift} tm={props.tm}></ReadOnlySetTable>
+      <ReadOnlySetTable
+        lift={props.lift}
+        tm={props.tm}
+        def={defs.get(props.lift.id)!}></ReadOnlySetTable>
       <View>
         <LiftEditorModal
           editing={editing}
@@ -66,11 +69,11 @@ export default function LiftItem(props: {
   );
 }
 
-function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax}) {
-  function calcPlates(lift: Lift, weight: string): PlateCount | undefined {
+function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax; def: LiftDef}) {
+  function calcPlates(weight: string): PlateCount | undefined {
     // Just using string since it already accounts for percentage lifts
     var n = parseInt(weight.replace('lb', ''));
-    return Utils.calcPlates(lift.def.type, n);
+    return Utils.calcPlates(props.def.type, n);
   }
 
   return (
@@ -81,7 +84,7 @@ function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax}) {
           <SetItem
             set={set}
             key={index}
-            plates={calcPlates(props.lift, set.weight)}></SetItem>
+            plates={calcPlates(set.weight)}></SetItem>
         ))}
       </View>
     </View>

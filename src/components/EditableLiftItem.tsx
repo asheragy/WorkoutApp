@@ -12,7 +12,7 @@ import {
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../types/workout';
 import {Style_LiftText} from './Common';
-import {GlobalSettings, LiftType, TrainingMax} from '../types/types';
+import {GlobalSettings, LiftDef, LiftType, TrainingMax} from '../types/types';
 import {NumberControl} from './NumberControl';
 import Utils from './Utils';
 import {useSelector} from 'react-redux';
@@ -66,7 +66,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
             set={set}
             label={labels[index]}
             settings={settings}
-            liftType={props.lift.def.type}
+            def={defs.get(props.lift.id)!}
             key={index}
             tm={props.tm}
             onDelete={() => onRemoveSet(index)}
@@ -110,10 +110,10 @@ function PersistedSetHeader() {
 
 function PersistedSetRow(props: {
   set: LiftSet;
-  liftType: LiftType;
   settings: GlobalSettings;
   label: string;
   tm?: TrainingMax;
+  def: LiftDef;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;
 }) {
@@ -228,7 +228,7 @@ function PersistedSetRow(props: {
                 (props.set.weight || 0) -
                 Utils.decrementWeight(
                   props.set.weight || 0,
-                  props.liftType,
+                  props.def.type,
                   props.settings,
                   props.set.percentage,
                 )
@@ -236,7 +236,7 @@ function PersistedSetRow(props: {
               incrementBy={() =>
                 Utils.incrementWeight(
                   props.set.weight || 0,
-                  props.liftType,
+                  props.def.type,
                   props.settings,
                   props.set.percentage,
                 ) - (props.set.weight || 0)
@@ -284,7 +284,7 @@ function PersistedSetRow(props: {
                 color: colors.text,
               }}>
               {Math.round(
-                Utils.calculate1RM(props.liftType, props.set, props.tm),
+                Utils.calculate1RM(props.def.type, props.set, props.tm),
               )}
             </Text>
           </View>

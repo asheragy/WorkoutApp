@@ -18,6 +18,8 @@ import EditableLiftItem from '../components/EditableLiftItem';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {MaterialHeaderButton} from '../components/Common';
 import {useTheme} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {AppState} from '../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
@@ -28,6 +30,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   );
   const [lifts, setLifts] = useState<Lift[]>(existing ? existing.lifts : []);
   const {colors} = useTheme();
+  const defs = useSelector((store: AppState) => store.liftDefs);
 
   // Menu
   React.useLayoutEffect(() => {
@@ -60,7 +63,6 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   function onExerciseAdded(def: LiftDef) {
     const lift: Lift = {
       id: def.id,
-      def: def,
       sets: [],
     };
     setLifts(prevState => [...prevState, lift]);
@@ -82,7 +84,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   function confirmLiftDelete(index: number) {
     Alert.alert(
-      'Delete ' + lifts[index].def.name + '?',
+      `Delete ${defs.get(lifts[index].id)?.name}?`,
       undefined,
       [
         {
