@@ -11,7 +11,7 @@ import {useDispatch} from 'react-redux';
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 export function LiftDefEditScreen({route, navigation}: Props) {
-  const userDefined = route.params.def?.id.length == 36;
+  const systemDef = route.params.def?.system == true;
   const tmRepo = TrainingMaxRepository.getInstance();
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
@@ -50,12 +50,12 @@ export function LiftDefEditScreen({route, navigation}: Props) {
 
   async function onSave() {
     var defId: string;
-    if (userDefined) {
+    if (systemDef) {
+      defId = def.id;
+    } else {
       def.type = type;
       var liftDef = await repo.upsert(def);
       defId = liftDef.id;
-    } else {
-      defId = def.id;
     }
 
     if (tm == 0) await tmRepo.delete(defId);
@@ -70,7 +70,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   }
 
   async function onDelete() {
-    if (userDefined) await repo.delete(def.id);
+    if (!systemDef) await repo.delete(def.id);
 
     navigation.goBack();
   }
@@ -80,7 +80,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       <View>
         <Text>Name:</Text>
         <TextInput
-          editable={userDefined}
+          editable={!systemDef}
           onChangeText={newName =>
             setDef(prevState => ({
               ...prevState,
@@ -95,7 +95,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         <Text>Type:</Text>
 
         <DropDownPicker
-          disabled={!userDefined}
+          disabled={systemDef}
           items={items}
           open={open}
           value={type}

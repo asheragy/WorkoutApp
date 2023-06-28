@@ -1,15 +1,6 @@
 import {LiftDef, LiftType} from '../types/types';
 
-export function lookupDef(id: string, overrides: LiftDef[]): LiftDef {
-  var override = overrides.find(x => x.id == id);
-  if (override != undefined) return override;
-
-  var match = lifts.find(x => x.id == id);
-  if (match == undefined) throw new Error('No lift matching id=' + id);
-  return match;
-}
-
-export class LiftId {
+class LiftId {
   public static readonly BenchPress = 'bench';
   public static readonly BenchPress_Dumbell = 'dumbellBench';
   public static readonly OverheadPress = 'overheadPress';
@@ -44,12 +35,9 @@ export class LiftId {
   public static readonly LegExtensions = 'legExtensions';
   public static readonly LegCurls = 'legCurls';
   public static readonly LegPress = 'legPress';
-  //public static readonly  = '';
-
-  public static readonly placeHolder = 'placeholder';
 }
 
-export const lifts: LiftDef[] = [
+const lifts: LiftDef[] = [
   {
     id: LiftId.BenchPress,
     name: 'Bench Press',
@@ -190,11 +178,6 @@ export const lifts: LiftDef[] = [
     name: 'Leg Press',
     type: LiftType.Machine,
   },
-  {
-    id: LiftId.placeHolder,
-    name: 'Temp Placeholder',
-    type: LiftType.Barbell,
-  },
   /* Copy paste 
   {
     id: LiftId.,
@@ -204,5 +187,7 @@ export const lifts: LiftDef[] = [
   */
 ];
 
-// TODO use this name instead of the other
-export const SystemLifts = lifts;
+export const SystemLifts = lifts.map(def => {
+  def.system = true;
+  return def;
+});

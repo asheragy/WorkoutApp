@@ -45,13 +45,17 @@ export function LiftDefListScreen({route, navigation}: Props) {
     </TouchableOpacity>
   );
 
+  // TODO make add a menu
   return (
-    <View>
+    <View
+      style={{
+        flex: 1,
+        flexGrow: 1,
+      }}>
       <FlatList
         data={lifts}
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}></FlatList>
-
       <Button title="Add" onPress={() => onAdd()}></Button>
     </View>
   );
@@ -64,9 +68,13 @@ interface DefItemProps {
 function DefListItem(props: DefItemProps) {
   const {colors} = useTheme();
 
+  const postfix = props.def.system ? '' : ' *';
+
   return (
     <View style={{padding: 8}}>
-      <Text>{props.def.name + ' (' + LiftType[props.def.type] + ')'}</Text>
+      <Text>
+        {props.def.name + ' (' + LiftType[props.def.type] + ')' + postfix}
+      </Text>
     </View>
   );
 }
