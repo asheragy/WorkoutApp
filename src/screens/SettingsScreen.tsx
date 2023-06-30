@@ -24,15 +24,20 @@ export function SettingsScreen({route, navigation}: Props) {
     });
   }
 
-  async function logTrainingMaxes() {
-    const tms = await TrainingMaxRepository.getInstance().getAll();
-    tms.forEach(x => console.log(x.id.padEnd(38, ' ') + x.max));
+  async function logLiftDefs() {
+    const defs = await LiftDefRepository.getAll();
+    console.log('Defs');
+    defs.forEach(x => {
+      var max = x.trainingMax ? x.trainingMax + '' : '';
+      var sys = x.system ? 'sys' : '';
+      console.log(x.id.padEnd(38, ' ') + max + '\t' + sys + '\t' + x.name);
+    });
   }
 
   return (
     <View>
       <Button title="Log Keys" onPress={logSettings}></Button>
-      <Button title="Log TMs" onPress={logTrainingMaxes}></Button>
+      <Button title="Log Defs" onPress={logLiftDefs}></Button>
     </View>
   );
 }

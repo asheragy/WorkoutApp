@@ -5,14 +5,12 @@ import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {LiftType, TrainingMax} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
-import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 import {useDispatch} from 'react-redux';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 export function LiftDefEditScreen({route, navigation}: Props) {
   const systemDef = route.params.def?.system == true;
-  const tmRepo = TrainingMaxRepository.getInstance();
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
 
@@ -38,33 +36,14 @@ export function LiftDefEditScreen({route, navigation}: Props) {
 
   const [open, setOpen] = useState(false);
   const [type, setType] = useState(def.type);
-  const [tm, setTM] = useState(0.0);
-
-  function loadState() {
-    tmRepo.get(def.id).then(result => {
-      if (result !== undefined) setTM(result.max);
-    });
-  }
-
-  useEffect(loadState, []);
+  const [tm, setTM] = useState(def.trainingMax ? def.trainingMax : 0.0);
 
   async function onSave() {
-    var defId: string;
-    if (systemDef) {
-      defId = def.id;
-    } else {
-      def.type = type;
-      var liftDef = await repo.upsert(def);
-      defId = liftDef.id;
-    }
+    def.type = type;
+    if (tm > 0) def.trainingMax = tm;
+    else def.trainingMax = undefined;
 
-    if (tm == 0) await tmRepo.delete(defId);
-    else {
-      await TrainingMaxRepository.getInstance().upsert({
-        id: defId,
-        max: tm,
-      });
-    }
+    await repo.upsert(def);
 
     navigation.goBack();
   }

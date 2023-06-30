@@ -48,16 +48,29 @@ export default class LiftDefRepository {
   private async update(def: LiftDef): Promise<LiftDef> {
     var items = await LiftDefRepository.getAll();
     var index = items.findIndex(item => item.id == def.id);
+    if (index < 0) index = SystemLifts.findIndex(item => item.id == def.id);
     if (index < 0) throw new Error('Unable to find id ' + def.id);
 
     items[index] = def;
+
+    // Don't save system lifts that are unmodified
+    items = items.filter(item => {
+      if (
+        item.system &&
+        (item.trainingMax === undefined || item.trainingMax == 0)
+      )
+        return false;
+
+      return true;
+    });
+
     await AsyncStorage.setItem(key, JSON.stringify(items));
     await this.init();
 
     return def;
   }
 
-  private static async getAll(): Promise<LiftDef[]> {
+  static async getAll(): Promise<LiftDef[]> {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
