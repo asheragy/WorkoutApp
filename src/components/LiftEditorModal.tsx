@@ -2,7 +2,7 @@ import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
 import {Modal, View, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
-import {GlobalSettings, TrainingMax} from '../types/types';
+import {GlobalSettings} from '../types/types';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet} from '../types/workout';
 import EditableLiftItem from './EditableLiftItem';

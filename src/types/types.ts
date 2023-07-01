@@ -41,11 +41,6 @@ export type PersistedSet = {
   warmup?: boolean;
 };
 
-export type TrainingMax = {
-  id: string;
-  max: number;
-};
-
 export type PlateCount = {
   p45?: number;
   p25?: number;

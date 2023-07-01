@@ -5,7 +5,6 @@ import {
   NormalizedSet,
   PersistedSet,
   PlateCount,
-  TrainingMax,
 } from '../types/types';
 import {LiftSet} from '../types/workout';
 
@@ -68,43 +67,6 @@ export default class Utils {
       reps: set.reps,
       warmup: set.warmup,
     };
-  }
-
-  static incrementWeight(
-    current: number,
-    liftType: LiftType,
-    settings: GlobalSettings,
-    percentage?: Boolean,
-  ): number {
-    var step = 5;
-    if (liftType == LiftType.Machine || percentage) step = 2.5;
-    else if (
-      liftType == LiftType.Dumbbell &&
-      settings.largestHalfPoundDumbbell != undefined
-    ) {
-      if (current <= settings.largestHalfPoundDumbbell) step = 2.5;
-    }
-
-    return current + step;
-  }
-
-  static decrementWeight(
-    current: number,
-    liftType: LiftType,
-    settings: GlobalSettings,
-    percentage?: Boolean,
-  ): number {
-    var step = 5;
-    if (liftType == LiftType.Machine || percentage) step = 2.5;
-    else if (
-      liftType == LiftType.Dumbbell &&
-      settings.largestHalfPoundDumbbell != undefined
-    ) {
-      if (current <= settings.largestHalfPoundDumbbell) step = 2.5;
-      else if (current - 2.5 == settings.largestHalfPoundDumbbell) step = 2.5;
-    }
-
-    return current - step;
   }
 
   static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {

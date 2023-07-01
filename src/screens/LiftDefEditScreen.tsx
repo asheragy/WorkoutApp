@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Button, Text, TextInput, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {LiftType, TrainingMax} from '../types/types';
+import {LiftType} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {useDispatch} from 'react-redux';
 

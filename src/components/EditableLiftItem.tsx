@@ -12,12 +12,13 @@ import {
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../types/workout';
 import {Style_LiftText} from './Common';
-import {GlobalSettings, LiftDef, LiftType, TrainingMax} from '../types/types';
+import {GlobalSettings, LiftDef} from '../types/types';
 import {NumberControl} from './NumberControl';
 import Utils from './Utils';
 import {useSelector} from 'react-redux';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {AppState} from '../state/store';
+import SetUtils from '../utils/SetUtils';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -227,19 +228,17 @@ function PersistedSetRow(props: {
               }
               decrementBy={() =>
                 (props.set.weight || 0) -
-                Utils.decrementWeight(
-                  props.set.weight || 0,
+                SetUtils.decrementWeight(
+                  props.set,
                   props.def.type,
                   props.settings,
-                  props.set.percentage,
                 )
               }
               incrementBy={() =>
-                Utils.incrementWeight(
-                  props.set.weight || 0,
+                SetUtils.incrementWeight(
+                  props.set,
                   props.def.type,
                   props.settings,
-                  props.set.percentage,
                 ) - (props.set.weight || 0)
               }></NumberControl>
           </View>

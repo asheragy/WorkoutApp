@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Lift, LiftSet} from '../types/workout';
 import LiftEditorModal from './LiftEditorModal';
-import {LiftDef, NormalizedSet, PlateCount, TrainingMax} from '../types/types';
+import {LiftDef, NormalizedSet, PlateCount} from '../types/types';
 import Utils from './Utils';
 import {Style_LiftText} from './Common';
 import {useSelector} from 'react-redux';
