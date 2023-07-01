@@ -11,7 +11,6 @@ import {AppState} from '../state/store';
 
 export default function LiftItem(props: {
   lift: Lift;
-  tm?: TrainingMax;
   onLiftChanged: (lift: Lift) => void;
   onViewLog: (lift: Lift) => void;
 }) {
@@ -19,6 +18,7 @@ export default function LiftItem(props: {
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const def = defs.get(props.lift.id)!;
 
   const onSetsChanged = (updatedSets: LiftSet[]) => {
     var updatedLift: Lift = {...props.lift};
@@ -36,7 +36,7 @@ export default function LiftItem(props: {
         }}>
         <Text style={{width: '20%'}}></Text>
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
-          {defs.get(props.lift.id)!.name}
+          {def.name}
         </Text>
         <View
           style={{
@@ -50,15 +50,11 @@ export default function LiftItem(props: {
           </TouchableOpacity>
         </View>
       </View>
-      <ReadOnlySetTable
-        lift={props.lift}
-        tm={props.tm}
-        def={defs.get(props.lift.id)!}></ReadOnlySetTable>
+      <ReadOnlySetTable lift={props.lift} def={def}></ReadOnlySetTable>
       <View>
         <LiftEditorModal
           editing={editing}
           lift={props.lift}
-          tm={props.tm}
           onViewLog={() => props.onViewLog(props.lift)}
           onFinish={sets => {
             onSetsChanged(sets);
@@ -69,7 +65,7 @@ export default function LiftItem(props: {
   );
 }
 
-function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax; def: LiftDef}) {
+function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
   function calcPlates(weight: string): PlateCount | undefined {
     // Just using string since it already accounts for percentage lifts
     var n = parseInt(weight.replace('lb', ''));

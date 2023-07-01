@@ -21,7 +21,6 @@ import {AppState} from '../state/store';
 
 interface EditableLiftItemProps {
   lift: Lift;
-  tm?: TrainingMax;
   onChange: (lift: Lift) => void;
 }
 
@@ -71,7 +70,6 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
             settings={settings}
             def={def}
             key={index}
-            tm={props.tm}
             onDelete={() => onRemoveSet(index)}
             onChange={set => onSetChange(index, set)}></PersistedSetRow>
         ))}
@@ -115,7 +113,6 @@ function PersistedSetRow(props: {
   set: LiftSet;
   settings: GlobalSettings;
   label: string;
-  tm?: TrainingMax;
   def: LiftDef;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;

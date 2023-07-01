@@ -10,7 +10,6 @@ import EditableLiftItem from './EditableLiftItem';
 export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
-  tm?: TrainingMax;
   onFinish: (sets: LiftSet[]) => void;
   onViewLog: () => void;
 }) {
@@ -50,7 +49,6 @@ export default function LiftEditorModal(props: {
           }}>
           <EditableLiftItem
             lift={lift}
-            tm={props.tm}
             onChange={onLiftChanged}></EditableLiftItem>
 
           <View

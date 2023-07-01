@@ -1,7 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LiftDef, PersistedSet, TrainingMax} from '../types/types';
 import {Lift, LiftSet} from '../types/workout';
-import TrainingMaxRepository from './TrainingMaxRepository';
 import Utils from '../components/Utils';
 
 const keyPrefix = 'liftHistory:';

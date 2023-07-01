@@ -3,7 +3,6 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {Button, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 import LiftDefRepository from '../repository/LiftDefRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'Settings'>;

@@ -6,8 +6,6 @@ import {AccessoryView} from '../components/Accessories';
 import {LogBox} from 'react-native';
 import {Lift, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import {TrainingMax} from '../types/types';
-import TrainingMaxRepository from '../repository/TrainingMaxRepository';
 import Log from '../utils/Log';
 import LiftItem from '../components/LiftItem';
 import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
@@ -27,7 +25,6 @@ LogBox.ignoreLogs([
 ]);
 
 export function WorkoutScreen({route, navigation}: Props) {
-  const [tms, setTMs] = useState<TrainingMax[]>([]);
   const defs = useSelector((store: AppState) => store.liftDefs);
   const [workout, setWorkout] = useState<Workout>({
     name: '',
@@ -91,11 +88,6 @@ export function WorkoutScreen({route, navigation}: Props) {
     WorkoutRepository.get(route.params.workoutId).then(result => {
       if (result !== undefined) setWorkout(result);
     });
-    TrainingMaxRepository.getInstance()
-      .getAll()
-      .then(result => {
-        setTMs(result);
-      });
   }
 
   function onHistory() {
@@ -110,7 +102,6 @@ export function WorkoutScreen({route, navigation}: Props) {
         {workout.lifts.map((lift, index) => (
           <LiftItem
             lift={lift}
-            tm={tms.find(x => x.id == lift.id)}
             onViewLog={onViewLog}
             onLiftChanged={onLiftChanged}
             key={index}></LiftItem>
