@@ -27,9 +27,12 @@ interface EditableLiftItemProps {
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
   const {colors} = useTheme();
-  const labels = Utils.normalizeSets(props.lift.sets).map(set => set.label);
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const def = defs.get(props.lift.id)!;
+  const labels = Utils.normalizeSets(props.lift.sets, def).map(
+    set => set.label,
+  );
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   function addSet() {
     var set: LiftSet = {weight: 0, reps: 0};
@@ -56,7 +59,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   return (
     <View style={{margin: 8}}>
       <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-        {defs.get(props.lift.id)!.name}
+        {def.name}
       </Text>
 
       <View>
@@ -66,7 +69,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
             set={set}
             label={labels[index]}
             settings={settings}
-            def={defs.get(props.lift.id)!}
+            def={def}
             key={index}
             tm={props.tm}
             onDelete={() => onRemoveSet(index)}
@@ -141,8 +144,9 @@ function PersistedSetRow(props: {
   };
 
   var percentageWeight = '';
-  if (props.set.percentage && props.set.weight && props.tm) {
-    percentageWeight = Utils.calcPercentage(props.set.weight, props.tm) + '';
+  if (props.set.percentage && props.set.weight && props.def.trainingMax) {
+    percentageWeight =
+      Utils.calcPercentage(props.set.weight, props.def.trainingMax) + '';
   }
 
   const swipeableRef: React.MutableRefObject<Swipeable | null> = useRef(null);
@@ -283,9 +287,7 @@ function PersistedSetRow(props: {
                 textAlignVertical: 'center',
                 color: colors.text,
               }}>
-              {Math.round(
-                Utils.calculate1RM(props.def.type, props.set, props.tm),
-              )}
+              {Math.round(Utils.calculate1RM(props.def, props.set))}
             </Text>
           </View>
         </View>

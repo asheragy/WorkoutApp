@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Workout} from '../types/workout';
 import LiftHistoryRepository from './LiftHistoryRepository';
+import {LiftDef} from '../types/types';
 
 const keyPrefix = 'workoutHistory:';
 
@@ -22,7 +23,7 @@ export default class WorkoutHistoryRepository {
     });
   }
 
-  static async add(workout: Workout) {
+  static async add(workout: Workout, defs: Map<string, LiftDef>) {
     const timestamp = new Date();
     var key = workout.id!;
     var history = await this.get(key);
@@ -37,7 +38,9 @@ export default class WorkoutHistoryRepository {
     await AsyncStorage.setItem(keyPrefix + key, JSON.stringify(history));
 
     for (var i = 0; i < workout.lifts.length; i++) {
-      await LiftHistoryRepository.add(workout.lifts[i], timestamp, key);
+      var lift = workout.lifts[i];
+      var def = defs.get(lift.id)!;
+      await LiftHistoryRepository.add(def, lift.sets, timestamp, key);
     }
   }
 }

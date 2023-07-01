@@ -17,6 +17,8 @@ import {
   HiddenItem,
 } from 'react-navigation-header-buttons';
 import {MaterialHeaderButton} from '../components/Common';
+import {useSelector} from 'react-redux';
+import {AppState} from '../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
@@ -26,6 +28,7 @@ LogBox.ignoreLogs([
 
 export function WorkoutScreen({route, navigation}: Props) {
   const [tms, setTMs] = useState<TrainingMax[]>([]);
+  const defs = useSelector((store: AppState) => store.liftDefs);
   const [workout, setWorkout] = useState<Workout>({
     name: '',
     lifts: [],
@@ -60,7 +63,7 @@ export function WorkoutScreen({route, navigation}: Props) {
   const onComplete = async () => {
     workout.lastCompleted = new Date();
     await WorkoutRepository.upsert(workout);
-    await WorkoutHistoryRepository.add(workout);
+    await WorkoutHistoryRepository.add(workout, defs);
     route.params.onComplete();
     navigation.pop();
   };

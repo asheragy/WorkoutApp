@@ -10,8 +10,8 @@ import {
 import {LiftSet} from '../types/workout';
 
 export default class Utils {
-  static calcPercentage(weight: number, tm: TrainingMax): number {
-    return this.round((tm.max * weight) / 100);
+  static calcPercentage(weight: number, trainingMax: number): number {
+    return this.round((trainingMax * weight) / 100);
   }
 
   static round(x: number): number {
@@ -19,7 +19,7 @@ export default class Utils {
   }
 
   // TODO if this took lift type it could add PlateCount as well
-  static normalizeSets(sets: LiftSet[], tm?: TrainingMax): NormalizedSet[] {
+  static normalizeSets(sets: LiftSet[], def: LiftDef): NormalizedSet[] {
     var result: NormalizedSet[] = [];
     var counter = 1;
 
@@ -31,10 +31,10 @@ export default class Utils {
 
       var weight = set.weight;
       if (set.percentage && set.weight) {
-        if (tm == undefined) {
+        if (def.trainingMax == undefined) {
           //console.error('Training max required for percentage');
           weight = -1;
-        } else weight = this.round((tm.max * set.weight) / 100);
+        } else weight = this.round((def.trainingMax * set.weight) / 100);
       }
 
       var t: NormalizedSet = {
@@ -107,23 +107,17 @@ export default class Utils {
     return current - step;
   }
 
-  static calculate1RM(
-    defOrType: LiftDef | LiftType,
-    set: LiftSet | PersistedSet,
-    tm?: TrainingMax,
-  ): number {
+  static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
     var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
     const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
-    const type: LiftType = (defOrType as LiftDef).id
-      ? (defOrType as LiftDef).type
-      : (defOrType as LiftType);
+    const type = def.type;
 
     if ('percentage' in set && set.percentage == true) {
-      if (tm === undefined) weight = -1;
-      else weight = Utils.calcPercentage(weight, tm);
+      if (def.trainingMax === undefined) weight = -1;
+      else weight = Utils.calcPercentage(weight, def.trainingMax);
     }
 
     if (type == LiftType.Bodyweight) weight += bodyweight;
@@ -145,13 +139,12 @@ export default class Utils {
     def: LiftDef,
     goals: PersistedSet[],
     current: LiftSet[],
-    tm?: TrainingMax,
   ): string {
     var goal1rm = goals.map(set => Utils.calculate1RM(def, set));
 
     var current1rm = current
       .filter(set => set.warmup != true)
-      .map(set => Utils.calculate1RM(def, set, tm));
+      .map(set => Utils.calculate1RM(def, set));
 
     const average = (array: number[]) =>
       array.reduce((a, b) => a + b) / array.length;

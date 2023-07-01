@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {PersistedSet, TrainingMax} from '../types/types';
+import {LiftDef, PersistedSet, TrainingMax} from '../types/types';
 import {Lift, LiftSet} from '../types/workout';
 import TrainingMaxRepository from './TrainingMaxRepository';
 import Utils from '../components/Utils';
@@ -24,23 +24,27 @@ export default class LiftHistoryRepository {
     });
   }
 
-  static async add(lift: Lift, timestamp: Date, workoutId: string) {
-    var tm: TrainingMax | undefined;
-    if (lift.sets.filter(x => x.percentage).length > 0) {
-      tm = await TrainingMaxRepository.getInstance().get(lift.id);
-      console.log(tm);
-      if (tm == undefined)
-        console.error('Training max required for persisted lift');
+  static async add(
+    def: LiftDef,
+    sets: LiftSet[],
+    timestamp: Date,
+    workoutId: string,
+  ) {
+    if (
+      sets.filter(x => x.percentage).length > 0 &&
+      def.trainingMax == undefined
+    ) {
+      console.error('Training max required for persisted lift');
     }
 
-    var persistedSets = LiftHistoryRepository.setsToPersisted(lift.sets, tm);
+    var persistedSets = LiftHistoryRepository.setsToPersisted(sets, def);
 
-    await this.addHistory(lift.id, persistedSets, timestamp, workoutId);
+    await this.addHistory(def.id, persistedSets, timestamp, workoutId);
   }
 
   private static setsToPersisted(
     sets: LiftSet[],
-    tm: TrainingMax | undefined,
+    def: LiftDef,
   ): PersistedSet[] {
     var filtered = sets.filter(
       x => x.reps != undefined && x.weight != undefined,
@@ -51,7 +55,8 @@ export default class LiftHistoryRepository {
     return filtered.map(set => {
       var weight = set.weight!!;
       if (set.percentage) {
-        if (tm !== undefined) weight = Utils.calcPercentage(weight, tm);
+        if (def.trainingMax !== undefined)
+          weight = Utils.calcPercentage(weight, def.trainingMax);
         else weight = -1;
       }
 

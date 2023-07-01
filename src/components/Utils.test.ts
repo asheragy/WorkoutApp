@@ -7,6 +7,7 @@ import {
 } from '../types/types';
 import Utils from './Utils';
 import {LiftSet} from '../types/workout';
+import {SystemLifts} from '../repository/LiftDatabase';
 
 export {};
 
@@ -30,7 +31,8 @@ test('normalizeSets repeated lifts', () => {
     },
   ];
 
-  var normalized = Utils.normalizeSets(sets);
+  var def = SystemLifts[0];
+  var normalized = Utils.normalizeSets(sets, def);
   expect(normalized.length).toBe(4);
   expect(normalized[0].weight).toBe('100lb');
   expect(normalized[1].weight).toBe('110lb');
@@ -85,8 +87,8 @@ test('calc 1RM', () => {
   set.percentage = true;
   set.weight = 50;
 
-  const tm: TrainingMax = {id: '', max: 200};
-  var oneRM = Utils.calculate1RM(def, set, tm);
+  def.trainingMax = 200;
+  var oneRM = Utils.calculate1RM(def, set);
   expect(oneRM).toBe(133.3);
 });
 

@@ -80,7 +80,7 @@ function ReadOnlySetTable(props: {lift: Lift; tm?: TrainingMax; def: LiftDef}) {
     <View>
       <SetHeader></SetHeader>
       <View>
-        {Utils.normalizeSets(props.lift.sets, props.tm).map((set, index) => (
+        {Utils.normalizeSets(props.lift.sets, props.def).map((set, index) => (
           <SetItem
             set={set}
             key={index}
