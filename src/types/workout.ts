@@ -34,3 +34,5 @@ export type AccessoryGroup = {
     max?: number;
   };
   */
+
+export const SingleWorkoutId = '00000000-0000-0000-0000-000000000000';

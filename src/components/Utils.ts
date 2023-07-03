@@ -49,26 +49,6 @@ export default class Utils {
     return result;
   }
 
-  static persistedToSets(sets: PersistedSet[]): LiftSet[] {
-    return sets.map(set => {
-      var result: LiftSet = {
-        weight: set.weight,
-        reps: set.reps,
-        warmup: set.warmup,
-      };
-
-      return result;
-    });
-  }
-
-  static persistedToSet(set: PersistedSet): LiftSet {
-    return {
-      weight: set.weight,
-      reps: set.reps,
-      warmup: set.warmup,
-    };
-  }
-
   static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
@@ -95,23 +75,6 @@ export default class Utils {
     var reps = set.reps;
 
     return weight * reps;
-  }
-
-  static goalPercentage(
-    def: LiftDef,
-    goals: PersistedSet[],
-    current: LiftSet[],
-  ): string {
-    var goal1rm = goals.map(set => Utils.calculate1RM(def, set));
-
-    var current1rm = current
-      .filter(set => set.warmup != true)
-      .map(set => Utils.calculate1RM(def, set));
-
-    const average = (array: number[]) =>
-      array.reduce((a, b) => a + b) / array.length;
-
-    return ((average(current1rm) / average(goal1rm)) * 100).toFixed(1);
   }
 
   // TODO use library for this instead

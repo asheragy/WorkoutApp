@@ -19,7 +19,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {MaterialHeaderButton} from '../components/Common';
-import {Lift, Workout} from '../types/workout';
+import {Lift, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import {updateSettings} from '../state/settings';
@@ -64,6 +64,12 @@ export function WorkoutList({navigation, route}: Props) {
               }
             />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
+            <HiddenItem
+              title="Single Workout"
+              disabled={workouts.find(x => x.id == '') != undefined}
+              onPress={() => onSingleWorkout()}
+            />
+            {}
           </OverflowMenu>
         </HeaderButtons>
       ),
@@ -99,6 +105,18 @@ export function WorkoutList({navigation, route}: Props) {
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
+
+  async function onSingleWorkout() {
+    const workout: Workout = {
+      id: SingleWorkoutId,
+      name: 'Single Workout',
+      lifts: [],
+    };
+
+    await WorkoutRepository.upsert(workout);
+    onSelect(workout);
+    loadState();
+  }
 
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {
