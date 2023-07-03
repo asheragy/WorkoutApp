@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
   Alert,
+  Button,
   FlatList,
   ListRenderItemInfo,
   Text,
@@ -82,6 +83,12 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     setLifts(updatedLifts);
   }
 
+  async function onDeleteWorkout() {
+    await WorkoutRepository.delete(route.params.workout!);
+    route.params.onChanged();
+    navigation.pop();
+  }
+
   function confirmLiftDelete(index: number) {
     Alert.alert(
       `Delete ${defs.get(lifts[index].id)?.name}?`,
@@ -128,6 +135,9 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           data={lifts}
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}></FlatList>
+        {route.params.workout && (
+          <Button title="Delete" onPress={onDeleteWorkout}></Button>
+        )}
       </View>
     </View>
   );

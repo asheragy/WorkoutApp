@@ -66,7 +66,9 @@ export function WorkoutList({navigation, route}: Props) {
             <HiddenItem title="Settings" onPress={() => onSettings()} />
             <HiddenItem
               title="Single Workout"
-              disabled={workouts.find(x => x.id == '') != undefined}
+              disabled={
+                workouts.find(x => x.id == SingleWorkoutId) != undefined
+              }
               onPress={() => onSingleWorkout()}
             />
             {}
@@ -74,7 +76,7 @@ export function WorkoutList({navigation, route}: Props) {
         </HeaderButtons>
       ),
     });
-  }, [navigation]);
+  }, [navigation, workouts]);
 
   function loadState() {
     /*
