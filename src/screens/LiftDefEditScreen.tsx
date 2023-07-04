@@ -57,6 +57,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   return (
     <View>
       <View>
+        <Text>{def.id}</Text>
         <Text>Name:</Text>
         <TextInput
           editable={!systemDef}

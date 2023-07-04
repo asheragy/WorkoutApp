@@ -119,6 +119,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   return (
     <View style={{flex: 1}}>
+      <Text>{existing?.id}</Text>
       <TextInput onChangeText={setTitle}>{title}</TextInput>
       {existing != undefined && (
         <Text>

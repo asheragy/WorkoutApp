@@ -3,7 +3,12 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {Lift, LiftSet} from '../types/workout';
 import LiftEditorModal from './LiftEditorModal';
-import {LiftDef, NormalizedSet, PlateCount} from '../types/types';
+import {
+  GlobalSettings,
+  LiftDef,
+  NormalizedSet,
+  PlateCount,
+} from '../types/types';
 import Utils from './Utils';
 import {Style_LiftText} from './Common';
 import {useSelector} from 'react-redux';
@@ -66,7 +71,11 @@ export default function LiftItem(props: {
 }
 
 function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+
   function calcPlates(weight: string): PlateCount | undefined {
+    if (settings.plateCount != true) return undefined;
+
     // Just using string since it already accounts for percentage lifts
     var n = parseInt(weight.replace('lb', ''));
     return Utils.calcPlates(props.def.type, n);
@@ -74,12 +83,13 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
 
   return (
     <View>
-      <SetHeader></SetHeader>
+      <SetHeader showPlateCount={settings.plateCount == true}></SetHeader>
       <View>
         {Utils.normalizeSets(props.lift.sets, props.def).map((set, index) => (
           <SetItem
             set={set}
             key={index}
+            showPlateCount={settings.plateCount == true}
             plates={calcPlates(set.weight)}></SetItem>
         ))}
       </View>
@@ -87,16 +97,26 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
   );
 }
 
-function SetHeader() {
+function SetHeader(props: {showPlateCount: boolean}) {
   const {colors} = useTheme();
+  const weightWidth = props.showPlateCount ? '30%' : '60%';
+
   return (
     <View style={{flexDirection: 'row'}}>
       <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
         Set
       </Text>
-      <Text style={[styles.liftHeader, {width: '60%', color: colors.text}]}>
+      <Text
+        style={[styles.liftHeader, {width: weightWidth, color: colors.text}]}>
         Weight
       </Text>
+      {props.showPlateCount && (
+        <Text
+          style={[
+            styles.liftHeader,
+            {width: '30%', color: colors.text},
+          ]}></Text>
+      )}
       <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
         Reps
       </Text>
@@ -104,30 +124,30 @@ function SetHeader() {
   );
 }
 
-function SetItem(props: {set: NormalizedSet; plates?: PlateCount}) {
+function SetItem(props: {
+  set: NormalizedSet;
+  plates?: PlateCount;
+  showPlateCount: boolean;
+}) {
   const {colors} = useTheme();
   var weight = props.set.weight;
 
-  /*
-  TODO disabling for now but need setting
-  if (props.plates !== undefined) {
-    console.log(props.plates);
-    if (props.plates.p45) weight += ' 45(' + props.plates.p45 + ')';
-    if (props.plates.p25) weight += ' 25(' + props.plates.p25 + ')';
-    if (props.plates.p10) weight += ' 10(' + props.plates.p10 + ')';
-    if (props.plates.p5) weight += ' 5(' + props.plates.p5 + ')';
-    if (props.plates.p2point5) weight += ' 2.5(' + props.plates.p2point5 + ')';
-  }
-  */
+  const weightWidth = props.showPlateCount ? '30%' : '60%';
 
   return (
     <View style={{flexDirection: 'row'}}>
       <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
         {props.set.label}
       </Text>
-      <Text style={{width: '60%', textAlign: 'center', color: colors.text}}>
+      <Text
+        style={{width: weightWidth, textAlign: 'center', color: colors.text}}>
         {weight}
       </Text>
+      {props.plates && (
+        <Text style={{width: '30%', textAlign: 'left', color: colors.text}}>
+          {Utils.platesToString(props.plates)}
+        </Text>
+      )}
       <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
         {props.set.reps}
       </Text>

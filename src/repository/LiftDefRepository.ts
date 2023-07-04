@@ -49,7 +49,7 @@ export default class LiftDefRepository {
     var items = await LiftDefRepository.getAll();
     var index = items.findIndex(item => item.id == def.id);
     if (index < 0) index = SystemLifts.findIndex(item => item.id == def.id);
-    if (index < 0) throw new Error('Unable to find id ' + def.id);
+    if (index < 0) throw new Error('Unable to find def id ' + def.id);
 
     items[index] = def;
 

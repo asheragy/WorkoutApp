@@ -19,6 +19,7 @@ export default class SettingsRepository {
     return {
       // Not even sure if this is correct
       largestHalfPoundDumbbell: 47.5,
+      plateCount: true,
     };
   }
 }

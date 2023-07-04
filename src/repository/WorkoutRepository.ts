@@ -57,9 +57,9 @@ export default class WorkoutRepository {
     var items = await this.getAll();
     var index = items.findIndex(item => item.id == workout.id);
 
-    if (index > 0) items[index] = workout;
+    if (index >= 0) items[index] = workout;
     else if (workout.id == SingleWorkoutId) items.push(workout);
-    else throw new Error('Unable to find id ' + workout.id);
+    else throw new Error('Unable to find workout id ' + workout.id);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }

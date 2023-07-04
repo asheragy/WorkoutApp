@@ -103,6 +103,29 @@ export default class Utils {
     }${ampm}`;
   }
 
+  static platesToString(platecount: PlateCount): string {
+    var result: string[] = [];
+
+    if (platecount.p45) {
+      for (var i = 0; i < platecount.p45; i++) result.push('45');
+    }
+    if (platecount.p25) {
+      for (var i = 0; i < platecount.p25; i++) result.push('25');
+    }
+    if (platecount.p10) {
+      for (var i = 0; i < platecount.p10; i++) result.push('10');
+    }
+
+    if (platecount.p5) {
+      for (var i = 0; i < platecount.p5; i++) result.push('5');
+    }
+    if (platecount.p2point5) {
+      for (var i = 0; i < platecount.p2point5; i++) result.push('2.5');
+    }
+
+    return '|' + result.join('|') + '|';
+  }
+
   static calcPlates(type: LiftType, weight: number): PlateCount | undefined {
     var result: PlateCount = {};
     if (
@@ -137,6 +160,34 @@ export default class Utils {
       }
 
       if (remaining == 5) {
+        result.p2point5 = 1;
+      }
+
+      return result;
+    } else if (type == LiftType.Machine) {
+      var remaining = weight;
+
+      while (remaining >= 45) {
+        result.p45 = result.p45 ? result.p45 + 1 : 1;
+        remaining -= 45;
+      }
+
+      if (remaining >= 25) {
+        result.p25 = 1;
+        remaining -= 25;
+      }
+
+      while (remaining >= 10) {
+        result.p10 = result.p10 ? result.p10 + 1 : 1;
+        remaining -= 10;
+      }
+
+      if (remaining >= 5) {
+        result.p5 = 1;
+        remaining -= 5;
+      }
+
+      if (remaining == 2.5) {
         result.p2point5 = 1;
       }
 
