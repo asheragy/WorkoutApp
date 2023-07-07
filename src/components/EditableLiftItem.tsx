@@ -19,6 +19,12 @@ import {useSelector} from 'react-redux';
 import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
 import {AppState} from '../state/store';
 import SetUtils from '../utils/SetUtils';
+import {
+  Menu,
+  MenuOption,
+  MenuOptions,
+  MenuTrigger,
+} from 'react-native-popup-menu';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -128,15 +134,20 @@ function PersistedSetRow(props: {
     props.onChange(updatedSet);
   };
 
-  // Iterate normal set => warmup => percentage
-  const onSetLabelChange = () => {
+  const onToggleWarmup = () => {
     var updatedSet: LiftSet = {
       ...props.set,
-      warmup: !props.set.warmup && !props.set.percentage,
-      percentage: props.set.warmup,
+      warmup: !props.set.warmup,
     };
 
-    console.log(updatedSet);
+    props.onChange(updatedSet);
+  };
+
+  const onTogglePercent = () => {
+    var updatedSet: LiftSet = {
+      ...props.set,
+      percentage: !props.set.percentage,
+    };
 
     props.onChange(updatedSet);
   };
@@ -199,21 +210,37 @@ function PersistedSetRow(props: {
         ref={swipeableRef}
         onSwipeableWillOpen={confirmDelete}>
         <View style={{flexDirection: 'row', marginVertical: 4}}>
-          <TouchableOpacity
+          <Menu
             style={{
               width: Widths[0],
               alignSelf: 'center',
-            }}
-            onPress={onSetLabelChange}>
-            <Text
-              style={{
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                color: colors.text,
+            }}>
+            <MenuTrigger
+              text={props.label}
+              customStyles={{
+                triggerText: {
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  color: colors.text,
+                },
+              }}
+            />
+            <MenuOptions
+              customStyles={{
+                optionsContainer: {backgroundColor: colors.background},
               }}>
-              {props.label}
-            </Text>
-          </TouchableOpacity>
+              <MenuOption
+                customStyles={{optionText: {fontSize: 16}}}
+                onSelect={onToggleWarmup}
+                text={props.set.warmup ? 'Work Set' : 'Warmup'}></MenuOption>
+              <MenuOption
+                customStyles={{optionText: {fontSize: 16}}}
+                onSelect={onTogglePercent}
+                text={
+                  props.set.percentage ? 'Disable Percentage' : 'Percentage'
+                }></MenuOption>
+            </MenuOptions>
+          </Menu>
 
           <View
             style={{
@@ -283,7 +310,9 @@ function PersistedSetRow(props: {
                 textAlignVertical: 'center',
                 color: colors.text,
               }}>
-              {Math.round(Utils.calculate1RM(props.def, props.set))}
+              {props.set.warmup
+                ? ''
+                : Math.round(Utils.calculate1RM(props.def, props.set))}
             </Text>
           </View>
         </View>

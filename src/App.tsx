@@ -23,6 +23,7 @@ import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
 import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
 import {rootReducer} from './state/store';
 import LiftDefRepository from './repository/LiftDefRepository';
+import {MenuProvider} from 'react-native-popup-menu';
 
 export type RootStackParamList = {
   Home: {

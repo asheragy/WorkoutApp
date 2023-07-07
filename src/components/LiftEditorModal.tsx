@@ -6,6 +6,7 @@ import {GlobalSettings} from '../types/types';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet} from '../types/workout';
 import EditableLiftItem from './EditableLiftItem';
+import {MenuProvider} from 'react-native-popup-menu';
 
 export default function LiftEditorModal(props: {
   editing: boolean;
@@ -28,49 +29,51 @@ export default function LiftEditorModal(props: {
 
   return (
     <Modal visible={props.editing} transparent={true}>
-      <View
-        style={{
-          flex: 1,
-          paddingTop: 50,
-          justifyContent: 'flex-start',
-          height: '100%',
-          alignItems: 'center',
-          backgroundColor: 'rgba(0,0,0,0.95)',
-        }}>
+      <MenuProvider>
         <View
           style={{
-            margin: 10,
-            backgroundColor: colors.card,
-            borderRadius: 8,
-            padding: 15,
+            flex: 1,
+            paddingTop: 50,
+            justifyContent: 'flex-start',
+            height: '100%',
             alignItems: 'center',
-
-            elevation: 5,
+            backgroundColor: 'rgba(0,0,0,0.95)',
           }}>
-          <EditableLiftItem
-            lift={lift}
-            onChange={onLiftChanged}></EditableLiftItem>
-
           <View
             style={{
-              marginTop: 10,
-              flexDirection: 'row',
-            }}>
-            <View style={{width: '45%', marginHorizontal: 10}}>
-              <Button
-                title="Log"
-                onPress={() => {
-                  props.onFinish(lift.sets); // TODO temp to workaround broken button issue after using
-                  props.onViewLog();
-                }}></Button>
-            </View>
+              margin: 10,
+              backgroundColor: colors.card,
+              borderRadius: 8,
+              padding: 15,
+              alignItems: 'center',
 
-            <View style={{width: '45%', marginHorizontal: 10}}>
-              <Button title="Done" onPress={onDone}></Button>
+              elevation: 5,
+            }}>
+            <EditableLiftItem
+              lift={lift}
+              onChange={onLiftChanged}></EditableLiftItem>
+
+            <View
+              style={{
+                marginTop: 10,
+                flexDirection: 'row',
+              }}>
+              <View style={{width: '45%', marginHorizontal: 10}}>
+                <Button
+                  title="Log"
+                  onPress={() => {
+                    props.onFinish(lift.sets); // TODO temp to workaround broken button issue after using
+                    props.onViewLog();
+                  }}></Button>
+              </View>
+
+              <View style={{width: '45%', marginHorizontal: 10}}>
+                <Button title="Done" onPress={onDone}></Button>
+              </View>
             </View>
           </View>
         </View>
-      </View>
+      </MenuProvider>
     </Modal>
   );
 }
