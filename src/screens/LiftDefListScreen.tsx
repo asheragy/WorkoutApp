@@ -15,6 +15,7 @@ import {useTheme} from '@react-navigation/native';
 import {SystemLifts} from '../repository/LiftDatabase';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
+import Utils from '../components/Utils';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
@@ -72,9 +73,7 @@ function DefListItem(props: DefItemProps) {
 
   return (
     <View style={{padding: 8}}>
-      <Text>
-        {props.def.name + ' (' + LiftType[props.def.type] + ')' + postfix}
-      </Text>
+      <Text>{Utils.defToString(props.def) + postfix}</Text>
     </View>
   );
 }

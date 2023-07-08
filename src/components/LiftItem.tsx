@@ -41,7 +41,7 @@ export default function LiftItem(props: {
         }}>
         <Text style={{width: '20%'}}></Text>
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
-          {def.name}
+          {Utils.defToString(def)}
         </Text>
         <View
           style={{

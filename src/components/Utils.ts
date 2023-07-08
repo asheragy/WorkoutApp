@@ -48,6 +48,21 @@ export default class Utils {
     return result;
   }
 
+  static defToString(def: LiftDef) {
+    if (def == undefined) return '';
+    var result = def.name;
+
+    if (
+      def.type != LiftType.Machine &&
+      def.type! - LiftType.PlateMachine &&
+      def.type != LiftType.Barbell &&
+      def.type != LiftType.Bodyweight
+    )
+      result += ' (' + LiftType[def.type] + ')';
+
+    return result;
+  }
+
   static calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight

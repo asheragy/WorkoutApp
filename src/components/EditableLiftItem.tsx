@@ -42,6 +42,11 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
   function addSet() {
     var set: LiftSet = {weight: 0, reps: 0};
+    if (props.lift.sets.length > 0) {
+      set = {...props.lift.sets[props.lift.sets.length - 1]};
+      set.warmup = undefined; // Off by default
+    }
+
     var updatedLift = {...props.lift};
     updatedLift.sets = [...props.lift.sets, set];
 
@@ -65,7 +70,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   return (
     <View style={{margin: 8}}>
       <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-        {def.name}
+        {Utils.defToString(def)}
       </Text>
 
       <View>
@@ -187,7 +192,7 @@ function PersistedSetRow(props: {
     dragAnimatedValue: Animated.AnimatedInterpolation<number>,
   ) => {
     const opacity = dragAnimatedValue.interpolate({
-      inputRange: [-150, 0],
+      inputRange: [-80, 0],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     });
@@ -198,7 +203,7 @@ function PersistedSetRow(props: {
           flexDirection: 'row',
           flex: 1,
           backgroundColor: 'red',
-          opacity: opacity,
+          transform: [{translateX: opacity}],
         }}></Animated.View>
     );
   };

@@ -1,12 +1,12 @@
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
-  // TODO plate loaded machine vs stack?
-  Machine,
+  Machine, // Weight stack machine
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
   SSB,
   TrapBar,
   Other,
+  PlateMachine, // Plate loaded machine
 }
 
 export type LiftDef = {

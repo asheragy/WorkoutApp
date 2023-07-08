@@ -11,6 +11,7 @@ import {LiftChartTab} from './LiftChartTab';
 import {LiftLogTab} from './LiftLogTab';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../state/store';
+import Utils from '../../components/Utils';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftHistory'>;
 
@@ -32,7 +33,7 @@ export function LiftHistoryScreen({route, navigation}: Props) {
 
   useEffect(() => {
     loadState();
-    navigation.setOptions({title: def.name});
+    navigation.setOptions({title: Utils.defToString(def)});
   }, []);
 
   return (

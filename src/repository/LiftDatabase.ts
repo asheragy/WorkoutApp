@@ -13,21 +13,17 @@ class LiftId {
   public static readonly InclinePress_Barbell = 'inclineBBPress';
 
   public static readonly DumbellRows = 'dbRows';
-  public static readonly HammerStrength_Pulldown = 'hsPulldown';
   public static readonly Curls_ReverseBarbell = 'reverseCurls';
   public static readonly ReverseFlys = 'reverseFlys';
   public static readonly HammerCurls = 'hammerCurls';
 
   public static readonly LatRaises = 'latRaise';
   public static readonly TricepExtension = 'tricepExt';
-  public static readonly HammerStrength_OverheadPress = 'hsPress';
 
   public static readonly DeadLift = 'deadlift';
   public static readonly DeadLift_Sumo = 'sumoDL';
-  public static readonly DeadLift_TrapBar = 'trapBarDL';
   public static readonly RDL = 'rdl';
   public static readonly FrontSquat = 'frontSquat';
-  public static readonly SSBSquat = 'ssb';
   public static readonly HatfieldSquat = 'hatfieldSquat';
 
   public static readonly Lunges = 'lunges';
@@ -50,7 +46,7 @@ const lifts: LiftDef[] = [
   },
   {
     id: LiftId.BenchPress_Dumbell,
-    name: 'Bench Press (Dumbbell)',
+    name: 'Bench Press',
     type: LiftType.Dumbbell,
   },
   {
@@ -75,23 +71,18 @@ const lifts: LiftDef[] = [
   },
   {
     id: LiftId.InclinePress_Dumbell,
-    name: 'Incline Press (Dumbell)',
+    name: 'Incline Press',
     type: LiftType.Dumbbell,
   },
   {
     id: LiftId.InclinePress_Barbell,
-    name: 'Incline Press (Barbell)',
+    name: 'Incline Press',
     type: LiftType.Barbell,
   },
   {
     id: LiftId.DumbellRows,
     name: 'Dumbbell Rows',
     type: LiftType.Dumbbell,
-  },
-  {
-    id: LiftId.HammerStrength_Pulldown, // TODO make custom lift
-    name: 'HS Pulldown',
-    type: LiftType.Machine,
   },
   {
     id: LiftId.Curls_ReverseBarbell,
@@ -119,33 +110,13 @@ const lifts: LiftDef[] = [
     type: LiftType.Machine,
   },
   {
-    id: LiftId.HammerStrength_OverheadPress,
-    name: 'HS Press',
-    type: LiftType.Machine,
-  },
-  {
     id: LiftId.DeadLift_Sumo,
     name: 'Sumo DL',
     type: LiftType.Barbell,
   },
   {
-    id: LiftId.DeadLift_TrapBar,
-    name: 'Trap Bar DL',
-    type: LiftType.Barbell,
-  },
-  {
     id: LiftId.FrontSquat,
     name: 'Front Squat',
-    type: LiftType.Barbell,
-  },
-  {
-    id: LiftId.SSBSquat,
-    name: 'SSB Squat',
-    type: LiftType.Barbell, // TODO specialty bar?
-  },
-  {
-    id: LiftId.HatfieldSquat,
-    name: 'Hatfield Squat',
     type: LiftType.Barbell,
   },
   {
@@ -178,13 +149,34 @@ const lifts: LiftDef[] = [
     name: 'Leg Press',
     type: LiftType.Machine,
   },
-  /* Copy paste 
+  // Hammer Strength
   {
-    id: LiftId.,
-    name: '',
-    type: LiftType.
+    id: 'hsPress',
+    name: 'HS Overhead Press',
+    type: LiftType.PlateMachine,
   },
-  */
+  {
+    id: 'hsPulldown',
+    name: 'HS Pulldown',
+    type: LiftType.PlateMachine,
+  },
+  {
+    id: 'hsRows',
+    name: 'HS Rows',
+    type: LiftType.PlateMachine,
+  },
+  // Trap bar
+  {
+    id: 'trapBarDL',
+    name: 'Deadlift',
+    type: LiftType.TrapBar,
+  },
+  // SSB
+  {
+    id: 'ssb',
+    name: 'Squat',
+    type: LiftType.SSB,
+  },
 ];
 
 export const SystemLifts = lifts.map(def => {
