@@ -203,6 +203,9 @@ function PersistedSetRow(props: {
     );
   };
 
+  const disablePercentage =
+    !props.set.percentage && props.def.trainingMax == undefined;
+
   return (
     <GestureHandlerRootView>
       <Swipeable
@@ -230,12 +233,21 @@ function PersistedSetRow(props: {
                 optionsContainer: {backgroundColor: colors.background},
               }}>
               <MenuOption
-                customStyles={{optionText: {fontSize: 16}}}
+                customStyles={{
+                  optionText: {fontSize: 16, color: colors.text},
+                }}
                 onSelect={onToggleWarmup}
                 text={props.set.warmup ? 'Work Set' : 'Warmup'}></MenuOption>
               <MenuOption
-                customStyles={{optionText: {fontSize: 16}}}
+                customStyles={{
+                  optionText: {
+                    fontSize: 16,
+                    color: colors.text,
+                    opacity: disablePercentage ? 0.5 : 1,
+                  },
+                }}
                 onSelect={onTogglePercent}
+                disabled={disablePercentage}
                 text={
                   props.set.percentage ? 'Disable Percentage' : 'Percentage'
                 }></MenuOption>

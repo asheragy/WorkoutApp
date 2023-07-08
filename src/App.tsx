@@ -63,7 +63,9 @@ const store = createStore(rootReducer);
 const App = () => {
   return (
     <Provider store={store}>
-      <AppRoot></AppRoot>
+      <MenuProvider>
+        <AppRoot></AppRoot>
+      </MenuProvider>
     </Provider>
   );
 };

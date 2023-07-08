@@ -29,7 +29,7 @@ export default function LiftEditorModal(props: {
 
   return (
     <Modal visible={props.editing} transparent={true}>
-      <MenuProvider>
+      <MenuProvider skipInstanceCheck={true}>
         <View
           style={{
             flex: 1,

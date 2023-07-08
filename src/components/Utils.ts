@@ -122,7 +122,10 @@ export default class Utils {
       for (var i = 0; i < platecount.p2point5; i++) result.push('2.5');
     }
 
-    return '|' + result.join('|') + '|';
+    var str = result.join('|');
+
+    if (str.length > 0) return '|' + str + '|';
+    else return '';
   }
 
   static calcPlates(type: LiftType, weight: number): PlateCount | undefined {
