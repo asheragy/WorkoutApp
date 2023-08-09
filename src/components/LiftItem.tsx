@@ -77,7 +77,7 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
     if (settings.plateCount != true) return undefined;
 
     // Just using string since it already accounts for percentage lifts
-    var n = parseInt(weight.replace('lb', ''));
+    var n = parseFloat(weight.replace('lb', ''));
     return Utils.calcPlates(props.def.type, n);
   }
 
@@ -143,9 +143,9 @@ function SetItem(props: {
         style={{width: weightWidth, textAlign: 'center', color: colors.text}}>
         {weight}
       </Text>
-      {props.plates && (
+      {props.showPlateCount && (
         <Text style={{width: '30%', textAlign: 'left', color: colors.text}}>
-          {Utils.platesToString(props.plates)}
+          {props.plates ? Utils.platesToString(props.plates) : ''}
         </Text>
       )}
       <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>

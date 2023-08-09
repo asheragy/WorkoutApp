@@ -10,7 +10,12 @@ export default class SetUtils {
     const current = set.weight || 0;
 
     var step = 5;
-    if (liftType == LiftType.Machine || set.percentage) step = 2.5;
+    if (
+      liftType == LiftType.Machine ||
+      set.percentage ||
+      liftType == LiftType.PlateMachine
+    )
+      step = 2.5;
     else if (
       liftType == LiftType.Dumbbell &&
       settings.largestHalfPoundDumbbell != undefined
@@ -28,7 +33,12 @@ export default class SetUtils {
   ): number {
     const current = set.weight || 0;
     var step = 5;
-    if (liftType == LiftType.Machine || set.percentage) step = 2.5;
+    if (
+      liftType == LiftType.Machine ||
+      liftType == LiftType.PlateMachine ||
+      set.percentage
+    )
+      step = 2.5;
     else if (
       liftType == LiftType.Dumbbell &&
       settings.largestHalfPoundDumbbell != undefined

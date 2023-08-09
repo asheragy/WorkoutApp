@@ -181,7 +181,7 @@ export default class Utils {
       }
 
       return result;
-    } else if (type == LiftType.Machine) {
+    } else if (type == LiftType.PlateMachine) {
       var remaining = weight;
 
       while (remaining >= 45) {
