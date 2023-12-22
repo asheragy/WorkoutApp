@@ -28,12 +28,17 @@ export function LiftChartTab(props: {def: LiftDef; entries: LiftHistory[]}) {
 
 function calculateEstimated1RM(def: LiftDef, sets: PersistedSet[]): number {
   var sum = 0;
+  var workSets = 0;
+
   for (var i = 0; i < sets.length; i++) {
     var set = sets[i];
-    if (set.warmup != true) sum += Utils.calculate1RM(def, set);
+    if (set.warmup != true) {
+      sum += Utils.calculate1RM(def, set);
+      workSets++;
+    }
   }
 
-  return Math.round(sum / sets.length);
+  return Math.round(sum / workSets);
 }
 
 function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
@@ -45,9 +50,3 @@ function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
 
   return sum;
 }
-
-const styles = StyleSheet.create({
-  entryRow: {
-    flexDirection: 'row',
-  },
-});

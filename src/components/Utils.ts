@@ -84,8 +84,10 @@ export default class Utils {
   static calculateVolume(def: LiftDef, set: PersistedSet): number {
     if (set.warmup == true) throw new Error('Volume calculation on warmup');
 
+    // TODO should be from global variable
     const bodyweight = 200;
-    var weight = set.weight + (bodyweight ? 200 : 0);
+    var weight =
+      set.weight + (def.type == LiftType.Bodyweight ? bodyweight : 0);
     var reps = set.reps;
 
     return weight * reps;

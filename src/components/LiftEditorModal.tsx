@@ -1,12 +1,20 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Modal, View, Button, StyleSheet} from 'react-native';
+import React, {useRef, useState} from 'react';
+import {
+  Modal,
+  View,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import {useSelector} from 'react-redux';
 import {GlobalSettings} from '../types/types';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet} from '../types/workout';
 import EditableLiftItem from './EditableLiftItem';
 import {MenuProvider} from 'react-native-popup-menu';
+import {TextInput} from 'react-native-gesture-handler';
 
 export default function LiftEditorModal(props: {
   editing: boolean;
@@ -26,6 +34,9 @@ export default function LiftEditorModal(props: {
   async function onDone() {
     props.onFinish(lift.sets);
   }
+
+  var textRef = useRef<TextInput>(null);
+  const [mode, setMode] = useState(0);
 
   return (
     <Modal visible={props.editing} transparent={true}>
@@ -52,6 +63,28 @@ export default function LiftEditorModal(props: {
             <EditableLiftItem
               lift={lift}
               onChange={onLiftChanged}></EditableLiftItem>
+
+            <TouchableOpacity
+              style={{backgroundColor: 'orange'}}
+              onPress={() => {
+                setMode(mode + 1);
+              }}>
+              <View>
+                {mode == 1 && <Button title="-"></Button>}
+                {mode < 2 && <Text>{'Mode = ' + mode}</Text>}
+                {mode == 1 && <Button title="+"></Button>}
+                {mode == 2 && (
+                  <TextInput
+                    autoFocus={true}
+                    ref={textRef}
+                    onEndEditing={() => {
+                      setMode(0);
+                    }}>
+                    {'Mode = ' + mode}
+                  </TextInput>
+                )}
+              </View>
+            </TouchableOpacity>
 
             <View
               style={{
