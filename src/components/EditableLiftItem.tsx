@@ -4,9 +4,9 @@ import {
   Animated,
   Button,
   DimensionValue,
+  Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
@@ -29,6 +29,7 @@ import {
 interface EditableLiftItemProps {
   lift: Lift;
   onChange: (lift: Lift) => void;
+  onDelete: () => void;
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -68,10 +69,40 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   }
 
   return (
-    <View style={{margin: 8}}>
-      <Text style={[styles.liftText, {color: colors.text, marginBottom: 8}]}>
-        {Utils.defToString(def)}
-      </Text>
+    <View style={{margin: 4}}>
+      <View
+        style={{
+          marginVertical: 4,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <Text style={{width: '20%'}}></Text>
+        <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
+          {Utils.defToString(def)}
+        </Text>
+        <View
+          style={{
+            width: '20%',
+            flexDirection: 'row',
+            alignContent: 'center',
+            justifyContent: 'flex-end',
+          }}>
+          <Menu>
+            <MenuTrigger
+              customStyles={{
+                triggerWrapper: {
+                  top: 0,
+                },
+              }}>
+              <Image source={require('../icons/more.png')}></Image>
+            </MenuTrigger>
+            <MenuOptions
+              optionsContainerStyle={{backgroundColor: colors.border}}>
+              <MenuOption onSelect={() => props.onDelete()} text="Delete" />
+            </MenuOptions>
+          </Menu>
+        </View>
+      </View>
 
       <View>
         <PersistedSetHeader></PersistedSetHeader>
@@ -344,5 +375,13 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  menuContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 30,
+    flexDirection: 'column',
   },
 });

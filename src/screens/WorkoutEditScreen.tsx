@@ -6,7 +6,6 @@ import {
   FlatList,
   ListRenderItemInfo,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import {RootStackParamList} from '../App';
@@ -109,11 +108,10 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   const renderItem = (item: ListRenderItemInfo<Lift>) => (
     <View style={{margin: 4, backgroundColor: colors.card}}>
-      <TouchableOpacity onLongPress={() => confirmLiftDelete(item.index)}>
-        <EditableLiftItem
-          lift={item.item}
-          onChange={lift => onLiftChanged(item.index, lift)}></EditableLiftItem>
-      </TouchableOpacity>
+      <EditableLiftItem
+        lift={item.item}
+        onChange={lift => onLiftChanged(item.index, lift)}
+        onDelete={() => confirmLiftDelete(item.index)}></EditableLiftItem>
     </View>
   );
 
