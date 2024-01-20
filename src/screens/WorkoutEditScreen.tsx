@@ -1,13 +1,6 @@
 import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {
-  Alert,
-  Button,
-  FlatList,
-  ListRenderItemInfo,
-  Text,
-  View,
-} from 'react-native';
+import {Alert, Button, Text, TouchableOpacity, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import {LiftDef} from '../types/types';
 import {TextInput} from 'react-native-gesture-handler';
@@ -20,6 +13,10 @@ import {MaterialHeaderButton} from '../components/Common';
 import {useTheme} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
+import DraggableFlatList, {
+  RenderItemParams,
+  ScaleDecorator,
+} from 'react-native-draggable-flatlist';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
@@ -106,13 +103,19 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     );
   }
 
-  const renderItem = (item: ListRenderItemInfo<Lift>) => (
-    <View style={{margin: 4, backgroundColor: colors.card}}>
-      <EditableLiftItem
-        lift={item.item}
-        onChange={lift => onLiftChanged(item.index, lift)}
-        onDelete={() => confirmLiftDelete(item.index)}></EditableLiftItem>
-    </View>
+  const renderItem = (item: RenderItemParams<Lift>) => (
+    <ScaleDecorator>
+      <TouchableOpacity
+        onLongPress={item.drag}
+        style={{margin: 4, backgroundColor: colors.card}}>
+        <EditableLiftItem
+          lift={item.item}
+          onChange={lift => onLiftChanged(item.getIndex()!, lift)}
+          onDelete={() =>
+            confirmLiftDelete(item.getIndex()!)
+          }></EditableLiftItem>
+      </TouchableOpacity>
+    </ScaleDecorator>
   );
 
   return (
@@ -130,10 +133,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           flex: 1,
           flexGrow: 1,
         }}>
-        <FlatList
+        <DraggableFlatList
           data={lifts}
           renderItem={renderItem}
-          keyExtractor={(_, index) => index.toString()}></FlatList>
+          onDragEnd={({data}) => setLifts(data)}
+          keyExtractor={(_, index) => index.toString()}></DraggableFlatList>
         {route.params.workout && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>
         )}

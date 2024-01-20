@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
   Button,
@@ -9,10 +9,8 @@ import {
   View,
 } from 'react-native';
 import {RootStackParamList} from '../App';
-import {LiftDef, LiftType} from '../types/types';
-import LiftDefRepository from '../repository/LiftDefRepository';
+import {LiftDef} from '../types/types';
 import {useTheme} from '@react-navigation/native';
-import {SystemLifts} from '../repository/LiftDatabase';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
 import Utils from '../components/Utils';
