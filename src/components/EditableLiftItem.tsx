@@ -29,7 +29,7 @@ import {
 interface EditableLiftItemProps {
   lift: Lift;
   onChange: (lift: Lift) => void;
-  onDelete: () => void;
+  onDelete?: () => void;
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -80,28 +80,30 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
           {Utils.defToString(def)}
         </Text>
-        <View
-          style={{
-            width: '20%',
-            flexDirection: 'row',
-            alignContent: 'center',
-            justifyContent: 'flex-end',
-          }}>
-          <Menu>
-            <MenuTrigger
-              customStyles={{
-                triggerWrapper: {
-                  top: 0,
-                },
-              }}>
-              <Image source={require('../icons/more.png')}></Image>
-            </MenuTrigger>
-            <MenuOptions
-              optionsContainerStyle={{backgroundColor: colors.border}}>
-              <MenuOption onSelect={() => props.onDelete()} text="Delete" />
-            </MenuOptions>
-          </Menu>
-        </View>
+        {props.onDelete && (
+          <View
+            style={{
+              width: '20%',
+              flexDirection: 'row',
+              alignContent: 'center',
+              justifyContent: 'flex-end',
+            }}>
+            <Menu>
+              <MenuTrigger
+                customStyles={{
+                  triggerWrapper: {
+                    top: 0,
+                  },
+                }}>
+                <Image source={require('../icons/more.png')}></Image>
+              </MenuTrigger>
+              <MenuOptions
+                optionsContainerStyle={{backgroundColor: colors.border}}>
+                <MenuOption onSelect={() => props.onDelete?.()} text="Delete" />
+              </MenuOptions>
+            </Menu>
+          </View>
+        )}
       </View>
 
       <View>

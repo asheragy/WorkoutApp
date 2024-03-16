@@ -43,7 +43,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   async function onSave() {
     const workout: Workout = {
-      id: existing ? existing.id : undefined,
+      ...existing,
       name: title,
       lifts: lifts,
     };

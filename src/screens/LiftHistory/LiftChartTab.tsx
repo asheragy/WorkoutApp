@@ -8,8 +8,8 @@ import {useSelector} from 'react-redux';
 import {AppState} from '../../state/store';
 
 export function LiftChartTab(props: {def: LiftDef; entries: LiftHistory[]}) {
-  // TODO remove after resetting database
-  var entries = props.entries.filter(x => x.hasOwnProperty('timestamp'));
+  // Needs at least 1 valid set
+  var entries = props.entries.filter(x => x.sets.find(set => !set.warmup));
 
   var dates = entries.map(x => x.timestamp);
   var values = entries.map(x => calculateEstimated1RM(props.def, x.sets));

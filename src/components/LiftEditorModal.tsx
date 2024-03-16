@@ -35,9 +35,6 @@ export default function LiftEditorModal(props: {
     props.onFinish(lift.sets);
   }
 
-  var textRef = useRef<TextInput>(null);
-  const [mode, setMode] = useState(0);
-
   return (
     <Modal visible={props.editing} transparent={true}>
       <MenuProvider skipInstanceCheck={true}>
@@ -63,29 +60,6 @@ export default function LiftEditorModal(props: {
             <EditableLiftItem
               lift={lift}
               onChange={onLiftChanged}></EditableLiftItem>
-
-            <TouchableOpacity
-              style={{backgroundColor: 'orange'}}
-              onPress={() => {
-                setMode(mode + 1);
-              }}>
-              <View>
-                {mode == 1 && <Button title="-"></Button>}
-                {mode < 2 && <Text>{'Mode = ' + mode}</Text>}
-                {mode == 1 && <Button title="+"></Button>}
-                {mode == 2 && (
-                  <TextInput
-                    autoFocus={true}
-                    ref={textRef}
-                    onEndEditing={() => {
-                      setMode(0);
-                    }}>
-                    {'Mode = ' + mode}
-                  </TextInput>
-                )}
-              </View>
-            </TouchableOpacity>
-
             <View
               style={{
                 marginTop: 10,
