@@ -18,6 +18,8 @@ export type LiftSet = {
   reps?: number;
   warmup?: boolean;
   percentage?: boolean; // Weight is a percentage of training max
+  // TODO add goal boolean
+  completed?: boolean;
 };
 
 export type AccessoryGroup = {

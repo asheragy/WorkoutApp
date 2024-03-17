@@ -40,6 +40,7 @@ export default class Utils {
         weight: (weight || 0) + 'lb',
         reps: (set.reps || 0) + '',
         label: label,
+        completed: set.completed ? true : false,
       };
 
       result.push(t);

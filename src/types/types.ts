@@ -24,6 +24,7 @@ export type NormalizedSet = {
   weight: string;
   reps: string;
   label: string;
+  completed: boolean;
 };
 
 export type WeightEntry = {

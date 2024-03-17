@@ -45,9 +45,9 @@ export default class LiftHistoryRepository {
     sets: LiftSet[],
     def: LiftDef,
   ): PersistedSet[] {
-    var filtered = sets.filter(
-      x => x.reps != undefined && x.weight != undefined,
-    );
+    var filtered = sets
+      .filter(x => x.reps != undefined && x.weight != undefined)
+      .filter(x => x.completed);
 
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 

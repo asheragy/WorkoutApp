@@ -1,20 +1,12 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useRef, useState} from 'react';
-import {
-  Modal,
-  View,
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useState} from 'react';
+import {Modal, View, Button, StyleSheet} from 'react-native';
 import {useSelector} from 'react-redux';
 import {GlobalSettings} from '../types/types';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet} from '../types/workout';
 import EditableLiftItem from './EditableLiftItem';
 import {MenuProvider} from 'react-native-popup-menu';
-import {TextInput} from 'react-native-gesture-handler';
 
 export default function LiftEditorModal(props: {
   editing: boolean;
@@ -52,7 +44,8 @@ export default function LiftEditorModal(props: {
               margin: 10,
               backgroundColor: colors.card,
               borderRadius: 8,
-              padding: 15,
+              paddingVertical: 15,
+              paddingHorizontal: 0,
               alignItems: 'center',
 
               elevation: 5,

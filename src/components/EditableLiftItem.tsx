@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {
   Alert,
   Animated,
@@ -25,6 +25,7 @@ import {
   MenuOptions,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import CheckBox from '@react-native-community/checkbox';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -132,7 +133,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   );
 }
 
-const Widths: DimensionValue[] = ['10%', '35%', '10%', '35%', '10%'];
+const Widths: DimensionValue[] = ['10%', '35%', '0%', '32%', '10%', '13%'];
 
 function PersistedSetHeader() {
   const {colors} = useTheme();
@@ -190,6 +191,15 @@ function PersistedSetRow(props: {
     props.onChange(updatedSet);
   };
 
+  const onToggleComplete = () => {
+    var updatedSet: LiftSet = {
+      ...props.set,
+      completed: !props.set.completed,
+    };
+
+    props.onChange(updatedSet);
+  };
+
   var percentageWeight = '';
   if (props.set.percentage && props.set.weight && props.def.trainingMax) {
     percentageWeight =
@@ -241,6 +251,8 @@ function PersistedSetRow(props: {
     );
   };
 
+  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+
   const disablePercentage =
     !props.set.percentage && props.def.trainingMax == undefined;
 
@@ -250,7 +262,11 @@ function PersistedSetRow(props: {
         renderRightActions={renderRightActions}
         ref={swipeableRef}
         onSwipeableWillOpen={confirmDelete}>
-        <View style={{flexDirection: 'row', marginVertical: 4}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            marginVertical: 4,
+          }}>
           <Menu
             style={{
               width: Widths[0],
@@ -299,6 +315,7 @@ function PersistedSetRow(props: {
               justifyContent: 'center',
             }}>
             <NumberControl
+              disabled={props.set.completed}
               value={props.set.weight}
               onChange={newWeightValue =>
                 update(newWeightValue, props.set.reps)
@@ -342,6 +359,7 @@ function PersistedSetRow(props: {
               justifyContent: 'center',
             }}>
             <NumberControl
+              disabled={props.set.completed}
               precision={0}
               value={props.set.reps}
               onChange={newRepsValue => update(props.set.weight, newRepsValue)}
@@ -364,6 +382,17 @@ function PersistedSetRow(props: {
                 ? ''
                 : Math.round(Utils.calculate1RM(props.def, props.set))}
             </Text>
+          </View>
+          <View
+            style={{
+              width: Widths[5],
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+            }}>
+            <CheckBox
+              disabled={false}
+              value={props.set.completed}
+              onValueChange={() => onToggleComplete()}></CheckBox>
           </View>
         </View>
       </Swipeable>

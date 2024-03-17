@@ -14,9 +14,11 @@ export function NumberControl(props: {
   decrementBy: () => number;
   incrementBy: () => number;
   onChange: (newValue: number) => void;
+  disabled?: boolean;
 }) {
   const {colors} = useTheme();
   const digits = props.precision ?? 1;
+  const disabledOpacity = props.disabled ? 0.2 : undefined;
 
   function onInput(input: string) {
     var numInput: number = parseFloat(input);
@@ -40,19 +42,24 @@ export function NumberControl(props: {
         justifyContent: 'center',
       }}>
       <TouchableOpacity
-        style={styles.counterButtonContainer}
+        style={{...styles.counterButtonContainer, opacity: disabledOpacity}}
         onPress={() => setValue(currValue - props.decrementBy())}>
         <Text style={styles.counterButtonText}>-</Text>
       </TouchableOpacity>
 
       <TextInput
+        editable={!props.disabled}
         style={{color: colors.text, paddingVertical: 0, textAlign: 'center'}}
         keyboardType="numeric"
         onChangeText={onInput}>
         {props.value}
       </TextInput>
       <TouchableOpacity
-        style={styles.counterButtonContainer}
+        disabled={props.disabled}
+        style={{
+          ...styles.counterButtonContainer,
+          opacity: disabledOpacity,
+        }}
         onPress={() => setValue(currValue + props.incrementBy())}>
         <Text style={styles.counterButtonText}>+</Text>
       </TouchableOpacity>

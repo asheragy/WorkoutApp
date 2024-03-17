@@ -65,8 +65,15 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   const onComplete = async () => {
     workout.lastCompleted = new Date();
-    await WorkoutRepository.upsert(workout);
     await WorkoutHistoryRepository.add(workout, defs);
+
+    workout.lifts.forEach(lift => {
+      lift.sets.forEach(set => {
+        set.completed = undefined;
+      });
+    });
+
+    await WorkoutRepository.upsert(workout);
 
     if (workout.id == SingleWorkoutId) await WorkoutRepository.delete(workout);
 

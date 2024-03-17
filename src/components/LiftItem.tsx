@@ -1,6 +1,14 @@
 import {useTheme} from '@react-navigation/native';
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+} from 'react-native';
 import {Lift, LiftSet} from '../types/workout';
 import LiftEditorModal from './LiftEditorModal';
 import {
@@ -131,24 +139,43 @@ function SetItem(props: {
 }) {
   const {colors} = useTheme();
   var weight = props.set.weight;
-
   const weightWidth = props.showPlateCount ? '30%' : '60%';
+
+  const textStyle: StyleProp<TextStyle> = {
+    color: colors.text,
+    textDecorationLine: props.set.completed ? 'line-through' : undefined,
+    textDecorationStyle: props.set.completed ? 'solid' : undefined,
+  };
 
   return (
     <View style={{flexDirection: 'row'}}>
-      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
+      <Text
+        style={{
+          width: '20%',
+          textAlign: 'center',
+          ...textStyle,
+        }}>
         {props.set.label}
       </Text>
       <Text
-        style={{width: weightWidth, textAlign: 'center', color: colors.text}}>
+        style={{
+          width: weightWidth,
+          textAlign: 'center',
+          ...textStyle,
+        }}>
         {weight}
       </Text>
       {props.showPlateCount && (
-        <Text style={{width: '30%', textAlign: 'left', color: colors.text}}>
+        <Text style={{width: '30%', textAlign: 'left', ...textStyle}}>
           {props.plates ? Utils.platesToString(props.plates) : ''}
         </Text>
       )}
-      <Text style={{width: '20%', textAlign: 'center', color: colors.text}}>
+      <Text
+        style={{
+          width: '20%',
+          textAlign: 'center',
+          ...textStyle,
+        }}>
         {props.set.reps}
       </Text>
     </View>
