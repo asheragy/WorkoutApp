@@ -27,7 +27,6 @@ export default function LiftItem(props: {
   onLiftChanged: (lift: Lift) => void;
   onViewLog: (lift: Lift) => void;
 }) {
-  //const [lift, setLift] = useState<Lift>(props.lift);
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -40,6 +39,16 @@ export default function LiftItem(props: {
     props.onLiftChanged(updatedLift);
   };
 
+  const completed =
+    props.lift.sets.length > 0 &&
+    props.lift.sets.every(set => set.completed || set.goal);
+
+  const headerText: StyleProp<TextStyle> = {
+    color: colors.text,
+    textDecorationLine: completed ? 'line-through' : undefined,
+    textDecorationStyle: completed ? 'solid' : undefined,
+  };
+
   return (
     <View style={{marginVertical: 0}}>
       <View
@@ -48,7 +57,7 @@ export default function LiftItem(props: {
           flexDirection: 'row',
         }}>
         <Text style={{width: '20%'}}></Text>
-        <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
+        <Text style={[Style_LiftText, headerText, {width: '60%'}]}>
           {Utils.defToString(def)}
         </Text>
         <View
@@ -63,7 +72,9 @@ export default function LiftItem(props: {
           </TouchableOpacity>
         </View>
       </View>
-      <ReadOnlySetTable lift={props.lift} def={def}></ReadOnlySetTable>
+      {!completed && (
+        <ReadOnlySetTable lift={props.lift} def={def}></ReadOnlySetTable>
+      )}
       <View>
         <LiftEditorModal
           editing={editing}
@@ -89,11 +100,13 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
     return Utils.calcPlates(props.def.type, n);
   }
 
+  const sets = props.lift.sets.filter(set => !set.goal);
+
   return (
     <View>
       <SetHeader showPlateCount={settings.plateCount == true}></SetHeader>
       <View>
-        {Utils.normalizeSets(props.lift.sets, props.def).map((set, index) => (
+        {Utils.normalizeSets(sets, props.def).map((set, index) => (
           <SetItem
             set={set}
             key={index}
@@ -143,6 +156,7 @@ function SetItem(props: {
 
   const textStyle: StyleProp<TextStyle> = {
     color: colors.text,
+    opacity: props.set.completed ? 0.5 : undefined,
     textDecorationLine: props.set.completed ? 'line-through' : undefined,
     textDecorationStyle: props.set.completed ? 'solid' : undefined,
   };

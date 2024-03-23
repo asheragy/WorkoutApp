@@ -25,6 +25,7 @@ export default class Utils {
     sets.forEach(set => {
       var label = counter.toString();
       if (set.warmup) label = 'W';
+      else if (set.goal) label = 'G';
       else counter++;
 
       var weight = set.weight;

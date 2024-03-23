@@ -17,6 +17,7 @@ export type LiftSet = {
   weight?: number;
   reps?: number;
   warmup?: boolean;
+  goal?: boolean; // TODO maybe enum with warmup, can't be both
   percentage?: boolean; // Weight is a percentage of training max
   // TODO add goal boolean
   completed?: boolean;

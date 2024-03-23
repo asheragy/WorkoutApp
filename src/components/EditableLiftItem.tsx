@@ -177,6 +177,17 @@ function PersistedSetRow(props: {
     var updatedSet: LiftSet = {
       ...props.set,
       warmup: !props.set.warmup,
+      goal: undefined,
+    };
+
+    props.onChange(updatedSet);
+  };
+
+  const onToggleGoal = () => {
+    var updatedSet: LiftSet = {
+      ...props.set,
+      goal: !props.set.goal,
+      warmup: undefined,
     };
 
     props.onChange(updatedSet);
@@ -273,6 +284,7 @@ function PersistedSetRow(props: {
               alignSelf: 'center',
             }}>
             <MenuTrigger
+              disabled={props.set.completed}
               text={props.label}
               customStyles={{
                 triggerText: {
@@ -292,6 +304,13 @@ function PersistedSetRow(props: {
                 }}
                 onSelect={onToggleWarmup}
                 text={props.set.warmup ? 'Work Set' : 'Warmup'}></MenuOption>
+              <MenuOption
+                customStyles={{
+                  optionText: {fontSize: 16, color: colors.text},
+                }}
+                onSelect={onToggleGoal}
+                text={props.set.goal ? 'Remove Goal' : 'Goal'}></MenuOption>
+
               <MenuOption
                 customStyles={{
                   optionText: {
@@ -389,10 +408,11 @@ function PersistedSetRow(props: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
             }}>
-            <CheckBox
-              disabled={false}
-              value={props.set.completed}
-              onValueChange={() => onToggleComplete()}></CheckBox>
+            {!props.set.goal && (
+              <CheckBox
+                value={props.set.completed}
+                onValueChange={() => onToggleComplete()}></CheckBox>
+            )}
           </View>
         </View>
       </Swipeable>
