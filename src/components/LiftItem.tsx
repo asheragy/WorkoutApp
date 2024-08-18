@@ -39,12 +39,20 @@ export default function LiftItem(props: {
     props.onLiftChanged(updatedLift);
   };
 
+  const onHideChanged = (hide: boolean | undefined) => {
+      let updatedLift: Lift = {...props.lift}
+      updatedLift.hide = hide
+      props.onLiftChanged(updatedLift)
+      setEditing(false)
+  }
+
   const completed =
-    props.lift.sets.length > 0 &&
-    props.lift.sets.every(set => set.completed || set.goal);
+      props.lift.hide ||
+      (props.lift.sets.length > 0 &&
+    props.lift.sets.every(set => set.completed || set.goal));
 
   const headerText: StyleProp<TextStyle> = {
-    color: colors.text,
+    color: props.lift.hide ? colors.border : colors.text,
     textDecorationLine: completed ? 'line-through' : undefined,
     textDecorationStyle: completed ? 'solid' : undefined,
   };
@@ -80,6 +88,7 @@ export default function LiftItem(props: {
           editing={editing}
           lift={props.lift}
           onViewLog={() => props.onViewLog(props.lift)}
+          onHideChanged={onHideChanged}
           onFinish={sets => {
             onSetsChanged(sets);
             setEditing(false);

@@ -12,6 +12,7 @@ export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
   onFinish: (sets: LiftSet[]) => void;
+  onHideChanged: (hide: boolean | undefined) => void;
   onViewLog: () => void;
 }) {
   const [lift, setLift] = useState(props.lift);
@@ -21,6 +22,13 @@ export default function LiftEditorModal(props: {
 
   function onLiftChanged(lift: Lift) {
     setLift(lift);
+  }
+
+  function onToggleHide() {
+      let updatedLift = {...lift}
+      updatedLift.hide = updatedLift.hide ? undefined : true
+      setLift(updatedLift)
+      props.onHideChanged(updatedLift.hide)
   }
 
   async function onDone() {
@@ -58,7 +66,7 @@ export default function LiftEditorModal(props: {
                 marginTop: 10,
                 flexDirection: 'row',
               }}>
-              <View style={{width: '45%', marginHorizontal: 10}}>
+              <View style={{width: '30%', marginHorizontal: 10}}>
                 <Button
                   title="Log"
                   onPress={() => {
@@ -67,7 +75,10 @@ export default function LiftEditorModal(props: {
                   }}></Button>
               </View>
 
-              <View style={{width: '45%', marginHorizontal: 10}}>
+                <View style={{width: '30%', marginHorizontal: 10}}>
+                    <Button title={lift.hide ? "Unhide" : "Skip"} onPress={onToggleHide}></Button>
+                </View>
+              <View style={{width: '40%', marginHorizontal: 10}}>
                 <Button title="Done" onPress={onDone}></Button>
               </View>
             </View>

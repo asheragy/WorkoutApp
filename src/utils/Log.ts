@@ -7,6 +7,9 @@ export default class Log {
     );
 
     // TODO pass def so name can be logged
-    console.log(lift.id + ': ' + sets.join(', '));
+    let line = lift.id + ': ' + sets.join(', ');
+    if (lift.hide)
+      line += " (hidden)"
+    console.log(line);
   }
 }

@@ -11,6 +11,7 @@ export type Workout = {
 export type Lift = {
   id: string;
   sets: LiftSet[];
+  hide?: boolean;
 };
 
 export type LiftSet = {

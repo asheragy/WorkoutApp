@@ -25,11 +25,12 @@ export default class WorkoutHistoryRepository {
 
   static async add(workout: Workout, defs: Map<string, LiftDef>) {
     const timestamp = new Date();
-    var key = workout.id!;
-    var history = await this.get(key);
+    const key = workout.id!;
+    const history = await this.get(key);
+    const lifts = workout.lifts.filter(lift => lift.sets.find(set => set.completed) != undefined)
 
-    var ids = workout.lifts.map(lift => lift.id);
-    var entry: WorkoutHistory = {
+    const ids = lifts.map(lift => lift.id);
+    const entry: WorkoutHistory = {
       timestamp: timestamp,
       liftIds: Array.from(new Set(ids)),
     };
@@ -37,9 +38,9 @@ export default class WorkoutHistoryRepository {
     history.push(entry);
     await AsyncStorage.setItem(keyPrefix + key, JSON.stringify(history));
 
-    for (var i = 0; i < workout.lifts.length; i++) {
-      var lift = workout.lifts[i];
-      var def = defs.get(lift.id)!;
+    for (let i = 0; i < lifts.length; i++) {
+      const lift = lifts[i];
+      const def = defs.get(lift.id)!;
       await LiftHistoryRepository.add(def, lift.sets, timestamp, key);
     }
   }
