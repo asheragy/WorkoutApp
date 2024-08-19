@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useRef} from 'react';
 import {
   Alert,
   Animated,
@@ -31,6 +31,7 @@ interface EditableLiftItemProps {
   lift: Lift;
   onChange: (lift: Lift) => void;
   onDelete?: () => void;
+  hideCompleted?: boolean;
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -43,27 +44,28 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   function addSet() {
-    var set: LiftSet = {weight: 0, reps: 0};
+    let set: LiftSet = {weight: 0, reps: 0};
     if (props.lift.sets.length > 0) {
       set = {...props.lift.sets[props.lift.sets.length - 1]};
       set.warmup = undefined; // Off by default
+      set.completed = undefined;
     }
 
-    var updatedLift = {...props.lift};
+    const updatedLift = {...props.lift};
     updatedLift.sets = [...props.lift.sets, set];
 
     props.onChange(updatedLift);
   }
 
   function onRemoveSet(index: number) {
-    var updatedLift = {...props.lift};
+    const updatedLift = {...props.lift};
     updatedLift.sets.splice(index, 1);
 
     props.onChange(updatedLift);
   }
 
   function onSetChange(setIndex: number, updatedSet: LiftSet) {
-    var updatedLift = {...props.lift};
+    const updatedLift = {...props.lift};
     updatedLift.sets[setIndex] = updatedSet;
 
     props.onChange(updatedLift);
@@ -116,6 +118,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
             settings={settings}
             def={def}
             key={index}
+            hideCompleted={props.hideCompleted}
             onDelete={() => onRemoveSet(index)}
             onChange={set => onSetChange(index, set)}></PersistedSetRow>
         ))}
@@ -160,13 +163,14 @@ function PersistedSetRow(props: {
   settings: GlobalSettings;
   label: string;
   def: LiftDef;
+  hideCompleted?: boolean;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;
 }) {
   const {colors} = useTheme();
 
   const update = (weight?: number, reps?: number) => {
-    var updatedSet = {...props.set};
+    const updatedSet = {...props.set};
     updatedSet.weight = weight;
     updatedSet.reps = reps;
 
@@ -174,7 +178,7 @@ function PersistedSetRow(props: {
   };
 
   const onToggleWarmup = () => {
-    var updatedSet: LiftSet = {
+    const updatedSet: LiftSet = {
       ...props.set,
       warmup: !props.set.warmup,
       goal: undefined,
@@ -184,7 +188,7 @@ function PersistedSetRow(props: {
   };
 
   const onToggleGoal = () => {
-    var updatedSet: LiftSet = {
+    const updatedSet: LiftSet = {
       ...props.set,
       goal: !props.set.goal,
       warmup: undefined,
@@ -194,7 +198,7 @@ function PersistedSetRow(props: {
   };
 
   const onTogglePercent = () => {
-    var updatedSet: LiftSet = {
+    const updatedSet: LiftSet = {
       ...props.set,
       percentage: !props.set.percentage,
     };
@@ -203,7 +207,7 @@ function PersistedSetRow(props: {
   };
 
   const onToggleComplete = () => {
-    var updatedSet: LiftSet = {
+    const updatedSet: LiftSet = {
       ...props.set,
       completed: !props.set.completed,
     };
@@ -211,7 +215,7 @@ function PersistedSetRow(props: {
     props.onChange(updatedSet);
   };
 
-  var percentageWeight = '';
+  let percentageWeight = '';
   if (props.set.percentage && props.set.weight && props.def.trainingMax) {
     percentageWeight =
       Utils.calcPercentage(props.set.weight, props.def.trainingMax) + '';
@@ -242,7 +246,7 @@ function PersistedSetRow(props: {
   }
 
   const renderRightActions = (
-    progress: Animated.AnimatedInterpolation<number>,
+    _progress: Animated.AnimatedInterpolation<number>,
     dragAnimatedValue: Animated.AnimatedInterpolation<number>,
   ) => {
     const opacity = dragAnimatedValue.interpolate({
@@ -261,8 +265,6 @@ function PersistedSetRow(props: {
         }}></Animated.View>
     );
   };
-
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   const disablePercentage =
     !props.set.percentage && props.def.trainingMax == undefined;
@@ -408,7 +410,7 @@ function PersistedSetRow(props: {
               flexDirection: 'row',
               justifyContent: 'flex-end',
             }}>
-            {!props.set.goal && (
+            {!props.set.goal && props.hideCompleted != true && (
               <CheckBox
                 value={props.set.completed}
                 onValueChange={() => onToggleComplete()}></CheckBox>

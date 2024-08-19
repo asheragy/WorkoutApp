@@ -9,7 +9,7 @@ import {updateLiftDefs} from '../state/liftDefs';
 const key = 'liftdefs';
 
 export default class LiftDefRepository {
-  private dispatch: Dispatch<AnyAction>;
+  private readonly dispatch: Dispatch<AnyAction>;
 
   constructor(dispatch: Dispatch<AnyAction>) {
     this.dispatch = dispatch;
@@ -26,7 +26,7 @@ export default class LiftDefRepository {
   }
 
   async delete(id: string) {
-    var items = await LiftDefRepository.getAll();
+    let items = await LiftDefRepository.getAll();
     items = items.filter(item => item.id != id);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
@@ -36,7 +36,7 @@ export default class LiftDefRepository {
   private async insert(def: LiftDef): Promise<LiftDef> {
     def.id = Utils.generate_uuidv4();
 
-    var items = await LiftDefRepository.getAll();
+    const items = await LiftDefRepository.getAll();
     items.push(def);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
@@ -46,8 +46,8 @@ export default class LiftDefRepository {
   }
 
   private async update(def: LiftDef): Promise<LiftDef> {
-    var items = await LiftDefRepository.getAll();
-    var index = items.findIndex(item => item.id == def.id);
+    let items = await LiftDefRepository.getAll();
+    let index = items.findIndex(item => item.id == def.id);
     if (index < 0) index = SystemLifts.findIndex(item => item.id == def.id);
     if (index < 0) throw new Error('Unable to find def id ' + def.id);
 
@@ -78,10 +78,20 @@ export default class LiftDefRepository {
   }
 
   private static async getLookupMap(): Promise<Map<string, LiftDef>> {
-    const all = (await this.getAll()).concat(SystemLifts);
+    const customDefs = await this.getAll();
     const result = new Map<string, LiftDef>();
 
-    all.forEach(def => result.set(def.id, def));
+    customDefs.forEach(def => result.set(def.id, def));
+    SystemLifts.forEach(def => {
+      if (result.has(def.id)) {
+        // Use hardcoded name for system lifts
+        const entry = result.get(def.id)!;
+        entry.name = def.name;
+        result.set(def.id, entry);
+      } else {
+        result.set(def.id, def);
+      }
+    });
 
     return result;
   }

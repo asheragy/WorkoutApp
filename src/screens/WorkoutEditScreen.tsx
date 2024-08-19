@@ -110,6 +110,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
         style={{margin: 4, backgroundColor: colors.card}}>
         <EditableLiftItem
           lift={item.item}
+          hideCompleted={true}
           onChange={lift => onLiftChanged(item.getIndex()!, lift)}
           onDelete={() =>
             confirmLiftDelete(item.getIndex()!)
@@ -120,7 +121,6 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <Text>{existing?.id}</Text>
       <TextInput onChangeText={setTitle}>{title}</TextInput>
       {existing != undefined && (
         <Text>
