@@ -68,6 +68,7 @@ export function WorkoutScreen({route, navigation}: Props) {
     await WorkoutHistoryRepository.add(workout, defs);
 
     workout.lifts.forEach(lift => {
+      lift.hide = undefined
       lift.sets.forEach(set => {
         set.completed = undefined;
       });
@@ -86,10 +87,10 @@ export function WorkoutScreen({route, navigation}: Props) {
   }
 
   async function onExerciseAdded(def: LiftDef) {
-    var history = await LiftHistoryRepository.get(def.id);
-    var sets: LiftSet[] = [];
+    const history = await LiftHistoryRepository.get(def.id);
+    let sets: LiftSet[] = [];
     if (history.length > 0) {
-      var last = history[history.length - 1].sets;
+      const last = history[history.length - 1].sets;
       sets = last.map(set => ({
         weight: set.weight,
         reps: set.reps,
@@ -106,16 +107,16 @@ export function WorkoutScreen({route, navigation}: Props) {
     });
 
     setWorkout(updatedWorkout);
-    WorkoutRepository.upsert(updatedWorkout);
+    await WorkoutRepository.upsert(updatedWorkout);
   }
 
   function onViewLog(lift: Lift) {
     navigation.navigate('LiftHistory', {liftId: lift.id});
   }
 
-  function onLiftChanged(lift: Lift) {
-    var index = workout.lifts.findIndex(x => x.id == lift.id);
-    var lifts = [...workout.lifts];
+  async function onLiftChanged(lift: Lift) {
+    const index = workout.lifts.findIndex(x => x.id == lift.id);
+    const lifts = [...workout.lifts];
     lifts[index] = lift;
 
     lifts.forEach(x => Log.lift(x));
@@ -125,7 +126,7 @@ export function WorkoutScreen({route, navigation}: Props) {
       lifts: lifts,
     };
     setWorkout(updatedWorkout);
-    WorkoutRepository.upsert(updatedWorkout);
+    await WorkoutRepository.upsert(updatedWorkout);
   }
 
   function loadState() {
@@ -140,10 +141,14 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
+  const activeLifts = workout.lifts.filter(x => !x.hide)
+  const hiddenLifts = workout.lifts.filter(x => x.hide)
+  const sortedLifts = activeLifts.concat(hiddenLifts)
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.workoutItem}>
-        {workout.lifts.map((lift, index) => (
+        {sortedLifts.map((lift, index) => (
           <LiftItem
             lift={lift}
             onViewLog={onViewLog}

@@ -32,24 +32,26 @@ export default function LiftItem(props: {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs.get(props.lift.id)!;
 
-  const onSetsChanged = (updatedSets: LiftSet[]) => {
-    var updatedLift: Lift = {...props.lift};
+  const onFinishEdit = (updatedSets: LiftSet[]) => {
+    const updatedLift: Lift = {...props.lift};
     updatedLift.sets = updatedSets;
 
     props.onLiftChanged(updatedLift);
+    setEditing(false);
   };
 
-  const onHideChanged = (hide: boolean | undefined) => {
-      let updatedLift: Lift = {...props.lift}
-      updatedLift.hide = hide
-      props.onLiftChanged(updatedLift)
-      setEditing(false)
-  }
+  const onToggleHide = () => {
+    let updatedLift: Lift = {...props.lift};
+    updatedLift.hide = updatedLift.hide ? undefined : true;
+
+    props.onLiftChanged(updatedLift);
+    setEditing(false);
+  };
 
   const completed =
-      props.lift.hide ||
-      (props.lift.sets.length > 0 &&
-    props.lift.sets.every(set => set.completed || set.goal));
+    props.lift.hide ||
+    (props.lift.sets.length > 0 &&
+      props.lift.sets.every(set => set.completed || set.goal));
 
   const headerText: StyleProp<TextStyle> = {
     color: props.lift.hide ? colors.border : colors.text,
@@ -88,11 +90,8 @@ export default function LiftItem(props: {
           editing={editing}
           lift={props.lift}
           onViewLog={() => props.onViewLog(props.lift)}
-          onHideChanged={onHideChanged}
-          onFinish={sets => {
-            onSetsChanged(sets);
-            setEditing(false);
-          }}></LiftEditorModal>
+          onToggleHide={onToggleHide}
+          onFinish={onFinishEdit}></LiftEditorModal>
       </View>
     </View>
   );
@@ -105,7 +104,7 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
     if (settings.plateCount != true) return undefined;
 
     // Just using string since it already accounts for percentage lifts
-    var n = parseFloat(weight.replace('lb', ''));
+    const n = parseFloat(weight.replace('lb', ''));
     return Utils.calcPlates(props.def.type, n);
   }
 
@@ -160,7 +159,7 @@ function SetItem(props: {
   showPlateCount: boolean;
 }) {
   const {colors} = useTheme();
-  var weight = props.set.weight;
+  const weight = props.set.weight;
   const weightWidth = props.showPlateCount ? '30%' : '60%';
 
   const textStyle: StyleProp<TextStyle> = {

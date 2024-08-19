@@ -12,12 +12,14 @@ export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
   onFinish: (sets: LiftSet[]) => void;
-  onHideChanged: (hide: boolean | undefined) => void;
+  onToggleHide: () => void;
   onViewLog: () => void;
 }) {
   const [lift, setLift] = useState(props.lift);
-  const {colors} = useTheme();
+  // Override local state if props change
+  React.useEffect(() => setLift(props.lift), [props.lift]);
 
+  const {colors} = useTheme();
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   function onLiftChanged(lift: Lift) {
@@ -25,10 +27,7 @@ export default function LiftEditorModal(props: {
   }
 
   function onToggleHide() {
-      let updatedLift = {...lift}
-      updatedLift.hide = updatedLift.hide ? undefined : true
-      setLift(updatedLift)
-      props.onHideChanged(updatedLift.hide)
+    props.onToggleHide();
   }
 
   async function onDone() {
@@ -75,9 +74,12 @@ export default function LiftEditorModal(props: {
                   }}></Button>
               </View>
 
-                <View style={{width: '30%', marginHorizontal: 10}}>
-                    <Button title={lift.hide ? "Unhide" : "Skip"} onPress={onToggleHide}></Button>
-                </View>
+              <View style={{width: '30%', marginHorizontal: 10}}>
+                <Button
+                  title={lift.hide ? 'Unhide' : 'Skip'}
+                  disabled={lift.sets.find(x => x.completed) != undefined}
+                  onPress={onToggleHide}></Button>
+              </View>
               <View style={{width: '40%', marginHorizontal: 10}}>
                 <Button title="Done" onPress={onDone}></Button>
               </View>
