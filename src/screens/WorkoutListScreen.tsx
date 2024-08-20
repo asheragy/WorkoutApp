@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {GlobalSettings, LiftDef} from '../types/types';
 import {
   HeaderButtons,
   HiddenItem,
@@ -23,9 +22,6 @@ import {Lift, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import {updateSettings} from '../state/settings';
-import {updateLiftDefs} from '../state/liftDefs';
-import {SystemLifts} from '../repository/LiftDatabase';
-import LiftDefRepository from '../repository/LiftDefRepository';
 import {AppState} from '../state/store';
 
 const mapStateToProps = (state: any) => {
@@ -55,8 +51,8 @@ export function WorkoutList({navigation, route}: Props) {
               //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             }
             <HiddenItem title="Refresh" onPress={() => loadState()} />
-            <HiddenItem title="Lifts" onPress={() => onLifts()} />
-            <HiddenItem title="LiftDefs" onPress={() => onLiftDefs()} />
+            <HiddenItem title="Lift History" onPress={() => onLifts()} />
+            <HiddenItem title="Lift Defs" onPress={() => onLiftDefs()} />
             <HiddenItem
               title="Add"
               onPress={() =>

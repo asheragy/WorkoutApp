@@ -16,9 +16,9 @@ import {
 import {RootStackParamList} from '../App';
 import {LiftDef} from '../types/types';
 import {MaterialHeaderButton} from '../components/Common';
-import WorkoutRepository from '../repository/WorkoutRepository';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
+import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
@@ -28,18 +28,10 @@ export function LiftListScreen({route, navigation}: Props) {
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   function loadState() {
-    // TODO this should actually be showing all lifts that have at least 1 history saved
-    WorkoutRepository.getAll().then(result => {
-      // map is a subset of store.liftDefs
-      const map = new Map<string, LiftDef>();
-      result.forEach(workout => {
-        workout.lifts.forEach(lift => {
-          map.set(lift.id, defs.get(lift.id)!);
-        });
-      });
-
-      var arr: LiftDef[] = Array.from(map.values());
-      arr = arr.sort((a, b) => a.name.localeCompare(b.name));
+    LiftHistoryRepository.listKeys().then(result => {
+      const arr = result
+        .map(key => defs.get(key)!)
+        .sort((a, b) => a.name.localeCompare(b.name));
 
       setLifts(arr);
     });

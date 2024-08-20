@@ -12,8 +12,15 @@ export type LiftHistory = {
 };
 
 export default class LiftHistoryRepository {
+  static async listKeys(): Promise<string[]> {
+    const keys = await AsyncStorage.getAllKeys();
+    return keys
+      .filter(key => key.startsWith(keyPrefix))
+      .map(key => key.split(':')[1]);
+  }
+
   static async get(key: string): Promise<LiftHistory[]> {
-    var value = await AsyncStorage.getItem(keyPrefix + key);
+    const value = await AsyncStorage.getItem(keyPrefix + key);
     if (value == null) return [];
 
     return JSON.parse(value, (key, value) => {

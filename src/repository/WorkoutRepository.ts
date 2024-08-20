@@ -6,7 +6,7 @@ const key = 'workouts';
 
 export default class WorkoutRepository {
   static async get(id: string): Promise<Workout | undefined> {
-    var workouts = await this.getAll();
+    const workouts = await this.getAll();
     return workouts.find(x => x.id == id);
   }
 
@@ -14,7 +14,7 @@ export default class WorkoutRepository {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
-    var json: Workout[] = JSON.parse(value);
+    let json: Workout[] = JSON.parse(value);
 
     // Fix deserialized date
     json = json.map(wo => {
@@ -36,8 +36,8 @@ export default class WorkoutRepository {
   }
 
   static async delete(workout: Workout) {
-    var items = await this.getAll();
-    var index = items.findIndex(item => item.id == workout.id);
+    let items = await this.getAll();
+    const index = items.findIndex(item => item.id == workout.id);
     if (index < 0) throw new Error('Unable to find id ' + workout.id);
 
     items = items.filter(x => x.id != workout.id);
@@ -47,15 +47,15 @@ export default class WorkoutRepository {
   private static async insert(workout: Workout) {
     workout.id = Utils.generate_uuidv4();
 
-    var items = await this.getAll();
+    const items = await this.getAll();
     items.push(workout);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
 
   private static async update(workout: Workout) {
-    var items = await this.getAll();
-    var index = items.findIndex(item => item.id == workout.id);
+    const items = await this.getAll();
+    const index = items.findIndex(item => item.id == workout.id);
 
     if (index >= 0) items[index] = workout;
     else if (workout.id == SingleWorkoutId) items.push(workout);
