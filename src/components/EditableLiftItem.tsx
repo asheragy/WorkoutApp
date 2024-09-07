@@ -401,7 +401,8 @@ function PersistedSetRow(props: {
               }}>
               {props.set.warmup
                 ? ''
-                : Math.round(Utils.calculate1RM(props.def, props.set))}
+                : Math.round(Utils.calculate1RM(props.def, props.set) * 10) /
+                  10}
             </Text>
           </View>
           <View

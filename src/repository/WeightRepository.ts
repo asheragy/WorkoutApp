@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {WeightEntry} from '../types/types';
 
-const weightLogKey = '@weightLog';
+const weightLogKey = 'weightLog';
 
 export default class WeightRepository {
   static async getAll(): Promise<WeightEntry[]> {

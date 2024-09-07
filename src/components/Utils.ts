@@ -80,7 +80,8 @@ export default class Utils {
 
     if (type == LiftType.Bodyweight) weight += bodyweight;
 
-    return weight + weight * 0.0333 * reps;
+    const percentage = 100 - 3 * (reps - 1);
+    return weight / (percentage / 100.0);
   }
 
   static calculateVolume(def: LiftDef, set: PersistedSet): number {

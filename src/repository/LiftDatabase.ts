@@ -18,6 +18,11 @@ const lifts: LiftDef[] = [
     type: LiftType.Barbell,
   },
   {
+    id: 'cable_rows',
+    name: 'Rows (Cable)',
+    type: LiftType.Machine,
+  },
+  {
     id: 'barbell_uprightRow',
     name: 'Upright Rows',
     type: LiftType.Barbell,
@@ -30,6 +35,11 @@ const lifts: LiftDef[] = [
   {
     id: 'barbell_benchPress',
     name: 'Bench Press',
+    type: LiftType.Barbell,
+  },
+  {
+    id: 'closegrip_benchPress',
+    name: 'Bench Press (Close-grip)',
     type: LiftType.Barbell,
   },
   {
@@ -69,13 +79,23 @@ const lifts: LiftDef[] = [
     type: LiftType.Dumbbell,
   },
   {
+    id: 'dumbbell_inclineCurls',
+    name: 'Incline Curls',
+    type: LiftType.Dumbbell,
+  },
+  {
     id: 'dumbbell_latRaises',
-    name: 'Lat Raises',
+    name: 'Lat Raise',
     type: LiftType.Dumbbell,
   },
   {
     id: 'dumbbell_rows',
     name: 'Rows',
+    type: LiftType.Dumbbell,
+  },
+  {
+    id: 'dumbbell_shrugs',
+    name: 'Shrugs',
     type: LiftType.Dumbbell,
   },
   // Machine
@@ -105,8 +125,13 @@ const lifts: LiftDef[] = [
     type: LiftType.Machine,
   },
   {
+    id: 'machine_tricepOverhead',
+    name: 'Tricep Overhead',
+    type: LiftType.Machine,
+  },
+  {
     id: 'machine_calfRaises',
-    name: 'Calf Raises',
+    name: 'Calf Raises (Standing)',
     type: LiftType.Machine,
   },
   {
@@ -120,6 +145,11 @@ const lifts: LiftDef[] = [
     type: LiftType.Machine,
   },
   {
+    id: 'machine_kneelingLegCurls',
+    name: 'Kneeling Leg Curls',
+    type: LiftType.Machine,
+  },
+  {
     id: 'machine_pulldowns',
     name: 'Pulldowns',
     type: LiftType.Machine,
@@ -130,8 +160,18 @@ const lifts: LiftDef[] = [
     type: LiftType.Machine,
   },
   {
+    id: 'dumbbell_pullovers',
+    name: 'Pullovers',
+    type: LiftType.Dumbbell,
+  },
+  {
     id: 'machine_hipAbduction',
     name: 'Hip Abduction Machine',
+    type: LiftType.Machine,
+  },
+  {
+    id: 'machine_latRaise',
+    name: 'Lat Raise Machine',
     type: LiftType.Machine,
   },
   // Not a machine lift but it fits best with calculations
@@ -161,10 +201,25 @@ const lifts: LiftDef[] = [
     name: 'Back Extensions',
     type: LiftType.Bodyweight,
   },
+  {
+    id: 'bodyweight_legRaises',
+    name: 'Leg Raises',
+    type: LiftType.Bodyweight,
+  },
+  {
+    id: 'bodyweight_planks',
+    name: 'Planks',
+    type: LiftType.Bodyweight,
+  },
   // Plate Machine / Hammer Strength
   {
     id: 'plateMachine_hsPress',
     name: 'HS Overhead Press',
+    type: LiftType.PlateMachine,
+  },
+  {
+    id: 'plateMachine_inclinePress',
+    name: 'Incline Press Machine',
     type: LiftType.PlateMachine,
   },
   {
@@ -182,6 +237,21 @@ const lifts: LiftDef[] = [
     name: 'Leg Press',
     type: LiftType.PlateMachine,
   },
+  {
+    id: 'plateMachine_hipThrust',
+    name: 'Hip Thrust',
+    type: LiftType.PlateMachine,
+  },
+  {
+    id: 'plateMachine_calfRaise',
+    name: 'Calf Raises (Seated)',
+    type: LiftType.PlateMachine,
+  },
+  {
+    id: 'plateMachine_vSquat',
+    name: 'V-Squat',
+    type: LiftType.PlateMachine,
+  },
   // Trap bar
   {
     id: 'trapbar_deadlift',
@@ -193,6 +263,11 @@ const lifts: LiftDef[] = [
     id: 'ssb_squat',
     name: 'Squat',
     type: LiftType.SSB,
+  },
+  {
+    id: 'grippers',
+    name: 'Grippers',
+    type: LiftType.Other,
   },
 ];
 
