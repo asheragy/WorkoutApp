@@ -80,7 +80,9 @@ export default class Utils {
 
     if (type == LiftType.Bodyweight) weight += bodyweight;
 
-    const percentage = 100 - 3 * (reps - 1);
+    // 10 reps = 75%
+    // +1 rep = +25/9 %
+    const percentage = 100 - (reps - 1) * (25.0 / 9);
     return weight / (percentage / 100.0);
   }
 

@@ -172,7 +172,7 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
 
 function LiftItem(props: {lift: Lift}) {
   const {colors} = useTheme();
-  const sets = props.lift.sets.length;
+  const sets = props.lift.sets.filter(x => !x.goal).length;
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   return (
