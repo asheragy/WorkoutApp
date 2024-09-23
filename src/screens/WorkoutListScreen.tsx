@@ -59,6 +59,7 @@ export function WorkoutList({navigation, route}: Props) {
                 navigation.navigate('WorkoutEdit', {onChanged: loadState})
               }
             />
+            <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
             <HiddenItem
               title="Single Workout"
@@ -103,6 +104,7 @@ export function WorkoutList({navigation, route}: Props) {
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
+  const onStats = () => navigation.navigate('Stats');
 
   async function onSingleWorkout() {
     const workout: Workout = {

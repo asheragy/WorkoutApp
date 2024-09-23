@@ -9,12 +9,25 @@ export enum LiftType {
   PlateMachine, // Plate loaded machine
 }
 
+export enum MuscleGroup {
+  Quads,
+  Hamstrings,
+  Calves,
+  Abs,
+  Chest,
+  Back,
+  Shoulders,
+  Biceps,
+  Triceps,
+}
+
 export type LiftDef = {
   id: string;
   name: string;
   type: LiftType;
   system?: boolean;
   trainingMax?: number;
+  muscleGroups?: MuscleGroup[];
 };
 
 /**

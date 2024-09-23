@@ -1,4 +1,4 @@
-import {LiftDef, LiftType} from '../types/types';
+import {LiftDef, LiftType, MuscleGroup} from '../types/types';
 
 const lifts: LiftDef[] = [
   // Barbell
@@ -61,6 +61,7 @@ const lifts: LiftDef[] = [
     id: 'barbell_frontSquat',
     name: 'Front Squat',
     type: LiftType.Barbell,
+    muscleGroups: [MuscleGroup.Quads],
   },
   // Dumbbell
   {
@@ -190,6 +191,7 @@ const lifts: LiftDef[] = [
     id: 'bodyweight_dips',
     name: 'Dips',
     type: LiftType.Bodyweight,
+    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
   },
   {
     id: 'bodyweight_lunges',
@@ -263,6 +265,7 @@ const lifts: LiftDef[] = [
     id: 'ssb_squat',
     name: 'Squat',
     type: LiftType.SSB,
+    muscleGroups: [MuscleGroup.Quads],
   },
   {
     id: 'grippers',

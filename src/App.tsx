@@ -18,6 +18,7 @@ import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
 import {WorkoutList} from './screens/WorkoutListScreen';
 import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
+import {StatsScreen} from './screens/StatsScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
 import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
 import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
@@ -34,6 +35,7 @@ export type RootStackParamList = {
     onComplete: () => void;
   };
   Weight: undefined;
+  Stats: undefined;
   LiftChart: {
     lift: LiftDef;
   };
@@ -103,6 +105,13 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             }}
             component={WeightScreen}
+          />
+          <Stack.Screen
+            name="Stats"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={StatsScreen}
           />
           <Stack.Screen
             name="Settings"
