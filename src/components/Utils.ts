@@ -80,10 +80,23 @@ export default class Utils {
 
     if (type == LiftType.Bodyweight) weight += bodyweight;
 
-    // 10 reps = 75%
-    // +1 rep = +25/9 %
-    const percentage = 100 - (reps - 1) * (25.0 / 9);
-    return weight / (percentage / 100.0);
+    const sum =
+      this.oneRMBrzycki(weight, reps) +
+      this.oneRMEpley(weight, reps) +
+      this.oneRMLombardi(weight, reps);
+
+    return sum / 3;
+  }
+
+  static oneRMLombardi = (weight: number, reps: number) =>
+    weight * Math.pow(reps, 0.1);
+
+  static oneRMBrzycki = (weight: number, reps: number) =>
+    weight * (36 / (37 - reps));
+
+  static oneRMEpley(weight: number, reps: number): number {
+    if (reps == 1) return weight;
+    return weight * (1 + reps / 30);
   }
 
   static calculateVolume(def: LiftDef, set: PersistedSet): number {

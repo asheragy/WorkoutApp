@@ -34,6 +34,7 @@ test('normalizeSets repeated lifts', () => {
   expect(normalized[3].weight).toBe('110lb');
 });
 
+const ONE_RM_REPS = [1, 2, 5, 10, 20, 30];
 test('calc 1RM', () => {
   const def: LiftDef = {
     id: '',
@@ -41,21 +42,61 @@ test('calc 1RM', () => {
     type: LiftType.Barbell,
   };
 
-  var set: LiftSet = {
-    weight: 100,
-    reps: 10,
+  const oneRM = ONE_RM_REPS.map(r => {
+    const set: LiftSet = {
+      weight: 200,
+      reps: r,
+    };
+
+    return Math.round(Utils.calculate1RM(def, set) * 10) / 10;
+  });
+
+  expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
+});
+
+test('calc 1RM percentage', () => {
+  const def: LiftDef = {
+    id: '',
+    name: '',
+    type: LiftType.Barbell,
+    trainingMax: 250,
   };
 
-  var oneRM = Utils.calculate1RM(def, set);
-  expect(oneRM).toBe(133.3);
+  const oneRM = ONE_RM_REPS.map(r => {
+    const set: LiftSet = {
+      weight: 80, // 80% of training max = 200
+      reps: r,
+      percentage: true,
+    };
 
-  // Percentage
-  set.percentage = true;
-  set.weight = 50;
+    return Math.round(Utils.calculate1RM(def, set) * 10) / 10;
+  });
 
-  def.trainingMax = 200;
-  var oneRM = Utils.calculate1RM(def, set);
-  expect(oneRM).toBe(133.3);
+  expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
+});
+
+test('1RM Lombardi', () => {
+  const oneRM = ONE_RM_REPS.map(
+    r => Math.round(Utils.oneRMLombardi(200, r) * 10) / 10,
+  );
+
+  expect(oneRM).toStrictEqual([200, 214.4, 234.9, 251.8, 269.9, 281]);
+});
+
+test('1RM Epley', () => {
+  const oneRM = ONE_RM_REPS.map(
+    r => Math.round(Utils.oneRMEpley(200, r) * 10) / 10,
+  );
+
+  expect(oneRM).toStrictEqual([200, 213.3, 233.3, 266.7, 333.3, 400]);
+});
+
+test('1RM Brzycki', () => {
+  const oneRM = ONE_RM_REPS.map(
+    r => Math.round(Utils.oneRMBrzycki(200, r) * 10) / 10,
+  );
+
+  expect(oneRM).toStrictEqual([200, 205.7, 225, 266.7, 423.5, 1028.6]);
 });
 
 test('plate calculator', () => {
