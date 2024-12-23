@@ -32,11 +32,14 @@ export function StatsScreen({route, navigation}: Props) {
           ).length;
 
           const def = defs.get(lift.id)!;
-          def.muscleGroups?.forEach(group => {
+          def.muscleGroups?.forEach((group, index) => {
             let curr = result.get(group);
             if (curr == undefined) curr = 0;
 
-            result.set(group, curr + workSets);
+            // Secondary counts as half set
+            const multiplier = index == 0 ? 1 : 0.5;
+
+            result.set(group, curr + workSets * multiplier);
           });
         });
       });

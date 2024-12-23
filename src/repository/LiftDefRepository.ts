@@ -48,23 +48,39 @@ export default class LiftDefRepository {
   private async update(def: LiftDef): Promise<LiftDef> {
     let items = await LiftDefRepository.getAll();
     let index = items.findIndex(item => item.id == def.id);
-    if (index < 0) index = SystemLifts.findIndex(item => item.id == def.id);
-    if (index < 0) throw new Error('Unable to find def id ' + def.id);
 
-    items[index] = def;
+    if (index < 0) {
+      // Editing new systemDef for first time, add to list
+      let systemDef = SystemLifts.find(item => item.id == def.id);
+      if (!systemDef)
+        throw new Error(
+          `Unable to find def '${def.id}', this should never happen `,
+        );
+
+      items.push(def);
+    } else {
+      items[index] = def;
+    }
 
     // Don't save system lifts that are unmodified
-    items = items.filter(item => {
-      if (
-        item.system &&
-        (item.trainingMax === undefined || item.trainingMax == 0)
-      )
-        return false;
+    const savedItems = items.filter(curr => {
+      let systemDef = SystemLifts.find(sys => sys.id == curr.id);
+
+      if (systemDef) {
+        if (
+          (curr.trainingMax === undefined || curr.trainingMax == 0) &&
+          JSON.stringify(def.muscleGroups) ===
+            JSON.stringify(systemDef.muscleGroups)
+        )
+          return false;
+      }
 
       return true;
     });
 
-    await AsyncStorage.setItem(key, JSON.stringify(items));
+    console.log(`Read ${items.length}, saving ${savedItems.length}`);
+
+    await AsyncStorage.setItem(key, JSON.stringify(savedItems));
     await this.init();
 
     return def;

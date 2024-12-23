@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Button, Text, TextInput, View} from 'react-native';
+import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {LiftType} from '../types/types';
+import {LiftType, MuscleGroup} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {useDispatch} from 'react-redux';
 
@@ -24,6 +24,17 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       return result;
     });
 
+  const muscleGroupItems = Object.values(MuscleGroup)
+    .filter(value => typeof value === 'string')
+    .sort()
+    .map(value => {
+      const result: ItemType<MuscleGroup> = {
+        label: value.toString(),
+        value: MuscleGroup[value as keyof typeof MuscleGroup],
+      };
+      return result;
+    });
+
   const [def, setDef] = useState(
     route.params.def == undefined
       ? {
@@ -31,15 +42,29 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           name: '',
           type: LiftType.Barbell,
         }
-      : route.params.def,
+      : JSON.parse(JSON.stringify(route.params.def)),
   );
 
   const [open, setOpen] = useState(false);
+
+  const [primaryOpen, setPrimaryOpen] = useState(false);
+  const [primary, setPrimary] = useState<MuscleGroup>(
+    def.muscleGroups?.length > 0 ? def.muscleGroups[0] : undefined,
+  );
+  const [secondaryOpen, setSecondaryOpen] = useState(false);
+  const [secondary, setSecondary] = useState<MuscleGroup[]>(
+    def.muscleGroups?.length > 1 ? def.muscleGroups.slice(1) : [],
+  );
+
   const [type, setType] = useState(def.type);
   const [tm, setTM] = useState(def.trainingMax ? def.trainingMax : 0.0);
 
   async function onSave() {
-    def.type = type;
+    console.log('primary = ' + primary);
+    console.log('secondary = ' + secondary);
+    def.muscleGroups =
+      primary != undefined ? [primary, ...secondary] : undefined;
+    console.log(def);
     if (tm > 0) def.trainingMax = tm;
     else def.trainingMax = undefined;
 
@@ -56,7 +81,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
 
   return (
     <View>
-      <View>
+      <View style={styles.viewGroup}>
         <Text>{def.id}</Text>
         <Text>Name:</Text>
         <TextInput
@@ -71,7 +96,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         </TextInput>
       </View>
 
-      <View>
+      <View style={styles.viewGroup}>
         <Text>Type:</Text>
 
         <DropDownPicker
@@ -82,6 +107,36 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           setOpen={setOpen}
           setValue={setType}
         />
+      </View>
+
+      <View style={styles.viewGroup}>
+        <Text>Primary:</Text>
+        <DropDownPicker
+          items={muscleGroupItems}
+          open={primaryOpen}
+          setOpen={setPrimaryOpen}
+          value={primary}
+          setValue={setPrimary}
+        />
+      </View>
+
+      <View style={styles.viewGroup}>
+        <Text>{'Secondary: ' + secondary.map(i => MuscleGroup[i])}</Text>
+        <DropDownPicker
+          disabled={primary == undefined}
+          disabledStyle={{
+            opacity: 0.5,
+          }}
+          items={muscleGroupItems}
+          open={secondaryOpen}
+          setOpen={setSecondaryOpen}
+          multiple={true}
+          value={secondary}
+          setValue={setSecondary}
+        />
+      </View>
+
+      <View style={styles.viewGroup}>
         <Text>Training Max:</Text>
         <TextInput
           keyboardType="numeric"
@@ -93,7 +148,9 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         </TextInput>
       </View>
 
-      {def.id.length > 0 && <Button title="Delete" onPress={onDelete}></Button>}
+      {def.id.length > 0 && !def.system && (
+        <Button title="Delete" onPress={onDelete}></Button>
+      )}
       <Button
         title="Save"
         onPress={onSave}
@@ -101,3 +158,9 @@ export function LiftDefEditScreen({route, navigation}: Props) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  viewGroup: {
+    padding: 4,
+  },
+});
