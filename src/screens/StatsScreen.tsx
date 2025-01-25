@@ -27,9 +27,7 @@ export function StatsScreen({route, navigation}: Props) {
     WorkoutRepository.getAll().then(workouts => {
       workouts.forEach(workout => {
         workout.lifts.forEach(lift => {
-          const workSets = lift.sets.filter(
-            set => !set.warmup && !set.goal,
-          ).length;
+          const workSets = lift.sets.filter(set => !set.warmup).length;
 
           const def = defs.get(lift.id)!;
           def.muscleGroups?.forEach((group, index) => {

@@ -11,6 +11,7 @@ export type Workout = {
 export type Lift = {
   id: string;
   sets: LiftSet[];
+  goals: LiftSet[];
   hide?: boolean;
 };
 
@@ -18,9 +19,7 @@ export type LiftSet = {
   weight?: number;
   reps?: number;
   warmup?: boolean;
-  goal?: boolean; // TODO maybe enum with warmup, can't be both
   percentage?: boolean; // Weight is a percentage of training max
-  // TODO add goal boolean
   completed?: boolean;
 };
 

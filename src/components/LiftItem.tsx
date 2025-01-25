@@ -32,9 +32,11 @@ export default function LiftItem(props: {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs.get(props.lift.id)!;
 
-  const onFinishEdit = (updatedSets: LiftSet[]) => {
+  const onFinishEdit = (lift: Lift) => {
     const updatedLift: Lift = {...props.lift};
-    updatedLift.sets = updatedSets;
+    // TODO just do straight override?
+    updatedLift.sets = lift.sets;
+    updatedLift.goals = lift.goals;
 
     props.onLiftChanged(updatedLift);
     setEditing(false);
@@ -50,8 +52,7 @@ export default function LiftItem(props: {
 
   const completed =
     props.lift.hide ||
-    (props.lift.sets.length > 0 &&
-      props.lift.sets.every(set => set.completed || set.goal));
+    (props.lift.sets.length > 0 && props.lift.sets.every(set => set.completed));
 
   const headerText: StyleProp<TextStyle> = {
     color: props.lift.hide ? colors.border : colors.text,
@@ -97,7 +98,7 @@ export default function LiftItem(props: {
   );
 }
 
-function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
+function ReadOnlySetTable({lift, def}: {lift: Lift; def: LiftDef}) {
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   function calcPlates(weight: string): PlateCount | undefined {
@@ -105,16 +106,14 @@ function ReadOnlySetTable(props: {lift: Lift; def: LiftDef}) {
 
     // Just using string since it already accounts for percentage lifts
     const n = parseFloat(weight.replace('lb', ''));
-    return Utils.calcPlates(props.def.type, n);
+    return Utils.calcPlates(def.type, n);
   }
-
-  const sets = props.lift.sets.filter(set => !set.goal);
 
   return (
     <View>
       <SetHeader showPlateCount={settings.plateCount == true}></SetHeader>
       <View>
-        {Utils.normalizeSets(sets, props.def).map((set, index) => (
+        {Utils.normalizeSets(lift.sets, def).map((set, index) => (
           <SetItem
             set={set}
             key={index}

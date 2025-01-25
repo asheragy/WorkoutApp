@@ -11,7 +11,7 @@ import {MenuProvider} from 'react-native-popup-menu';
 export default function LiftEditorModal(props: {
   editing: boolean;
   lift: Lift;
-  onFinish: (sets: LiftSet[]) => void;
+  onFinish: (lift: Lift) => void;
   onToggleHide: () => void;
   onViewLog: () => void;
 }) {
@@ -31,7 +31,7 @@ export default function LiftEditorModal(props: {
   }
 
   async function onDone() {
-    props.onFinish(lift.sets);
+    props.onFinish(lift);
   }
 
   return (
