@@ -7,7 +7,7 @@ import {TextInput} from 'react-native-gesture-handler';
 import {Lift, Workout} from '../types/workout';
 import Utils from '../components/Utils';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import EditableLiftItem from '../components/EditableLiftItem';
+import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {MaterialHeaderButton} from '../components/Common';
 import {useTheme} from '@react-navigation/native';

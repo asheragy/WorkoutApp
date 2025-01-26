@@ -7,7 +7,7 @@ import {LogBox} from 'react-native';
 import {Lift, LiftSet, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Log from '../utils/Log';
-import LiftItem from '../components/LiftItem';
+import LiftItem from '../components/LiftItem/LiftItem';
 import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
 import {
   HeaderButtons,
@@ -68,7 +68,7 @@ export function WorkoutScreen({route, navigation}: Props) {
     await WorkoutHistoryRepository.add(workout, defs);
 
     workout.lifts.forEach(lift => {
-      lift.hide = undefined
+      lift.hide = undefined;
       lift.sets.forEach(set => {
         set.completed = undefined;
       });
@@ -141,9 +141,9 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
-  const activeLifts = workout.lifts.filter(x => !x.hide)
-  const hiddenLifts = workout.lifts.filter(x => x.hide)
-  const sortedLifts = activeLifts.concat(hiddenLifts)
+  const activeLifts = workout.lifts.filter(x => !x.hide);
+  const hiddenLifts = workout.lifts.filter(x => x.hide);
+  const sortedLifts = activeLifts.concat(hiddenLifts);
 
   return (
     <ScrollView style={styles.container}>

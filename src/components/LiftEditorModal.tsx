@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import {GlobalSettings} from '../types/types';
 import {Style_LiftText} from './Common';
 import {Lift, LiftSet} from '../types/workout';
-import EditableLiftItem from './EditableLiftItem';
+import EditableLiftItem from './EditableLiftItem/EditableLiftItem';
 import {MenuProvider} from 'react-native-popup-menu';
 
 export default function LiftEditorModal(props: {
