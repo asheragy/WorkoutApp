@@ -1,5 +1,10 @@
 import {LiftDef} from './types';
 
+export type Routine = {
+  id?: string;
+  title: string;
+};
+
 export type Workout = {
   id?: string;
   lastCompleted?: Date;

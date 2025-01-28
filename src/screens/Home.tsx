@@ -62,6 +62,12 @@ export function WorkoutList({navigation, route}: Props) {
             <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
             <HiddenItem
+              title="Routines"
+              onPress={() =>
+                navigation.navigate('Routines', {onChanged: loadState})
+              }
+            />
+            <HiddenItem
               title="Single Workout"
               disabled={
                 workouts.find(x => x.id == SingleWorkoutId) != undefined
@@ -82,21 +88,24 @@ export function WorkoutList({navigation, route}: Props) {
     });
     */
 
-    WorkoutRepository.getAll().then(result => {
-      // Sort by oldest completed first
-      setWorkouts(
-        result.sort((a, b) => {
-          if (a.lastCompleted === undefined) return -1;
-          else if (b.lastCompleted === undefined) return 1;
-          else if (a.lastCompleted < b.lastCompleted) return -1;
-          else if (a.lastCompleted > b.lastCompleted) return 1;
-          else return 0;
-        }),
-      );
-    });
+    SettingsRepository.get().then(settings => {
+      // TODO should this go in App.txs?
+      dispatch(updateSettings(settings));
 
-    // TODO should this go in App.txs?
-    SettingsRepository.get().then(result => dispatch(updateSettings(result)));
+      console.log('Using routine: ' + settings.routine);
+      WorkoutRepository.getAll().then(result => {
+        // Sort by oldest completed first
+        setWorkouts(
+          result.sort((a, b) => {
+            if (a.lastCompleted === undefined) return -1;
+            else if (b.lastCompleted === undefined) return 1;
+            else if (a.lastCompleted < b.lastCompleted) return -1;
+            else if (a.lastCompleted > b.lastCompleted) return 1;
+            else return 0;
+          }),
+        );
+      });
+    });
   }
   useEffect(loadState, []);
 
@@ -183,7 +192,7 @@ function LiftItem(props: {lift: Lift}) {
         {Utils.defToString(defs.get(props.lift.id)!) +
           (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
-      {/** 
+      {/**
       <View style={styles.liftSetRow}>
         {Utils.normalizeSets(props.lift.sets).map((set, index) => (
           <Text style={{color: colors.text}} key={index}>

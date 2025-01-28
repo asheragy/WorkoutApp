@@ -5,21 +5,22 @@ const SettingsKey = 'settings';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {
-    /*
-    var value = await AsyncStorage.getItem(SettingsKey);
+    const value = await AsyncStorage.getItem(SettingsKey);
+    let result: GlobalSettings = {};
 
     if (value != null) {
-      var result: Settings = JSON.parse(value);
-      return result;
+      result = JSON.parse(value);
     }
 
-    return {};
-    */
+    result.largestHalfPoundDumbbell = 47.5;
+    result.plateCount = true;
+    return result;
+  }
 
-    return {
-      // Not even sure if this is correct
-      largestHalfPoundDumbbell: 47.5,
-      plateCount: true,
-    };
+  static async set(key: keyof GlobalSettings, value: any): Promise<void> {
+    const settings = await this.get();
+    settings[key] = value;
+
+    await AsyncStorage.setItem(SettingsKey, JSON.stringify(settings));
   }
 }

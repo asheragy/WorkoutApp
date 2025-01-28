@@ -48,6 +48,7 @@ export type WeightEntry = {
 export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
   plateCount?: boolean;
+  routine?: string;
 };
 
 export type PersistedSet = {

@@ -15,7 +15,7 @@ import {LiftListScreen} from './screens/LiftListScreen';
 import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
 import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
 import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
-import {WorkoutList} from './screens/WorkoutListScreen';
+import {WorkoutList} from './screens/Home';
 import {Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
 import {StatsScreen} from './screens/StatsScreen';
@@ -25,6 +25,7 @@ import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
 import {rootReducer} from './state/store';
 import LiftDefRepository from './repository/LiftDefRepository';
 import {MenuProvider} from 'react-native-popup-menu';
+import {RoutinesScreen} from './screens/Routines';
 
 export type RootStackParamList = {
   Home: {
@@ -57,6 +58,9 @@ export type RootStackParamList = {
     onChanged: () => void;
   };
   Settings: undefined;
+  Programs: {
+    onChanged: () => void;
+  };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -119,6 +123,13 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             }}
             component={SettingsScreen}
+          />
+          <Stack.Screen
+            name="Routines"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={RoutinesScreen}
           />
           <Stack.Screen
             name="LiftHistory"
