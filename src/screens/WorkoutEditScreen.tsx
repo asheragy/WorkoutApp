@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Alert, Button, Text, TouchableOpacity, View} from 'react-native';
 import {RootStackParamList} from '../App';
-import {LiftDef} from '../types/types';
+import {GlobalSettings, LiftDef} from '../types/types';
 import {TextInput} from 'react-native-gesture-handler';
 import {Lift, Workout} from '../types/workout';
 import Utils from '../components/Utils';
@@ -28,6 +28,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   const [lifts, setLifts] = useState<Lift[]>(existing ? existing.lifts : []);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   // Menu
   React.useLayoutEffect(() => {
@@ -47,6 +48,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
       name: title,
       lifts: lifts,
     };
+
+    // Would set above but SingleWorkout is a special case that this shouldn't overwrite
+    if (!existing) {
+      workout.routineId = settings.routine;
+    }
 
     await WorkoutRepository.upsert(workout);
     route.params.onChanged();

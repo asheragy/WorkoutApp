@@ -93,7 +93,7 @@ export function WorkoutList({navigation, route}: Props) {
       dispatch(updateSettings(settings));
 
       console.log('Using routine: ' + settings.routine);
-      WorkoutRepository.getAll().then(result => {
+      WorkoutRepository.getRoutine(settings.routine).then(result => {
         // Sort by oldest completed first
         setWorkouts(
           result.sort((a, b) => {

@@ -7,6 +7,7 @@ export type Routine = {
 
 export type Workout = {
   id?: string;
+  routineId?: string;
   lastCompleted?: Date;
   name: string;
   lifts: Lift[];

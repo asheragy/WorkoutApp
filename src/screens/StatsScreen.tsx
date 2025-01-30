@@ -3,7 +3,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {useSelector} from 'react-redux';
 import React, {useEffect, useState} from 'react';
-import {LiftDef, MuscleGroup} from '../types/types';
+import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
@@ -19,12 +19,14 @@ export function StatsScreen({route, navigation}: Props) {
     (store: AppState) => store.liftDefs,
   );
 
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+
   useEffect(onLoad, []);
 
   function onLoad() {
     const result = new Map<MuscleGroup, number>();
 
-    WorkoutRepository.getAll().then(workouts => {
+    WorkoutRepository.getRoutine(settings.routine).then(workouts => {
       workouts.forEach(workout => {
         workout.lifts.forEach(lift => {
           const workSets = lift.sets.filter(set => !set.warmup).length;

@@ -10,7 +10,13 @@ export default class WorkoutRepository {
     return workouts.find(x => x.id == id);
   }
 
-  static async getAll(): Promise<Workout[]> {
+  static async getRoutine(routine: string | undefined): Promise<Workout[]> {
+    return (await this.getAll()).filter(
+      x => x.routineId == routine || x.id == SingleWorkoutId,
+    );
+  }
+
+  private static async getAll(): Promise<Workout[]> {
     const value = await AsyncStorage.getItem(key);
     if (value == null) return [];
 
