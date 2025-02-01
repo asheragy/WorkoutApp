@@ -98,7 +98,7 @@ const AppRoot = () => {
           />
           <Stack.Screen
             name="Workout"
-            options={({route}) => ({
+            options={() => ({
               headerStyle: styles.headerStyle,
             })}
             component={WorkoutScreen}
@@ -133,7 +133,7 @@ const AppRoot = () => {
           />
           <Stack.Screen
             name="LiftHistory"
-            options={({route}) => ({
+            options={() => ({
               headerStyle: styles.headerStyle,
               title: 'TODO',
             })}
@@ -141,7 +141,7 @@ const AppRoot = () => {
           />
           <Stack.Screen
             name="WorkoutHistory"
-            options={({route}) => ({
+            options={() => ({
               headerStyle: styles.headerStyle,
               title: 'Workout History',
             })}
@@ -164,20 +164,20 @@ const AppRoot = () => {
             component={LiftDefEditScreen}
           />
           <Stack.Screen
-            name="LiftDefList"
-            options={{
-              title: 'Lift Definitions',
-              headerStyle: styles.headerStyle,
-            }}
-            component={LiftDefListScreen}
-          />
-          <Stack.Screen
             name="WorkoutEdit"
             options={{
               title: 'Edit Workout',
               headerStyle: styles.headerStyle,
             }}
             component={WorkoutEditScreen}
+          />
+          <Stack.Screen
+            name="LiftDefList"
+            options={{
+              title: 'Lift Definitions',
+              headerStyle: styles.headerStyle,
+            }}
+            component={LiftDefListScreen}
           />
         </Stack.Navigator>
       </HeaderButtonsProvider>
