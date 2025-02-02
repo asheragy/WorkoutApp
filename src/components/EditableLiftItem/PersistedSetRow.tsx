@@ -117,7 +117,7 @@ export function PersistedSetRow(props: {
     !props.set.percentage && props.def.trainingMax == undefined;
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{padding: 2}}>
       <Swipeable
         renderRightActions={renderRightActions}
         ref={swipeableRef}
