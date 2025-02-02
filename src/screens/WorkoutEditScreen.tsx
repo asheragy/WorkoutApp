@@ -67,6 +67,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     const lift: Lift = {
       id: def.id,
       sets: [],
+      goals: [],
     };
     setLifts(prevState => [...prevState, lift]);
   }
