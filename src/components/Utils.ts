@@ -7,6 +7,7 @@ import {
   PlateCount,
 } from '../types/types';
 import {LiftSet} from '../types/workout';
+import uuid from 'react-native-uuid';
 
 export default class Utils {
   static calcPercentage(weight: number, trainingMax: number): number {
@@ -110,18 +111,8 @@ export default class Utils {
     return weight * reps;
   }
 
-  // TODO use library for this instead
-  static generate_uuidv4() {
-    var dt = new Date().getTime();
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
-      /[xy]/g,
-      function (c) {
-        var rnd = Math.random() * 16; //random number in range 0 to 16
-        rnd = (dt + rnd) % 16 | 0;
-        dt = Math.floor(dt / 16);
-        return (c === 'x' ? rnd : (rnd & 0x3) | 0x8).toString(16);
-      },
-    );
+  static generate_uuidv4(): string {
+    return uuid.v4();
   }
 
   static lastCompleted(date: Date | undefined): string {

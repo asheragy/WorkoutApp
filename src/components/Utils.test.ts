@@ -1,9 +1,7 @@
-import {GlobalSettings, LiftDef, LiftType, PersistedSet} from '../types/types';
+import {LiftDef, LiftType} from '../types/types';
 import Utils from './Utils';
 import {LiftSet} from '../types/workout';
 import {SystemLifts} from '../repository/LiftDatabase';
-
-export {};
 
 test('normalizeSets repeated lifts', () => {
   var sets: LiftSet[] = [
@@ -136,4 +134,10 @@ test('plate calculator', () => {
     p45: 2,
     p25: 1,
   });
+});
+
+test('uuid', () => {
+  const uuid = Utils.generate_uuidv4();
+  expect(uuid.length).toEqual(36);
+  expect(uuid).toEqual(uuid.toLowerCase());
 });
