@@ -95,6 +95,7 @@ export function WorkoutList({navigation, route}: Props) {
       console.log('Using routine: ' + settings.routine);
       WorkoutRepository.getRoutine(settings.routine).then(result => {
         // Sort by oldest completed first
+        // TODO natural order should be preserved when nothing is set
         setWorkouts(
           result.sort((a, b) => {
             if (a.lastCompleted === undefined) return -1;

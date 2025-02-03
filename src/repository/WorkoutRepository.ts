@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SingleWorkoutId, Workout} from '../types/workout';
+import {Lift, SingleWorkoutId, Workout} from '../types/workout';
 import Utils from '../components/Utils';
+import {PreLoadedRoutines} from './RoutineRepository.ts';
 
 const key = 'workouts';
 
@@ -11,9 +12,26 @@ export default class WorkoutRepository {
   }
 
   static async getRoutine(routine: string | undefined): Promise<Workout[]> {
-    return (await this.getAll()).filter(
-      x => x.routineId == routine || x.id == SingleWorkoutId,
-    );
+    const all = await this.getAll();
+    if (routine && all.filter(x => x.routineId == routine).length == 0) {
+      const preloaded = findPreloaded(routine);
+      if (preloaded.length > 0) {
+        console.log(`Loading predefined routine ${routine}`);
+        const generated = preloaded.map(x => {
+          return {
+            ...x,
+            id: Utils.generate_uuidv4(),
+            routineId: routine,
+          };
+        });
+
+        all.push(...generated);
+      }
+    }
+
+    console.log(all);
+
+    return all.filter(x => x.routineId == routine || x.id == SingleWorkoutId);
   }
 
   private static async getAll(): Promise<Workout[]> {
@@ -69,4 +87,11 @@ export default class WorkoutRepository {
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
+}
+
+function findPreloaded(routineId: string): Workout[] {
+  const result = PreLoadedRoutines.find(x => x[0].id == routineId);
+  if (result) return result[1];
+
+  return [];
 }

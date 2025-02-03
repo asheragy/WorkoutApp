@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Image, StyleSheet, Text, View} from 'react-native';
+import {Button, Image, Text, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../../types/workout';
 import {Style_LiftText} from '../Common';
@@ -48,7 +48,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
   function addGoal() {
     let goal: LiftSet = {weight: 0, reps: 0};
-    if (props.lift.goals?.length > 0)
+    if (props.lift.goals && props.lift.goals?.length > 0)
       goal = {...props.lift.goals[props.lift.goals.length - 1]};
     else if (props.lift.sets.length > 0) {
       goal = {...props.lift.sets[props.lift.sets.length - 1]};
@@ -68,7 +68,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
   function onRemoveGoal(index: number) {
     const updatedLift = {...props.lift};
-    updatedLift.goals.splice(index, 1);
+    updatedLift.goals!!.splice(index, 1);
 
     props.onChange(updatedLift);
   }
@@ -88,7 +88,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
   function onGoalChange(index: number, updated: LiftSet) {
     const updatedLift = {...props.lift};
-    updatedLift.goals[index] = updated;
+    updatedLift.goals!![index] = updated;
     props.onChange(updatedLift);
   }
 

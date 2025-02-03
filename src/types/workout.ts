@@ -17,7 +17,7 @@ export type Workout = {
 export type Lift = {
   id: string;
   sets: LiftSet[];
-  goals: LiftSet[];
+  goals?: LiftSet[];
   hide?: boolean;
 };
 

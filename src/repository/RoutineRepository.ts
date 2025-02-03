@@ -1,11 +1,24 @@
-import {GlobalSettings} from '../types/types';
-import {Routine} from '../types/workout';
+import {Routine, Workout} from '../types/workout';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {UpperLower} from '../routines/UpperLower.ts';
+
+const key = 'routines';
+
+export const PreLoadedRoutines = [UpperLower];
 
 export default class RoutineRepository {
   static async getAll(): Promise<Routine[]> {
-    return [
-      {title: 'Default'},
-      {id: '3995deca-8204-4dc9-841b-1f4db64a486f', title: 'Upper Lower'},
-    ];
+    const value = await AsyncStorage.getItem(key);
+    const result = [{title: 'Default'}];
+
+    if (value == null) {
+      // TODO save to database
+      result.push(...PreLoadedRoutines.map(x => x[0]));
+    } else {
+      let json: Routine[] = JSON.parse(value);
+      result.push(...json);
+    }
+
+    return result;
   }
 }
