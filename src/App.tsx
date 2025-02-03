@@ -92,7 +92,7 @@ const AppRoot = () => {
             name="Home"
             component={WorkoutList}
             options={{
-              title: 'Workouts v3',
+              title: `Workouts v${React.version}`,
               headerStyle: styles.headerStyle,
             }}
           />
