@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Alert, Button, Text, TouchableOpacity, View} from 'react-native';
 import {RootStackParamList} from '../App';
-import {GlobalSettings, LiftDef} from '../types/types';
+import {GlobalSettings} from '../types/types';
 import {TextInput} from 'react-native-gesture-handler';
 import {Lift, Workout} from '../types/workout';
 import Utils from '../components/Utils';
@@ -63,9 +63,9 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     navigation.navigate('LiftDefList', {onSelect: onExerciseAdded});
   }
 
-  function onExerciseAdded(def: LiftDef) {
+  function onExerciseAdded(defId: string) {
     const lift: Lift = {
-      id: def.id,
+      id: defId,
       sets: [],
       goals: [],
     };

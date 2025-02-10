@@ -14,7 +14,7 @@ import RoutineRepository from '../repository/RoutineRepository';
 import {useTheme} from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
 
-type Props = StackScreenProps<RootStackParamList, 'Programs'>;
+type Props = StackScreenProps<RootStackParamList, 'Routines'>;
 
 export function RoutinesScreen({route, navigation}: Props) {
   const [routines, setRoutines] = useState<Routine[]>([]);

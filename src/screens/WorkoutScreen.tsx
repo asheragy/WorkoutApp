@@ -18,7 +18,6 @@ import {
 import {MaterialHeaderButton} from '../components/Common';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
-import {LiftDef} from '../types/types';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
@@ -86,8 +85,8 @@ export function WorkoutScreen({route, navigation}: Props) {
     navigation.navigate('LiftDefList', {onSelect: onExerciseAdded});
   }
 
-  async function onExerciseAdded(def: LiftDef) {
-    const history = await LiftHistoryRepository.get(def.id);
+  async function onExerciseAdded(defId: string) {
+    const history = await LiftHistoryRepository.get(defId);
     let sets: LiftSet[] = [];
     if (history.length > 0) {
       const last = history[history.length - 1].sets;
@@ -102,7 +101,7 @@ export function WorkoutScreen({route, navigation}: Props) {
     };
 
     updatedWorkout.lifts.push({
-      id: def.id,
+      id: defId,
       sets: sets,
     });
 

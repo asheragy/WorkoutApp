@@ -51,14 +51,14 @@ export type RootStackParamList = {
     def?: LiftDef;
   };
   LiftDefList: {
-    onSelect?: (def: LiftDef) => void;
+    onSelect?: (defId: string) => void;
   };
   WorkoutEdit: {
     workout?: Workout;
     onChanged: () => void;
   };
   Settings: undefined;
-  Programs: {
+  Routines: {
     onChanged: () => void;
   };
 };
