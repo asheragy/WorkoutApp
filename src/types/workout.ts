@@ -19,6 +19,7 @@ export type Lift = {
   sets: LiftSet[];
   goals?: LiftSet[];
   hide?: boolean;
+  note?: string;
 };
 
 export type LiftSet = {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Image, Text, View} from 'react-native';
+import {Button, Image, Text, TextInput, View} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import {Lift, LiftSet} from '../../types/workout';
 import {Style_LiftText} from '../Common';
@@ -20,7 +20,7 @@ interface EditableLiftItemProps {
   lift: Lift;
   onChange: (lift: Lift) => void;
   onDelete?: () => void;
-  hideCompleted?: boolean;
+  hideCompleted?: boolean; // True if workout edit screen
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -31,6 +31,10 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     set => set.label,
   );
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
+
+  function onNoteChange(note: string) {
+    props.onChange({...props.lift, note: note.length > 0 ? note : undefined});
+  }
 
   function addSet() {
     let set: LiftSet = {weight: 0, reps: 0};
@@ -130,8 +134,16 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         )}
       </View>
 
-      <PersistedSetHeader></PersistedSetHeader>
+      {props.hideCompleted && (
+        <TextInput placeholder={'Note'} onChangeText={onNoteChange}>
+          {props.lift.note}
+        </TextInput>
+      )}
+      {!props.hideCompleted && props.lift.note != undefined && (
+        <Text style={{paddingVertical: 8}}>{props.lift.note}</Text>
+      )}
 
+      <PersistedSetHeader></PersistedSetHeader>
       {props.lift.sets.map((set, index) => (
         <PersistedSetRow
           set={set}
@@ -143,7 +155,6 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
           onDelete={() => onRemoveSet(index)}
           onChange={set => onSetChange(index, set)}></PersistedSetRow>
       ))}
-
       <View
         style={{
           margin: 10,
@@ -152,7 +163,6 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         }}>
         <Button title="Add Set" onPress={addSet}></Button>
       </View>
-
       {props.lift.goals?.map((set, index) => (
         <PersistedSetRow
           set={set}
@@ -164,7 +174,6 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
           onDelete={() => onRemoveGoal(index)}
           onChange={set => onGoalChange(index, set)}></PersistedSetRow>
       ))}
-
       <View
         style={{
           margin: 10,

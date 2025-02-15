@@ -69,7 +69,7 @@ export default function LiftEditorModal(props: {
                 <Button
                   title="Log"
                   onPress={() => {
-                    props.onFinish(lift.sets); // TODO temp to workaround broken button issue after using
+                    props.onFinish(lift); // TODO temp to workaround broken button issue after using
                     props.onViewLog();
                   }}></Button>
               </View>

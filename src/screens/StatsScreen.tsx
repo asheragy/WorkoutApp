@@ -1,10 +1,11 @@
-import {AppState, FlatList, ListRenderItemInfo, Text, View} from 'react-native';
+import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {useSelector} from 'react-redux';
 import React, {useEffect, useState} from 'react';
 import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
+import {AppState} from '../state/store.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
