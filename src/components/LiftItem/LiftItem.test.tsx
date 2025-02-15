@@ -1,5 +1,4 @@
 import React from 'react';
-import {render} from '@testing-library/react-native';
 import {LiftType} from '../../types/types';
 import LiftItem from './LiftItem';
 

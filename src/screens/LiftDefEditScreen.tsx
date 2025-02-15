@@ -3,7 +3,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {LiftType, MuscleGroup} from '../types/types';
+import {LiftDef, LiftType, MuscleGroup} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {useDispatch} from 'react-redux';
 
@@ -35,7 +35,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       return result;
     });
 
-  const [def, setDef] = useState(
+  const [def, setDef] = useState<LiftDef>(
     route.params.def == undefined
       ? {
           id: '',
@@ -48,12 +48,12 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   const [open, setOpen] = useState(false);
 
   const [primaryOpen, setPrimaryOpen] = useState(false);
-  const [primary, setPrimary] = useState<MuscleGroup>(
-    def.muscleGroups?.length > 0 ? def.muscleGroups[0] : undefined,
+  const [primary, setPrimary] = useState<MuscleGroup | null>(
+    def.muscleGroups?.[0] ?? null,
   );
   const [secondaryOpen, setSecondaryOpen] = useState(false);
   const [secondary, setSecondary] = useState<MuscleGroup[]>(
-    def.muscleGroups?.length > 1 ? def.muscleGroups.slice(1) : [],
+    def.muscleGroups?.slice(1) ?? [],
   );
 
   const [type, setType] = useState(def.type);

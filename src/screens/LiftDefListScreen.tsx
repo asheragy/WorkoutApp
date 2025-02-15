@@ -27,7 +27,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
 
   function onEdit(def: LiftDef) {
     if (isSelection) {
-      route.params.onSelect(def);
+      route.params.onSelect(def.id);
       navigation.pop();
     } else {
       navigation.navigate('LiftDefEdit', {def: def});

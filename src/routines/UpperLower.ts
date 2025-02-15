@@ -1,4 +1,5 @@
 import {Routine, Workout} from '../types/workout.ts';
+import {Lifts} from '../repository/LiftDatabase.ts';
 
 export const UpperLower: [Routine, Workout[]] = [
   {
@@ -10,11 +11,11 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Upper 1',
       lifts: [
         {
-          id: 'bodyweight_pullups',
+          id: Lifts.bodyweight_pullups.id,
           sets: [],
         },
         {
-          id: 'dumbbell_benchPress',
+          id: Lifts.dumbbell_benchPress.id,
           sets: [],
         },
       ],
@@ -23,7 +24,7 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Lower 1',
       lifts: [
         {
-          id: 'barbell_deadlift',
+          id: Lifts.barbell_deadlift.id,
           sets: [],
         },
       ],
@@ -32,11 +33,11 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Upper 2',
       lifts: [
         {
-          id: 'barbell_overheadPress',
+          id: Lifts.barbell_overheadPress.id,
           sets: [],
         },
         {
-          id: 'barbell_rows',
+          id: Lifts.barbell_rows.id,
           sets: [],
         },
       ],
@@ -45,7 +46,7 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Lower 2',
       lifts: [
         {
-          id: 'barbell_frontSquat',
+          id: Lifts.barbell_frontSquat.id,
           sets: [],
         },
       ],
