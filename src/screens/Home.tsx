@@ -94,17 +94,18 @@ export function WorkoutList({navigation, route}: Props) {
 
       console.log('Using routine: ' + settings.routine);
       WorkoutRepository.getRoutine(settings.routine).then(result => {
+        if (result.find(x => x.lastCompleted) == undefined) setWorkouts(result);
         // Sort by oldest completed first
-        // TODO natural order should be preserved when nothing is set
-        setWorkouts(
-          result.sort((a, b) => {
-            if (a.lastCompleted === undefined) return -1;
-            else if (b.lastCompleted === undefined) return 1;
-            else if (a.lastCompleted < b.lastCompleted) return -1;
-            else if (a.lastCompleted > b.lastCompleted) return 1;
-            else return 0;
-          }),
-        );
+        else
+          setWorkouts(
+            result.sort((a, b) => {
+              if (a.lastCompleted === undefined) return -1;
+              else if (b.lastCompleted === undefined) return 1;
+              else if (a.lastCompleted < b.lastCompleted) return -1;
+              else if (a.lastCompleted > b.lastCompleted) return 1;
+              else return 0;
+            }),
+          );
       });
     });
   }

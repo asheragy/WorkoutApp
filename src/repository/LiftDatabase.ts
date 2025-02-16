@@ -1,11 +1,15 @@
 import {LiftDef, LiftType, MuscleGroup} from '../types/types';
 
 
-const createDictionary = <T extends Record<string, Omit<LiftDef, "id">>>(obj: { [K in keyof T]: Omit<T[K], "id"> }): { [K in keyof T]: LiftDef } => {
+const createDictionary = <T extends Record<string, Omit<LiftDef, "id">>>(
+  obj: { readonly [K in keyof T]: Readonly<T[K]> }
+): { [K in keyof T]: LiftDef & { id: K } } => {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => [key, { ...value, id: key }])
-  ) as { [K in keyof T]: LiftDef };
+  ) as { [K in keyof T]: LiftDef & { id: K } };
 };
+
+
 
 export const Lifts = createDictionary({
   // Barbell
@@ -68,7 +72,7 @@ export const Lifts = createDictionary({
   // SSB
   ssb_squat: { name: "Squat", type: LiftType.SSB, muscleGroups: [MuscleGroup.Quads] },
   grippers: { name: "Grippers", type: LiftType.Other }
-});
+} as const);
 
 
 export const SystemLifts = Object.values(Lifts).map(def => {

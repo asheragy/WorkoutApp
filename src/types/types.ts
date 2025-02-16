@@ -27,7 +27,7 @@ export type LiftDef = {
   type: LiftType;
   system?: boolean;
   trainingMax?: number;
-  muscleGroups?: MuscleGroup[];
+  muscleGroups?: ReadonlyArray<MuscleGroup>;
 };
 
 /**
