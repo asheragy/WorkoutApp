@@ -38,6 +38,7 @@ test('calc 1RM', () => {
     id: '',
     name: '',
     type: LiftType.Barbell,
+    muscleGroups: [],
   };
 
   const oneRM = ONE_RM_REPS.map(r => {
@@ -58,6 +59,7 @@ test('calc 1RM percentage', () => {
     name: '',
     type: LiftType.Barbell,
     trainingMax: 250,
+    muscleGroups: [],
   };
 
   const oneRM = ONE_RM_REPS.map(r => {

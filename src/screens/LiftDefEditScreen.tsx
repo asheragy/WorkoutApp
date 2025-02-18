@@ -41,6 +41,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           id: '',
           name: '',
           type: LiftType.Barbell,
+          muscleGroups: [],
         }
       : JSON.parse(JSON.stringify(route.params.def)),
   );
@@ -49,11 +50,11 @@ export function LiftDefEditScreen({route, navigation}: Props) {
 
   const [primaryOpen, setPrimaryOpen] = useState(false);
   const [primary, setPrimary] = useState<MuscleGroup | null>(
-    def.muscleGroups?.[0] ?? null,
+    def.muscleGroups[0] ?? null,
   );
   const [secondaryOpen, setSecondaryOpen] = useState(false);
   const [secondary, setSecondary] = useState<MuscleGroup[]>(
-    def.muscleGroups?.slice(1) ?? [],
+    def.muscleGroups.slice(1) ?? [],
   );
 
   const [type, setType] = useState(def.type);
@@ -62,8 +63,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   async function onSave() {
     console.log('primary = ' + primary);
     console.log('secondary = ' + secondary);
-    def.muscleGroups =
-      primary != undefined ? [primary, ...secondary] : undefined;
+    def.muscleGroups = primary != null ? [primary, ...secondary] : [];
     console.log(def);
     if (tm > 0) def.trainingMax = tm;
     else def.trainingMax = undefined;

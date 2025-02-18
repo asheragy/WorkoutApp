@@ -19,6 +19,7 @@ export enum MuscleGroup {
   Shoulders,
   Biceps,
   Triceps,
+  Other,
 }
 
 export type LiftDef = {
@@ -27,7 +28,7 @@ export type LiftDef = {
   type: LiftType;
   system?: boolean;
   trainingMax?: number;
-  muscleGroups?: ReadonlyArray<MuscleGroup>;
+  muscleGroups: ReadonlyArray<MuscleGroup>;
 };
 
 /**

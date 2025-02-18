@@ -33,7 +33,7 @@ export function StatsScreen({route, navigation}: Props) {
           const workSets = lift.sets.filter(set => !set.warmup).length;
 
           const def = defs.get(lift.id)!;
-          def.muscleGroups?.forEach((group, index) => {
+          def.muscleGroups.forEach((group, index) => {
             let curr = result.get(group);
             if (curr == undefined) curr = 0;
 
