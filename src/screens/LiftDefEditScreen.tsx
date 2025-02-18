@@ -96,9 +96,8 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         </TextInput>
       </View>
 
-      <View style={styles.viewGroup}>
+      <View style={[styles.viewGroup, {zIndex: 90}]}>
         <Text>Type:</Text>
-
         <DropDownPicker
           disabled={systemDef}
           items={items}
@@ -109,7 +108,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         />
       </View>
 
-      <View style={styles.viewGroup}>
+      <View style={[styles.viewGroup, {zIndex: 80}]}>
         <Text>Primary:</Text>
         <DropDownPicker
           items={muscleGroupItems}
@@ -120,7 +119,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         />
       </View>
 
-      <View style={styles.viewGroup}>
+      <View style={[styles.viewGroup, {zIndex: 70}]}>
         <Text>{'Secondary: ' + secondary.map(i => MuscleGroup[i])}</Text>
         <DropDownPicker
           disabled={primary == undefined}
@@ -141,7 +140,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         <TextInput
           keyboardType="numeric"
           onChangeText={newText => {
-            var parsed = parseFloat(newText);
+            const parsed = parseFloat(newText);
             if (!Number.isNaN(parsed)) setTM(parseFloat(newText));
           }}>
           {tm}
