@@ -85,7 +85,7 @@ export const Lifts = createDictionary({
   bodyweight_planks: { name: "Planks", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] }, // TODO time
   front_squat_hold: { name: "Front Squat Hold", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Abs]},
 
-  // TODO misc category
+  // Other
   machine_hipAbduction: { name: "Hip Abduction", type: LiftType.Machine, muscleGroups: [MuscleGroup.Other] },
   machine_hipAdduction: { name: "Hip Adduction", type: LiftType.Machine, muscleGroups: [MuscleGroup.Other] },
   grippers: { name: "Grippers", type: LiftType.Other, muscleGroups: [MuscleGroup.Other] },

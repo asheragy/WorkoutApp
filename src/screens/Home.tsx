@@ -23,6 +23,7 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import {updateSettings} from '../state/settings';
 import {AppState} from '../state/store';
+import RoutineRepository from '../repository/RoutineRepository.ts';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -93,6 +94,12 @@ export function WorkoutList({navigation, route}: Props) {
       dispatch(updateSettings(settings));
 
       console.log('Using routine: ' + settings.routine);
+      RoutineRepository.getAll().then(routines => {
+        const curr = routines.find(x => x.id == settings.routine);
+        const title = curr?.id ? curr.title : 'Workouts';
+        navigation.setOptions({title});
+      });
+
       WorkoutRepository.getRoutine(settings.routine).then(result => {
         if (result.find(x => x.lastCompleted) == undefined) setWorkouts(result);
         // Sort by oldest completed first

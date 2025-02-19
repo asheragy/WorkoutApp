@@ -59,6 +59,19 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     navigation.pop();
   }
 
+  async function onCopy() {
+    const workout: Workout = {
+      ...existing,
+      name: title + ' (Copy)',
+      lifts: lifts,
+    };
+
+    delete workout.id;
+    await WorkoutRepository.upsert(workout);
+    route.params.onChanged();
+    navigation.pop();
+  }
+
   function onSelectExercise() {
     navigation.navigate('LiftDefList', {onSelect: onExerciseAdded});
   }
@@ -147,6 +160,9 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           keyExtractor={(_, index) => index.toString()}></DraggableFlatList>
         {route.params.workout && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>
+        )}
+        {route.params.workout && (
+          <Button title="Create Copy" onPress={onCopy}></Button>
         )}
       </View>
     </View>
