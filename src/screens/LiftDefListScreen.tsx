@@ -11,15 +11,14 @@ import {
 import {RootStackParamList} from '../App';
 import {LiftDef} from '../types/types';
 import {useTheme} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {AppState} from '../state/store';
+import {useAppSelector} from '../state/store';
 import Utils from '../components/Utils';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
 export function LiftDefListScreen({route, navigation}: Props) {
   const isSelection = route.params.onSelect != undefined;
-  const defs = useSelector((store: AppState) => store.liftDefs);
+  const defs = useAppSelector(store => store.liftDefs);
 
   const lifts = Array.from(defs.values()).sort((a, b) =>
     a.name.localeCompare(b.name),

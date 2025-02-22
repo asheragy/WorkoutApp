@@ -9,7 +9,6 @@ import {
 } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {GlobalSettings, LiftDef} from './types/types';
-import {createStore} from 'redux';
 import {Provider, useDispatch} from 'react-redux';
 import {LiftListScreen} from './screens/LiftListScreen';
 import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
@@ -22,10 +21,10 @@ import {StatsScreen} from './screens/StatsScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
 import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
 import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
-import {rootReducer} from './state/store';
 import LiftDefRepository from './repository/LiftDefRepository';
 import {MenuProvider} from 'react-native-popup-menu';
 import {RoutinesScreen} from './screens/Routines';
+import {store} from './state/store.ts';
 
 export type RootStackParamList = {
   Home: {
@@ -64,7 +63,6 @@ export type RootStackParamList = {
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
-const store = createStore(rootReducer);
 
 const App = () => {
   return (

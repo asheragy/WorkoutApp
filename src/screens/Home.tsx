@@ -21,9 +21,8 @@ import {MaterialHeaderButton} from '../components/Common';
 import {Lift, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
-import {AppState, updateSettings} from '../state/store';
+import {AppDispatch, AppState, updateSettings} from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
-import {AnyAction} from 'redux';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -37,7 +36,7 @@ type Props = StackScreenProps<RootStackParamList, 'Home'>;
 export function WorkoutList({navigation, route}: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const {colors} = useTheme();
-  const dispatch: Dispatch<AnyAction> = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

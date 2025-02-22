@@ -2,16 +2,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {LiftDef} from '../types/types';
 import Utils from '../components/Utils';
 import {SystemLifts} from './LiftDatabase';
-import {Dispatch} from 'react';
-import {AnyAction} from 'redux';
-import {updateLiftDefs} from '../state/store.ts';
+import {AppDispatch, updateLiftDefs} from '../state/store.ts';
 
 const key = 'liftdefs';
 
 export default class LiftDefRepository {
-  private readonly dispatch: Dispatch<AnyAction>;
+  private readonly dispatch: AppDispatch;
 
-  constructor(dispatch: Dispatch<AnyAction>) {
+  constructor(dispatch: AppDispatch) {
     this.dispatch = dispatch;
   }
 
