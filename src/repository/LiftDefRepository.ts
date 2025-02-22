@@ -4,7 +4,7 @@ import Utils from '../components/Utils';
 import {SystemLifts} from './LiftDatabase';
 import {Dispatch} from 'react';
 import {AnyAction} from 'redux';
-import {updateLiftDefs} from '../state/liftDefs';
+import {updateLiftDefs} from '../state/store.ts';
 
 const key = 'liftdefs';
 

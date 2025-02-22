@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Dispatch, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,9 +21,9 @@ import {MaterialHeaderButton} from '../components/Common';
 import {Lift, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
-import {updateSettings} from '../state/settings';
-import {AppState} from '../state/store';
+import {AppState, updateSettings} from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
+import {AnyAction} from 'redux';
 
 const mapStateToProps = (state: any) => {
   const {settings} = state;
@@ -37,7 +37,7 @@ type Props = StackScreenProps<RootStackParamList, 'Home'>;
 export function WorkoutList({navigation, route}: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const {colors} = useTheme();
-  const dispatch = useDispatch();
+  const dispatch: Dispatch<AnyAction> = useDispatch();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
