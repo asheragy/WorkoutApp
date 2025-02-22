@@ -4,7 +4,7 @@ import {TypedUseSelectorHook, useSelector} from 'react-redux';
 
 interface UpdateLiftDefAction {
   type: 'UPDATE_LIFTDEFS';
-  payload: Map<string, LiftDef>;
+  payload: Record<string, LiftDef>;
 }
 
 interface UpdateSettingsAction {
@@ -12,7 +12,7 @@ interface UpdateSettingsAction {
   payload: GlobalSettings;
 }
 
-export const updateLiftDefs = (liftDefs: Map<string, LiftDef>) =>
+export const updateLiftDefs = (liftDefs: Record<string, LiftDef>) =>
   <UpdateLiftDefAction>{
     type: 'UPDATE_LIFTDEFS',
     payload: liftDefs,
@@ -26,12 +26,12 @@ export const updateSettings = (settings: GlobalSettings) =>
 
 export interface AppState {
   settings: GlobalSettings;
-  liftDefs: Map<string, LiftDef>;
+  liftDefs: Record<string, LiftDef>;
 }
 
 const initialState: AppState = {
   settings: {},
-  liftDefs: new Map<string, LiftDef>(),
+  liftDefs: {},
 };
 
 export type AppAction = UpdateLiftDefAction | UpdateSettingsAction;

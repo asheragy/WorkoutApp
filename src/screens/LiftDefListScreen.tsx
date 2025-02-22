@@ -20,7 +20,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
   const isSelection = route.params.onSelect != undefined;
   const defs = useAppSelector(store => store.liftDefs);
 
-  const lifts = Array.from(defs.values()).sort((a, b) =>
+  const lifts = Array.from(Object.values(defs)).sort((a, b) =>
     a.name.localeCompare(b.name),
   );
 

@@ -23,7 +23,7 @@ export function LiftHistoryScreen({route, navigation}: Props) {
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   const liftId = route.params.liftId;
-  var def = defs.get(liftId)!;
+  const def = defs[liftId];
 
   function loadState() {
     LiftHistoryRepository.get(liftId).then(result => {

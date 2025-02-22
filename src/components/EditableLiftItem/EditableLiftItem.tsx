@@ -26,7 +26,7 @@ interface EditableLiftItemProps {
 export default function EditableLiftItem(props: EditableLiftItemProps) {
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
-  const def = defs.get(props.lift.id)!;
+  const def = defs[props.lift.id];
   const labels = Utils.normalizeSets(props.lift.sets, def).map(
     set => set.label,
   );

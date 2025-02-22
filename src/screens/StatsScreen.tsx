@@ -5,7 +5,7 @@ import {useSelector} from 'react-redux';
 import React, {useEffect, useState} from 'react';
 import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import {AppState} from '../state/store.ts';
+import {useAppSelector} from '../state/store.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -16,9 +16,7 @@ type GroupEntry = {
 
 export function StatsScreen({route, navigation}: Props) {
   const [entries, setEntries] = useState<GroupEntry[]>([]);
-  const defs: Map<string, LiftDef> = useSelector(
-    (store: AppState) => store.liftDefs,
-  );
+  const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
 
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
@@ -32,7 +30,7 @@ export function StatsScreen({route, navigation}: Props) {
         workout.lifts.forEach(lift => {
           const workSets = lift.sets.filter(set => !set.warmup).length;
 
-          const def = defs.get(lift.id)!;
+          const def = defs[lift.id];
           def.muscleGroups.forEach((group, index) => {
             let curr = result.get(group);
             if (curr == undefined) curr = 0;

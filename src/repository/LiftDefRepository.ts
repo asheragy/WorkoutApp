@@ -91,19 +91,19 @@ export default class LiftDefRepository {
     return JSON.parse(value);
   }
 
-  private static async getLookupMap(): Promise<Map<string, LiftDef>> {
+  private static async getLookupMap(): Promise<Record<string, LiftDef>> {
     const customDefs = await this.getAll();
-    const result = new Map<string, LiftDef>();
+    const result: Record<string, LiftDef> = {};
 
-    customDefs.forEach(def => result.set(def.id, def));
+    customDefs.forEach(def => (result[def.id] = def));
     SystemLifts.forEach(def => {
-      if (result.has(def.id)) {
+      if (result[def.id]) {
         // Use hardcoded name for system lifts
-        const entry = result.get(def.id)!;
+        const entry = result[def.id];
         entry.name = def.name;
-        result.set(def.id, entry);
+        result[def.id] = entry;
       } else {
-        result.set(def.id, def);
+        result[def.id] = def;
       }
     });
 

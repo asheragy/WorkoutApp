@@ -81,7 +81,7 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
         return {
           liftId: id,
           sets: match != undefined ? match.sets : [],
-          name: Utils.defToString(defs.get(id)!),
+          name: Utils.defToString(defs[id]),
         };
       });
 

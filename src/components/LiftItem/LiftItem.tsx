@@ -24,7 +24,7 @@ export default function LiftItem(props: {
   const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
-  const def = defs.get(props.lift.id)!;
+  const def = defs[props.lift.id];
 
   const onFinishEdit = (lift: Lift) => {
     const updatedLift: Lift = {...props.lift};

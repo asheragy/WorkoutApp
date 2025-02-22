@@ -23,11 +23,13 @@ export default class WorkoutHistoryRepository {
     });
   }
 
-  static async add(workout: Workout, defs: Map<string, LiftDef>) {
+  static async add(workout: Workout, defs: Record<string, LiftDef>) {
     const timestamp = new Date();
     const key = workout.id!;
     const history = await this.get(key);
-    const lifts = workout.lifts.filter(lift => lift.sets.find(set => set.completed) != undefined)
+    const lifts = workout.lifts.filter(
+      lift => lift.sets.find(set => set.completed) != undefined,
+    );
 
     const ids = lifts.map(lift => lift.id);
     const entry: WorkoutHistory = {
@@ -40,7 +42,7 @@ export default class WorkoutHistoryRepository {
 
     for (let i = 0; i < lifts.length; i++) {
       const lift = lifts[i];
-      const def = defs.get(lift.id)!;
+      const def = defs[lift.id];
       await LiftHistoryRepository.add(def, lift.sets, timestamp, key);
     }
   }

@@ -106,8 +106,10 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   }
 
   function confirmLiftDelete(index: number) {
+    const liftId = lifts[index].id;
+
     Alert.alert(
-      `Delete ${defs.get(lifts[index].id)?.name}?`,
+      `Delete ${defs[liftId].name}?`,
       undefined,
       [
         {

@@ -30,7 +30,7 @@ export function LiftListScreen({route, navigation}: Props) {
   function loadState() {
     LiftHistoryRepository.listKeys().then(result => {
       const arr = result
-        .map(key => defs.get(key)!)
+        .map(key => defs[key])
         .sort((a, b) => a.name.localeCompare(b.name));
 
       setLifts(arr);
