@@ -45,7 +45,14 @@ export function WorkoutList({navigation, route}: Props) {
           <OverflowMenu
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
-              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  fontSize: 24,
+                  color: colors.text,
+                }}>
+                ...
+              </Text>
             )}>
             {
               //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
@@ -182,7 +189,7 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
       {workout.lifts.map((lift, index) => (
         <LiftItem lift={lift} key={index}></LiftItem>
       ))}
-      <Text style={{paddingTop: 8}}>
+      <Text style={{paddingTop: 8, color: colors.text}}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
       </Text>
     </View>

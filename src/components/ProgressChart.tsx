@@ -1,6 +1,7 @@
 import React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
+import {useTheme} from '@react-navigation/native';
 
 export function ProgressChart(props: {
   title: string;
@@ -8,6 +9,8 @@ export function ProgressChart(props: {
   values: number[];
 }) {
   if (props.dates.length == 0) return <View></View>;
+
+  const {colors} = useTheme();
 
   // https://www.npmjs.com/package/react-native-chart-kit
   return (
@@ -17,7 +20,7 @@ export function ProgressChart(props: {
         justifyContent: 'center',
         alignItems: 'center',
       }}>
-      <Text>{props.title}</Text>
+      <Text style={{color: colors.text}}>{props.title}</Text>
       <LineChart
         data={{
           labels: props.dates.map(x => x.getMonth() + 1 + '/' + x.getDate()),

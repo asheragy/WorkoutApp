@@ -6,6 +6,7 @@ import React, {useEffect, useState} from 'react';
 import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import {useAppSelector} from '../state/store.ts';
+import {useTheme} from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -15,6 +16,7 @@ type GroupEntry = {
 };
 
 export function StatsScreen({route, navigation}: Props) {
+  const {colors} = useTheme();
   const [entries, setEntries] = useState<GroupEntry[]>([]);
   const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
 
@@ -52,11 +54,13 @@ export function StatsScreen({route, navigation}: Props) {
   const renderItem = (item: ListRenderItemInfo<GroupEntry>) => (
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{width: '50%', margin: 4}}>
-        <Text style={{textAlign: 'right'}}>{MuscleGroup[item.item.group]}</Text>
+        <Text style={{textAlign: 'right', color: colors.text}}>
+          {MuscleGroup[item.item.group]}
+        </Text>
       </View>
 
       <View style={{width: '50%', margin: 4}}>
-        <Text>{item.item.sets}</Text>
+        <Text style={{color: colors.text}}>{item.item.sets}</Text>
       </View>
     </View>
   );

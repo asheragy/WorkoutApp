@@ -22,12 +22,14 @@ import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
+// TODO Better name for this, its the list of lifts with active history
 export function LiftListScreen({route, navigation}: Props) {
   const [lifts, setLifts] = useState<LiftDef[]>([]);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   function loadState() {
+    // TODO can this just be from defs?
     LiftHistoryRepository.listKeys().then(result => {
       const arr = result
         .map(key => defs[key])
@@ -56,7 +58,10 @@ export function LiftListScreen({route, navigation}: Props) {
           <OverflowMenu
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
-              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+              <Text
+                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                ...
+              </Text>
             )}>
             <HiddenItem title="Reset History" onPress={() => onReset()} />
           </OverflowMenu>

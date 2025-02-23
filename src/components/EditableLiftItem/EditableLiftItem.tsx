@@ -104,7 +104,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
           flexDirection: 'row',
           alignItems: 'center',
         }}>
-        <Text style={{width: '20%'}}></Text>
+        <View style={{width: '20%'}}></View>
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
           {Utils.defToString(def)}
         </Text>
@@ -135,12 +135,17 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
       </View>
 
       {props.hideCompleted && (
-        <TextInput placeholder={'Note'} onChangeText={onNoteChange}>
+        <TextInput
+          placeholder={'Note'}
+          onChangeText={onNoteChange}
+          style={{color: colors.text}}>
           {props.lift.note}
         </TextInput>
       )}
       {!props.hideCompleted && props.lift.note != undefined && (
-        <Text style={{paddingVertical: 8}}>{props.lift.note}</Text>
+        <Text style={{paddingVertical: 8, color: colors.text}}>
+          {props.lift.note}
+        </Text>
       )}
 
       <PersistedSetHeader></PersistedSetHeader>

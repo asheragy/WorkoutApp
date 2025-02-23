@@ -6,10 +6,12 @@ import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {LiftDef, LiftType, MuscleGroup} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {useDispatch} from 'react-redux';
+import {useTheme} from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
 export function LiftDefEditScreen({route, navigation}: Props) {
+  const {colors} = useTheme();
   const systemDef = route.params.def?.system == true;
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
@@ -82,9 +84,10 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   return (
     <View>
       <View style={styles.viewGroup}>
-        <Text>{def.id}</Text>
-        <Text>Name:</Text>
+        <Text style={{color: colors.text}}>{def.id}</Text>
+        <Text style={{color: colors.text}}>Name:</Text>
         <TextInput
+          style={{color: colors.text}}
           editable={!systemDef}
           onChangeText={newName =>
             setDef(prevState => ({
@@ -97,7 +100,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={[styles.viewGroup, {zIndex: 90}]}>
-        <Text>Type:</Text>
+        <Text style={{color: colors.text}}>Type:</Text>
         <DropDownPicker
           disabled={systemDef}
           items={items}
@@ -109,7 +112,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={[styles.viewGroup, {zIndex: 80}]}>
-        <Text>Primary:</Text>
+        <Text style={{color: colors.text}}>Primary:</Text>
         <DropDownPicker
           items={muscleGroupItems}
           open={primaryOpen}
@@ -120,7 +123,9 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={[styles.viewGroup, {zIndex: 70}]}>
-        <Text>{'Secondary: ' + secondary.map(i => MuscleGroup[i])}</Text>
+        <Text style={{color: colors.text}}>
+          {'Secondary: ' + secondary.map(i => MuscleGroup[i])}
+        </Text>
         <DropDownPicker
           disabled={primary == undefined}
           disabledStyle={{
@@ -136,8 +141,9 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={styles.viewGroup}>
-        <Text>Training Max:</Text>
+        <Text style={{color: colors.text}}>Training Max:</Text>
         <TextInput
+          style={{color: colors.text}}
           keyboardType="numeric"
           onChangeText={newText => {
             const parsed = parseFloat(newText);

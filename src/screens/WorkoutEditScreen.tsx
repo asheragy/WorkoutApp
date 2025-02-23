@@ -143,9 +143,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   return (
     <View style={{flex: 1}}>
-      <TextInput onChangeText={setTitle}>{title}</TextInput>
+      <TextInput onChangeText={setTitle} style={{color: colors.text}}>
+        {title}
+      </TextInput>
       {existing != undefined && (
-        <Text>
+        <Text style={{color: colors.text}}>
           {'Last Completed: ' + Utils.lastCompleted(existing.lastCompleted)}
         </Text>
       )}

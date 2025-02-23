@@ -19,6 +19,7 @@ import {MaterialHeaderButton} from '../components/Common';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
+import {useTheme} from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
@@ -27,6 +28,7 @@ LogBox.ignoreLogs([
 ]);
 
 export function WorkoutScreen({route, navigation}: Props) {
+  const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const [workout, setWorkout] = useState<Workout>({
     name: '',
@@ -43,7 +45,10 @@ export function WorkoutScreen({route, navigation}: Props) {
           <OverflowMenu
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
-              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+              <Text
+                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                ...
+              </Text>
             )}>
             <HiddenItem title="History" onPress={() => onHistory()} />
           </OverflowMenu>

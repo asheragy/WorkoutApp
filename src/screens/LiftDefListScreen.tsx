@@ -16,6 +16,7 @@ import Utils from '../components/Utils';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
+// TODO better name for this, its a subset of
 export function LiftDefListScreen({route, navigation}: Props) {
   const isSelection = route.params.onSelect != undefined;
   const defs = useAppSelector(store => store.liftDefs);
@@ -70,7 +71,9 @@ function DefListItem(props: DefItemProps) {
 
   return (
     <View style={{padding: 8}}>
-      <Text>{Utils.defToString(props.def) + postfix}</Text>
+      <Text style={{color: colors.text}}>
+        {Utils.defToString(props.def) + postfix}
+      </Text>
     </View>
   );
 }

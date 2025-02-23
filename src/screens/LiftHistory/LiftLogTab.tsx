@@ -15,9 +15,11 @@ export function LiftLogTab(props: {entries: LiftHistory[]}) {
   const renderItem = (item: ListRenderItemInfo<LiftHistory>) => {
     return (
       <View style={{padding: 4}}>
-        <Text>{item.item.timestamp.toDateString()}</Text>
+        <Text style={{color: colors.text}}>
+          {item.item.timestamp.toDateString()}
+        </Text>
         {item.item.sets.map((set, index) => (
-          <Text key={index.toString()}>
+          <Text key={index.toString()} style={{color: colors.text}}>
             {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
           </Text>
         ))}

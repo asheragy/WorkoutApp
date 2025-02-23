@@ -67,7 +67,10 @@ export function WeightScreen({route, navigation}: Props) {
           <OverflowMenu
             style={{marginHorizontal: 10}}
             OverflowIcon={({color}) => (
-              <Text style={{fontWeight: 'bold', fontSize: 24}}>...</Text>
+              <Text
+                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                ...
+              </Text>
             )}>
             <HiddenItem title="Reset" onPress={() => onReset()} />
             <HiddenItem title="Remove Last" onPress={() => onRemoveLast()} />

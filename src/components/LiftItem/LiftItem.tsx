@@ -61,7 +61,7 @@ export default function LiftItem(props: {
           marginVertical: 8,
           flexDirection: 'row',
         }}>
-        <Text style={{width: '20%'}}></Text>
+        <View style={{width: '20%'}}></View>
         <Text style={[Style_LiftText, headerText, {width: '60%'}]}>
           {Utils.defToString(def)}
         </Text>
