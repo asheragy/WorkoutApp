@@ -52,15 +52,9 @@ export default class Utils {
 
   static defToString(def: LiftDef) {
     if (def == undefined) return '';
-    var result = def.name;
+    let result = def.name;
 
-    if (
-      def.type != LiftType.Machine &&
-      def.type! - LiftType.PlateMachine &&
-      def.type != LiftType.Barbell &&
-      def.type != LiftType.Bodyweight
-    )
-      result += ' (' + LiftType[def.type] + ')';
+    if (def.multiple) result += ' (' + LiftType[def.type] + ')';
 
     return result;
   }

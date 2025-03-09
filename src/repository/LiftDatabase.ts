@@ -12,8 +12,8 @@ const createDictionary = <T extends Record<string, Omit<LiftDef, "id">>>(
 
 
 export const Lifts = createDictionary({
-  // TODO add (Plate Loaded) postfix and remove HS
-  // TODO fix ids
+  // TODO remove HS
+  // TODO fix ids to include type AFTER
 
   // Chest
   barbell_benchPress: { name: "Bench Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
@@ -21,7 +21,7 @@ export const Lifts = createDictionary({
   dumbbell_benchPress: { name: "Bench Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   dumbbell_inclinePress: { name: "Incline Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   machine_flys: { name: "Flys", type: LiftType.Machine, muscleGroups: [MuscleGroup.Chest] },
-  plateMachine_inclinePress: { name: "Incline Press Machine", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  plateMachine_inclinePress: { name: "Incline Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
 
   // Back
   barbell_rows: { name: "Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
@@ -37,7 +37,7 @@ export const Lifts = createDictionary({
   barbell_overheadPress: { name: "Overhead Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   machine_reverseFlys: { name: "Reverse Flys", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   dumbbell_latRaises: { name: "Lat Raise", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders] },
-  machine_latRaise: { name: "Lat Raise Machine", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
+  machine_latRaise: { name: "Lat Raise", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   machine_facePulls: { name: "Face Pulls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   plateMachine_hsPress: { name: "HS Overhead Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
 
@@ -68,7 +68,7 @@ export const Lifts = createDictionary({
   // Hamstrings / Glutes
   plateMachine_hipThrust: { name: "Hip Thrust", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Hamstrings] },
   machine_legCurls: { name: "Leg Curls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
-  machine_kneelingLegCurls: { name: "Kneeling Leg Curls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
+  machine_kneelingLegCurls: { name: "Leg Curls (Kneeling)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
   bodyweight_backExtensions: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
   barbell_deadlift: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
   barbell_sumoDeadlift: { name: "Sumo DL", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
@@ -97,7 +97,6 @@ export const Lifts = createDictionary({
 } as const);
 
 
-// TODO add postfix on all duplicates
 export const SystemLifts = Object.values(Lifts).map(def => {
   return {
     ...def,

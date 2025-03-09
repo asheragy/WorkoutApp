@@ -44,6 +44,8 @@ export default class LiftDefRepository {
   }
 
   private async update(def: LiftDef): Promise<LiftDef> {
+    delete def.multiple; // Not persisted
+
     let items = await LiftDefRepository.getAll();
     let index = items.findIndex(item => item.id == def.id);
 
@@ -105,6 +107,18 @@ export default class LiftDefRepository {
       } else {
         result[def.id] = def;
       }
+    });
+
+    const nameMap = new Map<String, number>();
+    Object.values(result).forEach(v => {
+      let count = nameMap.get(v.name) ?? 0;
+      count++;
+      nameMap.set(v.name, count);
+    });
+
+    Object.values(result).forEach(v => {
+      let count = nameMap.get(v.name)!!;
+      if (count > 1) v.multiple = true;
     });
 
     return result;
