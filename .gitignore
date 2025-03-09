@@ -10,6 +10,9 @@ local.properties
 *.keystore
 !debug.keystore
 
+# Generated resources
+android/app/src/main/res/**/**/*.png
+
 # node.js
 #
 node_modules/
