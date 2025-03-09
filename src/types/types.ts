@@ -1,6 +1,7 @@
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
+  // TODO cable type?
   Machine, // Weight stack machine
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
   SSB,

@@ -8,14 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {
-  HeaderButtons,
-  HiddenItem,
-  OverflowMenu,
-} from 'react-navigation-header-buttons';
 import {RootStackParamList} from '../App';
 import {LiftDef} from '../types/types';
-import {MaterialHeaderButton} from '../components/Common';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
@@ -46,29 +40,6 @@ export function LiftListScreen({route, navigation}: Props) {
       liftId: def.id,
     });
   }
-
-  function onReset() {
-    // TODO probably don't want to keep this
-  }
-
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
-          <OverflowMenu
-            style={{marginHorizontal: 10}}
-            OverflowIcon={({color}) => (
-              <Text
-                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
-                ...
-              </Text>
-            )}>
-            <HiddenItem title="Reset History" onPress={() => onReset()} />
-          </OverflowMenu>
-        </HeaderButtons>
-      ),
-    });
-  }, [navigation]);
 
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>

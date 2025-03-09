@@ -1,1 +1,1 @@
-yarn src/repository/LiftDatabase.ts
+src/repository/LiftDatabase.ts
