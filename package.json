@@ -31,7 +31,7 @@
     "react-native-popup-menu": "^0.16.1",
     "react-native-reanimated": "^3.9.0",
     "react-native-safe-area-context": "^4.7.0",
-    "react-native-screens": "^3.25.0",
+    "react-native-screens": "^4.8.0",
     "react-native-svg": "^15.10.1",
     "react-native-tab-view": "^4.0.5",
     "react-native-uuid": "^2.0.3",
@@ -40,7 +40,6 @@
     "redux": "^5.0.1"
   },
   "dependenciesComments": {
-    "react-native-svg": "try after updating react higher than 0.74",
     "react-navigation-header-buttons": "requires newer version of nodejs"
   },
   "devDependencies": {

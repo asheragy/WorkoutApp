@@ -3966,7 +3966,7 @@ __metadata:
     react-native-popup-menu: "npm:^0.16.1"
     react-native-reanimated: "npm:^3.9.0"
     react-native-safe-area-context: "npm:^4.7.0"
-    react-native-screens: "npm:^3.25.0"
+    react-native-screens: "npm:^4.8.0"
     react-native-svg: "npm:^15.10.1"
     react-native-tab-view: "npm:^4.0.5"
     react-native-uuid: "npm:^2.0.3"
@@ -9963,16 +9963,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^3.25.0":
-  version: 3.35.0
-  resolution: "react-native-screens@npm:3.35.0"
+"react-native-screens@npm:^4.8.0":
+  version: 4.9.1
+  resolution: "react-native-screens@npm:4.9.1"
   dependencies:
     react-freeze: "npm:^1.0.0"
     warn-once: "npm:^0.1.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/51b4ae9a5432dc980d560ac07baaddda12a78f56f2106e0e9498f6b46d4928c26d8288c4818627903675cc8c4d3643f14358d3ae448a3de2cb962a16270c201d
+  checksum: 10c0/2debc26beea458996873d66741d7d57653507852f67e5cf73011cc28770bb659cbb6b3060e35892ad0cd8db4f4e64198f94bc2085681f1450b6b446253553454
   languageName: node
   linkType: hard
 
