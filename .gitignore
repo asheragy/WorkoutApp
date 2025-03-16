@@ -9,6 +9,7 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+.kotlin/
 
 # Generated resources
 android/app/src/main/res/**/**/*.png
