@@ -1,4 +1,4 @@
-import {LiftType, GlobalSettings} from '../types/types';
+import {GlobalSettings, LiftType} from '../types/types';
 import {LiftSet} from '../types/workout';
 
 export default class SetUtils {
@@ -13,7 +13,8 @@ export default class SetUtils {
     if (
       liftType == LiftType.Machine ||
       set.percentage ||
-      liftType == LiftType.PlateMachine
+      liftType == LiftType.PlateMachine ||
+      liftType == LiftType.Bodyweight
     )
       step = 2.5;
     else if (
