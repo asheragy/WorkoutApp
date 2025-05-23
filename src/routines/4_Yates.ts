@@ -18,11 +18,11 @@ export const YatesSplit: [Routine, Workout[]] = [
       name: 'Shoulders / Triceps / Abs',
       lifts: [
         {
-          id: Lifts.barbell_overheadPress.id,
+          id: Lifts.ohp_barbell.id,
           sets: [],
         },
         {
-          id: Lifts.closegrip_benchPress.id,
+          id: Lifts.bench_closegrip.id,
           sets: [],
         },
       ],
@@ -31,7 +31,7 @@ export const YatesSplit: [Routine, Workout[]] = [
       name: 'Back',
       lifts: [
         {
-          id: Lifts.barbell_deadlift.id,
+          id: Lifts.deadlift_barbell.id,
           sets: [],
         },
       ],
@@ -40,11 +40,11 @@ export const YatesSplit: [Routine, Workout[]] = [
       name: 'Chest / Biceps',
       lifts: [
         {
-          id: Lifts.dumbbell_benchPress.id,
+          id: Lifts.bench_dumbbell.id,
           sets: [],
         },
         {
-          id: Lifts.dumbbell_inclineCurls.id,
+          id: Lifts.curl_incline.id,
           sets: [],
         },
       ],
@@ -53,7 +53,7 @@ export const YatesSplit: [Routine, Workout[]] = [
       name: 'Legs',
       lifts: [
         {
-          id: Lifts.barbell_frontSquat.id,
+          id: Lifts.squat_front.id,
           sets: [],
         },
       ],

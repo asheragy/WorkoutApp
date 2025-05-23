@@ -54,7 +54,12 @@ export function WorkoutEditScreen({route, navigation}: Props) {
       workout.routineId = settings.routine;
     }
 
-    await WorkoutRepository.upsert(workout);
+    try {
+      await WorkoutRepository.upsert(workout);
+    } catch (error) {
+      console.error('Failed to save workout:', error);
+    }
+
     route.params.onChanged();
     navigation.pop();
   }

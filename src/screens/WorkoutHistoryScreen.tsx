@@ -1,23 +1,16 @@
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {useTheme} from '@react-navigation/native';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect, useState} from 'react';
 import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import {RootStackParamList} from '../App';
-import {Lift, Workout} from '../types/workout';
-import WorkoutRepository from '../repository/WorkoutRepository';
 import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
-import {LiftDef, PersistedSet} from '../types/types';
+import {PersistedSet} from '../types/types';
 import Utils from '../components/Utils';
-import LiftDefRepository from '../repository/LiftDefRepository';
-import {SystemLifts} from '../repository/LiftDatabase';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutHistory'>;
-
-const Tab = createMaterialTopTabNavigator();
 
 type LiftHistoryEntry = {
   timestamp: Date;
@@ -55,10 +48,10 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
     );
     var allLifts: LiftHistoryEntry[] = [];
 
-    for (var i = 0; i < liftIds.length; i++) {
-      var liftHistory = await (
-        await LiftHistoryRepository.get(liftIds[i])
-      ).filter(lift => lift.workoutId == workoutId);
+    for (let i = 0; i < liftIds.length; i++) {
+      const liftHistory = (await LiftHistoryRepository.get(liftIds[i])).filter(
+        lift => lift.workoutId == workoutId,
+      );
 
       liftHistory.forEach(hist => {
         var entry: LiftHistoryEntry = {

@@ -5,7 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start",
+    "start": "react-native start --reset-cache --client-logs",
     "test": "jest",
     "lint": "eslint .",
     "types": "tsc --skipLibCheck",
@@ -38,9 +38,6 @@
     "react-navigation-header-buttons": "^11.0.0",
     "react-redux": "^9.2.0",
     "redux": "^5.0.1"
-  },
-  "dependenciesComments": {
-    "react-navigation-header-buttons": "requires newer version of nodejs"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

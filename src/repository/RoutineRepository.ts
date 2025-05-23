@@ -1,7 +1,7 @@
 import {Routine, Workout} from '../types/workout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UpperLower} from '../routines/UpperLower.ts';
-import {YatesSplit} from '../routines/Yates.ts';
+import {UpperLower} from '../routines/4_UpperLower.ts';
+import {YatesSplit} from '../routines/4_Yates.ts';
 
 const key = 'routines';
 

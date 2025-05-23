@@ -18,11 +18,11 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Upper 1',
       lifts: [
         {
-          id: Lifts.barbell_overheadPress.id,
+          id: Lifts.ohp_barbell.id,
           sets: [],
         },
         {
-          id: Lifts.barbell_rows.id,
+          id: Lifts.row_barbell.id,
           sets: [],
         },
       ],
@@ -31,7 +31,7 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Lower 1',
       lifts: [
         {
-          id: Lifts.barbell_deadlift.id,
+          id: Lifts.deadlift_barbell.id,
           sets: [],
         },
       ],
@@ -40,11 +40,11 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Upper 1',
       lifts: [
         {
-          id: Lifts.bodyweight_pullups.id,
+          id: Lifts.pullup.id,
           sets: [],
         },
         {
-          id: Lifts.dumbbell_benchPress.id,
+          id: Lifts.bench_dumbbell.id,
           sets: [],
         },
       ],
@@ -53,7 +53,7 @@ export const UpperLower: [Routine, Workout[]] = [
       name: 'Lower 2',
       lifts: [
         {
-          id: Lifts.barbell_frontSquat.id,
+          id: Lifts.squat_front.id,
           sets: [],
         },
       ],
