@@ -126,8 +126,15 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
                 <Image source={require('../../icons/more.png')}></Image>
               </MenuTrigger>
               <MenuOptions
+                customStyles={{optionsContainer: {}}}
                 optionsContainerStyle={{backgroundColor: colors.border}}>
-                <MenuOption onSelect={() => props.onDelete?.()} text="Delete" />
+                <MenuOption
+                  customStyles={{
+                    optionText: {color: colors.notification, fontSize: 16},
+                  }}
+                  onSelect={() => props.onDelete?.()}
+                  text="Delete"
+                />
               </MenuOptions>
             </Menu>
           </View>
