@@ -18,6 +18,7 @@ import {ReadOnlySetTable} from './ReadOnlySetTable';
 
 export default function LiftItem(props: {
   lift: Lift;
+  overrideComplete: boolean;
   onLiftChanged: (lift: Lift) => void;
   onViewLog: (lift: Lift) => void;
 }) {
@@ -46,10 +47,12 @@ export default function LiftItem(props: {
 
   const completed =
     props.lift.hide ||
+    props.overrideComplete ||
     (props.lift.sets.length > 0 && props.lift.sets.every(set => set.completed));
 
   const headerText: StyleProp<TextStyle> = {
-    color: props.lift.hide ? colors.border : colors.text,
+    color:
+      props.lift.hide || props.overrideComplete ? colors.border : colors.text,
     textDecorationLine: completed ? 'line-through' : undefined,
     textDecorationStyle: completed ? 'solid' : undefined,
   };
@@ -63,7 +66,7 @@ export default function LiftItem(props: {
         }}>
         <View style={{width: '20%'}}></View>
         <Text style={[Style_LiftText, headerText, {width: '60%'}]}>
-          {Utils.defToString(def)}
+          {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
         </Text>
         <View
           style={{

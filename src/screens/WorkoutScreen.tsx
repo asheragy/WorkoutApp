@@ -123,7 +123,7 @@ export function WorkoutScreen({route, navigation}: Props) {
     const lifts = [...workout.lifts];
     lifts[index] = lift;
 
-    lifts.forEach(x => Log.lift(x));
+    //lifts.forEach(x => Log.lift(x));
 
     const updatedWorkout = {
       ...workout,
@@ -145,8 +145,13 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
-  const activeLifts = workout.lifts.filter(x => !x.hide);
-  const hiddenLifts = workout.lifts.filter(x => x.hide);
+  const completedAlts = getCompletedAlts(workout.lifts);
+  const activeLifts = workout.lifts.filter(
+    x => !x.hide && !completedAlts.includes(x.id),
+  );
+  const hiddenLifts = workout.lifts.filter(
+    x => x.hide || completedAlts.includes(x.id),
+  );
   const sortedLifts = activeLifts.concat(hiddenLifts);
 
   return (
@@ -157,6 +162,7 @@ export function WorkoutScreen({route, navigation}: Props) {
             lift={lift}
             onViewLog={onViewLog}
             onLiftChanged={onLiftChanged}
+            overrideComplete={completedAlts.includes(lift.id)}
             key={index}></LiftItem>
         ))}
       </View>
@@ -169,6 +175,43 @@ export function WorkoutScreen({route, navigation}: Props) {
       </View>
     </ScrollView>
   );
+}
+
+function getCompletedAlts(lifts: Lift[]): string[] {
+  const groups: string[][] = [];
+
+  // Create groups of alternates with their primary
+  let curr: string[] = [];
+  lifts.forEach(lift => {
+    if (!lift.alternate) {
+      if (curr.length > 1) groups.push(curr);
+
+      curr = [lift.id];
+    } else {
+      curr.push(lift.id);
+    }
+  });
+
+  const result: string[] = [];
+  groups.forEach(group => {
+    // If at least 1 set in any lift is completed, the other lifts can be hidden
+    const liftsForGroup = lifts.filter(x => group.includes(x.id));
+    const anyCompleted =
+      liftsForGroup
+        .map(lift => lift.sets.filter(set => set.completed).length)
+        .filter(count => count > 0).length > 0;
+
+    // Return all that have not completed yet
+    if (anyCompleted) {
+      liftsForGroup.forEach(lift => {
+        if (lift.sets.every(set => !set.completed)) {
+          result.push(lift.id);
+        }
+      });
+    }
+  });
+
+  return result;
 }
 
 const styles = StyleSheet.create({

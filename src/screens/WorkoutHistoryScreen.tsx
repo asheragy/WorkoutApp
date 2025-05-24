@@ -128,9 +128,9 @@ function WorkoutHistoryListItem(props: {entry: WorkoutEntry}) {
             <Text style={{fontWeight: 'bold', color: colors.text}}>
               {lift.name}
             </Text>
-            {lift.sets.map(set => {
+            {lift.sets.map((set, index) => {
               return (
-                <Text style={{color: colors.text}}>
+                <Text style={{color: colors.text}} key={index.toString()}>
                   {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
                 </Text>
               );

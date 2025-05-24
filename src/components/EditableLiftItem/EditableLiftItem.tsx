@@ -36,6 +36,13 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange({...props.lift, note: note.length > 0 ? note : undefined});
   }
 
+  function onToggleAlt() {
+    props.onChange({
+      ...props.lift,
+      alternate: props.lift.alternate ? undefined : true,
+    });
+  }
+
   function addSet() {
     let set: LiftSet = {weight: 0, reps: 0};
     if (props.lift.sets.length > 0) {
@@ -106,7 +113,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         }}>
         <View style={{width: '20%'}}></View>
         <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
-          {Utils.defToString(def)}
+          {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
         </Text>
         {props.onDelete && (
           <View
@@ -134,6 +141,13 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
                   }}
                   onSelect={() => props.onDelete?.()}
                   text="Delete"
+                />
+                <MenuOption
+                  customStyles={{
+                    optionText: {color: colors.notification, fontSize: 16},
+                  }}
+                  onSelect={onToggleAlt}
+                  text="Alternate"
                 />
               </MenuOptions>
             </Menu>

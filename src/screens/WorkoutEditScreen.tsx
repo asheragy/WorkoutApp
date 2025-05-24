@@ -43,6 +43,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   }, [navigation, lifts]);
 
   async function onSave() {
+    if (lifts[0].alternate) {
+      Alert.alert('Error', 'First lift cannot be an alternate');
+      return;
+    }
+
     const workout: Workout = {
       ...existing,
       name: title,

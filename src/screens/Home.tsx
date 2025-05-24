@@ -186,9 +186,11 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
         {workout.name}
       </Text>
 
-      {workout.lifts.map((lift, index) => (
-        <LiftItem lift={lift} key={index}></LiftItem>
-      ))}
+      {workout.lifts
+        .filter(x => !x.alternate)
+        .map((lift, index) => (
+          <LiftItem lift={lift} key={index}></LiftItem>
+        ))}
       <Text style={{paddingTop: 8, color: colors.text}}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
       </Text>

@@ -20,6 +20,7 @@ export type Lift = {
   goals?: LiftSet[];
   hide?: boolean;
   note?: string;
+  alternate?: boolean;
 };
 
 export type LiftSet = {

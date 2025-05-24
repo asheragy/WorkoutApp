@@ -2822,9 +2822,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/checkbox@npm:^0.5.17":
-  version: 0.5.17
-  resolution: "@react-native-community/checkbox@npm:0.5.17"
+"@react-native-community/checkbox@npm:^0.5.20":
+  version: 0.5.20
+  resolution: "@react-native-community/checkbox@npm:0.5.20"
   peerDependencies:
     react: "*"
     react-native: ">= 0.62"
@@ -2832,7 +2832,7 @@ __metadata:
   peerDependenciesMeta:
     react-native-windows:
       optional: true
-  checksum: 10c0/20c0e078d78a11bf8bc20a212644f1617e9238038cc62e89385c7e0964ddca2edd2316576f013fde70f5a3dd7f01abf36464fa9cdbca0f2f4d29b3f5019930a6
+  checksum: 10c0/ee6176dfc882330fb84c871290ed1398d445c64dd689a4c311e4b1e5d6d7e1c540c9678467a0c5e57579640dc1decde322b77835cdd386976be957fb2c636287
   languageName: node
   linkType: hard
 
@@ -3910,7 +3910,7 @@ __metadata:
     "@babel/runtime": "npm:^7.25.0"
     "@eslint/js": "npm:^9.19.0"
     "@react-native-async-storage/async-storage": "npm:2.1.2"
-    "@react-native-community/checkbox": "npm:^0.5.17"
+    "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:15.0.1"
     "@react-native-community/cli-platform-android": "npm:15.0.1"
     "@react-native-community/cli-platform-ios": "npm:15.0.1"
