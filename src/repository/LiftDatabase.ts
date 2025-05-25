@@ -31,7 +31,7 @@ export const Lifts = createDictionary({
   uprightRow_barbell: { name: "Upright Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Shoulders] },
   pulldown_cable: { name: "Pulldowns (Cable)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_hsHighRow: { name: "Pulldowns (High Row)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
-  pulldown_plate: { name: "Pulldowns", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_plateMachine: { name: "Pulldowns", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_machine: { name: "Pulldowns", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pullup: { name: "Pullups", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
 
@@ -89,13 +89,13 @@ export const Lifts = createDictionary({
 
   // Abs
   legRaise: { name: "Leg Raises", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] },
-  planks: { name: "Planks", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] }, // TODO time
+  plank: { name: "Planks", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] }, // TODO time
   frontSquatHold: { name: "Front Squat Hold", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Abs]},
 
   // Other
   hipAbduction: { name: "Hip Abduction", type: LiftType.Machine, muscleGroups: [MuscleGroup.Other] },
   hipAdduction: { name: "Hip Adduction", type: LiftType.Machine, muscleGroups: [MuscleGroup.Other] },
-  grippers: { name: "Grippers", type: LiftType.Other, muscleGroups: [MuscleGroup.Other] },
+  gripper: { name: "Grippers", type: LiftType.Other, muscleGroups: [MuscleGroup.Other] },
   shrug_dumbbell: { name: "Shrugs", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Other] },
   shrug_barbell: { name: "Shrugs", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Other] },
   tibRaise: { name: "Tib Raises", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Other] },

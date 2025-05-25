@@ -1,5 +1,4 @@
 import {
-  GlobalSettings,
   LiftDef,
   LiftType,
   NormalizedSet,
@@ -54,7 +53,10 @@ export default class Utils {
     if (def == undefined) return '';
     let result = def.name;
 
-    if (def.multiple) result += ' (' + LiftType[def.type] + ')';
+    if (def.multiple && def.type != LiftType.Bodyweight) {
+      let type = LiftType[def.type].replaceAll('PlateMachine', 'Plate-Loaded');
+      result += ` (${type})`;
+    }
 
     return result;
   }

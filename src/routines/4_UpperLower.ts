@@ -1,5 +1,6 @@
 import {Routine, Workout} from '../types/workout.ts';
 import {Lifts} from '../repository/LiftDatabase.ts';
+import {buildWorkout} from './helper.ts';
 
 /*
 Upper 1: Vertical Press / Horizontal Pull
@@ -17,46 +18,59 @@ export const UpperLower: [Routine, Workout[]] = [
     {
       name: 'Upper 1',
       lifts: [
-        {
-          id: Lifts.ohp_barbell.id,
-          sets: [],
-        },
-        {
-          id: Lifts.row_barbell.id,
-          sets: [],
-        },
+        Lifts.ohp_barbell,
+        Lifts.row_barbell,
+        [Lifts.ohp_plateMachine, Lifts.ohp_machine],
+        [Lifts.row_cable, Lifts.row_plateMachine],
+        Lifts.pullover_dumbbell,
+        [Lifts.dip_machine, Lifts.dip],
+        Lifts.curl_hammer,
+        Lifts.fly_machine,
       ],
     },
     {
       name: 'Lower 1',
       lifts: [
-        {
-          id: Lifts.deadlift_barbell.id,
-          sets: [],
-        },
+        Lifts.hipAbduction,
+        Lifts.hipAdduction,
+        Lifts.deadlift_barbell,
+        Lifts.splitSquat,
+        Lifts.calfRaise_standing,
+        [Lifts.hipThrust, Lifts.backExtension],
+        Lifts.plank,
+        Lifts.squat_belt,
       ],
     },
     {
-      name: 'Upper 1',
+      name: 'Upper 2',
       lifts: [
-        {
-          id: Lifts.pullup.id,
-          sets: [],
-        },
-        {
-          id: Lifts.bench_dumbbell.id,
-          sets: [],
-        },
+        Lifts.inclinePress_barbell,
+        Lifts.pullup,
+        Lifts.bench_dumbbell,
+        [
+          Lifts.pulldown_machine,
+          Lifts.pulldown_plateMachine,
+          Lifts.pulldown_cable,
+        ],
+        [Lifts.inclinePress_plateMachine, Lifts.inclinePress_machine],
+        Lifts.shrug_dumbbell,
+        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
+        [Lifts.reverseFly_machine, Lifts.uprightRow_barbell],
+        Lifts.curl_incline,
       ],
     },
     {
       name: 'Lower 2',
       lifts: [
-        {
-          id: Lifts.squat_front.id,
-          sets: [],
-        },
+        Lifts.legExtensions,
+        Lifts.legCurl_kneeling,
+        Lifts.squat_front,
+        Lifts.rdl_barbell,
+        Lifts.calfRaise_seated,
+        Lifts.legRaise,
+        Lifts.gluteKickback,
+        [Lifts.legPress, Lifts.squat_v],
       ],
     },
-  ],
+  ].map(buildWorkout),
 ];
