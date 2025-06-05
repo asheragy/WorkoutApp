@@ -12,7 +12,7 @@ Lower 2: Quad focus
 export const UpperLower: [Routine, Workout[]] = [
   {
     id: '3995deca-8204-4dc9-841b-1f4db64a486f',
-    title: 'Upper Lower',
+    title: '4-day Upper Lower',
   },
   [
     {

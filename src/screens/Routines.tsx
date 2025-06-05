@@ -23,7 +23,9 @@ export function RoutinesScreen({route, navigation}: Props) {
 
   function load() {
     SettingsRepository.get().then(settings => setSelected(settings.routine));
-    RoutineRepository.getAll().then(setRoutines);
+    RoutineRepository.getAll().then(r =>
+      setRoutines(r.sort((a, b) => a.title.localeCompare(b.title))),
+    );
   }
 
   useEffect(load, []);

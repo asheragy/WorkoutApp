@@ -12,7 +12,7 @@ import {buildWorkout} from './helper.ts';
 export const YatesSplit: [Routine, Workout[]] = [
   {
     id: '6bbc25f3-7efd-42a4-9ba9-92480d90d5a6',
-    title: '4-day Yates Split',
+    title: '4-day Yates',
   },
   [
     {

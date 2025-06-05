@@ -2,7 +2,8 @@
 
 - Upper A
 Incline Barbell Press
-DB Bench Press
+Dips
+
 Pullups
 Rows Purestrength
 
@@ -14,8 +15,8 @@ BB Rows
 Pulldowns Hoist
 
 - Upper C
+DB Bench Press
 Overhead Press Purestrength
-Dips
 Cable Rows
 Pulldowns Purestrength
 

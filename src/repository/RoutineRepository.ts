@@ -2,10 +2,17 @@ import {Routine, Workout} from '../types/workout';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {UpperLower} from '../routines/4_UpperLower.ts';
 import {YatesSplit} from '../routines/4_Yates.ts';
+import {PPL_3Day} from '../routines/3_PPL.ts';
+import {Arnold_3Day} from '../routines/3_Arnold.ts';
 
 const key = 'routines';
 
-export const PreLoadedRoutines = [UpperLower, YatesSplit];
+export const PreLoadedRoutines = [
+  UpperLower,
+  YatesSplit,
+  PPL_3Day,
+  Arnold_3Day,
+];
 
 export default class RoutineRepository {
   static async getAll(): Promise<Routine[]> {

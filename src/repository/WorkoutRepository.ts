@@ -29,8 +29,6 @@ export default class WorkoutRepository {
       }
     }
 
-    console.log(all);
-
     return all.filter(x => x.routineId == routine || x.id == SingleWorkoutId);
   }
 

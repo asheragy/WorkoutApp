@@ -37,6 +37,7 @@ export const Lifts = createDictionary({
 
   // Shoulders
   ohp_barbell: { name: "Overhead Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_dumbbell: { name: "Overhead Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   ohp_plateMachine: { name: "Overhead Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   ohp_machine: { name: "Overhead Press", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   reverseFly_machine: { name: "Reverse Flys", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
