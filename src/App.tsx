@@ -25,6 +25,7 @@ import LiftDefRepository from './repository/LiftDefRepository';
 import {MenuProvider} from 'react-native-popup-menu';
 import {RoutinesScreen} from './screens/Routines';
 import {store} from './state/store.ts';
+import {GoalsScreen} from './screens/GoalsScreen.tsx';
 
 export type RootStackParamList = {
   Home: {
@@ -57,6 +58,7 @@ export type RootStackParamList = {
     onChanged: () => void;
   };
   Settings: undefined;
+  Goals: undefined;
   Routines: {
     onChanged: () => void;
   };
@@ -115,13 +117,7 @@ const AppRoot = () => {
             }}
             component={StatsScreen}
           />
-          <Stack.Screen
-            name="Settings"
-            options={{
-              headerStyle: styles.headerStyle,
-            }}
-            component={SettingsScreen}
-          />
+
           <Stack.Screen
             name="Routines"
             options={{
@@ -176,6 +172,20 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             }}
             component={LiftDefListScreen}
+          />
+          <Stack.Screen
+            name="Goals"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={GoalsScreen}
+          />
+          <Stack.Screen
+            name="Settings"
+            options={{
+              headerStyle: styles.headerStyle,
+            }}
+            component={SettingsScreen}
           />
         </Stack.Navigator>
       </HeaderButtonsProvider>

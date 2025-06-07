@@ -67,7 +67,6 @@ export function WorkoutList({navigation, route}: Props) {
               }
             />
             <HiddenItem title="Stats" onPress={() => onStats()} />
-            <HiddenItem title="Settings" onPress={() => onSettings()} />
             <HiddenItem
               title="Routines"
               onPress={() =>
@@ -81,6 +80,8 @@ export function WorkoutList({navigation, route}: Props) {
               }
               onPress={() => onSingleWorkout()}
             />
+            <HiddenItem title="Goals" onPress={() => onGoals()} />
+            <HiddenItem title="Settings" onPress={() => onSettings()} />
             {}
           </OverflowMenu>
         </HeaderButtons>
@@ -128,6 +129,7 @@ export function WorkoutList({navigation, route}: Props) {
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
+  const onGoals = () => navigation.navigate('Goals');
   const onStats = () => navigation.navigate('Stats');
 
   async function onSingleWorkout() {
