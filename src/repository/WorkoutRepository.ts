@@ -16,16 +16,16 @@ export default class WorkoutRepository {
     if (routine && all.filter(x => x.routineId == routine).length == 0) {
       const preloaded = findPreloaded(routine);
       if (preloaded.length > 0) {
-        console.log(`Loading predefined routine ${routine}`);
-        const generated = preloaded.map(x => {
+        console.log(`Saving predefined routine ${routine}`);
+        const workouts: Workout[] = preloaded.map(x => {
           return {
             ...x,
-            id: Utils.generate_uuidv4(),
             routineId: routine,
           };
         });
 
-        all.push(...generated);
+        await this.insertAll(workouts)
+        return this.getRoutine(routine)
       }
     }
 
@@ -67,10 +67,19 @@ export default class WorkoutRepository {
   }
 
   private static async insert(workout: Workout) {
-    workout.id = Utils.generate_uuidv4();
+    await this.insertAll([workout])
+  }
+
+  private static async insertAll(workouts: Workout[]) {
+    const withIds = workouts.map(x => {
+      return {
+        ...x,
+        id: Utils.generate_uuidv4()
+      }
+    })
 
     const items = await this.getAll();
-    items.push(workout);
+    items.push(...withIds)
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }

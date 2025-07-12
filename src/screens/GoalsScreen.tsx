@@ -26,7 +26,7 @@ export function GoalsScreen({route, navigation}: Props) {
   const [goalRows, setGoalRows] = useState<GoalRow[]>([]);
   const {colors} = useTheme();
 
-  const goals: Goal[] = [
+  const goalsUpper: Goal[] = [
     {
       liftId: Lifts.bench_dumbbell.id,
       weight: 100,
@@ -43,6 +43,24 @@ export function GoalsScreen({route, navigation}: Props) {
       reps: 1,
     },
     {
+      liftId: Lifts.ohp_barbell.id,
+      weight: 205,
+      reps: 1,
+    },
+    {
+      liftId: Lifts.row_barbell.id,
+      weight: 225,
+      reps: 10,
+    },
+  ].sort((a, b) => a.liftId.localeCompare(b.liftId));
+
+  const goalsLower: Goal[] = [
+    {
+      liftId: Lifts.hipThrust.id,
+      weight: 135,
+      reps: 10,
+    },
+    {
       liftId: Lifts.squat_front.id,
       weight: 365,
       reps: 1,
@@ -54,7 +72,12 @@ export function GoalsScreen({route, navigation}: Props) {
     },
     {
       liftId: Lifts.deadlift_trapbar.id,
-      weight: 455,
+      weight: 455 + 15,
+      reps: 1,
+    },
+    {
+      liftId: Lifts.deadlift_trapbar_high.id,
+      weight: 545 + 15,
       reps: 1,
     },
     {
@@ -67,23 +90,13 @@ export function GoalsScreen({route, navigation}: Props) {
       weight: 275,
       reps: 10,
     },
-    {
-      liftId: Lifts.ohp_barbell.id,
-      weight: 205,
-      reps: 1,
-    },
-    {
-      liftId: Lifts.row_barbell.id,
-      weight: 225,
-      reps: 10,
-    },
   ].sort((a, b) => a.liftId.localeCompare(b.liftId));
 
   useEffect(() => {
     const loadData = async () => {
       const result: GoalRow[] = [];
 
-      for (const goal of goals) {
+      for (const goal of [...goalsUpper, ...goalsLower]) {
         const def = defs[goal.liftId];
         const history = await LiftHistoryRepository.get(goal.liftId);
         if (history.length == 0) {
