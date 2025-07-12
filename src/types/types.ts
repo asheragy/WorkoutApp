@@ -30,6 +30,7 @@ export type LiftDef = {
   system?: boolean;
   trainingMax?: number;
   muscleGroups: ReadonlyArray<MuscleGroup>;
+  goal?: PersistedSet;
   // TODO do this in repo and just set a display name?
   multiple?: boolean; // Derived value
 };

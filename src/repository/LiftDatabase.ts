@@ -1,4 +1,4 @@
-import {LiftDef, LiftType, MuscleGroup} from '../types/types';
+import {LiftDef, LiftType, MuscleGroup, PersistedSet} from '../types/types';
 
 
 const createDictionary = <T extends Record<string, Omit<LiftDef, "id">>>(
@@ -106,7 +106,67 @@ export const Lifts = createDictionary({
 } as const);
 
 
+
+const goals: Record<string, PersistedSet> = {
+  [Lifts.bench_dumbbell.id]: {
+    weight: 100,
+    reps: 10
+  },
+  [Lifts.bench_barbell.id]: {
+    weight: 315,
+    reps: 1,
+  },
+  [Lifts.inclinePress_barbell.id]: {
+    weight: 275,
+    reps: 1,
+  },
+  [Lifts.ohp_barbell.id]: {
+    weight: 205,
+    reps: 1,
+  },
+  [Lifts.row_barbell.id]: {
+    weight: 225,
+    reps: 10,
+  },
+  [Lifts.hipThrust.id]: {
+    weight: 135,
+    reps: 10,
+  },
+  [Lifts.squat_front.id]: {
+    weight: 365,
+    reps: 1,
+  },
+  [Lifts.deadlift_barbell.id]: {
+    weight: 500,
+    reps: 1,
+  },
+  [Lifts.deadlift_trapbar.id]: {
+    weight: 455 + 15,
+    reps: 1,
+  },
+  [Lifts.deadlift_trapbar_high.id]: {
+    weight: 545 + 15,
+    reps: 1,
+  },
+  [Lifts.deadlift_sumo.id]: {
+    weight: 405,
+    reps: 1,
+  },
+  [Lifts.rdl_barbell.id]: {
+    weight: 275,
+    reps: 10,
+  },
+}
+
 export const SystemLifts = Object.values(Lifts).map(def => {
+  if (goals[def.id]) {
+    return {
+      ...def,
+      system: true,
+      goal: goals[def.id]
+    };
+  }
+
   return {
     ...def,
     system: true
