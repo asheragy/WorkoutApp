@@ -201,8 +201,11 @@ function getCompletedAlts(lifts: Lift[]): string[] {
         .map(lift => lift.sets.filter(set => set.completed).length)
         .filter(count => count > 0).length > 0;
 
+    // If at least 1 is skipped, then others are too
+    const anySkipped = liftsForGroup.filter(x => x.hide).length > 0;
+
     // Return all that have not completed yet
-    if (anyCompleted) {
+    if (anyCompleted || anySkipped) {
       liftsForGroup.forEach(lift => {
         if (lift.sets.every(set => !set.completed)) {
           result.push(lift.id);
