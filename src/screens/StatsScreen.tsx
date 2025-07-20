@@ -7,6 +7,7 @@ import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import {useAppSelector} from '../state/store.ts';
 import {useTheme} from '@react-navigation/native';
+import {NumberControl} from '../components/NumberControl.tsx';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -17,6 +18,8 @@ type GroupEntry = {
 
 export function StatsScreen({route, navigation}: Props) {
   const {colors} = useTheme();
+  const [interval, setInterval] = useState(7);
+
   const [entries, setEntries] = useState<GroupEntry[]>([]);
   const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
 
@@ -46,10 +49,22 @@ export function StatsScreen({route, navigation}: Props) {
       });
 
       const entries: GroupEntry[] = [];
-      result.forEach((sets, group) => entries.push({group, sets}));
+      result.forEach((sets, group) =>
+        entries.push({
+          group,
+          sets: sets,
+        }),
+      );
       setEntries(entries);
     });
   }
+
+  const entriesNormalized = entries.map(entry => {
+    return {
+      group: entry.group,
+      sets: Math.round(10 * entry.sets * (7 / interval)) / 10,
+    };
+  });
 
   const renderItem = (item: ListRenderItemInfo<GroupEntry>) => (
     <View style={{flex: 1, flexDirection: 'row'}}>
@@ -68,9 +83,15 @@ export function StatsScreen({route, navigation}: Props) {
   return (
     <View>
       <FlatList
-        data={entries}
+        data={entriesNormalized}
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}></FlatList>
+      <NumberControl
+        value={interval}
+        precision={1}
+        decrementBy={() => 0.5}
+        incrementBy={() => 0.5}
+        onChange={setInterval}></NumberControl>
     </View>
   );
 }
