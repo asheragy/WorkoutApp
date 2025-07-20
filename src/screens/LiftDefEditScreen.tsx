@@ -3,10 +3,12 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {RootStackParamList} from '../App';
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {LiftDef, LiftType, MuscleGroup} from '../types/types';
+import {GlobalSettings, LiftDef, LiftType, MuscleGroup} from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useTheme} from '@react-navigation/native';
+import {PersistedSetRow} from '../components/EditableLiftItem/PersistedSetRow.tsx';
+import {LiftSet} from '../types/workout.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
@@ -15,6 +17,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   const systemDef = route.params.def?.system == true;
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
+  const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   const items = Object.values(LiftType)
     .filter(value => typeof value === 'string')
@@ -62,6 +65,27 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   const [type, setType] = useState(def.type);
   const [tm, setTM] = useState(def.trainingMax ? def.trainingMax : 0.0);
 
+  function addGoal() {
+    setDef({
+      ...def,
+      goal: {weight: 100, reps: 1},
+    });
+  }
+
+  function changeGoal(set: LiftSet) {
+    setDef({
+      ...def,
+      goal: {weight: set.weight!!, reps: set.reps!!},
+    });
+  }
+
+  function removeGoal() {
+    setDef({
+      ...def,
+      goal: undefined,
+    });
+  }
+
   async function onSave() {
     console.log('primary = ' + primary);
     console.log('secondary = ' + secondary);
@@ -71,7 +95,6 @@ export function LiftDefEditScreen({route, navigation}: Props) {
     else def.trainingMax = undefined;
 
     await repo.upsert(def);
-
     navigation.goBack();
   }
 
@@ -84,7 +107,6 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   return (
     <View>
       <View style={styles.viewGroup}>
-        <Text style={{color: colors.text}}>{def.id}</Text>
         <Text style={{color: colors.text}}>Name:</Text>
         <TextInput
           style={{color: colors.text}}
@@ -140,17 +162,34 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         />
       </View>
 
+      {false && (
+        <View style={styles.viewGroup}>
+          <Text style={{color: colors.text}}>Training Max:</Text>
+          <TextInput
+            style={{color: colors.text}}
+            keyboardType="numeric"
+            onChangeText={newText => {
+              const parsed = parseFloat(newText);
+              if (!Number.isNaN(parsed)) setTM(parseFloat(newText));
+            }}>
+            {tm}
+          </TextInput>
+        </View>
+      )}
+
       <View style={styles.viewGroup}>
-        <Text style={{color: colors.text}}>Training Max:</Text>
-        <TextInput
-          style={{color: colors.text}}
-          keyboardType="numeric"
-          onChangeText={newText => {
-            const parsed = parseFloat(newText);
-            if (!Number.isNaN(parsed)) setTM(parseFloat(newText));
-          }}>
-          {tm}
-        </TextInput>
+        <Text style={{color: colors.text}}>Goal</Text>
+        {def.goal && (
+          <PersistedSetRow
+            set={def.goal}
+            settings={settings}
+            label=""
+            def={def}
+            hideCompleted={true}
+            onChange={changeGoal}
+            onDelete={removeGoal}></PersistedSetRow>
+        )}
+        {!def.goal && <Button title="Add Goal" onPress={addGoal}></Button>}
       </View>
 
       {def.id.length > 0 && !def.system && (

@@ -70,7 +70,8 @@ export default class LiftDefRepository {
         if (
           (curr.trainingMax === undefined || curr.trainingMax == 0) &&
           JSON.stringify(def.muscleGroups) ===
-            JSON.stringify(systemDef.muscleGroups)
+            JSON.stringify(systemDef.muscleGroups) &&
+          JSON.stringify(def.goal) === JSON.stringify(systemDef.goal)
         )
           return false;
       }

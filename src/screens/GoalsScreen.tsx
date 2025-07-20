@@ -23,7 +23,12 @@ export function GoalsScreen({route, navigation}: Props) {
 
   const goals = Object.values(defs)
     .filter(x => x.goal)
-    .sort((a, b) => a.muscleGroups[0] - b.muscleGroups[0]);
+    .sort((a, b) => {
+      if (a.muscleGroups[0] != b.muscleGroups[0])
+        return a.muscleGroups[0] - b.muscleGroups[0];
+
+      return a.name.localeCompare(b.name);
+    });
   console.log(goals);
 
   useEffect(() => {
