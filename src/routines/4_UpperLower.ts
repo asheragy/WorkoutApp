@@ -9,6 +9,28 @@ Upper 2: Horizontal Press / Vertical Pull
 Lower 2: Quad focus
  */
 
+export const SharedLower1 = [
+  Lifts.hipAbduction,
+  Lifts.hipAdduction,
+  Lifts.deadlift_barbell,
+  Lifts.splitSquat,
+  Lifts.calfRaise_standing,
+  [Lifts.hipThrust, Lifts.backExtension],
+  Lifts.plank,
+  Lifts.squat_belt,
+];
+
+export const SharedLower2 = [
+  Lifts.legExtensions,
+  Lifts.legCurl_kneeling,
+  Lifts.squat_front,
+  Lifts.rdl_barbell,
+  Lifts.calfRaise_seated,
+  Lifts.legRaise,
+  Lifts.gluteKickback,
+  [Lifts.legPress, Lifts.squat_v],
+];
+
 export const UpperLower: [Routine, Workout[]] = [
   {
     id: '3995deca-8204-4dc9-841b-1f4db64a486f',
@@ -30,16 +52,7 @@ export const UpperLower: [Routine, Workout[]] = [
     },
     {
       name: 'Lower 1',
-      lifts: [
-        Lifts.hipAbduction,
-        Lifts.hipAdduction,
-        Lifts.deadlift_barbell,
-        Lifts.splitSquat,
-        Lifts.calfRaise_standing,
-        [Lifts.hipThrust, Lifts.backExtension],
-        Lifts.plank,
-        Lifts.squat_belt,
-      ],
+      lifts: SharedLower1,
     },
     {
       name: 'Upper 2',
@@ -61,16 +74,7 @@ export const UpperLower: [Routine, Workout[]] = [
     },
     {
       name: 'Lower 2',
-      lifts: [
-        Lifts.legExtensions,
-        Lifts.legCurl_kneeling,
-        Lifts.squat_front,
-        Lifts.rdl_barbell,
-        Lifts.calfRaise_seated,
-        Lifts.legRaise,
-        Lifts.gluteKickback,
-        [Lifts.legPress, Lifts.squat_v],
-      ],
+      lifts: SharedLower2,
     },
   ].map(buildWorkout),
 ];

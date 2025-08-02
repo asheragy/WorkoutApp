@@ -5,6 +5,7 @@ import {YatesSplit} from '../routines/4_Yates.ts';
 import {PPL_3Day} from '../routines/3_PPL.ts';
 import {Arnold_3Day} from '../routines/3_Arnold.ts';
 import {HLM_3Day} from '../routines/3_HLM.ts';
+import {ULPPL} from '../routines/5_ULPPL.ts';
 
 const key = 'routines';
 
@@ -14,6 +15,7 @@ export const PreLoadedRoutines = [
   PPL_3Day,
   HLM_3Day,
   Arnold_3Day,
+  ULPPL,
 ];
 
 export default class RoutineRepository {
