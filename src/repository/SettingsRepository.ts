@@ -17,7 +17,10 @@ export default class SettingsRepository {
     return result;
   }
 
-  static async set(key: keyof GlobalSettings, value: any): Promise<void> {
+  static async set<K extends keyof GlobalSettings>(
+    key: K,
+    value: GlobalSettings[K],
+  ): Promise<void> {
     const settings = await this.get();
     settings[key] = value;
 
