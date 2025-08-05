@@ -36,15 +36,24 @@ export function RoutinesScreen({route, navigation}: Props) {
     }
   }
 
-  async function onSwitch(routine: Routine) {
+  async function onSwitch(routine: Routine, importLifts: boolean) {
     await SettingsRepository.set('routine', routine.id);
-    route.params.onChanged();
+    route.params.onChanged(importLifts);
     navigation.pop();
   }
 
   const confirmSwitch = (routine: Routine) => {
     Alert.alert('Switch Program?', 'Are you sure', [
-      {text: 'Yes', onPress: () => onSwitch(routine)},
+      {
+        text: 'Yes/Import',
+        style: 'destructive',
+        onPress: () => onSwitch(routine, true),
+      },
+      {
+        text: 'Yes',
+        style: 'default',
+        onPress: () => onSwitch(routine, false),
+      },
       {
         text: 'No',
         style: 'cancel',

@@ -70,7 +70,9 @@ export function WorkoutList({navigation, route}: Props) {
             <HiddenItem
               title="Routines"
               onPress={() =>
-                navigation.navigate('Routines', {onChanged: loadState})
+                navigation.navigate('Routines', {
+                  onChanged: importLifts => loadState(importLifts),
+                })
               }
             />
             <HiddenItem
@@ -89,7 +91,7 @@ export function WorkoutList({navigation, route}: Props) {
     });
   }, [navigation, workouts]);
 
-  function loadState() {
+  function loadState(importLifts?: boolean) {
     /*
     LiftDefRepository.getLookupMap().then(result => {
       dispatch(updateLiftDefs(result));
@@ -107,20 +109,23 @@ export function WorkoutList({navigation, route}: Props) {
         navigation.setOptions({title});
       });
 
-      WorkoutRepository.getRoutine(settings.routine).then(result => {
-        if (result.find(x => x.lastCompleted) == undefined) setWorkouts(result);
-        // Sort by oldest completed first
-        else
-          setWorkouts(
-            result.sort((a, b) => {
-              if (a.lastCompleted === undefined) return -1;
-              else if (b.lastCompleted === undefined) return 1;
-              else if (a.lastCompleted < b.lastCompleted) return -1;
-              else if (a.lastCompleted > b.lastCompleted) return 1;
-              else return 0;
-            }),
-          );
-      });
+      WorkoutRepository.getRoutine(settings.routine, importLifts).then(
+        result => {
+          if (result.find(x => x.lastCompleted) == undefined)
+            setWorkouts(result);
+          // Sort by oldest completed first
+          else
+            setWorkouts(
+              result.sort((a, b) => {
+                if (a.lastCompleted === undefined) return -1;
+                else if (b.lastCompleted === undefined) return 1;
+                else if (a.lastCompleted < b.lastCompleted) return -1;
+                else if (a.lastCompleted > b.lastCompleted) return 1;
+                else return 0;
+              }),
+            );
+        },
+      );
     });
   }
   useEffect(loadState, []);

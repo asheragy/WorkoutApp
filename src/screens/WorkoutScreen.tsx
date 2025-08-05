@@ -6,7 +6,6 @@ import {AccessoryView} from '../components/Accessories';
 import {LogBox} from 'react-native';
 import {Lift, LiftSet, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import Log from '../utils/Log';
 import LiftItem from '../components/LiftItem/LiftItem';
 import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
 import {
@@ -51,11 +50,29 @@ export function WorkoutScreen({route, navigation}: Props) {
               </Text>
             )}>
             <HiddenItem title="History" onPress={() => onHistory()} />
+            <HiddenItem title="Import Lifts" onPress={() => onImport()} />
           </OverflowMenu>
         </HeaderButtons>
       ),
     });
   }, [navigation, workout]);
+
+  function onImport() {
+    Alert.alert('Import Sets', 'Are you sure', [
+      {
+        text: 'No',
+        style: 'cancel',
+      },
+      {text: 'Yes', style: 'destructive', onPress: () => onImportConfirmed()},
+    ]);
+  }
+
+  async function onImportConfirmed() {
+    const updated = await WorkoutRepository.importLatestLifts(workout);
+    setWorkout({
+      ...updated,
+    });
+  }
 
   const confirmComplete = () => {
     Alert.alert('Complete?', 'Are you sure', [

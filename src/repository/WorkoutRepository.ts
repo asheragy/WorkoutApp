@@ -11,7 +11,10 @@ export default class WorkoutRepository {
     return workouts.find(x => x.id == id);
   }
 
-  static async getRoutine(routine: string | undefined): Promise<Workout[]> {
+  static async getRoutine(
+    routine: string | undefined,
+    importLifts?: boolean,
+  ): Promise<Workout[]> {
     const all = await this.getAll();
     if (routine && all.filter(x => x.routineId == routine).length == 0) {
       const preloaded = findPreloaded(routine);
@@ -24,12 +27,64 @@ export default class WorkoutRepository {
           };
         });
 
-        await this.insertAll(workouts)
-        return this.getRoutine(routine)
+        await this.insertAll(workouts);
+        return this.getRoutine(routine, importLifts);
       }
     }
 
-    return all.filter(x => x.routineId == routine || x.id == SingleWorkoutId);
+    const workouts = all.filter(
+      x => x.routineId == routine || x.id == SingleWorkoutId,
+    );
+
+    /* TODO this should work but handling per workout for now
+    if (importLifts) {
+      console.log('Importing lifts to latest');
+      for (const workout of workouts) {
+        Actually this returns a modified workout which needs to be replaced here
+        await this.importLatestLiftsInternal(workout, all);
+      }
+    }
+     */
+
+    return workouts;
+  }
+
+  static async importLatestLifts(workout: Workout): Promise<Workout> {
+    const all = await this.getAll();
+    return await this.importLatestLiftsInternal(workout, all);
+  }
+
+  private static async importLatestLiftsInternal(
+    workout: Workout,
+    allWorkouts: Workout[],
+  ): Promise<Workout> {
+    let updated = false;
+    for (const lift of workout.lifts) {
+      const recentWorkoutWithLift = allWorkouts
+        .filter(
+          wo =>
+            wo.lastCompleted &&
+            wo.lifts.some(l => l.id === lift.id && l.sets.length > 0),
+        )
+        .sort(
+          (a, b) => b.lastCompleted!!.getTime() - a.lastCompleted!!.getTime(),
+        )[0];
+
+      if (recentWorkoutWithLift && recentWorkoutWithLift.id !== workout.id) {
+        const recentLift = recentWorkoutWithLift.lifts.find(
+          x => x.id === lift.id,
+        )!!;
+        lift.sets = recentLift.sets;
+        lift.goals = recentLift.goals;
+        updated = true;
+      }
+    }
+
+    if (updated) {
+      await this.upsert(workout);
+    }
+
+    return workout;
   }
 
   private static async getAll(): Promise<Workout[]> {
@@ -67,19 +122,19 @@ export default class WorkoutRepository {
   }
 
   private static async insert(workout: Workout) {
-    await this.insertAll([workout])
+    await this.insertAll([workout]);
   }
 
   private static async insertAll(workouts: Workout[]) {
     const withIds = workouts.map(x => {
       return {
         ...x,
-        id: Utils.generate_uuidv4()
-      }
-    })
+        id: Utils.generate_uuidv4(),
+      };
+    });
 
     const items = await this.getAll();
-    items.push(...withIds)
+    items.push(...withIds);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }

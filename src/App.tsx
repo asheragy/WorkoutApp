@@ -60,7 +60,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Goals: undefined;
   Routines: {
-    onChanged: () => void;
+    onChanged: (importLifts: boolean) => void;
   };
 };
 
