@@ -11,7 +11,8 @@
     "types": "tsc --skipLibCheck",
     "depcheck": "depcheck",
     "emulator": "$ANDROID_HOME/emulator/emulator -avd Pixel_3a_API_34_extension_level_7_x86_64",
-    "apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res && cd ./android && ./gradlew app:assembleDebug"
+    "apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "release": "cd ./android && ./gradlew app:assembleRelease"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "2.1.2",
