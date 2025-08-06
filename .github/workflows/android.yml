@@ -35,4 +35,4 @@ jobs:
            yarn install
 
     - name: Build Bundle
-      run: yarn install
+      run: yarn apk
