@@ -111,19 +111,18 @@ export function WorkoutList({navigation, route}: Props) {
 
       WorkoutRepository.getRoutine(settings.routine, importLifts).then(
         result => {
-          if (result.find(x => x.lastCompleted) == undefined)
-            setWorkouts(result);
-          // Sort by oldest completed first
-          else
-            setWorkouts(
-              result.sort((a, b) => {
-                if (a.lastCompleted === undefined) return -1;
-                else if (b.lastCompleted === undefined) return 1;
-                else if (a.lastCompleted < b.lastCompleted) return -1;
-                else if (a.lastCompleted > b.lastCompleted) return 1;
-                else return 0;
-              }),
+          const incompleted = result.filter(w => w.lastCompleted == null);
+          const completed = result
+            .filter(
+              (w): w is Workout & {lastCompleted: Date} =>
+                w.lastCompleted != null,
+            )
+            .slice()
+            .sort(
+              (a, b) => a.lastCompleted.getTime() - b.lastCompleted.getTime(),
             );
+
+          setWorkouts([...incompleted, ...completed]);
         },
       );
     });

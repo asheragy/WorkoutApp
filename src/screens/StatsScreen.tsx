@@ -12,7 +12,7 @@ import {NumberControl} from '../components/NumberControl.tsx';
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
 type GroupEntry = {
-  group: MuscleGroup;
+  group?: MuscleGroup;
   sets: number;
 };
 
@@ -55,6 +55,12 @@ export function StatsScreen({route, navigation}: Props) {
           sets: sets,
         }),
       );
+
+      const total = entries.map(e => e.sets).reduce((a, b) => a + b);
+      entries.push({
+        sets: total,
+      });
+
       setEntries(entries);
     });
   }
@@ -70,7 +76,7 @@ export function StatsScreen({route, navigation}: Props) {
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{width: '50%', margin: 4}}>
         <Text style={{textAlign: 'right', color: colors.text}}>
-          {MuscleGroup[item.item.group]}
+          {item.item.group ? MuscleGroup[item.item.group] : 'Total'}
         </Text>
       </View>
 
