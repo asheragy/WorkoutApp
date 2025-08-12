@@ -32,20 +32,22 @@ export function StatsScreen({route, navigation}: Props) {
 
     WorkoutRepository.getRoutine(settings.routine).then(workouts => {
       workouts.forEach(workout => {
-        workout.lifts.forEach(lift => {
-          const workSets = lift.sets.filter(set => !set.warmup).length;
+        workout.lifts
+          .filter(lift => !lift.alternate)
+          .forEach(lift => {
+            const workSets = lift.sets.filter(set => !set.warmup).length;
 
-          const def = defs[lift.id];
-          def.muscleGroups.forEach((group, index) => {
-            let curr = result.get(group);
-            if (curr == undefined) curr = 0;
+            const def = defs[lift.id];
+            def.muscleGroups.forEach((group, index) => {
+              let curr = result.get(group);
+              if (curr == undefined) curr = 0;
 
-            // Secondary counts as half set
-            const multiplier = index == 0 ? 1 : 0.5;
+              // Secondary counts as half set
+              const multiplier = index == 0 ? 1 : 0.5;
 
-            result.set(group, curr + workSets * multiplier);
+              result.set(group, curr + workSets * multiplier);
+            });
           });
-        });
       });
 
       const entries: GroupEntry[] = [];
@@ -76,7 +78,9 @@ export function StatsScreen({route, navigation}: Props) {
     <View style={{flex: 1, flexDirection: 'row'}}>
       <View style={{width: '50%', margin: 4}}>
         <Text style={{textAlign: 'right', color: colors.text}}>
-          {item.item.group ? MuscleGroup[item.item.group] : 'Total'}
+          {item.item.group != undefined
+            ? MuscleGroup[item.item.group]
+            : 'Total'}
         </Text>
       </View>
 
