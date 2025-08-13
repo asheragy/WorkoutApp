@@ -131,10 +131,6 @@ export function WorkoutScreen({route, navigation}: Props) {
     await WorkoutRepository.upsert(updatedWorkout);
   }
 
-  function onViewLog(lift: Lift) {
-    navigation.navigate('LiftHistory', {liftId: lift.id});
-  }
-
   async function onLiftChanged(lift: Lift) {
     const index = workout.lifts.findIndex(x => x.id == lift.id);
     const lifts = [...workout.lifts];
@@ -177,8 +173,12 @@ export function WorkoutScreen({route, navigation}: Props) {
         {sortedLifts.map((lift, index) => (
           <LiftItem
             lift={lift}
-            onViewLog={onViewLog}
-            onLiftChanged={onLiftChanged}
+            onEdit={() =>
+              navigation.navigate('LiftEdit', {
+                lift: lift,
+                onFinish: onLiftChanged,
+              })
+            }
             overrideComplete={completedAlts.includes(lift.id)}
             key={index}></LiftItem>
         ))}

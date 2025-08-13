@@ -43,6 +43,13 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     });
   }
 
+  function getUpdatedLift() {
+    return {
+      ...props.lift,
+      sets: [...props.lift.sets],
+    };
+  }
+
   function addSet() {
     let set: LiftSet = {weight: 0, reps: 0};
     if (props.lift.sets.length > 0) {
@@ -51,7 +58,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
       set.completed = undefined;
     }
 
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     updatedLift.sets = [...props.lift.sets, set];
 
     props.onChange(updatedLift);
@@ -70,7 +77,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
       };
     }
 
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     if (props.lift.goals) updatedLift.goals = [...props.lift.goals, goal];
     else updatedLift.goals = [goal];
 
@@ -78,44 +85,44 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   }
 
   function onRemoveGoal(index: number) {
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     updatedLift.goals!!.splice(index, 1);
 
     props.onChange(updatedLift);
   }
 
   function onRemoveSet(index: number) {
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     updatedLift.sets.splice(index, 1);
 
     props.onChange(updatedLift);
   }
 
   function onSetChange(setIndex: number, updatedSet: LiftSet) {
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     updatedLift.sets[setIndex] = updatedSet;
     props.onChange(updatedLift);
   }
 
   function onGoalChange(index: number, updated: LiftSet) {
-    const updatedLift = {...props.lift};
+    const updatedLift = getUpdatedLift();
     updatedLift.goals!![index] = updated;
     props.onChange(updatedLift);
   }
 
   return (
     <View style={{margin: 4}}>
-      <View
-        style={{
-          marginVertical: 4,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}>
-        <View style={{width: '20%'}}></View>
-        <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
-          {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
-        </Text>
-        {props.onDelete && (
+      {props.onDelete && (
+        <View
+          style={{
+            marginVertical: 4,
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}>
+          <View style={{width: '20%'}}></View>
+          <Text style={[Style_LiftText, {color: colors.text, width: '60%'}]}>
+            {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
+          </Text>
           <View
             style={{
               width: '20%',
@@ -152,9 +159,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               </MenuOptions>
             </Menu>
           </View>
-        )}
-      </View>
-
+        </View>
+      )}
       {props.hideCompleted && (
         <TextInput
           placeholder={'Note'}

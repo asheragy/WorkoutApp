@@ -15,7 +15,7 @@ import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
 import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
 import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
 import {WorkoutList} from './screens/Home';
-import {Workout} from './types/workout';
+import {Lift, Workout} from './types/workout';
 import {LiftDefListScreen} from './screens/LiftDefListScreen';
 import {StatsScreen} from './screens/StatsScreen';
 import {SettingsScreen} from './screens/SettingsScreen';
@@ -26,6 +26,7 @@ import {MenuProvider} from 'react-native-popup-menu';
 import {RoutinesScreen} from './screens/Routines';
 import {store} from './state/store.ts';
 import {GoalsScreen} from './screens/GoalsScreen.tsx';
+import LiftEditScreen from './screens/LiftEditScreen.tsx';
 
 export type RootStackParamList = {
   Home: {
@@ -34,6 +35,10 @@ export type RootStackParamList = {
   Workout: {
     workoutId: string;
     onComplete: () => void;
+  };
+  LiftEdit: {
+    lift: Lift;
+    onFinish: (lift: Lift) => void;
   };
   Weight: undefined;
   Stats: undefined;
@@ -102,6 +107,13 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             })}
             component={WorkoutScreen}
+          />
+          <Stack.Screen
+            name="LiftEdit"
+            options={() => ({
+              headerStyle: styles.headerStyle,
+            })}
+            component={LiftEditScreen}
           />
           <Stack.Screen
             name="Weight"

@@ -1,5 +1,5 @@
 import {useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
+import React from 'react';
 import {
   Image,
   StyleProp,
@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import {Lift} from '../../types/workout';
-import LiftEditorModal from '../LiftEditorModal';
 import Utils from '../Utils';
 import {Style_LiftText} from '../Common';
 import {useSelector} from 'react-redux';
@@ -19,31 +18,11 @@ import {ReadOnlySetTable} from './ReadOnlySetTable';
 export default function LiftItem(props: {
   lift: Lift;
   overrideComplete: boolean;
-  onLiftChanged: (lift: Lift) => void;
-  onViewLog: (lift: Lift) => void;
+  onEdit: () => void;
 }) {
-  const [editing, setEditing] = useState(false);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs[props.lift.id];
-
-  const onFinishEdit = (lift: Lift) => {
-    const updatedLift: Lift = {...props.lift};
-    // TODO just do straight override?
-    updatedLift.sets = lift.sets;
-    updatedLift.goals = lift.goals;
-
-    props.onLiftChanged(updatedLift);
-    setEditing(false);
-  };
-
-  const onToggleHide = () => {
-    let updatedLift: Lift = {...props.lift};
-    updatedLift.hide = updatedLift.hide ? undefined : true;
-
-    props.onLiftChanged(updatedLift);
-    setEditing(false);
-  };
 
   const completed =
     props.lift.hide ||
@@ -75,7 +54,7 @@ export default function LiftItem(props: {
             alignContent: 'center',
             justifyContent: 'center',
           }}>
-          <TouchableOpacity onPress={() => setEditing(true)}>
+          <TouchableOpacity onPress={props.onEdit}>
             <Image style={{}} source={require('../../icons/edit.png')} />
           </TouchableOpacity>
         </View>
@@ -83,14 +62,6 @@ export default function LiftItem(props: {
       {!completed && (
         <ReadOnlySetTable lift={props.lift} def={def}></ReadOnlySetTable>
       )}
-      <View>
-        <LiftEditorModal
-          editing={editing}
-          lift={props.lift}
-          onViewLog={() => props.onViewLog(props.lift)}
-          onToggleHide={onToggleHide}
-          onFinish={onFinishEdit}></LiftEditorModal>
-      </View>
     </View>
   );
 }
