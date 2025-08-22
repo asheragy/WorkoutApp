@@ -27,6 +27,10 @@ import {RoutinesScreen} from './screens/Routines';
 import {store} from './state/store.ts';
 import {GoalsScreen} from './screens/GoalsScreen.tsx';
 import LiftEditScreen from './screens/LiftEditScreen.tsx';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
 export type RootStackParamList = {
   Home: {
@@ -75,7 +79,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <MenuProvider>
-        <AppRoot></AppRoot>
+        <SafeAreaProvider>
+          <AppRoot></AppRoot>
+        </SafeAreaProvider>
       </MenuProvider>
     </Provider>
   );
@@ -84,6 +90,7 @@ const App = () => {
 const AppRoot = () => {
   const scheme = useColorScheme();
   const dispatch = useDispatch();
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     new LiftDefRepository(dispatch).init();
@@ -91,7 +98,7 @@ const AppRoot = () => {
 
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <HeaderButtonsProvider stackType={'native'}>
+      <HeaderButtonsProvider stackType={'native'} spaceAboveMenu={insets.top}>
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
