@@ -37,7 +37,10 @@ export default function LiftItem(props: {
   };
 
   return (
-    <View style={{marginVertical: 0}}>
+    <View
+      style={{
+        marginBottom: 0,
+      }}>
       <View
         style={{
           marginVertical: 8,

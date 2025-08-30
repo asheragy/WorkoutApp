@@ -169,20 +169,18 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.workoutItem}>
-        {sortedLifts.map((lift, index) => (
-          <LiftItem
-            lift={lift}
-            onEdit={() =>
-              navigation.navigate('LiftEdit', {
-                lift: lift,
-                onFinish: onLiftChanged,
-              })
-            }
-            overrideComplete={completedAlts.includes(lift.id)}
-            key={index}></LiftItem>
-        ))}
-      </View>
+      {sortedLifts.map((lift, index) => (
+        <LiftItem
+          lift={lift}
+          onEdit={() =>
+            navigation.navigate('LiftEdit', {
+              lift: lift,
+              onFinish: onLiftChanged,
+            })
+          }
+          overrideComplete={completedAlts.includes(lift.id)}
+          key={index}></LiftItem>
+      ))}
 
       {workout.accessories != null && (
         <AccessoryView accessories={workout.accessories}></AccessoryView>
@@ -200,14 +198,16 @@ function getCompletedAlts(lifts: Lift[]): string[] {
   // Create groups of alternates with their primary
   let curr: string[] = [];
   lifts.forEach(lift => {
-    if (!lift.alternate) {
+    if (lift.alternate) {
+      curr.push(lift.id);
+    } else {
       if (curr.length > 1) groups.push(curr);
 
       curr = [lift.id];
-    } else {
-      curr.push(lift.id);
     }
   });
+
+  if (curr.length > 1) groups.push(curr);
 
   const result: string[] = [];
   groups.forEach(group => {
@@ -242,12 +242,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     marginBottom: 36,
-  },
-
-  workoutItem: {
-    marginHorizontal: 8,
-    marginVertical: 4,
-    padding: 8,
-    opacity: 0.8,
   },
 });
