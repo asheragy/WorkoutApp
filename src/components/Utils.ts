@@ -84,6 +84,21 @@ export default class Utils {
     return sum / 3;
   }
 
+  static calculate1RMAverage(def: LiftDef, sets: PersistedSet[]): number {
+    var sum = 0;
+    var workSets = 0;
+
+    for (var i = 0; i < sets.length; i++) {
+      var set = sets[i];
+      if (set.warmup != true) {
+        sum += Utils.calculate1RM(def, set);
+        workSets++;
+      }
+    }
+
+    return Math.round(sum / workSets);
+  }
+
   static oneRMLombardi = (weight: number, reps: number) =>
     weight * Math.pow(reps, 0.1);
 
@@ -124,26 +139,27 @@ export default class Utils {
   }
 
   static platesToString(platecount: PlateCount): string {
-    var result: string[] = [];
+    let i;
+    const result: string[] = [];
 
     if (platecount.p45) {
-      for (var i = 0; i < platecount.p45; i++) result.push('45');
+      for (i = 0; i < platecount.p45; i++) result.push('45');
     }
     if (platecount.p25) {
-      for (var i = 0; i < platecount.p25; i++) result.push('25');
+      for (i = 0; i < platecount.p25; i++) result.push('25');
     }
     if (platecount.p10) {
-      for (var i = 0; i < platecount.p10; i++) result.push('10');
+      for (i = 0; i < platecount.p10; i++) result.push('10');
     }
 
     if (platecount.p5) {
-      for (var i = 0; i < platecount.p5; i++) result.push('5');
+      for (i = 0; i < platecount.p5; i++) result.push('5');
     }
     if (platecount.p2point5) {
-      for (var i = 0; i < platecount.p2point5; i++) result.push('2.5');
+      for (i = 0; i < platecount.p2point5; i++) result.push('2.5');
     }
 
-    var str = result.join('|');
+    const str = result.join('|');
 
     if (str.length > 0) return '|' + str + '|';
     else return '';

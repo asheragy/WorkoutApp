@@ -8,6 +8,7 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import {useAppSelector} from '../state/store.ts';
 import {useTheme} from '@react-navigation/native';
 import {NumberControl} from '../components/NumberControl.tsx';
+import ChartUtils from '../utils/ChartUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -28,6 +29,7 @@ export function StatsScreen({route, navigation}: Props) {
   useEffect(onLoad, []);
 
   function onLoad() {
+    ChartUtils.getProgressByWeek(settings.routine ?? '', defs);
     const result = new Map<MuscleGroup, number>();
 
     WorkoutRepository.getRoutine(settings.routine).then(workouts => {
