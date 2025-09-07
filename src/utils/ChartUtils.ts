@@ -8,7 +8,7 @@ import LiftHistoryRepository, {
 } from '../repository/LiftHistoryRepository.ts';
 import Utils from '../components/Utils.ts';
 
-export type LiftsByWeek = {
+type LiftsByWeek = {
   // Week start/end
   start: Date;
   end: Date;
@@ -16,11 +16,13 @@ export type LiftsByWeek = {
   lifts: Record<string, number | undefined>;
 };
 
+export type ProgressByWeek = {dates: Date[]} & Record<string, number[]>;
+
 export default class ChartUtils {
   public static async getProgressByWeek(
     routine: string,
     defs: Record<string, LiftDef>,
-  ) {
+  ): Promise<ProgressByWeek> {
     const weeks = await ChartUtils.getLiftsByWeek(routine);
 
     const historyCache = new Map<string, LiftHistory[]>();
@@ -58,24 +60,31 @@ export default class ChartUtils {
 
         if (!baselineRM.has(liftId)) {
           week.lifts[liftId] = 0;
+          baselineRM.set(liftId, currRM);
         } else {
           const base = baselineRM.get(liftId)!;
           week.lifts[liftId] = base === 0 ? 0 : (currRM - base) / base;
         }
-
-        baselineRM.set(liftId, currRM);
       }
     }
+
+    const result: ProgressByWeek = {
+      dates: [],
+    };
 
     // Group percentages and average by muscle group
     weeks.forEach((week, index) => {
       console.log('Week: ' + index);
 
       const liftDefs = Object.keys(week.lifts).map(x => defs[x]);
+      result.dates.push(week.start);
 
       Object.keys(MuscleGroup).forEach(key => {
         if (isNaN(Number(key))) {
           //console.log('key: ' + key);
+
+          let arr = result[key] ?? [];
+          result[key] = arr;
 
           // @ts-ignore
           const currGroup = MuscleGroup[key];
@@ -97,11 +106,18 @@ export default class ChartUtils {
             }
           });
 
-          if (weight == 0) console.log('  ' + key + ' 0');
-          else console.log('  ' + key + ' ' + sum / weight);
+          if (weight == 0) {
+            console.log('  ' + key + ' 0');
+            arr.push(0);
+          } else {
+            console.log('  ' + key + ' ' + sum / weight);
+            arr.push((100 * sum) / weight);
+          }
         }
       });
     });
+
+    return result;
   }
 
   private static async getLiftsByWeek(routine: string): Promise<LiftsByWeek[]> {
