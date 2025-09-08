@@ -2,13 +2,19 @@ import React from 'react';
 import {Dimensions, Text, View} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import {useTheme} from '@react-navigation/native';
+import {Dataset} from 'react-native-chart-kit/dist/HelperTypes';
 
 export function ProgressChart(props: {
-  title: string;
+  title?: string;
   dates: Date[];
-  values: number[];
+  values: number[] | number[][];
+  legend?: string[];
 }) {
   if (props.dates.length == 0) return <View></View>;
+
+  const datasets: Dataset[] = Array.isArray(props.values[0])
+    ? (props.values as number[][]).map(x => ({data: x}))
+    : [{data: props.values as number[]}];
 
   const {colors} = useTheme();
 
@@ -24,11 +30,8 @@ export function ProgressChart(props: {
       <LineChart
         data={{
           labels: props.dates.map(x => x.getMonth() + 1 + '/' + x.getDate()),
-          datasets: [
-            {
-              data: props.values,
-            },
-          ],
+          legend: props.legend,
+          datasets: datasets,
         }}
         width={Dimensions.get('window').width} // from react-native
         height={Dimensions.get('window').height / 3}
@@ -36,7 +39,6 @@ export function ProgressChart(props: {
         chartConfig={{
           decimalPlaces: 0,
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           style: {
             borderRadius: 0,
           },

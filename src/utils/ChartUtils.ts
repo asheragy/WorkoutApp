@@ -16,7 +16,10 @@ type LiftsByWeek = {
   lifts: Record<string, number | undefined>;
 };
 
-export type ProgressByWeek = {dates: Date[]} & Record<string, number[]>;
+export type ProgressByWeek = Record<string, number[]> & {
+  dates: Date[];
+  labels: string[];
+};
 
 export default class ChartUtils {
   public static async getProgressByWeek(
@@ -70,6 +73,7 @@ export default class ChartUtils {
 
     const result: ProgressByWeek = {
       dates: [],
+      labels: [],
     };
 
     // Group percentages and average by muscle group
@@ -80,6 +84,8 @@ export default class ChartUtils {
       result.dates.push(week.start);
 
       Object.keys(MuscleGroup).forEach(key => {
+        if (key === 'Other' || key === 'Abs') return;
+
         if (isNaN(Number(key))) {
           //console.log('key: ' + key);
 
@@ -115,6 +121,39 @@ export default class ChartUtils {
           }
         }
       });
+    });
+
+    // PPL
+    const labels = ['Push', 'Pull', 'Legs'];
+    const groups = [
+      [MuscleGroup.Chest, MuscleGroup.Shoulders, MuscleGroup.Triceps],
+      [MuscleGroup.Back, MuscleGroup.Biceps],
+      [MuscleGroup.Quads, MuscleGroup.Hamstrings, MuscleGroup.Calves],
+    ];
+
+    result.labels = labels;
+    groups.forEach((group, index) => {
+      const keys = group.map(x => MuscleGroup[x]);
+      const arrs = keys.map(x => {
+        return result[x];
+      });
+
+      const merged: number[] = [];
+
+      for (let i = 0; i < arrs[0].length; i++) {
+        let sum = 0;
+        for (let j = 0; j < arrs.length; j++) {
+          sum += arrs[j][i];
+        }
+
+        merged.push(sum / arrs.length);
+      }
+
+      keys.forEach(key => {
+        delete result[key];
+      });
+
+      result[labels[index]] = merged;
     });
 
     return result;
