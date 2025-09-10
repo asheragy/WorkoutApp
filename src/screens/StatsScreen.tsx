@@ -8,8 +8,10 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import {useAppSelector} from '../state/store.ts';
 import {useTheme} from '@react-navigation/native';
 import {NumberControl} from '../components/NumberControl.tsx';
-import ChartUtils from '../utils/ChartUtils.ts';
+import ChartUtils, {ProgressByWeek} from '../utils/ChartUtils.ts';
 import {ProgressChart} from '../components/ProgressChart.tsx';
+import DropDownPicker from 'react-native-dropdown-picker';
+import {enumToItemsNumeric} from '../utils/EnumUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -22,12 +24,17 @@ export function StatsScreen({route, navigation}: Props) {
   const {colors} = useTheme();
   const [interval, setInterval] = useState(7);
   const [entries, setEntries] = useState<GroupEntry[]>([]);
-  const [progress, setProgress] = useState<number[][]>([]);
+  const [progress, setProgress] = useState<ProgressByWeek | undefined>(
+    undefined,
+  );
   const [progressDates, setProgressDates] = useState<Date[]>([]);
-  const [chartLegend, setChartLegend] = useState<string[]>([]);
+
+  // Dropdown list
+  const muscleGroupItems = enumToItemsNumeric(MuscleGroup, k => k);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<MuscleGroup>(MuscleGroup.Quads);
 
   const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
-
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   useEffect(onLoad, []);
@@ -35,15 +42,7 @@ export function StatsScreen({route, navigation}: Props) {
   function onLoad() {
     ChartUtils.getProgressByWeek(settings.routine ?? '', defs).then(x => {
       setProgressDates(x.dates);
-      const numbers: number[][] = [];
-      Object.keys(x).forEach(key => {
-        if (key !== 'dates' && key !== 'labels') {
-          numbers.push(x[key]);
-        }
-      });
-
-      setProgress(numbers);
-      setChartLegend(x.labels);
+      setProgress(x);
     });
 
     const result = new Map<MuscleGroup, number>();
@@ -108,6 +107,10 @@ export function StatsScreen({route, navigation}: Props) {
     </View>
   );
 
+  const selectedProgressValues: number[] = progress
+    ? progress[MuscleGroup[value]]
+    : [];
+
   return (
     <View>
       <FlatList
@@ -122,10 +125,18 @@ export function StatsScreen({route, navigation}: Props) {
         incrementBy={() => 0.5}
         onChange={setInterval}></NumberControl>
 
+      <DropDownPicker
+        style={{marginVertical: 16}}
+        items={muscleGroupItems}
+        open={open}
+        setOpen={setOpen}
+        value={value}
+        setValue={setValue}
+        dropDownDirection={'TOP'}
+      />
       <ProgressChart
         dates={progressDates}
-        legend={chartLegend}
-        values={progress}></ProgressChart>
+        values={selectedProgressValues}></ProgressChart>
     </View>
   );
 }
