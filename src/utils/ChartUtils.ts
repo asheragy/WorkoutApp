@@ -22,7 +22,7 @@ export type ProgressByWeek = Record<string, number[]> & {
 
 export default class ChartUtils {
   public static async getProgressByWeek(
-    routine: string,
+    routine: string | undefined,
     defs: Record<string, LiftDef>,
   ): Promise<ProgressByWeek> {
     const weeks = await ChartUtils.getLiftsByWeek(routine);
@@ -61,7 +61,7 @@ export default class ChartUtils {
         const currRM = Utils.calculate1RMAverage(defs[liftId], entry.sets);
 
         if (!baselineRM.has(liftId)) {
-          week.lifts[liftId] = 0;
+          week.lifts[liftId] = NaN;
           baselineRM.set(liftId, currRM);
         } else {
           const base = baselineRM.get(liftId)!;
@@ -101,7 +101,9 @@ export default class ChartUtils {
           let sum = 0;
           liftsByGroup.forEach(lift => {
             const percent = week.lifts[lift.id]!!;
-            if (lift.muscleGroups[0] == currGroup) {
+            if (Number.isNaN(percent)) {
+              // First entry for this lift so don't include in average
+            } else if (lift.muscleGroups[0] == currGroup) {
               weight += 1;
               sum += percent;
             } else {
@@ -111,10 +113,8 @@ export default class ChartUtils {
           });
 
           if (weight == 0) {
-            console.log('  ' + key + ' 0');
             arr.push(0);
           } else {
-            console.log('  ' + key + ' ' + sum / weight);
             arr.push((100 * sum) / weight);
           }
         }
@@ -124,7 +124,9 @@ export default class ChartUtils {
     return result;
   }
 
-  private static async getLiftsByWeek(routine: string): Promise<LiftsByWeek[]> {
+  private static async getLiftsByWeek(
+    routine: string | undefined,
+  ): Promise<LiftsByWeek[]> {
     const workouts = await WorkoutRepository.getRoutine(routine);
     const historiesByWorkout = await Promise.all(
       workouts.map(async wo => {

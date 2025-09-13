@@ -40,7 +40,7 @@ export function StatsScreen({route, navigation}: Props) {
   useEffect(onLoad, []);
 
   function onLoad() {
-    ChartUtils.getProgressByWeek(settings.routine ?? '', defs).then(x => {
+    ChartUtils.getProgressByWeek(settings.routine, defs).then(x => {
       setProgressDates(x.dates);
       setProgress(x);
     });
