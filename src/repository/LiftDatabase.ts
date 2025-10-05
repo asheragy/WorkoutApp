@@ -81,6 +81,7 @@ export const Lifts = createDictionary({
   hipThrust: { name: "Hip Thrust", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_seated: { name: "Leg Curls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_kneeling: { name: "Leg Curls (Kneeling)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
+  legCurl_laying: { name: "Leg Curls (Laying)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
   backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
   gluteKickback: { name: "Glute Kickback", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
 

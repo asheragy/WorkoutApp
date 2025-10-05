@@ -6,6 +6,7 @@ import {HLM_3Day} from '../routines/3_HLM.ts';
 import {ULPPL} from '../routines/5_ULPPL.ts';
 import {UpperLower6} from '../routines/6_UpperLower.ts';
 import {ULArnold} from '../routines/5_ULArnold.ts';
+import {FullBody_1Day} from '../routines/1_Full.ts';
 
 const key = 'routines';
 
@@ -17,6 +18,7 @@ export const PreLoadedRoutines = [
   HLM_3Day,
   ULPPL,
   ULArnold,
+  FullBody_1Day,
 ];
 
 export default class RoutineRepository {
