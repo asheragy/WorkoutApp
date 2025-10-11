@@ -13,6 +13,8 @@ import {LiftDef} from '../types/types';
 import {useTheme} from '@react-navigation/native';
 import {useAppSelector} from '../state/store';
 import Utils from '../components/Utils';
+import {HeaderButtons, Item} from 'react-navigation-header-buttons';
+import {MaterialHeaderButton} from '../components/Common.tsx';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
@@ -20,10 +22,22 @@ type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 export function LiftDefListScreen({route, navigation}: Props) {
   const isSelection = route.params.onSelect != undefined;
   const defs = useAppSelector(store => store.liftDefs);
-
   const lifts = Array.from(Object.values(defs)).sort((a, b) =>
     a.name.localeCompare(b.name),
   );
+
+  // Menu
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <View style={{marginRight: 10}}>
+          <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+            <Item title="add" iconName="plus" onPress={onAdd} />
+          </HeaderButtons>
+        </View>
+      ),
+    });
+  }, [navigation]);
 
   function onEdit(def: LiftDef) {
     if (isSelection) {
@@ -44,7 +58,6 @@ export function LiftDefListScreen({route, navigation}: Props) {
     </TouchableOpacity>
   );
 
-  // TODO make add a menu
   return (
     <View
       style={{
@@ -55,7 +68,6 @@ export function LiftDefListScreen({route, navigation}: Props) {
         data={lifts}
         renderItem={renderItem}
         keyExtractor={(_, index) => index.toString()}></FlatList>
-      <Button title="Add" onPress={() => onAdd()}></Button>
     </View>
   );
 }

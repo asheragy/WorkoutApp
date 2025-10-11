@@ -34,10 +34,16 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
-          <Item title="+Exercise" onPress={onSelectExercise} />
-          <Item title="save" onPress={onSave} />
-        </HeaderButtons>
+        <View style={{marginRight: 10}}>
+          <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+            <Item
+              title="+Exercise"
+              iconName="plus"
+              onPress={onSelectExercise}
+            />
+            <Item title="save" iconName="content-save" onPress={onSave} />
+          </HeaderButtons>
+        </View>
       ),
     });
   }, [navigation, lifts]);
