@@ -51,6 +51,7 @@ export const Lifts = createDictionary({
   curl_incline: { name: "Curls (Incline)", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Biceps] },
   // Not a machine lift but it fits best with calculations
   curl_ezBar: { name: "Curls (EZ-bar)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Biceps] },
+  curl_wrist: { name: "Curls (Wrist)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Other]},
 
   // Triceps
   tricep_machine: { name: "Tricep (Machine)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Triceps] },
@@ -93,6 +94,7 @@ export const Lifts = createDictionary({
   // Abs
   legRaise: { name: "Leg Raises", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] },
   plank: { name: "Planks", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] }, // TODO time
+  elevateCore: { name: "Elevate Core", type: LiftType.Other, muscleGroups: [MuscleGroup.Abs]},
   frontSquatHold: { name: "Front Squat Hold", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Abs]},
 
   // Other

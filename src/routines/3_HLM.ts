@@ -1,6 +1,7 @@
 import {Routine, Workout} from '../types/workout.ts';
 import {Lifts} from '../repository/LiftDatabase.ts';
 import {buildWorkout} from './helper.ts';
+import {SharedDeadliftCardio} from './shared.ts';
 
 export const HLM_3Day: [Routine, Workout[]] = [
   {
@@ -11,40 +12,47 @@ export const HLM_3Day: [Routine, Workout[]] = [
     {
       name: 'Heavy',
       lifts: [
-        Lifts.deadlift_barbell,
-        Lifts.inclinePress_barbell,
-        Lifts.pullup,
-        Lifts.squat_front,
-        [Lifts.legRaise, Lifts.plank],
-        [Lifts.shrug_dumbbell, Lifts.uprightRow_barbell],
+        [Lifts.pullup, Lifts.pulldown_cable],
+        [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
+        Lifts.legCurl_kneeling,
+        [Lifts.squat_front, Lifts.squat_belt],
       ],
     },
     {
       name: 'Light',
       lifts: [
-        [Lifts.row_cable, Lifts.row_plateMachine],
-        [Lifts.bench_closegrip, Lifts.tricep_overhead],
-        Lifts.fly_machine,
+        // Push
         [Lifts.reverseFly_machine, Lifts.facePull],
-        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
+        Lifts.fly_machine,
+        [Lifts.latRaise_machine, Lifts.uprightRow_barbell],
+        [Lifts.tricep_overhead, Lifts.bench_closegrip],
+        // Pull
+        [Lifts.curl_incline, Lifts.curl_ezBar],
         [Lifts.curl_hammer, Lifts.curl_reverse],
+        Lifts.curl_wrist,
+        [Lifts.shrug_dumbbell],
+        // Legs
         Lifts.legExtensions,
-        Lifts.legCurl_kneeling,
         [Lifts.calfRaise_seated, Lifts.calfRaise_standing],
       ],
     },
     {
       name: 'Medium',
       lifts: [
-        Lifts.bench_dumbbell,
-        Lifts.row_barbell,
-        [Lifts.ohp_plateMachine, Lifts.inclinePress_plateMachine],
-        [Lifts.pulldown_machine, Lifts.pulldown_plateMachine],
-        [Lifts.curl_incline, Lifts.curl_ezBar],
-        [Lifts.hipThrust, Lifts.gluteKickback],
+        // Upper
+        [Lifts.row_cable, Lifts.row_plateMachine, Lifts.row_barbell],
+        [Lifts.pulldown_plateMachine, Lifts.pulldown_machine],
+        [Lifts.ohp_plateMachine, Lifts.ohp_barbell],
+        [Lifts.dip_machine],
+        // Lower
         [Lifts.rdl_barbell, Lifts.backExtension],
+        [Lifts.hipThrust, Lifts.gluteKickback],
         [Lifts.legPress, Lifts.splitSquat],
       ],
+    },
+    {
+      name: 'Deadlift / Cardio',
+      lifts: SharedDeadliftCardio,
     },
   ].flatMap(buildWorkout),
 ];

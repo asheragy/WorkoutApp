@@ -38,7 +38,6 @@ export function LiftDefListScreen({route, navigation}: Props) {
       ),
     });
   }, [navigation]);
-
   function onEdit(def: LiftDef) {
     if (isSelection) {
       route.params.onSelect(def.id);
