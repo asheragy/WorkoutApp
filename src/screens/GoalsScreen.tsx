@@ -42,7 +42,7 @@ export function GoalsScreen({route, navigation}: Props) {
           continue;
         }
 
-        const sets = history.flatMap(h => h.sets);
+        const sets = history.flatMap(h => h.sets).filter(set => !set.warmup);
         const maxes = sets.map(set => Utils.calculate1RM(defWithGoal, set));
         const best = Math.max(...maxes);
 
