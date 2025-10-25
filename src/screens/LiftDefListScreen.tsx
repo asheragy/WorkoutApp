@@ -15,6 +15,7 @@ import {useAppSelector} from '../state/store';
 import Utils from '../components/Utils';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import {MaterialHeaderButton} from '../components/Common.tsx';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
@@ -25,6 +26,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
   const lifts = Array.from(Object.values(defs)).sort((a, b) =>
     a.name.localeCompare(b.name),
   );
+  const insets = useSafeAreaInsets();
 
   // Menu
   React.useLayoutEffect(() => {
@@ -62,6 +64,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
       style={{
         flex: 1,
         flexGrow: 1,
+        paddingBottom: insets.bottom + 12,
       }}>
       <FlatList
         data={lifts}

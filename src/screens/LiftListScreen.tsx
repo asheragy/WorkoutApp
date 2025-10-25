@@ -13,6 +13,8 @@ import {LiftDef} from '../types/types';
 import {useSelector} from 'react-redux';
 import {AppState} from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
+import Utils from '../components/Utils.ts';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
@@ -21,6 +23,7 @@ export function LiftListScreen({route, navigation}: Props) {
   const [lifts, setLifts] = useState<LiftDef[]>([]);
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const insets = useSafeAreaInsets();
 
   function loadState() {
     // TODO can this just be from defs?
@@ -44,18 +47,18 @@ export function LiftListScreen({route, navigation}: Props) {
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
       <View key={item.index} style={{padding: 10}}>
-        <Text style={{color: colors.text}}>{item.item.name}</Text>
+        <Text style={{color: colors.text}}>{Utils.defToString(item.item)}</Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View>
+    <View style={{paddingBottom: insets.bottom + 12}}>
       <FlatList
         style={{backgroundColor: colors.background}}
         data={lifts}
         renderItem={renderItem}
-        keyExtractor={(_, index) => 'test' + index}></FlatList>
+        keyExtractor={(_, index) => 'idx_' + index}></FlatList>
     </View>
   );
 }

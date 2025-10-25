@@ -123,18 +123,15 @@ function WorkoutHistoryListItem(props: {entry: WorkoutEntry}) {
         {Utils.lastCompleted(props.entry.timestamp)}
       </Text>
       {props.entry.lifts.map((lift, index) => {
+        const sets = lift.sets.map(
+          set => set.weight + 'x' + set.reps + (set.warmup ? ' (W)' : ''),
+        );
+
         return (
           <View style={{paddingTop: 4}} key={index.toString()}>
             <Text style={{fontWeight: 'bold', color: colors.text}}>
-              {lift.name}
+              {lift.name + ' - ' + sets.join(', ')}
             </Text>
-            {lift.sets.map((set, index) => {
-              return (
-                <Text style={{color: colors.text}} key={index.toString()}>
-                  {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
-                </Text>
-              );
-            })}
           </View>
         );
       })}

@@ -11,18 +11,23 @@ import {LiftHistory} from '../../repository/LiftHistoryRepository';
 
 export function LiftLogTab(props: {entries: LiftHistory[]}) {
   const {colors} = useTheme();
+  const entries = props.entries.slice().reverse();
+  const df: Intl.DateTimeFormatOptions = {
+    month: '2-digit',
+    day: '2-digit',
+  };
 
   const renderItem = (item: ListRenderItemInfo<LiftHistory>) => {
+    const date = item.item.timestamp.toLocaleDateString('us-en', df);
+    const sets = item.item.sets.map(
+      set => set.weight + 'x' + set.reps + (set.warmup ? ' (W)' : ''),
+    );
+
     return (
       <View style={{padding: 4}}>
         <Text style={{color: colors.text}}>
-          {item.item.timestamp.toDateString()}
+          {date + ' - ' + sets.join(', ')}
         </Text>
-        {item.item.sets.map((set, index) => (
-          <Text key={index.toString()} style={{color: colors.text}}>
-            {set.weight + ' x ' + set.reps + (set.warmup ? ' (W)' : '')}
-          </Text>
-        ))}
       </View>
     );
   };
@@ -30,7 +35,7 @@ export function LiftLogTab(props: {entries: LiftHistory[]}) {
   return (
     <FlatList
       style={{backgroundColor: colors.background}}
-      data={props.entries}
+      data={entries}
       renderItem={renderItem}
       keyExtractor={(_, index) => 'idx_' + index}></FlatList>
   );
