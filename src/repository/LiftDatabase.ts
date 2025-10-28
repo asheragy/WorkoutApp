@@ -26,6 +26,7 @@ export const Lifts = createDictionary({
   row_dumbbell: { name: "Rows", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_cable: { name: "Rows (Cable)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_plateMachine: { name: "Rows", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_machine: { name: "Rows", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps]},
   // Rows T-Bar (Plate loaded machine)
   // Rows T-Bar (Barbell)
   uprightRow_barbell: { name: "Upright Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Shoulders] },
@@ -77,6 +78,7 @@ export const Lifts = createDictionary({
   deadlift_trapbar: { name: "Deadlift", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
   deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
   deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
+  deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back]},
   rdl_barbell: { name: "RDL", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
   rdl_single: { name: "RDL (Single Leg)", type: LiftType.Other, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
   hipThrust: { name: "Hip Thrust", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Hamstrings] },
