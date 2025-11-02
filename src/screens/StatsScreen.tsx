@@ -24,9 +24,7 @@ export function StatsScreen({route, navigation}: Props) {
   const {colors} = useTheme();
   const [interval, setInterval] = useState(7);
   const [entries, setEntries] = useState<GroupEntry[]>([]);
-  const [progress, setProgress] = useState<ProgressByWeek | undefined>(
-    undefined,
-  );
+  const [progress, setProgress] = useState<number[]>([]);
   const [progressDates, setProgressDates] = useState<Date[]>([]);
 
   // Dropdown list
@@ -37,12 +35,22 @@ export function StatsScreen({route, navigation}: Props) {
   const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
-  useEffect(onLoad, []);
+  useEffect(onLoad, [value]);
 
   function onLoad() {
-    ChartUtils.getProgressByWeek(settings.routine, defs).then(x => {
-      setProgressDates(x.dates);
-      setProgress(x);
+    ChartUtils.getProgressByGroup(value, defs).then(values => {
+      setProgress(values);
+
+      // Faking dates since required for chart
+      const today = new Date();
+      const dates = values.map((value, i, arr) => {
+        const weeksAgo = arr.length - 1 - i; // so last element = 0 weeks ago
+        const date = new Date(today);
+        date.setDate(today.getDate() - weeksAgo * 7);
+        return date;
+      });
+
+      setProgressDates(dates);
     });
 
     const result = new Map<MuscleGroup, number>();
@@ -107,10 +115,6 @@ export function StatsScreen({route, navigation}: Props) {
     </View>
   );
 
-  const selectedProgressValues: number[] = progress
-    ? progress[MuscleGroup[value]]
-    : [];
-
   return (
     <View>
       <FlatList
@@ -134,9 +138,7 @@ export function StatsScreen({route, navigation}: Props) {
         setValue={setValue}
         dropDownDirection={'TOP'}
       />
-      <ProgressChart
-        dates={progressDates}
-        values={selectedProgressValues}></ProgressChart>
+      <ProgressChart dates={progressDates} values={progress}></ProgressChart>
     </View>
   );
 }

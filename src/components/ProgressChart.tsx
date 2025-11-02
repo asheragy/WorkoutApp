@@ -17,6 +17,16 @@ export function ProgressChart(props: {
     : [{data: props.values as number[]}];
 
   const {colors} = useTheme();
+  const maxDates = 10;
+  const mod = Math.ceil(props.dates.length / maxDates);
+  const labels = props.dates.map((date, index) => {
+    if (index % mod != 0) {
+      return '';
+    }
+
+    return date.getMonth() + 1 + '/' + date.getDate();
+  });
+  console.log(mod);
 
   // https://www.npmjs.com/package/react-native-chart-kit
   return (
@@ -29,7 +39,7 @@ export function ProgressChart(props: {
       <Text style={{color: colors.text}}>{props.title}</Text>
       <LineChart
         data={{
-          labels: props.dates.map(x => x.getMonth() + 1 + '/' + x.getDate()),
+          labels: labels,
           legend: props.legend,
           datasets: datasets,
         }}
