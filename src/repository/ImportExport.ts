@@ -3,7 +3,7 @@ import RNFS from 'react-native-fs';
 
 export async function exportAsyncStorage() {
   const filename = 'asyncStorageBackup.json';
-  const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+  const path = `${RNFS.ExternalDirectoryPath}/${filename}`;
 
   try {
     const keys = await AsyncStorage.getAllKeys();
@@ -34,7 +34,7 @@ export async function exportAsyncStorage() {
 
 export async function importAsyncStorage(): Promise<void> {
   const filename = 'asyncStorageBackup.json';
-  const path = `${RNFS.DocumentDirectoryPath}/${filename}`;
+  const path = `${RNFS.ExternalDirectoryPath}/${filename}`;
 
   try {
     // 🧭 Check if storage is empty
