@@ -4,6 +4,10 @@ import {RootStackParamList} from '../App';
 import {Button, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LiftDefRepository from '../repository/LiftDefRepository';
+import {
+  exportAsyncStorage,
+  importAsyncStorage,
+} from '../repository/ImportExport.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -33,10 +37,21 @@ export function SettingsScreen({route, navigation}: Props) {
     });
   }
 
+  async function onExport() {
+    const path = await exportAsyncStorage();
+    console.log(path);
+  }
+
+  async function onImport() {
+    await importAsyncStorage();
+  }
+
   return (
     <View>
       <Button title="Log Keys" onPress={logSettings}></Button>
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
+      <Button title="Export Database" onPress={onExport}></Button>
+      <Button title="Import Database" onPress={onImport}></Button>
     </View>
   );
 }
