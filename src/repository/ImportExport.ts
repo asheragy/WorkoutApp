@@ -2,15 +2,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
 
 export async function exportAsyncStorage() {
-  const filename = 'asyncStorageBackup.json';
+  const timestamp = new Date()
+    .toISOString()
+    .split('.')[0]
+    .replace('T', '_')
+    .replace(/:/g, '')
+    .replaceAll('-', '');
+
+  const filename = `asyncStorageBackup_${timestamp}.json`;
   const path = `${RNFS.ExternalDirectoryPath}/${filename}`;
 
   try {
     const keys = await AsyncStorage.getAllKeys();
     const pairs = await AsyncStorage.multiGet(keys);
 
-    // Convert to object
-    const data = Object.fromEntries(pairs);
+    const data = Object.fromEntries(
+      pairs.map(([key, value]) => {
+        if (value == null) return [key, null];
+        try {
+          // Try parsing JSON values — if it fails, keep the raw string
+          return [key, JSON.parse(value)];
+        } catch {
+          return [key, value];
+        }
+      }),
+    );
 
     // Wrap in metadata for future-proofing
     const json = JSON.stringify(
@@ -37,14 +53,6 @@ export async function importAsyncStorage(): Promise<void> {
   const path = `${RNFS.ExternalDirectoryPath}/${filename}`;
 
   try {
-    // 🧭 Check if storage is empty
-    const existingKeys = await AsyncStorage.getAllKeys();
-    if (existingKeys.length > 0) {
-      throw new Error(
-        `AsyncStorage is not empty (${existingKeys.length} existing keys). Please clear it before importing.`,
-      );
-    }
-
     // Read JSON file
     const json = await RNFS.readFile(path, 'utf8');
     const parsed = JSON.parse(json);
@@ -61,7 +69,7 @@ export async function importAsyncStorage(): Promise<void> {
 
     // Convert all values to strings for AsyncStorage
     const entries: [string, string][] = Object.entries(data).map(
-      ([key, value]) => [key, JSON.stringify(value)],
+      ([key, value]) => [key, toStorageString(value)],
     );
 
     // Save all pairs
@@ -73,4 +81,10 @@ export async function importAsyncStorage(): Promise<void> {
     console.error('Error importing AsyncStorage:', e);
     throw e;
   }
+}
+
+function toStorageString(value: unknown): string {
+  // Keep plain strings as-is; stringify everything else
+  if (typeof value === 'string') return value;
+  return JSON.stringify(value); // objects, arrays, numbers, booleans, null
 }
