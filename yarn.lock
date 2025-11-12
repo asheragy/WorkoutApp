@@ -2804,6 +2804,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@op-engineering/op-sqlite@npm:^15.0.7":
+  version: 15.0.7
+  resolution: "@op-engineering/op-sqlite@npm:15.0.7"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+  checksum: 10c0/1262f224fc87059b92ff85e4e3e56c535dbb10d987532a2f779ebdb534da2bb971fe8cb8d9145b6a1ffcf5eb076e56c96ebcfcb129b354e21165bdc355104066
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -3948,6 +3958,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@eslint/js": "npm:^9.19.0"
+    "@op-engineering/op-sqlite": "npm:^15.0.7"
     "@react-native-async-storage/async-storage": "npm:2.1.2"
     "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:15.0.1"

@@ -11,6 +11,20 @@ export type WorkoutHistory = {
 };
 
 export default class WorkoutHistoryRepository {
+  static async getAll(): Promise<Map<string, WorkoutHistory[]>> {
+    var result = new Map<string, WorkoutHistory[]>();
+    var keys = await AsyncStorage.getAllKeys();
+
+    var ids = keys
+      .filter(x => x.startsWith(keyPrefix))
+      .map(x => x.replace(keyPrefix, ''));
+    for (const id of ids) {
+      result.set(id, await this.get(id));
+    }
+
+    return result;
+  }
+
   static async get(workoutId: string): Promise<WorkoutHistory[]> {
     var value = await AsyncStorage.getItem(keyPrefix + workoutId);
 
@@ -43,7 +57,7 @@ export default class WorkoutHistoryRepository {
     for (let i = 0; i < lifts.length; i++) {
       const lift = lifts[i];
       const def = defs[lift.id];
-      await LiftHistoryRepository.add(def, lift.sets, timestamp, key);
+      await LiftHistoryRepository.add(def, lift.sets, timestamp, key, i);
     }
   }
 }

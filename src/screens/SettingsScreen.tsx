@@ -8,6 +8,7 @@ import {
   exportAsyncStorage,
   importAsyncStorage,
 } from '../repository/ImportExport.ts';
+import LiftHistoryRepository from '../repository/LiftHistoryRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Settings'>;
 
@@ -46,12 +47,17 @@ export function SettingsScreen({route, navigation}: Props) {
     await importAsyncStorage();
   }
 
+  async function migrateHistory() {
+    await LiftHistoryRepository.migrateHistory();
+  }
+
   return (
     <View>
       <Button title="Log Keys" onPress={logSettings}></Button>
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
       <Button title="Export Database" onPress={onExport}></Button>
       <Button title="Import Database" onPress={onImport}></Button>
+      <Button title="Migrate History" onPress={migrateHistory}></Button>
     </View>
   );
 }

@@ -3,6 +3,7 @@ import {LiftDef} from '../types/types';
 import Utils from '../components/Utils';
 import {SystemLifts} from './LiftDatabase';
 import {AppDispatch, updateLiftDefs} from '../state/store.ts';
+import {dbReady} from './db.ts';
 
 const key = 'liftdefs';
 
@@ -14,6 +15,8 @@ export default class LiftDefRepository {
   }
 
   async init(): Promise<void> {
+    await dbReady(); // 1 of 2 locations to ensure db is initialized
+
     const data = await LiftDefRepository.getLookupMap();
     this.dispatch(updateLiftDefs(data));
   }
