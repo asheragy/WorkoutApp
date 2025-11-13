@@ -1,4 +1,4 @@
-import {GlobalSettings, LiftType} from '../types/types';
+import {GlobalSettings, LiftType, PersistedSet} from '../types/types';
 import {LiftSet} from '../types/workout';
 
 export default class SetUtils {
@@ -49,5 +49,13 @@ export default class SetUtils {
     }
 
     return current - step;
+  }
+
+  // TODO limited scope and does not account for some things
+  static setToPersisted(set: LiftSet): PersistedSet {
+    return {
+      weight: set.weight ?? 0,
+      reps: set.reps ?? 0,
+    };
   }
 }
