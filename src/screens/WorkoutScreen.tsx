@@ -7,7 +7,6 @@ import {LogBox} from 'react-native';
 import {Lift, LiftSet, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
-import WorkoutHistoryRepository from '../repository/WorkoutHistoryRepository';
 import {
   HeaderButtons,
   OverflowMenu,
@@ -86,7 +85,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   const onComplete = async () => {
     workout.lastCompleted = new Date();
-    await WorkoutHistoryRepository.add(workout, defs);
+    await LiftHistoryRepository.addWorkout(workout, defs);
 
     workout.lifts.forEach(lift => {
       lift.hide = undefined;

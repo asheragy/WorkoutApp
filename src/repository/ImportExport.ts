@@ -13,7 +13,11 @@ export async function exportAsyncStorage() {
   const path = `${RNFS.ExternalDirectoryPath}/${filename}`;
 
   try {
-    const keys = await AsyncStorage.getAllKeys();
+    const allKeys = await AsyncStorage.getAllKeys();
+    const keys = allKeys.filter(
+      key =>
+        !key.startsWith('liftHistory:') && !key.startsWith('workoutHistory:'),
+    );
     const pairs = await AsyncStorage.multiGet(keys);
 
     const data = Object.fromEntries(

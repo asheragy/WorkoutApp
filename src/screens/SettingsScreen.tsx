@@ -18,13 +18,6 @@ export function SettingsScreen({route, navigation}: Props) {
 
     keys.forEach(key => {
       console.log(key);
-      //AsyncStorage.removeItem('@weightLog');
-
-      if (key.startsWith('liftHistory:')) {
-        //console.log('-');
-        //AsyncStorage.removeItem(key);
-        ///AsyncStorage.getItem(key).then(result => console.log(result));
-      }
     });
   }
 
@@ -44,11 +37,9 @@ export function SettingsScreen({route, navigation}: Props) {
   }
 
   async function onImport() {
-    await importAsyncStorage();
-  }
-
-  async function migrateHistory() {
-    await LiftHistoryRepository.migrateHistory();
+    const keys = await AsyncStorage.getAllKeys();
+    if (keys.length > 0) console.warn('Can only import on empty database');
+    else await importAsyncStorage();
   }
 
   return (
@@ -57,7 +48,6 @@ export function SettingsScreen({route, navigation}: Props) {
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
       <Button title="Export Database" onPress={onExport}></Button>
       <Button title="Import Database" onPress={onImport}></Button>
-      <Button title="Migrate History" onPress={migrateHistory}></Button>
     </View>
   );
 }
