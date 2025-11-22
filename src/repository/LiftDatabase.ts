@@ -68,7 +68,9 @@ export const Lifts = createDictionary({
   squat_belt: { name: "Squat (Belt)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings]},
   squat_v: { name: "Squat (V-Squat)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
   squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
+  // TODO single leg should be the special case
   legPress: { name: "Leg Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
+  legPress_double: { name: "Leg Press (Double)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
   lunge: { name: "Lunges", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
   legExtensions: { name: "Leg Extensions", type: LiftType.Machine, muscleGroups: [MuscleGroup.Quads] },
   splitSquat: { name: "Split Squat", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings]},

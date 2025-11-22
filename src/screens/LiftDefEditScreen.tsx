@@ -121,7 +121,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
         </TextInput>
       </View>
 
-      <View style={[styles.viewGroup, {zIndex: 90}]}>
+      <View style={[styles.viewGroup]}>
         <Text style={{color: colors.text}}>Type:</Text>
         <DropDownPicker
           disabled={systemDef}
@@ -130,10 +130,11 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           value={type}
           setOpen={setOpen}
           setValue={setType}
+          zIndex={90}
         />
       </View>
 
-      <View style={[styles.viewGroup, {zIndex: 80}]}>
+      <View style={[styles.viewGroup]}>
         <Text style={{color: colors.text}}>Primary:</Text>
         <DropDownPicker
           items={muscleGroupItems}
@@ -141,10 +142,11 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           setOpen={setPrimaryOpen}
           value={primary}
           setValue={setPrimary}
+          zIndex={80}
         />
       </View>
 
-      <View style={[styles.viewGroup, {zIndex: 70}]}>
+      <View style={[styles.viewGroup]}>
         <Text style={{color: colors.text}}>
           {'Secondary: ' + secondary.map(i => MuscleGroup[i])}
         </Text>
@@ -159,6 +161,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
           multiple={true}
           value={secondary}
           setValue={setSecondary}
+          zIndex={70}
         />
       </View>
 
