@@ -157,6 +157,16 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
+  // Group numbers
+  const idToGroup = new Map<string, number>();
+  let currentGroup = -1;
+  for (const lift of workout.lifts) {
+    if (!lift.alternate) {
+      currentGroup++;
+    }
+    idToGroup.set(lift.id, currentGroup);
+  }
+
   const completedAlts = getCompletedAlts(workout.lifts);
   const activeLifts = workout.lifts.filter(
     x => !x.hide && !completedAlts.includes(x.id),
@@ -171,6 +181,7 @@ export function WorkoutScreen({route, navigation}: Props) {
       {sortedLifts.map((lift, index) => (
         <LiftItem
           lift={lift}
+          groupOrder={idToGroup.get(lift.id)}
           onEdit={() =>
             navigation.navigate('LiftEdit', {
               lift: lift,

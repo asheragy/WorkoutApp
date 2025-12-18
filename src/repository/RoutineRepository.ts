@@ -8,6 +8,7 @@ import {UpperLower6} from '../routines/6_UpperLower.ts';
 import {ULArnold} from '../routines/5_ULArnold.ts';
 import {FullBody_1Day} from '../routines/1_Full.ts';
 import {YatesSplitModified} from '../routines/4_Yates_Modified.ts';
+import {UpperLower_2Day} from '../routines/2_UpperLower.ts';
 
 const key = 'routines';
 
@@ -21,6 +22,7 @@ export const PreLoadedRoutines = [
   ULPPL,
   ULArnold,
   FullBody_1Day,
+  UpperLower_2Day,
 ];
 
 export default class RoutineRepository {

@@ -19,6 +19,7 @@ export default function LiftItem(props: {
   lift: Lift;
   overrideComplete: boolean;
   onEdit: () => void;
+  groupOrder?: number;
 }) {
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
