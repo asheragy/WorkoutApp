@@ -63,7 +63,7 @@ export type RootStackParamList = {
     onSelect?: (defId: string) => void;
   };
   WorkoutEdit: {
-    workout?: Workout;
+    workoutId?: string;
     onChanged: () => void;
   };
   Settings: undefined;

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {Button, Text, View} from 'react-native';
+import {Button, Text, ToastAndroid, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {
@@ -33,13 +33,23 @@ export function SettingsScreen({route, navigation}: Props) {
 
   async function onExport() {
     const path = await exportAsyncStorage();
-    console.log(path);
+    ToastAndroid.show(
+      'Saved to ' + path.substring(path.lastIndexOf('/') + 1),
+      ToastAndroid.LONG,
+    );
   }
 
   async function onImport() {
     const keys = await AsyncStorage.getAllKeys();
-    if (keys.length > 0) console.warn('Can only import on empty database');
-    else await importAsyncStorage();
+    if (keys.length > 0)
+      ToastAndroid.show(
+        'Can only import on empty database',
+        ToastAndroid.SHORT,
+      );
+    else {
+      await importAsyncStorage();
+      ToastAndroid.show('Successfully imported database', ToastAndroid.SHORT);
+    }
   }
 
   return (

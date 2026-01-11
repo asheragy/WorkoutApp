@@ -1,4 +1,4 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {Dispatch, useCallback, useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,7 +12,7 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import {useTheme} from '@react-navigation/native';
+import {useFocusEffect, useTheme} from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
 import {connect, useDispatch, useSelector} from 'react-redux';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -129,6 +129,13 @@ export function WorkoutList({navigation, route}: Props) {
   }
   useEffect(loadState, []);
 
+  useFocusEffect(
+    useCallback(() => {
+      //loadState();
+      console.log('Home screen focus...');
+    }, []),
+  );
+
   const onLifts = () => navigation.navigate('LiftList');
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   const onWeightLog = () => navigation.navigate('Weight');
@@ -157,7 +164,7 @@ export function WorkoutList({navigation, route}: Props) {
 
   function onEdit(item: Workout) {
     navigation.navigate('WorkoutEdit', {
-      workout: item,
+      workoutId: item.id,
       onChanged: loadState,
     });
   }

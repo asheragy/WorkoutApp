@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Alert, Button, Text, TouchableOpacity, View} from 'react-native';
 import {RootStackParamList} from '../App';
@@ -21,14 +21,25 @@ import DraggableFlatList, {
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
 export function WorkoutEditScreen({route, navigation}: Props) {
-  const existing = route.params.workout;
-  const [title, setTitle] = useState(
-    existing ? existing.name : 'Workout Title',
-  );
-  const [lifts, setLifts] = useState<Lift[]>(existing ? existing.lifts : []);
+  const [workout, setWorkout] = useState<Workout>({
+    name: 'Workout Title',
+    lifts: [],
+  });
   const {colors} = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
+
+  function loadState() {
+    if (route.params.workoutId) {
+      WorkoutRepository.get(route.params.workoutId).then(result => {
+        if (result !== undefined) {
+          setWorkout(result);
+        }
+      });
+    }
+  }
+
+  useEffect(loadState, []);
 
   // Menu
   React.useLayoutEffect(() => {
@@ -46,22 +57,16 @@ export function WorkoutEditScreen({route, navigation}: Props) {
         </View>
       ),
     });
-  }, [navigation, lifts]);
+  }, [navigation, workout]);
 
   async function onSave() {
-    if (lifts[0].alternate) {
+    if (workout.lifts.length > 0 && workout.lifts[0].alternate) {
       Alert.alert('Error', 'First lift cannot be an alternate');
       return;
     }
 
-    const workout: Workout = {
-      ...existing,
-      name: title,
-      lifts: lifts,
-    };
-
     // Would set above but SingleWorkout is a special case that this shouldn't overwrite
-    if (!existing) {
+    if (!route.params.workoutId) {
       workout.routineId = settings.routine;
     }
 
@@ -75,15 +80,15 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     navigation.pop();
   }
 
+  // TODO copy from context menu in prior screen instead of here?
   async function onCopy() {
-    const workout: Workout = {
-      ...existing,
-      name: title + ' (Copy)',
-      lifts: lifts,
+    const workoutCopy: Workout = {
+      ...workout,
+      name: workout.name + ' (Copy)',
     };
 
-    delete workout.id;
-    await WorkoutRepository.upsert(workout);
+    delete workoutCopy.id;
+    await WorkoutRepository.upsert(workoutCopy);
     route.params.onChanged();
     navigation.pop();
   }
@@ -98,31 +103,48 @@ export function WorkoutEditScreen({route, navigation}: Props) {
       sets: [],
       goals: [],
     };
-    setLifts(prevState => [...prevState, lift]);
+    setWorkout(prev => ({
+      ...prev,
+      lifts: [...prev.lifts, lift],
+    }));
   }
 
   function onExerciseDelete(index: number) {
-    var updatedLifts = [...lifts];
-    updatedLifts.splice(index, 1);
-    setLifts(updatedLifts);
+    setWorkout(prev => ({
+      ...prev,
+      lifts: prev.lifts.filter((_, i) => i !== index),
+    }));
   }
 
   function onLiftChanged(index: number, lift: Lift) {
-    console.log(lifts.length);
-    var updatedLifts = [...lifts];
-    updatedLifts[index] = lift;
+    setWorkout(prev => ({
+      ...prev,
+      lifts: prev.lifts.map((l, i) => (i === index ? lift : l)),
+    }));
+  }
 
-    setLifts(updatedLifts);
+  function setLifts(lifts: Lift[]) {
+    setWorkout(prev => ({
+      ...prev,
+      lifts: lifts,
+    }));
+  }
+
+  function setTitle(title: string) {
+    setWorkout(prev => ({
+      ...prev,
+      name: title,
+    }));
   }
 
   async function onDeleteWorkout() {
-    await WorkoutRepository.delete(route.params.workout!);
+    await WorkoutRepository.deleteById(route.params.workoutId!);
     route.params.onChanged();
     navigation.pop();
   }
 
   function confirmLiftDelete(index: number) {
-    const liftId = lifts[index].id;
+    const liftId = workout.lifts[index].id;
 
     Alert.alert(
       `Delete ${defs[liftId].name}?`,
@@ -160,11 +182,11 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   return (
     <View style={{flex: 1}}>
       <TextInput onChangeText={setTitle} style={{color: colors.text}}>
-        {title}
+        {workout.name}
       </TextInput>
-      {existing != undefined && (
+      {workout.id != undefined && (
         <Text style={{color: colors.text}}>
-          {'Last Completed: ' + Utils.lastCompleted(existing.lastCompleted)}
+          {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
         </Text>
       )}
 
@@ -174,14 +196,14 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           flexGrow: 1,
         }}>
         <DraggableFlatList
-          data={lifts}
+          data={workout.lifts}
           renderItem={renderItem}
           onDragEnd={({data}) => setLifts(data)}
           keyExtractor={(_, index) => index.toString()}></DraggableFlatList>
-        {route.params.workout && (
+        {route.params.workoutId && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>
         )}
-        {route.params.workout && (
+        {route.params.workoutId && (
           <Button title="Create Copy" onPress={onCopy}></Button>
         )}
       </View>

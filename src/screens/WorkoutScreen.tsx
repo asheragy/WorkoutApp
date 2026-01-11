@@ -145,14 +145,14 @@ export function WorkoutScreen({route, navigation}: Props) {
     await WorkoutRepository.upsert(updatedWorkout);
   }
 
+  function onHistory() {
+    navigation.navigate('WorkoutHistory', {workoutId: route.params.workoutId});
+  }
+
   function loadState() {
     WorkoutRepository.get(route.params.workoutId).then(result => {
       if (result !== undefined) setWorkout(result);
     });
-  }
-
-  function onHistory() {
-    navigation.navigate('WorkoutHistory', {workoutId: route.params.workoutId});
   }
 
   useEffect(loadState, []);

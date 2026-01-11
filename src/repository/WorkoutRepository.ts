@@ -113,11 +113,15 @@ export default class WorkoutRepository {
   }
 
   static async delete(workout: Workout) {
-    let items = await this.getAll();
-    const index = items.findIndex(item => item.id == workout.id);
-    if (index < 0) throw new Error('Unable to find id ' + workout.id);
+    if (workout.id) await this.deleteById(workout.id);
+  }
 
-    items = items.filter(x => x.id != workout.id);
+  static async deleteById(workoutId: String) {
+    let items = await this.getAll();
+    const index = items.findIndex(item => item.id == workoutId);
+    if (index < 0) throw new Error('Unable to find id ' + workoutId);
+
+    items = items.filter(x => x.id != workoutId);
     await AsyncStorage.setItem(key, JSON.stringify(items));
   }
 
