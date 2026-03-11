@@ -25,6 +25,7 @@ export const Lifts = createDictionary({
   row_barbell: { name: "Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_dumbbell: { name: "Rows", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_cable: { name: "Rows (Cable)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_cableWide: { name: "Rows (Cable Wide-Grip)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_plateMachine: { name: "Rows", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_machine: { name: "Rows", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps]},
   // Rows T-Bar (Plate loaded machine)
@@ -35,6 +36,7 @@ export const Lifts = createDictionary({
   pulldown_plateMachine: { name: "Pulldowns", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_machine: { name: "Pulldowns", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pullup: { name: "Pullups", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pullup_neutral: { name: "Pullups (Neutral grip)", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
 
   // Shoulders
   ohp_barbell: { name: "Overhead Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },

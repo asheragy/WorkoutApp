@@ -20,9 +20,9 @@ export const YatesSplitModified: [Routine, Workout[]] = [
       name: 'Shoulders / Triceps',
       lifts: [
         [Lifts.ohp_barbell, Lifts.ohp_plateMachine, Lifts.ohp_dumbbell],
+        [Lifts.uprightRow_barbell],
         Lifts.bench_closegrip,
         [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
-        [Lifts.uprightRow_barbell],
         [Lifts.reverseFly_machine, Lifts.facePull],
         Lifts.tricep_overhead,
       ],
@@ -30,27 +30,29 @@ export const YatesSplitModified: [Routine, Workout[]] = [
     {
       name: 'Back',
       lifts: [
+        [Lifts.pullup, Lifts.pulldown_cable],
         [Lifts.row_cable, Lifts.row_barbell],
-        Lifts.pullup,
+
         [Lifts.shrug_dumbbell],
         [Lifts.backExtension],
-        [Lifts.row_plateMachine, Lifts.row_machine], // Chest supported
         [
           Lifts.pulldown_machine,
           Lifts.pulldown_plateMachine,
-          Lifts.pulldown_cable,
+          ,
         ],
+        [Lifts.row_plateMachine, Lifts.row_machine], // Chest supported
       ],
     },
     {
       name: 'Chest / Biceps',
       lifts: [
-        [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
-        [Lifts.bench_dumbbell, Lifts.dip_machine],
+        [Lifts.inclinePress_barbell],
+        [Lifts.inclinePress_dumbbell, Lifts.bench_dumbbell],
         [Lifts.curl_incline, Lifts.curl_ezBar],
         [Lifts.pullover_dumbbell, Lifts.pullover_machine],
         Lifts.fly_machine,
         [Lifts.curl_hammer, Lifts.curl_reverse],
+        Lifts.dip_machine
       ],
     },
     {

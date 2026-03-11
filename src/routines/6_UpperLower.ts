@@ -2,6 +2,36 @@ import {Routine, Workout} from '../types/workout.ts';
 import {Lifts} from '../repository/LiftDatabase.ts';
 import {buildWorkout} from './helper.ts';
 
+/*
+
+Lower 1
+- Hip Add
+- Hip Abd
+- Leg Extensions 1
+- DL 5s / DL 10s  2:1
+- Single Leg Press / Split Squat
+- Core 1
+
+Lower 2
+- Leg Extensions 2
+- Leg Curls (Laying or seated)
+- Front Squat / Squat  2:1
+- RDL / Deficit   2:1
+- Calves (Seated or standing)
+- Core 2
+
+Lower 3
+- Leg Curls (Laying or seated)
+- Leg Press / Belt Squat / V-Squat  2:2:1
+- Trap low / Sumo / Trap High 2:1:1
+- Hip Thrust / Glute Kickback
+- Calves (Seated or standing)
+- Core 3
+- Back extension
+
+
+ */
+
 export const UpperLower6: [Routine, Workout[]] = [
   {
     id: 'upperLower6',
@@ -11,70 +41,39 @@ export const UpperLower6: [Routine, Workout[]] = [
     {
       name: 'Upper 1',
       lifts: [
-        Lifts.row_barbell,
-        [Lifts.ohp_plateMachine, Lifts.ohp_machine],
-        Lifts.pullover_dumbbell,
-        Lifts.shrug_dumbbell,
-        [Lifts.dip_machine, Lifts.dip],
-        Lifts.curl_hammer,
-      ],
-    },
-    {
-      name: 'Lower 1',
-      lifts: [
-        Lifts.hipAbduction,
-        Lifts.hipAdduction,
-        Lifts.deadlift_barbell,
-        Lifts.calfRaise_standing,
-        Lifts.plank,
-        [Lifts.legPress, Lifts.squat_v],
+        [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
+        [Lifts.dip, Lifts.fly_machine],
+        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
+        [Lifts.pullup, Lifts.pullup_neutral],
+        [Lifts.row_plateMachine, Lifts.row_machine],
+        [Lifts.curl_wrist, Lifts.shrug_dumbbell],
       ],
     },
     {
       name: 'Upper 2',
       lifts: [
-        Lifts.inclinePress_barbell,
-        Lifts.pullup,
-        Lifts.bench_dumbbell,
-        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
-        [Lifts.reverseFly_machine, Lifts.uprightRow_barbell],
-        Lifts.curl_incline,
-      ],
-    },
-    {
-      name: 'Lower 2',
-      lifts: [
-        Lifts.legExtensions,
-        Lifts.legCurl_kneeling,
-        Lifts.squat_front,
-        Lifts.calfRaise_seated,
-        [Lifts.hipThrust, Lifts.backExtension],
-        Lifts.splitSquat,
+        [Lifts.ohp_barbell, Lifts.ohp_dumbbell],
+        [Lifts.bench_closegrip, Lifts.dip_machine],
+        Lifts.uprightRow_barbell,
+        [Lifts.row_barbell, Lifts.row_dumbbell],
+        [Lifts.curl_incline, Lifts.curl_ezBar],
+        [Lifts.reverseFly_machine, Lifts.facePull],
+        [Lifts.pullover_dumbbell, Lifts.pullover_machine],
       ],
     },
     {
       name: 'Upper 3',
       lifts: [
-        [Lifts.row_cable, Lifts.row_plateMachine],
-        Lifts.ohp_barbell,
+        [Lifts.bench_dumbbell, Lifts.bench_barbell],
+        [Lifts.ohp_plateMachine, Lifts.inclinePress_plateMachine],
+        Lifts.tricep_overhead,
+        [Lifts.row_cable, Lifts.row_cableWide],
         [
+          Lifts.pulldown_cable,
           Lifts.pulldown_machine,
           Lifts.pulldown_plateMachine,
-          Lifts.pulldown_cable,
         ],
-        Lifts.curl_ezBar,
-        Lifts.fly_machine,
-        [Lifts.tricep_overhead, Lifts.bench_closegrip],
-      ],
-    },
-    {
-      name: 'Lower 3',
-      lifts: [
-        Lifts.rdl_barbell,
-        Lifts.squat_belt,
-        Lifts.gluteKickback,
-        Lifts.calfRaise_bodyWeight,
-        Lifts.legRaise,
+        [Lifts.curl_hammer, Lifts.curl_reverse],
       ],
     },
   ].map(buildWorkout),

@@ -1,8 +1,7 @@
 import {Routine, Workout} from '../types/workout.ts';
 import {Lifts} from '../repository/LiftDatabase.ts';
 import {buildWorkout} from './helper.ts';
-import {SharedLower1, SharedLower2} from './4_UpperLower.ts';
-import {ULArnold} from './5_ULArnold.ts';
+
 
 export const ULPPL: [Routine, Workout[]] = [
   {
@@ -12,68 +11,75 @@ export const ULPPL: [Routine, Workout[]] = [
   [
     {
       name: 'Upper',
-      lifts: ULArnold[1][0].lifts,
+      lifts: [
+        [Lifts.pullup, Lifts.pulldown_cable],
+        [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
+        Lifts.row_cable,
+        [Lifts.bench_dumbbell, Lifts.dip_machine],
+        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
+        [Lifts.curl_incline, Lifts.curl_ezBar],
+        Lifts.tricep_overhead,
+      ],
     },
     {
       name: 'Lower',
-      lifts: SharedLower1,
+      lifts: [
+        Lifts.legExtensions,
+        Lifts.legCurl_kneeling,
+        [Lifts.squat_front, Lifts.squat_barbell],
+        [Lifts.deadlift_sumo, Lifts.deadlift_deficit],
+        [Lifts.calfRaise_seated, Lifts.calfRaise_standing],
+        [Lifts.legPress, Lifts.splitSquat],
+        Lifts.elevateCore,
+      ],
     },
     {
       name: 'Pull',
       lifts: [
-        [Lifts.row_cable, Lifts.row_plateMachine],
-        [Lifts.pulldown_machine, Lifts.pulldown_plateMachine],
-        [Lifts.row_dumbbell, Lifts.pulldown_cable],
-        [Lifts.reverseFly_machine, Lifts.facePull],
-        [Lifts.uprightRow_barbell, Lifts.shrug_barbell],
-        Lifts.curl_ezBar,
+        Lifts.row_barbell,
+        [
+          Lifts.pulldown_machine,
+          Lifts.pulldown_plateMachine,
+        ],
+        [Lifts.rdl_barbell, Lifts.backExtension],
+        [Lifts.shrug_dumbbell],
+        [Lifts.row_plateMachine, Lifts.row_machine], // Chest supported
         [Lifts.curl_hammer, Lifts.curl_reverse],
       ],
     },
     {
       name: 'Push',
       lifts: [
-        Lifts.ohp_barbell,
-        Lifts.bench_dumbbell,
-        [Lifts.dip_machine, Lifts.inclinePress_machine],
+        [Lifts.ohp_barbell, Lifts.ohp_plateMachine],
+        Lifts.uprightRow_barbell,
+        Lifts.bench_closegrip,
+        [Lifts.pullover_dumbbell, Lifts.pullover_machine],
         Lifts.fly_machine,
-        Lifts.latRaise_dumbbell,
-        Lifts.tricep_machine,
-        Lifts.pullover_dumbbell,
+        [Lifts.reverseFly_machine, Lifts.facePull],
+        Lifts.ohp_dumbbell
       ],
     },
+
     {
       name: 'Legs',
-      lifts: SharedLower2,
+      lifts: [
+        Lifts.hipAdduction,
+        Lifts.hipAbduction,
+        [Lifts.squat_belt, Lifts.legPress_double],
+        [Lifts.deadlift_trapbar, Lifts.deadlift_trapbar_high],
+        Lifts.hipThrust,
+        Lifts.legRaise,
+      ]
     },
+    {
+      name: 'Deadlift',
+      lifts: [
+        [
+          Lifts.deadlift_barbell,
+          // TODO deadlift volume
+        ],
+        Lifts.plank,
+      ]
+    }
   ].map(buildWorkout),
 ];
-
-/*
-Upper
-- Incline Bench
-- DB Bench
-- Pullups
-- Cable Row
-- Lat Raise
-- Tricep
-- Bicep
-
-
-Push
-- OHP
-- Incline/OHP Machine
-- Dips
-- Flys
-- Pullovers
-- Tricep Overhead
-- Upright Row / Reverse Fly
-
-Pull
-- Barbell Row
-- Pulldowns Hoist / Cable Pulldowns
-- Purestrength Rows / Purestrength pulldown
-- bicep 1
-- bicep 2
-- Shrugs / Face pulls
- */
