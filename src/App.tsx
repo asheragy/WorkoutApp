@@ -25,7 +25,7 @@ import LiftDefRepository from './repository/LiftDefRepository';
 import {MenuProvider} from 'react-native-popup-menu';
 import {RoutinesScreen} from './screens/Routines';
 import {store} from './state/store.ts';
-import {GoalsScreen} from './screens/GoalsScreen.tsx';
+import {GoalsScreen} from './screens/Goals/GoalsScreen.tsx';
 import LiftEditScreen from './screens/LiftEditScreen.tsx';
 import {
   SafeAreaProvider,
