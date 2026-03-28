@@ -62,9 +62,7 @@ export function WorkoutList({navigation, route}: Props) {
             <HiddenItem title="Lift Defs" onPress={() => onLiftDefs()} />
             <HiddenItem
               title="Add"
-              onPress={() =>
-                navigation.navigate('WorkoutEdit', {onChanged: loadState})
-              }
+              onPress={() => navigation.navigate('WorkoutEdit', {})}
             />
             <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem
@@ -131,8 +129,7 @@ export function WorkoutList({navigation, route}: Props) {
 
   useFocusEffect(
     useCallback(() => {
-      //loadState();
-      console.log('Home screen focus...');
+      loadState();
     }, []),
   );
 
@@ -158,14 +155,12 @@ export function WorkoutList({navigation, route}: Props) {
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {
       workoutId: item.id!,
-      onComplete: loadState,
     });
   }
 
   function onEdit(item: Workout) {
     navigation.navigate('WorkoutEdit', {
       workoutId: item.id,
-      onChanged: loadState,
     });
   }
 

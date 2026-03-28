@@ -4,6 +4,7 @@ import {buildWorkout} from './helper.ts';
 
 /*
 
+// TODO make one lower day possible at home
 Lower 1
 - Hip Add
 - Hip Abd
@@ -29,7 +30,9 @@ Lower 3
 - Core 3
 - Back extension
 
-
+// TODO new lifts
+OHP seated vs standing
+BTNP - standing only, pairr with lat raise machine
  */
 
 export const UpperLower6: [Routine, Workout[]] = [
@@ -43,7 +46,7 @@ export const UpperLower6: [Routine, Workout[]] = [
       lifts: [
         [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
         [Lifts.dip, Lifts.fly_machine],
-        [Lifts.latRaise_machine, Lifts.latRaise_dumbbell],
+        Lifts.latRaise_machine,
         [Lifts.pullup, Lifts.pullup_neutral],
         [Lifts.row_plateMachine, Lifts.row_machine],
         [Lifts.curl_wrist, Lifts.shrug_dumbbell],
@@ -54,7 +57,7 @@ export const UpperLower6: [Routine, Workout[]] = [
       lifts: [
         [Lifts.ohp_barbell, Lifts.ohp_dumbbell],
         [Lifts.bench_closegrip, Lifts.dip_machine],
-        Lifts.uprightRow_barbell,
+        [Lifts.uprightRow_barbell, Lifts.latRaise_dumbbell],
         [Lifts.row_barbell, Lifts.row_dumbbell],
         [Lifts.curl_incline, Lifts.curl_ezBar],
         [Lifts.reverseFly_machine, Lifts.facePull],

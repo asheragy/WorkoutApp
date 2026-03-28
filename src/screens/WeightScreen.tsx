@@ -25,9 +25,6 @@ import {ProgressChart} from '../components/ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
 
-// TODO warning on screen load, might be 3rd party library using deprecated method
-LogBox.ignoreLogs(['EventEmitter.removeListener']);
-
 export function WeightScreen({route, navigation}: Props) {
   const [current, setCurrent] = useState<number>(180);
   const [entries, setEntries] = useState<WeightEntry[]>([]);

@@ -3,7 +3,6 @@ import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
 import {AccessoryView} from '../components/Accessories';
-import {LogBox} from 'react-native';
 import {Lift, LiftSet, SingleWorkoutId, Workout} from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
@@ -20,10 +19,6 @@ import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import {useTheme} from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
-
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
 
 export function WorkoutScreen({route, navigation}: Props) {
   const {colors} = useTheme();
@@ -98,8 +93,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
     if (workout.id == SingleWorkoutId) await WorkoutRepository.delete(workout);
 
-    route.params.onComplete();
-    navigation.pop();
+    navigation.goBack();
   };
 
   function onAddExercise() {

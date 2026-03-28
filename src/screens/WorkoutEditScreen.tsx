@@ -76,8 +76,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
       console.error('Failed to save workout:', error);
     }
 
-    route.params.onChanged();
-    navigation.pop();
+    navigation.goBack();
   }
 
   // TODO copy from context menu in prior screen instead of here?
@@ -89,8 +88,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
     delete workoutCopy.id;
     await WorkoutRepository.upsert(workoutCopy);
-    route.params.onChanged();
-    navigation.pop();
+    navigation.goBack();
   }
 
   function onSelectExercise() {
@@ -139,8 +137,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
 
   async function onDeleteWorkout() {
     await WorkoutRepository.deleteById(route.params.workoutId!);
-    route.params.onChanged();
-    navigation.pop();
+    navigation.goBack();
   }
 
   function confirmLiftDelete(index: number) {

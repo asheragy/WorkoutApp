@@ -2804,13 +2804,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@op-engineering/op-sqlite@npm:^15.0.7":
-  version: 15.0.7
-  resolution: "@op-engineering/op-sqlite@npm:15.0.7"
+"@op-engineering/op-sqlite@npm:^15.2.7":
+  version: 15.2.7
+  resolution: "@op-engineering/op-sqlite@npm:15.2.7"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/1262f224fc87059b92ff85e4e3e56c535dbb10d987532a2f779ebdb534da2bb971fe8cb8d9145b6a1ffcf5eb076e56c96ebcfcb129b354e21165bdc355104066
+  checksum: 10c0/87e46d507a93c2bef2a9ca989fd63f8eb018c624966a3a7659979c95f4cf854de5e175ed7f75b9e75191d7a356ab014b4f05483781d10ce4825f64d28bc77ec4
   languageName: node
   linkType: hard
 
@@ -3958,7 +3958,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.25.3"
     "@babel/runtime": "npm:^7.25.0"
     "@eslint/js": "npm:^9.19.0"
-    "@op-engineering/op-sqlite": "npm:^15.0.7"
+    "@op-engineering/op-sqlite": "npm:^15.2.7"
     "@react-native-async-storage/async-storage": "npm:2.1.2"
     "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:15.0.1"
@@ -3984,7 +3984,7 @@ __metadata:
     react: "npm:19.0.0"
     react-native: "npm:0.78.0"
     react-native-chart-kit: "npm:^6.12.0"
-    react-native-draggable-flatlist: "npm:^4.0.1"
+    react-native-draggable-flatlist: "npm:^4.0.3"
     react-native-dropdown-picker: "npm:^5.4.6"
     react-native-fs: "npm:^2.20.0"
     react-native-gesture-handler: "npm:2.23.1"
@@ -3996,7 +3996,7 @@ __metadata:
     react-native-screens: "npm:^4.8.0"
     react-native-svg: "npm:^15.11.2"
     react-native-tab-view: "npm:^4.0.5"
-    react-native-uuid: "npm:^2.0.3"
+    react-native-uuid: "npm:^2.0.4"
     react-navigation-header-buttons: "npm:^11.0.0"
     react-redux: "npm:^9.2.0"
     react-test-renderer: "npm:19.0.0"
@@ -9959,16 +9959,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-draggable-flatlist@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "react-native-draggable-flatlist@npm:4.0.1"
+"react-native-draggable-flatlist@npm:^4.0.3":
+  version: 4.0.3
+  resolution: "react-native-draggable-flatlist@npm:4.0.3"
   dependencies:
     "@babel/preset-typescript": "npm:^7.17.12"
   peerDependencies:
     react-native: ">=0.64.0"
     react-native-gesture-handler: ">=2.0.0"
     react-native-reanimated: ">=2.8.0"
-  checksum: 10c0/914e4c1df1a0fed11da474499b78f6144644ab1e45cf22b8d6c3098f12f732d3f15ad26e932114016a80d99a39e9c16cb37357ea707333065dee9d2067639c0b
+  checksum: 10c0/1b9bd3da36929dc21bbcd7eb63e37af52c87add06776c7f20215cb6a28499f4e03619e3751fc71e192d5b074fb1dc782a939186ca7ef281928b9c940f6239455
   languageName: node
   linkType: hard
 
@@ -10120,10 +10120,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-uuid@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "react-native-uuid@npm:2.0.3"
-  checksum: 10c0/d94bccc28936c2dea081ab404f90b0c968092013af4d428b8e74bf407d6098ad5410914f77a903ad1296cce364fc85d27d8dfd70d22ec48d8cf1b7edc8803a8d
+"react-native-uuid@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "react-native-uuid@npm:2.0.4"
+  checksum: 10c0/56bcf29fa59a3e4c6374e612d9adf4e2a5e7f1000e632451f0e4bf0fbeb00664eb8657a5af7e2adb64c435e96f42c535cc20529cffcc48a03581b41ba1761d2a
   languageName: node
   linkType: hard
 

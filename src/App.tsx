@@ -38,7 +38,6 @@ export type RootStackParamList = {
   };
   Workout: {
     workoutId: string;
-    onComplete: () => void;
   };
   LiftEdit: {
     lift: Lift;
@@ -64,7 +63,6 @@ export type RootStackParamList = {
   };
   WorkoutEdit: {
     workoutId?: string;
-    onChanged: () => void;
   };
   Settings: undefined;
   Goals: undefined;
