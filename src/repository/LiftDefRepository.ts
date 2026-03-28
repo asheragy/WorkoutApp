@@ -35,34 +35,40 @@ export default class LiftDefRepository {
   }
 
   private async insert(def: LiftDef): Promise<LiftDef> {
-    def.id = Utils.generate_uuidv4();
+    const defToInsert: LiftDef = {
+      ...def,
+      id: Utils.generate_uuidv4(),
+    };
 
     const items = await LiftDefRepository.getAll();
-    items.push(def);
+    items.push(defToInsert);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));
     await this.init();
 
-    return def;
+    return defToInsert;
   }
 
   private async update(def: LiftDef): Promise<LiftDef> {
-    delete def.multiple; // Not persisted
+    const persistedDef: LiftDef = {
+      ...def,
+    };
+    delete persistedDef.multiple; // Not persisted
 
     let items = await LiftDefRepository.getAll();
-    let index = items.findIndex(item => item.id == def.id);
+    let index = items.findIndex(item => item.id == persistedDef.id);
 
     if (index < 0) {
       // Editing new systemDef for first time, add to list
-      let systemDef = SystemLifts.find(item => item.id == def.id);
+      let systemDef = SystemLifts.find(item => item.id == persistedDef.id);
       if (!systemDef)
         throw new Error(
-          `Unable to find def '${def.id}', this should never happen `,
+          `Unable to find def '${persistedDef.id}', this should never happen `,
         );
 
-      items.push(def);
+      items.push(persistedDef);
     } else {
-      items[index] = def;
+      items[index] = persistedDef;
     }
 
     // Don't save system lifts that are unmodified
@@ -72,9 +78,9 @@ export default class LiftDefRepository {
       if (systemDef) {
         if (
           (curr.trainingMax === undefined || curr.trainingMax == 0) &&
-          JSON.stringify(def.muscleGroups) ===
+          JSON.stringify(persistedDef.muscleGroups) ===
             JSON.stringify(systemDef.muscleGroups) &&
-          JSON.stringify(def.goal) === JSON.stringify(systemDef.goal)
+          JSON.stringify(persistedDef.goal) === JSON.stringify(systemDef.goal)
         )
           return false;
       }
@@ -87,7 +93,7 @@ export default class LiftDefRepository {
     await AsyncStorage.setItem(key, JSON.stringify(savedItems));
     await this.init();
 
-    return def;
+    return persistedDef;
   }
 
   static async getAll(): Promise<LiftDef[]> {

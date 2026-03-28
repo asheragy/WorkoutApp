@@ -79,19 +79,28 @@ export function WorkoutScreen({route, navigation}: Props) {
   };
 
   const onComplete = async () => {
-    workout.lastCompleted = new Date();
-    await LiftHistoryRepository.addWorkout(workout, defs);
+    const completedWorkout: Workout = {
+      ...workout,
+      lastCompleted: new Date(),
+    };
+    await LiftHistoryRepository.addWorkout(completedWorkout, defs);
 
-    workout.lifts.forEach(lift => {
-      lift.hide = undefined;
-      lift.sets.forEach(set => {
-        set.completed = undefined;
-      });
-    });
+    const resetWorkout: Workout = {
+      ...completedWorkout,
+      lifts: completedWorkout.lifts.map(lift => ({
+        ...lift,
+        hide: undefined,
+        sets: lift.sets.map(set => ({
+          ...set,
+          completed: undefined,
+        })),
+      })),
+    };
 
-    await WorkoutRepository.upsert(workout);
+    await WorkoutRepository.upsert(resetWorkout);
 
-    if (workout.id == SingleWorkoutId) await WorkoutRepository.delete(workout);
+    if (resetWorkout.id == SingleWorkoutId)
+      await WorkoutRepository.delete(resetWorkout);
 
     navigation.goBack();
   };
@@ -111,14 +120,16 @@ export function WorkoutScreen({route, navigation}: Props) {
         warmup: set.warmup,
       }));
     }
-    const updatedWorkout = {
+    const updatedWorkout: Workout = {
       ...workout,
+      lifts: [
+        ...workout.lifts,
+        {
+          id: defId,
+          sets: sets,
+        },
+      ],
     };
-
-    updatedWorkout.lifts.push({
-      id: defId,
-      sets: sets,
-    });
 
     setWorkout(updatedWorkout);
     await WorkoutRepository.upsert(updatedWorkout);

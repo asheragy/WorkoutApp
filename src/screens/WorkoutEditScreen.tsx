@@ -66,12 +66,15 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     }
 
     // Would set above but SingleWorkout is a special case that this shouldn't overwrite
-    if (!route.params.workoutId) {
-      workout.routineId = settings.routine;
-    }
+    const workoutToSave: Workout = !route.params.workoutId
+      ? {
+          ...workout,
+          routineId: settings.routine,
+        }
+      : workout;
 
     try {
-      await WorkoutRepository.upsert(workout);
+      await WorkoutRepository.upsert(workoutToSave);
     } catch (error) {
       console.error('Failed to save workout:', error);
     }

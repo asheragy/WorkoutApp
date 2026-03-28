@@ -1,9 +1,9 @@
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../../App.tsx';
 import React from 'react';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {ShortTermTab} from './ShortTermTab.tsx';
 import {LongTermTab} from './LongTermTab.tsx';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 
 type Props = StackScreenProps<RootStackParamList, 'Goals'>;
 

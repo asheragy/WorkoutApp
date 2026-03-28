@@ -47,6 +47,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     return {
       ...props.lift,
       sets: [...props.lift.sets],
+      goals: props.lift.goals ? [...props.lift.goals] : undefined,
     };
   }
 

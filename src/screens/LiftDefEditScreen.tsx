@@ -89,12 +89,14 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   async function onSave() {
     console.log('primary = ' + primary);
     console.log('secondary = ' + secondary);
-    def.muscleGroups = primary != null ? [primary, ...secondary] : [];
-    console.log(def);
-    if (tm > 0) def.trainingMax = tm;
-    else def.trainingMax = undefined;
+    const defToSave: LiftDef = {
+      ...def,
+      muscleGroups: primary != null ? [primary, ...secondary] : [],
+      trainingMax: tm > 0 ? tm : undefined,
+    };
+    console.log(defToSave);
 
-    await repo.upsert(def);
+    await repo.upsert(defToSave);
     navigation.goBack();
   }
 

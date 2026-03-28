@@ -59,7 +59,7 @@ export default class WorkoutRepository {
     allWorkouts: Workout[],
   ): Promise<Workout> {
     let updated = false;
-    for (const lift of workout.lifts) {
+    const updatedLifts = workout.lifts.map(lift => {
       const recentWorkoutWithLift = allWorkouts
         .filter(
           wo =>
@@ -74,17 +74,30 @@ export default class WorkoutRepository {
         const recentLift = recentWorkoutWithLift.lifts.find(
           x => x.id === lift.id,
         )!!;
-        lift.sets = recentLift.sets;
-        lift.goals = recentLift.goals;
         updated = true;
+
+        return {
+          ...lift,
+          sets: recentLift.sets.map(set => ({...set})),
+          goals: recentLift.goals?.map(goal => ({...goal})),
+        };
       }
-    }
+
+      return lift;
+    });
+
+    const updatedWorkout = updated
+      ? {
+          ...workout,
+          lifts: updatedLifts,
+        }
+      : workout;
 
     if (updated) {
-      await this.upsert(workout);
+      await this.upsert(updatedWorkout);
     }
 
-    return workout;
+    return updatedWorkout;
   }
 
   private static async getAll(): Promise<Workout[]> {
