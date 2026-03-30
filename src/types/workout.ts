@@ -1,5 +1,3 @@
-import {LiftDef} from './types';
-
 export type Routine = {
   id?: string;
   title: string;
@@ -17,12 +15,14 @@ export type Workout = {
 export type Lift = {
   id: string;
   sets: LiftSet[];
+  // TODO should be PersistedSet[]
   goals?: LiftSet[];
   hide?: boolean;
   note?: string;
   alternate?: boolean;
 };
 
+// TODO weight/reps not nullable + define as union with PersistedSet
 export type LiftSet = {
   weight?: number;
   reps?: number;

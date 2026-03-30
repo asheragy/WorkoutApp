@@ -8,7 +8,7 @@ test('increment/decrement dumbbell - maxSet', () => {
   };
   const liftType = LiftType.Dumbbell;
 
-  var set: LiftSet = {
+  const set: LiftSet = {
     weight: 40,
   };
 

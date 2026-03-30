@@ -5,14 +5,14 @@ const weightLogKey = 'weightLog';
 
 export default class WeightRepository {
   static async getAll(): Promise<WeightEntry[]> {
-    var value = await AsyncStorage.getItem(weightLogKey);
+    const value = await AsyncStorage.getItem(weightLogKey);
     console.log(value);
     if (value != null) {
       // Date is still a string
-      var stringResult: {date: string; weight: number}[] = JSON.parse(value);
+      const stringResult: {date: string; weight: number}[] = JSON.parse(value);
 
       return stringResult.map(entry => {
-        var we: WeightEntry = {
+        const we: WeightEntry = {
           date: new Date(entry.date),
           weight: entry.weight,
         };

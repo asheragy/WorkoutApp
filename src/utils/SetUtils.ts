@@ -9,7 +9,7 @@ export default class SetUtils {
   ): number {
     const current = set.weight || 0;
 
-    var step = 5;
+    let step = 5;
     if (
       liftType == LiftType.Machine ||
       set.percentage ||
@@ -33,7 +33,7 @@ export default class SetUtils {
     settings: GlobalSettings,
   ): number {
     const current = set.weight || 0;
-    var step = 5;
+    let step = 5;
     if (
       liftType == LiftType.Machine ||
       liftType == LiftType.PlateMachine ||

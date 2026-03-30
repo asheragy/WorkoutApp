@@ -133,7 +133,7 @@ export default class LiftHistoryRepository {
       console.error('Training max required for persisted lift');
     }
 
-    var persistedSets = LiftHistoryRepository.setsToPersisted(sets, def);
+    const persistedSets = LiftHistoryRepository.setsToPersisted(sets, def);
 
     await this.addHistorySql(
       def.id,
@@ -148,21 +148,21 @@ export default class LiftHistoryRepository {
     sets: LiftSet[],
     def: LiftDef,
   ): PersistedSet[] {
-    var filtered = sets
+    const filtered = sets
       .filter(x => x.reps != undefined && x.weight != undefined)
       .filter(x => x.completed);
 
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
     return filtered.map(set => {
-      var weight = set.weight!!;
+      let weight = set.weight!!;
       if (set.percentage) {
         if (def.trainingMax !== undefined)
           weight = Utils.calcPercentage(weight, def.trainingMax);
         else weight = -1;
       }
 
-      var res: PersistedSet = {
+      const res: PersistedSet = {
         weight: weight,
         reps: set.reps!!,
         warmup: set.warmup || false,

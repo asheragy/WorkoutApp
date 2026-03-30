@@ -13,7 +13,7 @@ import {LiftDef} from '../types/types.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutHistory'>;
 
-export function WorkoutHistoryScreen({route, navigation}: Props) {
+export function WorkoutHistoryScreen({route}: Props) {
   const workoutId = route.params.workoutId;
   const [entries, setEntries] = useState<WorkoutHistory[]>([]);
   const {colors} = useTheme();
@@ -38,7 +38,7 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
       style={{backgroundColor: colors.background}}
       data={entries}
       renderItem={renderItem}
-      keyExtractor={(entry, _) => entry.timestamp.toString()}></FlatList>
+      keyExtractor={entry => entry.timestamp.toString()}></FlatList>
   );
 }
 
@@ -56,7 +56,7 @@ function WorkoutHistoryListItem({
       <Text style={{color: colors.text}}>
         {Utils.lastCompleted(entry.timestamp)}
       </Text>
-      {entry.lifts.map((lift, _) => {
+      {entry.lifts.map(lift => {
         const sets = lift.sets.map(
           set => set.weight + 'x' + set.reps + (set.warmup ? ' (W)' : ''),
         );

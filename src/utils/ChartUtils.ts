@@ -59,7 +59,7 @@ export default class ChartUtils {
     const weekArrays = new Map<string, number[]>();
 
     for (const [key, arr] of entries) {
-      let currPeriodStart = new Date(startDate);
+      const currPeriodStart = new Date(startDate);
       const currPeriodEnd = new Date(startDate);
       currPeriodEnd.setDate(currPeriodEnd.getDate() + 14);
 

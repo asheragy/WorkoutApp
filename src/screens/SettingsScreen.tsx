@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {RootStackParamList} from '../App';
-import {Button, Text, ToastAndroid, View} from 'react-native';
+import {Button, ToastAndroid, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {
@@ -12,7 +12,7 @@ import LiftHistoryRepository from '../repository/LiftHistoryRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Settings'>;
 
-export function SettingsScreen({route, navigation}: Props) {
+export function SettingsScreen({route}: Props) {
   async function logSettings() {
     const keys = await AsyncStorage.getAllKeys();
 
@@ -25,8 +25,8 @@ export function SettingsScreen({route, navigation}: Props) {
     const defs = await LiftDefRepository.getAll();
     console.log('Defs');
     defs.forEach(x => {
-      var max = x.trainingMax ? x.trainingMax + '' : '';
-      var sys = x.system ? 'sys' : '';
+      const max = x.trainingMax ? x.trainingMax + '' : '';
+      const sys = x.system ? 'sys' : '';
       console.log(x.id.padEnd(38, ' ') + max + '\t' + sys + '\t' + x.name);
     });
   }

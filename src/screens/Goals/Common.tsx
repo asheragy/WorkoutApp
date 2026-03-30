@@ -61,7 +61,7 @@ export function ProgressList({goals}: {goals: GoalRow[]}) {
         style={{flex: 1, backgroundColor: colors.background}}
         data={goals}
         renderItem={renderItem}
-        keyExtractor={(row, _) => row.lift.id}></FlatList>
+        keyExtractor={row => row.lift.id}></FlatList>
     </View>
   );
 }

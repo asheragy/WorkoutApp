@@ -25,9 +25,9 @@ export function LiftChartTab(props: {def: LiftDef; entries: LiftHistory[]}) {
 }
 
 function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
-  var sum = 0;
-  for (var i = 0; i < sets.length; i++) {
-    var set = sets[i];
+  let sum = 0;
+  for (let i = 0; i < sets.length; i++) {
+    const set = sets[i];
     if (set.warmup != true) sum += Utils.calculateVolume(def, set);
   }
 

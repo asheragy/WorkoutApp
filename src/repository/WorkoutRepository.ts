@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {Lift, SingleWorkoutId, Workout} from '../types/workout';
+import {SingleWorkoutId, Workout} from '../types/workout';
 import Utils from '../components/Utils';
 import {PreLoadedRoutines} from './RoutineRepository.ts';
 
@@ -129,7 +129,7 @@ export default class WorkoutRepository {
     if (workout.id) await this.deleteById(workout.id);
   }
 
-  static async deleteById(workoutId: String) {
+  static async deleteById(workoutId: string) {
     let items = await this.getAll();
     const index = items.findIndex(item => item.id == workoutId);
     if (index < 0) throw new Error('Unable to find id ' + workoutId);

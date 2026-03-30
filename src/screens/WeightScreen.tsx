@@ -5,13 +5,11 @@ import {
   Button,
   FlatList,
   ListRenderItemInfo,
-  LogBox,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import {
-  HeaderButton,
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
@@ -80,9 +78,8 @@ export function WeightScreen({route, navigation}: Props) {
   useEffect(loadState, []);
 
   const {colors} = useTheme();
-
-  var dates = entries.map(x => x.date);
-  var values = entries.map(x => x.weight);
+  const dates = entries.map(x => x.date);
+  const values = entries.map(x => x.weight);
 
   const renderItem = (item: ListRenderItemInfo<WeightEntry>) => (
     <View key={item.index} style={styles.entryRow}>
@@ -106,7 +103,7 @@ export function WeightScreen({route, navigation}: Props) {
         style={{backgroundColor: colors.background, height: '40%'}}
         data={entries}
         renderItem={renderItem}
-        keyExtractor={(entry, index) => entry.date.toString()}></FlatList>
+        keyExtractor={entry => entry.date.toString()}></FlatList>
 
       <View style={{height: '10%'}}>
         <NumberControl

@@ -21,7 +21,7 @@ export function NumberControl(props: {
   const disabledOpacity = props.disabled ? 0.2 : undefined;
 
   function onInput(input: string) {
-    var numInput: number = parseFloat(input);
+    const numInput: number = parseFloat(input);
     if (!isNaN(numInput)) {
       setValue(numInput);
     }
@@ -29,11 +29,11 @@ export function NumberControl(props: {
 
   function setValue(value: number) {
     // Fix floating point issues by rounding to digits
-    var strValue = value.toFixed(digits);
+    const strValue = value.toFixed(digits);
     props.onChange(parseFloat(strValue));
   }
 
-  var currValue = props.value || 0;
+  const currValue = props.value || 0;
 
   return (
     <View

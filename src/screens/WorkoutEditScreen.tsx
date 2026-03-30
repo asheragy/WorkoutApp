@@ -200,7 +200,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           renderItem={renderItem}
           onDragEnd={({data}) => setLifts(data)}
           // TODO problem if lift can be duplicated in same workout
-          keyExtractor={(lift, _) => lift.id}></DraggableFlatList>
+          keyExtractor={lift => lift.id}></DraggableFlatList>
         {route.params.workoutId && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>
         )}

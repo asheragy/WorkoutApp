@@ -1,7 +1,3 @@
-import React from 'react';
-import {LiftType} from '../../types/types';
-import LiftItem from './LiftItem';
-
 export {};
 
 test('static LiftItem renders values', () => {

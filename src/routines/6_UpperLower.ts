@@ -4,12 +4,11 @@ import {buildWorkout} from './helper.ts';
 
 /*
 
-// TODO make one lower day possible at home
 Lower 1
 - Hip Add
 - Hip Abd
 - Leg Extensions 1
-- DL 5s / DL 10s  2:1
+- DL 531
 - Single Leg Press / Split Squat
 - Core 1
 
@@ -24,7 +23,7 @@ Lower 2
 Lower 3
 - Leg Curls (Laying or seated)
 - Leg Press / Belt Squat / V-Squat  2:2:1
-- Trap low / Sumo / Trap High 2:1:1
+- Trap low / Sumo    2:1
 - Hip Thrust / Glute Kickback
 - Calves (Seated or standing)
 - Core 3

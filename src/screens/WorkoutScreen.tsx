@@ -37,7 +37,7 @@ export function WorkoutScreen({route, navigation}: Props) {
           )}
           <OverflowMenu
             style={{marginHorizontal: 10}}
-            OverflowIcon={({color}) => (
+            OverflowIcon={({}) => (
               <Text
                 style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
                 ...
@@ -183,7 +183,7 @@ export function WorkoutScreen({route, navigation}: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      {sortedLifts.map((lift, index) => (
+      {sortedLifts.map(lift => (
         <LiftItem
           lift={lift}
           groupOrder={idToGroup.get(lift.id)}

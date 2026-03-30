@@ -56,6 +56,7 @@ export type GlobalSettings = {
   routine?: string;
 };
 
+// Subset of LiftSet, what gets persisted
 export type PersistedSet = {
   weight: number;
   reps: number;

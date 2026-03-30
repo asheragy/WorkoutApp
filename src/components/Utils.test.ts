@@ -4,7 +4,7 @@ import {LiftSet} from '../types/workout';
 import {SystemLifts} from '../repository/LiftDatabase';
 
 test('normalizeSets repeated lifts', () => {
-  var sets: LiftSet[] = [
+  const sets: LiftSet[] = [
     {
       weight: 100,
       reps: 5,
@@ -23,8 +23,8 @@ test('normalizeSets repeated lifts', () => {
     },
   ];
 
-  var def = SystemLifts[0];
-  var normalized = Utils.normalizeSets(sets, def);
+  const def = SystemLifts[0];
+  const normalized = Utils.normalizeSets(sets, def);
   expect(normalized.length).toBe(4);
   expect(normalized[0].weight).toBe('100lb');
   expect(normalized[1].weight).toBe('110lb');
@@ -100,7 +100,7 @@ test('1RM Brzycki', () => {
 });
 
 test('plate calculator', () => {
-  var plates = Utils.calcPlates(LiftType.Barbell, 135);
+  let plates = Utils.calcPlates(LiftType.Barbell, 135);
   expect(plates).toStrictEqual({
     p45: 1,
   });

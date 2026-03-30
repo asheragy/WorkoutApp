@@ -19,15 +19,15 @@ export default class Utils {
 
   // TODO if this took lift type it could add PlateCount as well
   static normalizeSets(sets: LiftSet[], def: LiftDef): NormalizedSet[] {
-    var result: NormalizedSet[] = [];
-    var counter = 1;
+    const result: NormalizedSet[] = [];
+    let counter = 1;
 
     sets.forEach(set => {
-      var label = counter.toString();
+      let label = counter.toString();
       if (set.warmup) label = 'W';
       else counter++;
 
-      var weight = set.weight;
+      let weight = set.weight;
       if (set.percentage && set.weight) {
         if (def.trainingMax == undefined) {
           //console.error('Training max required for percentage');
@@ -35,7 +35,7 @@ export default class Utils {
         } else weight = this.round((def.trainingMax * set.weight) / 100);
       }
 
-      var t: NormalizedSet = {
+      const t: NormalizedSet = {
         // TODO depending on usages not sure if 0 is the correct default here
         weight: (weight || 0) + 'lb',
         reps: (set.reps || 0) + '',
@@ -54,7 +54,10 @@ export default class Utils {
     let result = def.name;
 
     if (def.multiple && def.type != LiftType.Bodyweight) {
-      let type = LiftType[def.type].replaceAll('PlateMachine', 'Plate-Loaded');
+      const type = LiftType[def.type].replaceAll(
+        'PlateMachine',
+        'Plate-Loaded',
+      );
       result += ` (${type})`;
     }
 
@@ -65,7 +68,7 @@ export default class Utils {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
-    var weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
+    let weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
     const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
     const type = def.type;
 
@@ -85,11 +88,11 @@ export default class Utils {
   }
 
   static calculate1RMAverage(def: LiftDef, sets: PersistedSet[]): number {
-    var sum = 0;
-    var workSets = 0;
+    let sum = 0;
+    let workSets = 0;
 
-    for (var i = 0; i < sets.length; i++) {
-      var set = sets[i];
+    for (let i = 0; i < sets.length; i++) {
+      const set = sets[i];
       if (set.warmup != true) {
         sum += Utils.calculate1RM(def, set);
         workSets++;
@@ -115,9 +118,9 @@ export default class Utils {
 
     // TODO should be from global variable
     const bodyweight = 200;
-    var weight =
+    const weight =
       set.weight + (def.type == LiftType.Bodyweight ? bodyweight : 0);
-    var reps = set.reps;
+    const reps = set.reps;
 
     return weight * reps;
   }
@@ -166,13 +169,14 @@ export default class Utils {
   }
 
   static calcPlates(type: LiftType, weight: number): PlateCount | undefined {
-    var result: PlateCount = {};
+    let remaining;
+    const result: PlateCount = {};
     if (
       type == LiftType.Barbell ||
       type == LiftType.SSB ||
       type == LiftType.TrapBar
     ) {
-      var remaining = weight;
+      remaining = weight;
 
       if (type == LiftType.Barbell) remaining -= 45;
       else if (type == LiftType.SSB) remaining -= 70;
@@ -204,7 +208,7 @@ export default class Utils {
 
       return result;
     } else if (type == LiftType.PlateMachine) {
-      var remaining = weight;
+      remaining = weight;
 
       while (remaining >= 45) {
         result.p45 = result.p45 ? result.p45 + 1 : 1;

@@ -35,11 +35,7 @@ export const YatesSplitModified: [Routine, Workout[]] = [
 
         [Lifts.shrug_dumbbell],
         [Lifts.backExtension],
-        [
-          Lifts.pulldown_machine,
-          Lifts.pulldown_plateMachine,
-          ,
-        ],
+        [Lifts.pulldown_machine, Lifts.pulldown_plateMachine],
         [Lifts.row_plateMachine, Lifts.row_machine], // Chest supported
       ],
     },
@@ -52,7 +48,7 @@ export const YatesSplitModified: [Routine, Workout[]] = [
         [Lifts.pullover_dumbbell, Lifts.pullover_machine],
         Lifts.fly_machine,
         [Lifts.curl_hammer, Lifts.curl_reverse],
-        Lifts.dip_machine
+        Lifts.dip_machine,
       ],
     },
     {
