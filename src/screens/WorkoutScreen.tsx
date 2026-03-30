@@ -194,7 +194,7 @@ export function WorkoutScreen({route, navigation}: Props) {
             })
           }
           overrideComplete={completedAlts.includes(lift.id)}
-          key={index}></LiftItem>
+          key={lift.id}></LiftItem>
       ))}
 
       {workout.accessories != null && (

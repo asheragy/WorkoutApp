@@ -69,7 +69,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
       <FlatList
         data={lifts}
         renderItem={renderItem}
-        keyExtractor={(_, index) => index.toString()}></FlatList>
+        keyExtractor={(def, _) => def.id}></FlatList>
     </View>
   );
 }

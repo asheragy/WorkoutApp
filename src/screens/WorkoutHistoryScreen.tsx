@@ -38,7 +38,7 @@ export function WorkoutHistoryScreen({route, navigation}: Props) {
       style={{backgroundColor: colors.background}}
       data={entries}
       renderItem={renderItem}
-      keyExtractor={(_, index) => index.toString()}></FlatList>
+      keyExtractor={(entry, _) => entry.timestamp.toString()}></FlatList>
   );
 }
 
@@ -56,13 +56,13 @@ function WorkoutHistoryListItem({
       <Text style={{color: colors.text}}>
         {Utils.lastCompleted(entry.timestamp)}
       </Text>
-      {entry.lifts.map((lift, index) => {
+      {entry.lifts.map((lift, _) => {
         const sets = lift.sets.map(
           set => set.weight + 'x' + set.reps + (set.warmup ? ' (W)' : ''),
         );
 
         return (
-          <View style={{paddingTop: 4}} key={index.toString()}>
+          <View style={{paddingTop: 4}} key={lift.liftId}>
             <Text style={{fontWeight: 'bold', color: colors.text}}>
               {defs[lift.liftId].name + ' - ' + sets.join(', ')}
             </Text>

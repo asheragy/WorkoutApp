@@ -37,7 +37,9 @@ export function LiftLogTab(props: {entries: LiftHistory[]}) {
       style={{backgroundColor: colors.background}}
       data={entries}
       renderItem={renderItem}
-      keyExtractor={(_, index) => 'idx_' + index}></FlatList>
+      keyExtractor={(history, index) =>
+        history.timestamp.toString()
+      }></FlatList>
   );
 }
 

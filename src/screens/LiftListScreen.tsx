@@ -58,7 +58,7 @@ export function LiftListScreen({route, navigation}: Props) {
         style={{backgroundColor: colors.background}}
         data={lifts}
         renderItem={renderItem}
-        keyExtractor={(_, index) => 'idx_' + index}></FlatList>
+        keyExtractor={(def, _) => def.id}></FlatList>
     </View>
   );
 }

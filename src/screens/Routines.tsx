@@ -63,7 +63,7 @@ export function RoutinesScreen({route, navigation}: Props) {
 
   const renderItem = (item: ListRenderItemInfo<Routine>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
-      <View key={item.index}>
+      <View key={item.item.id}>
         <Text style={{color: colors.text, padding: 10}}>
           {(item.item.id == selected ? '**' : '') + item.item.title}
         </Text>

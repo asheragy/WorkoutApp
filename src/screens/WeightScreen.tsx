@@ -106,7 +106,7 @@ export function WeightScreen({route, navigation}: Props) {
         style={{backgroundColor: colors.background, height: '40%'}}
         data={entries}
         renderItem={renderItem}
-        keyExtractor={(_, index) => 'test' + index}></FlatList>
+        keyExtractor={(entry, index) => entry.date.toString()}></FlatList>
 
       <View style={{height: '10%'}}>
         <NumberControl

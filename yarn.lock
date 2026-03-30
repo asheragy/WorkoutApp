@@ -2821,14 +2821,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-async-storage/async-storage@npm:2.1.2":
-  version: 2.1.2
-  resolution: "@react-native-async-storage/async-storage@npm:2.1.2"
+"@react-native-async-storage/async-storage@npm:2.2.0":
+  version: 2.2.0
+  resolution: "@react-native-async-storage/async-storage@npm:2.2.0"
   dependencies:
     merge-options: "npm:^3.0.4"
   peerDependencies:
     react-native: ^0.0.0-0 || >=0.65 <1.0
-  checksum: 10c0/8f3d6ff1b32ef8705c5c8be8248988cfbfd571c0e8142b8aef15429f13ddc9a018792b4be837215f6592c76b9cd99a931d4f0ab4182eebd8bddede458d484053
+  checksum: 10c0/84900eba46a40225c4ac9bf5eb58885200dc1e789d873ecda46a2a213870cc7110536ed1fd7a74b873071f3603c093958fbd84c635d6f6d4f94bfbb616ffa0ef
   languageName: node
   linkType: hard
 
@@ -3024,35 +3024,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-vector-icons/common@npm:^12.3.0":
-  version: 12.3.0
-  resolution: "@react-native-vector-icons/common@npm:12.3.0"
+"@react-native-vector-icons/common@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "@react-native-vector-icons/common@npm:13.0.0"
   dependencies:
     find-up: "npm:^7.0.0"
     picocolors: "npm:^1.1.1"
     plist: "npm:^3.1.0"
   peerDependencies:
-    "@react-native-vector-icons/get-image": ^12.2.0
+    "@react-native-vector-icons/get-image": ^13.0.0
+    "@react-native/assets-registry": "*"
     react: "*"
     react-native: "*"
   peerDependenciesMeta:
     "@react-native-vector-icons/get-image":
       optional: true
+    "@react-native/assets-registry":
+      optional: true
   bin:
     rnvi-update-plist: lib/commonjs/scripts/updatePlist.js
-  checksum: 10c0/1f686a9008d37e16ff8a8e242be995e1180c03db1ee0c28f8809990bae29b3cab522723a7c4a866b6d02601ffba839b72be082bb5357a232281bca1bee17eeeb
+  checksum: 10c0/28a364ff29df272eed29a0b4e60948e5c1eedde0d738c4f9cd53e04aefdb760ede864aadb201ec99a1db2072a21c778e07b2713823bcb32563f905f5eeb6e49d
   languageName: node
   linkType: hard
 
-"@react-native-vector-icons/material-design-icons@npm:^12.3.0":
-  version: 12.3.0
-  resolution: "@react-native-vector-icons/material-design-icons@npm:12.3.0"
+"@react-native-vector-icons/material-design-icons@npm:^13.0.0":
+  version: 13.0.0
+  resolution: "@react-native-vector-icons/material-design-icons@npm:13.0.0"
   dependencies:
-    "@react-native-vector-icons/common": "npm:^12.3.0"
+    "@react-native-vector-icons/common": "npm:^13.0.0"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/f8f055bbb144da4796ec35d3ad04915aa90c458dc06e8970fb9ceeffd7e6a062e65afeda205301b9c702d619bd322990f721c1255bf3efb4e09a8fc621173c40
+  checksum: 10c0/505a2dfc1ec39e32e4e351ec5c9e5328c2559d2ede3eda717bbc470a4c2a82c0dadd9096380c00a670015313cadaf7ad67b943589eb8625185ce56675bdd134a
   languageName: node
   linkType: hard
 
@@ -3964,12 +3967,12 @@ __metadata:
     "@babel/runtime": "npm:^7.25.0"
     "@eslint/js": "npm:^9.19.0"
     "@op-engineering/op-sqlite": "npm:^15.2.7"
-    "@react-native-async-storage/async-storage": "npm:2.1.2"
+    "@react-native-async-storage/async-storage": "npm:2.2.0"
     "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:15.0.1"
     "@react-native-community/cli-platform-android": "npm:15.0.1"
     "@react-native-community/cli-platform-ios": "npm:15.0.1"
-    "@react-native-vector-icons/material-design-icons": "npm:^12.3.0"
+    "@react-native-vector-icons/material-design-icons": "npm:^13.0.0"
     "@react-native/babel-preset": "npm:0.78.0"
     "@react-native/eslint-config": "npm:0.78.0"
     "@react-native/metro-config": "npm:0.78.0"

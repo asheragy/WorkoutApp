@@ -177,7 +177,8 @@ export function WorkoutList({navigation, route}: Props) {
       style={{backgroundColor: colors.background}}
       data={workouts}
       renderItem={renderItem}
-      keyExtractor={(_, index) => 'test' + index}></FlatList>
+      // TODO workout.id should not be nullable probably?
+      keyExtractor={(workout, index) => workout.id || index + ''}></FlatList>
   );
 }
 
@@ -196,8 +197,8 @@ function WorkoutListItem({workout}: WorkoutItemProps) {
 
       {workout.lifts
         .filter(x => !x.alternate)
-        .map((lift, index) => (
-          <LiftItem lift={lift} key={index}></LiftItem>
+        .map((lift, _) => (
+          <LiftItem lift={lift} key={lift.id}></LiftItem>
         ))}
       <Text style={{paddingTop: 8, color: colors.text}}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}

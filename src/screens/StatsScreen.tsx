@@ -120,7 +120,9 @@ export function StatsScreen({route, navigation}: Props) {
       <FlatList
         data={entriesNormalized}
         renderItem={renderItem}
-        keyExtractor={(_, index) => index.toString()}></FlatList>
+        keyExtractor={item =>
+          item.group !== undefined ? MuscleGroup[item.group] : 'total'
+        }></FlatList>
 
       <NumberControl
         value={interval}

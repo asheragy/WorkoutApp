@@ -9,9 +9,9 @@ export type GoalRow = {
   percent: number;
 };
 
-export const renderItem = ({item, index}: ListRenderItemInfo<GoalRow>) => (
+export const renderItem = ({item}: ListRenderItemInfo<GoalRow>) => (
   <View
-    key={index}
+    key={item.lift.id}
     style={{flexDirection: 'row', alignItems: 'center', padding: 8}}>
     <GoalRow item={item}></GoalRow>
   </View>
@@ -61,7 +61,7 @@ export function ProgressList({goals}: {goals: GoalRow[]}) {
         style={{flex: 1, backgroundColor: colors.background}}
         data={goals}
         renderItem={renderItem}
-        keyExtractor={(_, index) => '_' + index}></FlatList>
+        keyExtractor={(row, _) => row.lift.id}></FlatList>
     </View>
   );
 }
