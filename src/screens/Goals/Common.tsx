@@ -32,7 +32,7 @@ function GoalRow({item}: {item: GoalRow}) {
           color: colors.text,
           paddingLeft: 10,
         }}>
-        {Math.round(item.percent * 1000) / 10 + '%'}
+        {(100 * item.percent).toFixed(1) + '%'}
       </Text>
     </>
   );
@@ -55,7 +55,7 @@ export function ProgressList({goals}: {goals: GoalRow[]}) {
   return (
     <View style={{flex: 1}}>
       <Text style={{textAlign: 'center', color: colors.text, padding: 8}}>
-        {'Progress: ' + Math.round(progress * 1000) / 10 + '%'}
+        {'Progress: ' + (100 * progress).toFixed(1) + '%'}
       </Text>
       <FlatList
         style={{flex: 1, backgroundColor: colors.background}}

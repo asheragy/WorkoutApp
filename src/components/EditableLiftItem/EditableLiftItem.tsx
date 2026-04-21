@@ -111,6 +111,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
+  const goalPercent = Utils.goalPercent(def, props.lift);
+
   return (
     <View style={{margin: 4}}>
       {props.onDelete && (
@@ -196,6 +198,11 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         }}>
         <Button title="Add Set" onPress={addSet}></Button>
       </View>
+      {goalPercent && (
+        <Text style={{color: colors.text, textAlign: 'center'}}>
+          {(goalPercent * 100).toFixed(2) + '%'}
+        </Text>
+      )}
       {props.lift.goals?.map((set, index) => (
         <PersistedSetRow
           set={set}

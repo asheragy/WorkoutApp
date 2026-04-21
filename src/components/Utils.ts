@@ -5,8 +5,9 @@ import {
   PersistedSet,
   PlateCount,
 } from '../types/types';
-import {LiftSet} from '../types/workout';
+import {Lift, LiftSet} from '../types/workout';
 import uuid from 'react-native-uuid';
+import SetUtils from '../utils/SetUtils.ts';
 
 export default class Utils {
   static calcPercentage(weight: number, trainingMax: number): number {
@@ -100,6 +101,25 @@ export default class Utils {
     }
 
     return Math.round(sum / workSets);
+  }
+
+  static goalPercent(def: LiftDef, lift: Lift): undefined | number {
+    if (def.id != lift.id) throw new Error('Def must match lift Id');
+
+    if (lift.sets.length > 0 && lift.goals && lift.goals.length > 0) {
+      const sets = lift.sets
+        .filter(x => !x.warmup)
+        .map(x => SetUtils.setToPersisted(x));
+      const goals = (lift.goals ?? []).map(x => SetUtils.setToPersisted(x));
+
+      const percent =
+        Utils.calculate1RMAverage(def, sets) /
+        Utils.calculate1RMAverage(def, goals);
+
+      return percent;
+    }
+
+    return undefined;
   }
 
   static oneRMLombardi = (weight: number, reps: number) =>

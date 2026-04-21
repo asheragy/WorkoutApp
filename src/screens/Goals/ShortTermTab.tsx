@@ -3,7 +3,6 @@ import Utils from '../../components/Utils.ts';
 import {useSelector} from 'react-redux';
 import {AppState} from '../../state/store.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
-import SetUtils from '../../utils/SetUtils.ts';
 import {GoalRow, ProgressList} from './Common.tsx';
 
 export function ShortTermTab() {
@@ -23,16 +22,8 @@ export function ShortTermTab() {
 
       lifts.forEach(lift => {
         const def = defs[lift.id];
-        const sets = lift.sets
-          .filter(x => !x.warmup)
-          .map(x => SetUtils.setToPersisted(x));
-        const goals = (lift.goals ?? []).map(x => SetUtils.setToPersisted(x));
-
-        const percent =
-          Utils.calculate1RMAverage(def, sets) /
-          Utils.calculate1RMAverage(def, goals);
-
-        result.push({lift: def, percent});
+        const percent = Utils.goalPercent(def, lift);
+        if (percent) result.push({lift: def, percent});
       });
 
       result.sort((a, b) => a.percent - b.percent);
