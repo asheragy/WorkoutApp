@@ -1,17 +1,19 @@
-import {LiftDef} from '../../types/types.ts';
+import {LiftDef, MuscleGroup} from '../../types/types.ts';
 import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
 import Utils from '../../components/Utils.ts';
 import React from 'react';
 import {useTheme} from '@react-navigation/native';
 
 export type GoalRow = {
-  lift: LiftDef;
+  id: string;
+  lift?: LiftDef;
+  group?: MuscleGroup;
   percent: number;
 };
 
 export const renderItem = ({item}: ListRenderItemInfo<GoalRow>) => (
   <View
-    key={item.lift.id}
+    key={item.id}
     style={{flexDirection: 'row', alignItems: 'center', padding: 8}}>
     <GoalRow item={item}></GoalRow>
   </View>
@@ -22,8 +24,14 @@ function GoalRow({item}: {item: GoalRow}) {
 
   return (
     <>
-      <Text style={{flex: 5, textAlign: 'right', color: colors.text}}>
-        {Utils.defToString(item.lift)}
+      <Text
+        style={{
+          flex: 5,
+          textAlign: 'right',
+          color: colors.text,
+          fontWeight: item.lift ? 'normal' : 'bold',
+        }}>
+        {item.lift ? Utils.defToString(item.lift) : MuscleGroup[item.group!!]}
       </Text>
       <Text
         style={{
@@ -44,7 +52,7 @@ export function ProgressList({goals}: {goals: GoalRow[]}) {
   let progress = 0;
   let count = 0;
   for (const goal of goals) {
-    if (goal.percent > 0) {
+    if (goal.lift && goal.percent > 0) {
       count++;
       progress += Math.min(goal.percent, 1);
     }
@@ -61,7 +69,7 @@ export function ProgressList({goals}: {goals: GoalRow[]}) {
         style={{flex: 1, backgroundColor: colors.background}}
         data={goals}
         renderItem={renderItem}
-        keyExtractor={row => row.lift.id}></FlatList>
+        keyExtractor={row => row.id}></FlatList>
     </View>
   );
 }

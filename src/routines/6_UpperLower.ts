@@ -47,14 +47,14 @@ export const UpperLower6: [Routine, Workout[]] = [
         [Lifts.dip, Lifts.fly_machine],
         Lifts.latRaise_machine,
         [Lifts.pullup, Lifts.pullup_neutral],
-        [Lifts.row_plateMachine, Lifts.row_machine],
+        [Lifts.row_plateMachine, Lifts.row_machine], // Row chest supported
         [Lifts.curl_wrist, Lifts.shrug_dumbbell],
       ],
     },
     {
       name: 'Upper 2',
       lifts: [
-        [Lifts.ohp_barbell, Lifts.ohp_dumbbell],
+        [Lifts.ohp_barbell, Lifts.ohp_dumbbell], // Row Free-weight
         [Lifts.bench_closegrip, Lifts.dip_machine],
         [Lifts.uprightRow_barbell, Lifts.latRaise_dumbbell],
         [Lifts.row_barbell, Lifts.row_dumbbell],
@@ -69,7 +69,7 @@ export const UpperLower6: [Routine, Workout[]] = [
         [Lifts.bench_dumbbell, Lifts.bench_barbell],
         [Lifts.ohp_plateMachine, Lifts.inclinePress_plateMachine],
         Lifts.tricep_overhead,
-        [Lifts.row_cable, Lifts.row_cableWide],
+        [Lifts.row_cable, Lifts.row_cableWide], // Row Cable
         [
           Lifts.pulldown_cable,
           Lifts.pulldown_machine,

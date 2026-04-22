@@ -26,7 +26,7 @@ export function LongTermTab() {
       for (const defWithGoal of goals) {
         const history = await LiftHistoryRepository.get(defWithGoal.id);
         if (history.length == 0) {
-          result.push({lift: defWithGoal, percent: 0});
+          result.push({id: defWithGoal.id, lift: defWithGoal, percent: 0});
           continue;
         }
 
@@ -36,7 +36,7 @@ export function LongTermTab() {
 
         const percent =
           best / Utils.calculate1RM(defWithGoal, defWithGoal.goal!!);
-        result.push({lift: defWithGoal, percent});
+        result.push({id: defWithGoal.id, lift: defWithGoal, percent});
       }
 
       result.sort((a, b) => a.percent - b.percent);
