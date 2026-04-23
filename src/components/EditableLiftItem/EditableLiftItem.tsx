@@ -21,6 +21,7 @@ interface EditableLiftItemProps {
   onChange: (lift: Lift) => void;
   onDelete?: () => void;
   hideCompleted?: boolean; // True if workout edit screen
+  showPlates?: boolean;
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -186,6 +187,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
           settings={settings}
           def={def}
           key={index}
+          showPlates={props.showPlates}
           hideCompleted={props.hideCompleted}
           onDelete={() => onRemoveSet(index)}
           onChange={set => onSetChange(index, set)}></PersistedSetRow>
@@ -210,6 +212,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
           settings={settings}
           def={def}
           key={index}
+          showPlates={props.showPlates}
           hideCompleted={true}
           onDelete={() => onRemoveGoal(index)}
           onChange={set => onGoalChange(index, set)}></PersistedSetRow>

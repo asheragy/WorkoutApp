@@ -30,7 +30,6 @@ export const Lifts = createDictionary({
   row_machine: { name: "Rows", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps]},
   // Rows T-Bar (Plate loaded machine)
   // Rows T-Bar (Barbell)
-  uprightRow_barbell: { name: "Upright Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Shoulders] },
   pulldown_cable: { name: "Pulldowns (Cable)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_hsHighRow: { name: "Pulldowns (High Row)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_plateMachine: { name: "Pulldowns", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
@@ -47,6 +46,8 @@ export const Lifts = createDictionary({
   latRaise_dumbbell: { name: "Lat Raise", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders] },
   latRaise_machine: { name: "Lat Raise", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   facePull: { name: "Face Pulls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
+  uprightRow_barbell: { name: "Upright Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders] },
+
 
   // Biceps
   curl_reverse: { name: "Curls (Reverse)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Biceps] },

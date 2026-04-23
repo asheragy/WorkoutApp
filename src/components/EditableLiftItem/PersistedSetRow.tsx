@@ -1,5 +1,5 @@
 import {LiftSet} from '../../types/workout';
-import {GlobalSettings, LiftDef} from '../../types/types';
+import {GlobalSettings, LiftDef, PlateCount} from '../../types/types';
 import {useTheme} from '@react-navigation/native';
 import Utils from '../Utils';
 import React, {useRef} from 'react';
@@ -22,6 +22,7 @@ export function PersistedSetRow(props: {
   label: string;
   def: LiftDef;
   hideCompleted?: boolean;
+  showPlates?: boolean;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;
 }) {
@@ -175,27 +176,34 @@ export function PersistedSetRow(props: {
               flexDirection: 'row',
               justifyContent: 'center',
             }}>
-            <NumberControl
-              disabled={props.set.completed}
-              value={props.set.weight}
-              onChange={newWeightValue =>
-                update(newWeightValue, props.set.reps)
-              }
-              decrementBy={() =>
-                (props.set.weight || 0) -
-                SetUtils.decrementWeight(
-                  props.set,
-                  props.def.type,
-                  props.settings,
-                )
-              }
-              incrementBy={() =>
-                SetUtils.incrementWeight(
-                  props.set,
-                  props.def.type,
-                  props.settings,
-                ) - (props.set.weight || 0)
-              }></NumberControl>
+            <View>
+              <NumberControl
+                disabled={props.set.completed}
+                value={props.set.weight}
+                onChange={newWeightValue =>
+                  update(newWeightValue, props.set.reps)
+                }
+                decrementBy={() =>
+                  (props.set.weight || 0) -
+                  SetUtils.decrementWeight(
+                    props.set,
+                    props.def.type,
+                    props.settings,
+                  )
+                }
+                incrementBy={() =>
+                  SetUtils.incrementWeight(
+                    props.set,
+                    props.def.type,
+                    props.settings,
+                  ) - (props.set.weight || 0)
+                }></NumberControl>
+              {props.showPlates && (
+                <Text style={{color: colors.text, textAlign: 'center'}}>
+                  {calcPlates(props.def, props.set.weight ?? 0)}
+                </Text>
+              )}
+            </View>
           </View>
           <View
             style={{
@@ -261,4 +269,11 @@ export function PersistedSetRow(props: {
       </Swipeable>
     </GestureHandlerRootView>
   );
+}
+
+function calcPlates(def: LiftDef, weight: number): string {
+  const plates = Utils.calcPlates(def.type, weight);
+  if (plates == undefined) return '';
+
+  return Utils.platesToString(plates);
 }

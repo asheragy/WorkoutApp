@@ -4,31 +4,6 @@ import {buildWorkout} from './helper.ts';
 
 /*
 
-Lower 1
-- Hip Add
-- Hip Abd
-- Leg Extensions 1
-- DL 531
-- Single Leg Press / Split Squat
-- Core 1
-
-Lower 2
-- Leg Extensions 2
-- Leg Curls (Laying or seated)
-- Front Squat / Squat  2:1
-- RDL / Deficit   2:1
-- Calves (Seated or standing)
-- Core 2
-
-Lower 3
-- Leg Curls (Laying or seated)
-- Leg Press / Belt Squat / V-Squat  2:2:1
-- Trap low / Sumo    2:1
-- Hip Thrust / Glute Kickback
-- Calves (Seated or standing)
-- Core 3
-- Back extension
-
 // TODO new lifts
 OHP seated vs standing
 BTNP - standing only, pairr with lat raise machine
@@ -52,6 +27,18 @@ export const UpperLower6: [Routine, Workout[]] = [
       ],
     },
     {
+      name: 'Lower 1',
+      lifts: [
+        Lifts.hipAdduction,
+        Lifts.hipAbduction,
+        Lifts.legExtensions,
+        Lifts.deadlift_barbell,
+        // TODO should be legPress_single
+        [Lifts.legPress, Lifts.splitSquat],
+        // TODO core 1
+      ],
+    },
+    {
       name: 'Upper 2',
       lifts: [
         [Lifts.ohp_barbell, Lifts.ohp_dumbbell], // Row Free-weight
@@ -61,6 +48,17 @@ export const UpperLower6: [Routine, Workout[]] = [
         [Lifts.curl_incline, Lifts.curl_ezBar],
         [Lifts.reverseFly_machine, Lifts.facePull],
         [Lifts.pullover_dumbbell, Lifts.pullover_machine],
+      ],
+    },
+    {
+      name: 'Lower 2',
+      lifts: [
+        Lifts.legExtensions,
+        [Lifts.legCurl_laying, Lifts.legCurl_seated], // TODO pick 1 and opposite on lower3
+        [Lifts.squat_front, Lifts.squat_barbell],
+        [Lifts.rdl_barbell, Lifts.deadlift_deficit],
+        [Lifts.calfRaise_seated, Lifts.calfRaise_standing], // TODO pick 1 and opposite on lower3
+        // TODO core 2
       ],
     },
     {
@@ -76,6 +74,18 @@ export const UpperLower6: [Routine, Workout[]] = [
           Lifts.pulldown_plateMachine,
         ],
         [Lifts.curl_hammer, Lifts.curl_reverse],
+      ],
+    },
+    {
+      name: 'Lower 3',
+      lifts: [
+        [Lifts.legCurl_laying, Lifts.legCurl_seated],
+        [Lifts.legPress, Lifts.squat_belt, Lifts.squat_v],
+        [Lifts.deadlift_trapbar, Lifts.deadlift_sumo],
+        [Lifts.hipThrust, Lifts.gluteKickback],
+        [Lifts.calfRaise_seated, Lifts.calfRaise_standing],
+        // TODO core 3
+        [Lifts.backExtension],
       ],
     },
   ].map(buildWorkout),

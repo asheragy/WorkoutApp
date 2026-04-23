@@ -20,6 +20,7 @@ type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 
 export default function LiftEditScreen({route, navigation}: Props) {
   const [lift, setLift] = useState<Lift>(route.params.lift);
+  const [showPlates, setShowPlates] = useState<boolean>(false);
   const {colors} = useTheme();
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
@@ -56,11 +57,15 @@ export default function LiftEditScreen({route, navigation}: Props) {
               title={lift.hide ? 'Unhide' : 'Skip'}
               onPress={() => onToggleHide()}
             />
+            <HiddenItem
+              title={showPlates ? 'Hide Plates' : 'Show Plates'}
+              onPress={() => onTogglePlates()}
+            />
           </OverflowMenu>
         </HeaderButtons>
       ),
     });
-  }, [navigation]);
+  }, [navigation, showPlates]);
 
   function onToggleHide() {
     let updatedLift: Lift = {...lift};
@@ -68,6 +73,10 @@ export default function LiftEditScreen({route, navigation}: Props) {
 
     route.params.onFinish(updatedLift);
     navigation.pop();
+  }
+
+  function onTogglePlates() {
+    setShowPlates(prev => !prev);
   }
 
   async function onDone() {
@@ -83,6 +92,7 @@ export default function LiftEditScreen({route, navigation}: Props) {
           marginVertical: 8,
         }}>
         <EditableLiftItem
+          showPlates={showPlates}
           lift={lift}
           onChange={onLiftChanged}></EditableLiftItem>
         <View

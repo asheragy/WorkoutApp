@@ -64,7 +64,7 @@ function WorkoutHistoryListItem({
         return (
           <View style={{paddingTop: 4}} key={lift.liftId}>
             <Text style={{fontWeight: 'bold', color: colors.text}}>
-              {defs[lift.liftId].name + ' - ' + sets.join(', ')}
+              {Utils.defToString(defs[lift.liftId]) + ' - ' + sets.join(', ')}
             </Text>
           </View>
         );
