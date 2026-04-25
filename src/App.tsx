@@ -1,36 +1,36 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, useColorScheme} from 'react-native';
-import {WorkoutScreen} from './screens/WorkoutScreen';
-import {WeightScreen} from './screens/WeightScreen';
+import React, { useEffect } from 'react';
+import { StyleSheet, useColorScheme } from 'react-native';
+import { WorkoutScreen } from './screens/WorkoutScreen';
+import { WeightScreen } from './screens/WeightScreen';
 import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
 } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {GlobalSettings, LiftDef} from './types/types';
-import {Provider, useDispatch} from 'react-redux';
-import {LiftListScreen} from './screens/LiftListScreen';
-import {LiftHistoryScreen} from './screens/LiftHistory/LiftHistoryScreen';
-import {LiftDefEditScreen} from './screens/LiftDefEditScreen';
-import {WorkoutEditScreen} from './screens/WorkoutEditScreen';
-import {WorkoutList} from './screens/Home';
-import {Lift, Workout} from './types/workout';
-import {LiftDefListScreen} from './screens/LiftDefListScreen';
-import {StatsScreen} from './screens/StatsScreen';
-import {SettingsScreen} from './screens/SettingsScreen';
-import {WorkoutHistoryScreen} from './screens/WorkoutHistoryScreen';
-import {HeaderButtonsProvider} from 'react-navigation-header-buttons';
+import { createStackNavigator } from '@react-navigation/stack';
+import { GlobalSettings, LiftDef } from './types/types';
+import { Provider, useDispatch } from 'react-redux';
+import { LiftListScreen } from './screens/LiftListScreen';
+import { LiftHistoryScreen } from './screens/LiftHistory/LiftHistoryScreen';
+import { LiftDefEditScreen } from './screens/LiftDefEditScreen';
+import { WorkoutEditScreen } from './screens/WorkoutEditScreen';
+import { WorkoutList } from './screens/Home';
+import { Lift, Workout } from './types/workout';
+import { LiftDefListScreen } from './screens/LiftDefListScreen';
+import { StatsScreen } from './screens/StatsScreen';
+import { SettingsScreen } from './screens/SettingsScreen';
+import { WorkoutHistoryScreen } from './screens/WorkoutHistoryScreen';
 import LiftDefRepository from './repository/LiftDefRepository';
-import {MenuProvider} from 'react-native-popup-menu';
-import {RoutinesScreen} from './screens/Routines';
-import {store} from './state/store.ts';
-import {GoalsScreen} from './screens/Goals/GoalsScreen.tsx';
+import { MenuProvider } from 'react-native-popup-menu';
+import { RoutinesScreen } from './screens/Routines';
+import { store } from './state/store.ts';
+import { GoalsScreen } from './screens/Goals/GoalsScreen.tsx';
 import LiftEditScreen from './screens/LiftEditScreen.tsx';
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
+import { HeaderButtonsProvider } from 'react-navigation-header-buttons/HeaderButtonsProvider';
 
 export type RootStackParamList = {
   Home: {
