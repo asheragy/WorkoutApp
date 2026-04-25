@@ -1,18 +1,21 @@
-import {LiftSet} from '../../types/workout';
-import {GlobalSettings, LiftDef, PlateCount} from '../../types/types';
-import {useTheme} from '@react-navigation/native';
+import { LiftSet } from '../../types/workout';
+import { GlobalSettings, LiftDef, PlateCount } from '../../types/types';
+import { useTheme } from '@react-navigation/native';
 import Utils from '../Utils';
-import React, {useRef} from 'react';
-import {GestureHandlerRootView, Swipeable} from 'react-native-gesture-handler';
-import {Alert, Animated, Text, View} from 'react-native';
+import React, { useRef } from 'react';
+import {
+  GestureHandlerRootView,
+  Swipeable,
+} from 'react-native-gesture-handler';
+import { Alert, Animated, Text, View } from 'react-native';
 import {
   Menu,
   MenuOption,
   MenuOptions,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import {Widths} from './Widths';
-import {NumberControl} from '../NumberControl';
+import { Widths } from './Widths';
+import { NumberControl } from '../NumberControl';
 import SetUtils from '../../utils/SetUtils';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -21,15 +24,15 @@ export function PersistedSetRow(props: {
   settings: GlobalSettings;
   label: string;
   def: LiftDef;
-  hideCompleted?: boolean;
+  showCompleteCheckbox: boolean;
   showPlates?: boolean;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;
 }) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const update = (weight?: number, reps?: number) => {
-    const updatedSet = {...props.set};
+    const updatedSet = { ...props.set };
     updatedSet.weight = weight;
     updatedSet.reps = reps;
 
@@ -89,7 +92,7 @@ export function PersistedSetRow(props: {
           },
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -109,8 +112,9 @@ export function PersistedSetRow(props: {
           flexDirection: 'row',
           flex: 1,
           backgroundColor: 'red',
-          transform: [{translateX: opacity}],
-        }}></Animated.View>
+          transform: [{ translateX: opacity }],
+        }}
+      ></Animated.View>
     );
   };
 
@@ -118,21 +122,24 @@ export function PersistedSetRow(props: {
     !props.set.percentage && props.def.trainingMax == undefined;
 
   return (
-    <GestureHandlerRootView style={{padding: 2}}>
+    <GestureHandlerRootView style={{ padding: 2 }}>
       <Swipeable
         renderRightActions={renderRightActions}
         ref={swipeableRef}
-        onSwipeableWillOpen={confirmDelete}>
+        onSwipeableWillOpen={confirmDelete}
+      >
         <View
           style={{
             flexDirection: 'row',
             marginVertical: 4,
-          }}>
+          }}
+        >
           <Menu
             style={{
               width: Widths[0],
               alignSelf: 'center',
-            }}>
+            }}
+          >
             <MenuTrigger
               disabled={props.set.completed}
               text={props.label}
@@ -146,14 +153,16 @@ export function PersistedSetRow(props: {
             />
             <MenuOptions
               customStyles={{
-                optionsContainer: {backgroundColor: colors.background},
-              }}>
+                optionsContainer: { backgroundColor: colors.background },
+              }}
+            >
               <MenuOption
                 customStyles={{
-                  optionText: {fontSize: 16, color: colors.text},
+                  optionText: { fontSize: 16, color: colors.text },
                 }}
                 onSelect={onToggleWarmup}
-                text={props.set.warmup ? 'Work Set' : 'Warmup'}></MenuOption>
+                text={props.set.warmup ? 'Work Set' : 'Warmup'}
+              ></MenuOption>
               <MenuOption
                 customStyles={{
                   optionText: {
@@ -166,7 +175,8 @@ export function PersistedSetRow(props: {
                 disabled={disablePercentage}
                 text={
                   props.set.percentage ? 'Disable Percentage' : 'Percentage'
-                }></MenuOption>
+                }
+              ></MenuOption>
             </MenuOptions>
           </Menu>
 
@@ -175,7 +185,8 @@ export function PersistedSetRow(props: {
               width: Widths[1],
               flexDirection: 'row',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <View>
               <NumberControl
                 disabled={props.set.completed}
@@ -197,9 +208,10 @@ export function PersistedSetRow(props: {
                     props.def.type,
                     props.settings,
                   ) - (props.set.weight || 0)
-                }></NumberControl>
+                }
+              ></NumberControl>
               {props.showPlates && (
-                <Text style={{color: colors.text, textAlign: 'center'}}>
+                <Text style={{ color: colors.text, textAlign: 'center' }}>
                   {calcPlates(props.def, props.set.weight ?? 0)}
                 </Text>
               )}
@@ -210,13 +222,15 @@ export function PersistedSetRow(props: {
               width: Widths[2],
               flexDirection: 'row',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <Text
               style={{
                 textAlign: 'center',
                 textAlignVertical: 'center',
                 color: colors.text,
-              }}>
+              }}
+            >
               {percentageWeight}
             </Text>
           </View>
@@ -226,27 +240,31 @@ export function PersistedSetRow(props: {
               width: Widths[3],
               flexDirection: 'row',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <NumberControl
               disabled={props.set.completed}
               precision={0}
               value={props.set.reps}
               onChange={newRepsValue => update(props.set.weight, newRepsValue)}
               decrementBy={() => 1}
-              incrementBy={() => 1}></NumberControl>
+              incrementBy={() => 1}
+            ></NumberControl>
           </View>
           <View
             style={{
               width: Widths[4],
               flexDirection: 'row',
               justifyContent: 'center',
-            }}>
+            }}
+          >
             <Text
               style={{
                 textAlign: 'center',
                 textAlignVertical: 'center',
                 color: colors.text,
-              }}>
+              }}
+            >
               {props.set.warmup
                 ? ''
                 : Math.round(Utils.calculate1RM(props.def, props.set) * 10) /
@@ -258,11 +276,13 @@ export function PersistedSetRow(props: {
               width: Widths[5],
               flexDirection: 'row',
               justifyContent: 'flex-end',
-            }}>
-            {props.hideCompleted != true && (
+            }}
+          >
+            {props.showCompleteCheckbox && (
               <CheckBox
                 value={props.set.completed}
-                onValueChange={() => onToggleComplete()}></CheckBox>
+                onValueChange={() => onToggleComplete()}
+              ></CheckBox>
             )}
           </View>
         </View>

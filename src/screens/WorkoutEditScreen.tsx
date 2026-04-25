@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
-import {Alert, Button, Text, TouchableOpacity, View} from 'react-native';
-import {RootStackParamList} from '../App';
-import {GlobalSettings} from '../types/types';
-import {TextInput} from 'react-native-gesture-handler';
-import {Lift, Workout} from '../types/workout';
+import React, { useEffect, useState } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Alert, Button, Text, TouchableOpacity, View } from 'react-native';
+import { RootStackParamList } from '../App';
+import { GlobalSettings } from '../types/types';
+import { TextInput } from 'react-native-gesture-handler';
+import { Lift, Workout } from '../types/workout';
 import Utils from '../components/Utils';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import {MaterialHeaderButton} from '../components/Common';
-import {useTheme} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import {AppState} from '../state/store';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { MaterialHeaderButton } from '../components/Common';
+import { useTheme } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { AppState } from '../state/store';
 import DraggableFlatList, {
   RenderItemParams,
   ScaleDecorator,
@@ -20,12 +20,12 @@ import DraggableFlatList, {
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
-export function WorkoutEditScreen({route, navigation}: Props) {
+export function WorkoutEditScreen({ route, navigation }: Props) {
   const [workout, setWorkout] = useState<Workout>({
     name: 'Workout Title',
     lifts: [],
   });
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
@@ -45,7 +45,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{marginRight: 10}}>
+        <View style={{ marginRight: 10 }}>
           <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
             <Item
               title="+Exercise"
@@ -95,7 +95,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
   }
 
   function onSelectExercise() {
-    navigation.navigate('LiftDefList', {onSelect: onExerciseAdded});
+    navigation.navigate('LiftDefList', { onSelect: onExerciseAdded });
   }
 
   function onExerciseAdded(defId: string) {
@@ -159,7 +159,7 @@ export function WorkoutEditScreen({route, navigation}: Props) {
           onPress: () => onExerciseDelete(index),
         },
       ],
-      {cancelable: false},
+      { cancelable: false },
     );
   }
 
@@ -167,25 +167,25 @@ export function WorkoutEditScreen({route, navigation}: Props) {
     <ScaleDecorator>
       <TouchableOpacity
         onLongPress={item.drag}
-        style={{margin: 4, backgroundColor: colors.card}}>
+        style={{ margin: 4, backgroundColor: colors.card }}
+      >
         <EditableLiftItem
           lift={item.item}
-          hideCompleted={true}
+          mode={'workout_edit'}
           onChange={lift => onLiftChanged(item.getIndex()!, lift)}
-          onDelete={() =>
-            confirmLiftDelete(item.getIndex()!)
-          }></EditableLiftItem>
+          onDelete={() => confirmLiftDelete(item.getIndex()!)}
+        ></EditableLiftItem>
       </TouchableOpacity>
     </ScaleDecorator>
   );
 
   return (
-    <View style={{flex: 1}}>
-      <TextInput onChangeText={setTitle} style={{color: colors.text}}>
+    <View style={{ flex: 1 }}>
+      <TextInput onChangeText={setTitle} style={{ color: colors.text }}>
         {workout.name}
       </TextInput>
       {workout.id != undefined && (
-        <Text style={{color: colors.text}}>
+        <Text style={{ color: colors.text }}>
           {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
         </Text>
       )}
@@ -194,13 +194,15 @@ export function WorkoutEditScreen({route, navigation}: Props) {
         style={{
           flex: 1,
           flexGrow: 1,
-        }}>
+        }}
+      >
         <DraggableFlatList
           data={workout.lifts}
           renderItem={renderItem}
-          onDragEnd={({data}) => setLifts(data)}
+          onDragEnd={({ data }) => setLifts(data)}
           // TODO problem if lift can be duplicated in same workout
-          keyExtractor={lift => lift.id}></DraggableFlatList>
+          keyExtractor={lift => lift.id}
+        ></DraggableFlatList>
         {route.params.workoutId && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>
         )}

@@ -1,27 +1,27 @@
-import {useTheme} from '@react-navigation/native';
-import React, {useEffect, useState} from 'react';
-import {View, Button, ScrollView, StyleSheet, Text} from 'react-native';
-import {useSelector} from 'react-redux';
-import {GlobalSettings} from '../types/types';
-import {Lift} from '../types/workout';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App.tsx';
+import { useTheme } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { View, Button, ScrollView, StyleSheet, Text } from 'react-native';
+import { useSelector } from 'react-redux';
+import { GlobalSettings } from '../types/types';
+import { Lift } from '../types/workout';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../App.tsx';
 import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem.tsx';
 import {
   HeaderButtons,
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import {MaterialHeaderButton} from '../components/Common.tsx';
-import {AppState} from '../state/store.ts';
+import { MaterialHeaderButton } from '../components/Common.tsx';
+import { AppState } from '../state/store.ts';
 import Utils from '../components/Utils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 
-export default function LiftEditScreen({route, navigation}: Props) {
+export default function LiftEditScreen({ route, navigation }: Props) {
   const [lift, setLift] = useState<Lift>(route.params.lift);
   const [showPlates, setShowPlates] = useState<boolean>(false);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -32,7 +32,7 @@ export default function LiftEditScreen({route, navigation}: Props) {
   }
 
   useEffect(() => {
-    navigation.setOptions({title: Utils.defToString(def)});
+    navigation.setOptions({ title: Utils.defToString(def) });
   }, [def, navigation]);
 
   React.useLayoutEffect(() => {
@@ -40,17 +40,19 @@ export default function LiftEditScreen({route, navigation}: Props) {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
-            style={{marginHorizontal: 10}}
-            OverflowIcon={({color}) => (
+            style={{ marginHorizontal: 10 }}
+            OverflowIcon={({ color }) => (
               <Text
-                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
+              >
                 ...
               </Text>
-            )}>
+            )}
+          >
             <HiddenItem
               title="History"
               onPress={() =>
-                navigation.navigate('LiftHistory', {liftId: lift.id})
+                navigation.navigate('LiftHistory', { liftId: lift.id })
               }
             />
             <HiddenItem
@@ -68,7 +70,7 @@ export default function LiftEditScreen({route, navigation}: Props) {
   }, [navigation, showPlates]);
 
   function onToggleHide() {
-    let updatedLift: Lift = {...lift};
+    let updatedLift: Lift = { ...lift };
     updatedLift.hide = updatedLift.hide ? undefined : true;
 
     route.params.onFinish(updatedLift);
@@ -90,17 +92,21 @@ export default function LiftEditScreen({route, navigation}: Props) {
         style={{
           alignItems: 'center',
           marginVertical: 8,
-        }}>
+        }}
+      >
         <EditableLiftItem
           showPlates={showPlates}
           lift={lift}
-          onChange={onLiftChanged}></EditableLiftItem>
+          onChange={onLiftChanged}
+          mode={'lift_edit'}
+        ></EditableLiftItem>
         <View
           style={{
             marginTop: 10,
             flexDirection: 'row',
-          }}>
-          <View style={{width: '100%', marginHorizontal: 10}}>
+          }}
+        >
+          <View style={{ width: '100%', marginHorizontal: 10 }}>
             <Button title="Done" onPress={onDone}></Button>
           </View>
         </View>

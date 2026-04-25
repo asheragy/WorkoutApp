@@ -18,10 +18,10 @@ export async function exportAsyncStorage() {
       key =>
         !key.startsWith('liftHistory:') && !key.startsWith('workoutHistory:'),
     );
-    const pairs = await AsyncStorage.multiGet(keys);
 
+    const entries = Object.entries(await AsyncStorage.getMany(keys));
     const data = Object.fromEntries(
-      pairs.map(([key, value]) => {
+      entries.map(([key, value]) => {
         if (value == null) return [key, null];
         try {
           // Try parsing JSON values — if it fails, keep the raw string
@@ -72,12 +72,10 @@ export async function importAsyncStorage(): Promise<void> {
     }
 
     // Convert all values to strings for AsyncStorage
-    const entries: [string, string][] = Object.entries(data).map(
-      ([key, value]) => [key, toStorageString(value)],
+    const entries = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [key, toStorageString(value)]),
     );
-
-    // Save all pairs
-    await AsyncStorage.multiSet(entries);
+    await AsyncStorage.setMany(entries);
 
     console.log(`Imported ${entries.length} keys from ${filename}`);
     return;

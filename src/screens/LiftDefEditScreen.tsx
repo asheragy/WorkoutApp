@@ -1,19 +1,19 @@
-import React, {useState} from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
-import {RootStackParamList} from '../App';
-import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
-import {GlobalSettings, LiftDef, LiftType, MuscleGroup} from '../types/types';
+import React, { useState } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { RootStackParamList } from '../App';
+import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
+import { GlobalSettings, LiftDef, LiftType, MuscleGroup } from '../types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
-import {useDispatch, useSelector} from 'react-redux';
-import {useTheme} from '@react-navigation/native';
-import {PersistedSetRow} from '../components/EditableLiftItem/PersistedSetRow.tsx';
-import {LiftSet} from '../types/workout.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTheme } from '@react-navigation/native';
+import { PersistedSetRow } from '../components/EditableLiftItem/PersistedSetRow.tsx';
+import { LiftSet } from '../types/workout.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
-export function LiftDefEditScreen({route, navigation}: Props) {
-  const {colors} = useTheme();
+export function LiftDefEditScreen({ route, navigation }: Props) {
+  const { colors } = useTheme();
   const systemDef = route.params.def?.system == true;
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
@@ -68,14 +68,14 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   function addGoal() {
     setDef({
       ...def,
-      goal: {weight: 100, reps: 1},
+      goal: { weight: 100, reps: 1 },
     });
   }
 
   function changeGoal(set: LiftSet) {
     setDef({
       ...def,
-      goal: {weight: set.weight!!, reps: set.reps!!},
+      goal: { weight: set.weight!!, reps: set.reps!! },
     });
   }
 
@@ -109,22 +109,23 @@ export function LiftDefEditScreen({route, navigation}: Props) {
   return (
     <View>
       <View style={styles.viewGroup}>
-        <Text style={{color: colors.text}}>Name:</Text>
+        <Text style={{ color: colors.text }}>Name:</Text>
         <TextInput
-          style={{color: colors.text}}
+          style={{ color: colors.text }}
           editable={!systemDef}
           onChangeText={newName =>
             setDef(prevState => ({
               ...prevState,
               name: newName,
             }))
-          }>
+          }
+        >
           {def.name}
         </TextInput>
       </View>
 
       <View style={[styles.viewGroup]}>
-        <Text style={{color: colors.text}}>Type:</Text>
+        <Text style={{ color: colors.text }}>Type:</Text>
         <DropDownPicker
           disabled={systemDef}
           items={items}
@@ -137,7 +138,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={[styles.viewGroup]}>
-        <Text style={{color: colors.text}}>Primary:</Text>
+        <Text style={{ color: colors.text }}>Primary:</Text>
         <DropDownPicker
           items={muscleGroupItems}
           open={primaryOpen}
@@ -149,7 +150,7 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       </View>
 
       <View style={[styles.viewGroup]}>
-        <Text style={{color: colors.text}}>
+        <Text style={{ color: colors.text }}>
           {'Secondary: ' + secondary.map(i => MuscleGroup[i])}
         </Text>
         <DropDownPicker
@@ -169,30 +170,32 @@ export function LiftDefEditScreen({route, navigation}: Props) {
 
       {false && (
         <View style={styles.viewGroup}>
-          <Text style={{color: colors.text}}>Training Max:</Text>
+          <Text style={{ color: colors.text }}>Training Max:</Text>
           <TextInput
-            style={{color: colors.text}}
+            style={{ color: colors.text }}
             keyboardType="numeric"
             onChangeText={newText => {
               const parsed = parseFloat(newText);
               if (!Number.isNaN(parsed)) setTM(parseFloat(newText));
-            }}>
+            }}
+          >
             {tm}
           </TextInput>
         </View>
       )}
 
       <View style={styles.viewGroup}>
-        <Text style={{color: colors.text}}>Goal</Text>
+        <Text style={{ color: colors.text }}>Goal</Text>
         {def.goal && (
           <PersistedSetRow
             set={def.goal}
             settings={settings}
             label=""
             def={def}
-            hideCompleted={true}
+            showCompleteCheckbox={false}
             onChange={changeGoal}
-            onDelete={removeGoal}></PersistedSetRow>
+            onDelete={removeGoal}
+          ></PersistedSetRow>
         )}
         {!def.goal && <Button title="Add Goal" onPress={addGoal}></Button>}
       </View>
@@ -203,7 +206,8 @@ export function LiftDefEditScreen({route, navigation}: Props) {
       <Button
         title="Save"
         onPress={onSave}
-        disabled={def.name.length == 0}></Button>
+        disabled={def.name.length == 0}
+      ></Button>
     </View>
   );
 }
