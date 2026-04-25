@@ -1,17 +1,17 @@
-import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
-import {useSelector} from 'react-redux';
-import React, {useEffect, useState} from 'react';
-import {GlobalSettings, LiftDef, MuscleGroup} from '../types/types';
+import { Text, View } from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
+import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { GlobalSettings, LiftDef, MuscleGroup } from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import {useAppSelector} from '../state/store.ts';
-import {useTheme} from '@react-navigation/native';
-import {NumberControl} from '../components/NumberControl.tsx';
-import ChartUtils, {ProgressByWeek} from '../utils/ChartUtils.ts';
-import {ProgressChart} from '../components/ProgressChart.tsx';
+import { useAppSelector } from '../state/store.ts';
+import { useTheme } from '@react-navigation/native';
+import { NumberControl } from '../components/NumberControl.tsx';
+import ChartUtils from '../utils/ChartUtils.ts';
+import { ProgressChart } from '../components/ProgressChart.tsx';
 import DropDownPicker from 'react-native-dropdown-picker';
-import {enumToItemsNumeric} from '../utils/EnumUtils.ts';
+import { enumToItemsNumeric } from '../utils/EnumUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -20,8 +20,8 @@ type GroupEntry = {
   sets: number;
 };
 
-export function StatsScreen({route, navigation}: Props) {
-  const {colors} = useTheme();
+export function StatsScreen({ route, navigation }: Props) {
+  const { colors } = useTheme();
   const [interval, setInterval] = useState(7);
   const [entries, setEntries] = useState<GroupEntry[]>([]);
   const [progress, setProgress] = useState<number[]>([]);
@@ -43,7 +43,7 @@ export function StatsScreen({route, navigation}: Props) {
 
       // Faking dates since required for chart
       const today = new Date();
-      const dates = values.map((value, i, arr) => {
+      const dates = values.map((_, i, arr) => {
         const weeksAgo = arr.length - 1 - i; // so last element = 0 weeks ago
         const date = new Date(today);
         date.setDate(today.getDate() - weeksAgo * 7);
@@ -79,11 +79,11 @@ export function StatsScreen({route, navigation}: Props) {
       result.forEach((sets, group) =>
         entries.push({
           group,
-          sets: sets,
+          sets,
         }),
       );
 
-      const total = entries.map(e => e.sets).reduce((a, b) => a + b);
+      const total = entries.map(e => e.sets).reduce((a, b) => a + b, 0);
       entries.push({
         sets: total,
       });
@@ -99,40 +99,38 @@ export function StatsScreen({route, navigation}: Props) {
     };
   });
 
-  const renderItem = (item: ListRenderItemInfo<GroupEntry>) => (
-    <View style={{flex: 1, flexDirection: 'row'}}>
-      <View style={{width: '50%', margin: 4}}>
-        <Text style={{textAlign: 'right', color: colors.text}}>
-          {item.item.group != undefined
-            ? MuscleGroup[item.item.group]
-            : 'Total'}
-        </Text>
-      </View>
-
-      <View style={{width: '50%', margin: 4}}>
-        <Text style={{color: colors.text}}>{item.item.sets}</Text>
-      </View>
-    </View>
-  );
-
   return (
-    <View>
-      <FlatList
-        data={entriesNormalized}
-        renderItem={renderItem}
-        keyExtractor={item =>
-          item.group !== undefined ? MuscleGroup[item.group] : 'total'
-        }></FlatList>
+    <View style={{ flex: 1, backgroundColor: colors.background, padding: 8 }}>
+      <View style={{ marginBottom: 12 }}>
+        {entriesNormalized.map(item => {
+          const key = item.group !== undefined ? MuscleGroup[item.group] : 'total';
+
+          return (
+            <View key={key} style={{ flexDirection: 'row' }}>
+              <View style={{ width: '50%', margin: 4 }}>
+                <Text style={{ textAlign: 'right', color: colors.text }}>
+                  {item.group != undefined ? MuscleGroup[item.group] : 'Total'}
+                </Text>
+              </View>
+
+              <View style={{ width: '50%', margin: 4 }}>
+                <Text style={{ color: colors.text }}>{item.sets}</Text>
+              </View>
+            </View>
+          );
+        })}
+      </View>
 
       <NumberControl
         value={interval}
         precision={1}
         decrementBy={() => 0.5}
         incrementBy={() => 0.5}
-        onChange={setInterval}></NumberControl>
+        onChange={setInterval}
+      />
 
       <DropDownPicker
-        style={{marginVertical: 16}}
+        style={{ marginVertical: 16 }}
         items={muscleGroupItems}
         open={open}
         setOpen={setOpen}
@@ -140,7 +138,7 @@ export function StatsScreen({route, navigation}: Props) {
         setValue={setValue}
         dropDownDirection={'TOP'}
       />
-      <ProgressChart dates={progressDates} values={progress}></ProgressChart>
+      <ProgressChart dates={progressDates} values={progress} />
     </View>
   );
 }
