@@ -14,6 +14,7 @@ export type Workout = {
 
 export type Lift = {
   id: string;
+  instanceId: string;
   sets: LiftSet[];
   // TODO should be PersistedSet[]
   goals?: LiftSet[];
@@ -45,5 +46,3 @@ export type AccessoryGroup = {
     max?: number;
   };
   */
-
-export const SingleWorkoutId = '00000000-0000-0000-0000-000000000000';

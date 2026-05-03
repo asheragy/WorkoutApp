@@ -65,13 +65,10 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
       return;
     }
 
-    // Would set above but SingleWorkout is a special case that this shouldn't overwrite
-    const workoutToSave: Workout = !route.params.workoutId
-      ? {
-          ...workout,
-          routineId: settings.routine,
-        }
-      : workout;
+    const workoutToSave: Workout = {
+      ...workout,
+      routineId: workout.routineId ?? settings.routine,
+    };
 
     try {
       await WorkoutRepository.upsert(workoutToSave);
@@ -101,6 +98,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
   function onExerciseAdded(defId: string) {
     const lift: Lift = {
       id: defId,
+      instanceId: Utils.generate_uuidv4(),
       sets: [],
       goals: [],
     };
@@ -200,8 +198,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
           data={workout.lifts}
           renderItem={renderItem}
           onDragEnd={({ data }) => setLifts(data)}
-          // TODO problem if lift can be duplicated in same workout
-          keyExtractor={lift => lift.id}
+          keyExtractor={lift => lift.instanceId}
         ></DraggableFlatList>
         {route.params.workoutId && (
           <Button title="Delete" onPress={onDeleteWorkout}></Button>

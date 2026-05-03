@@ -1,5 +1,5 @@
 // db/init.ts
-import {open} from '@op-engineering/op-sqlite';
+import { open } from '@op-engineering/op-sqlite';
 import RNFS from 'react-native-fs';
 
 export const db = open({
@@ -37,8 +37,13 @@ export async function migrate() {
   });
 }
 
-type Migration = {to: number; sql: string};
+type Migration = { to: number; sql: string };
 
+/* TODO for repeat lifts per workout
+- id INTEGER PRIMARY KEY
+- INDEX (lift_id)
+- INDEX (workout_id)
+ */
 export const migrations: Migration[] = [
   {
     to: 1,

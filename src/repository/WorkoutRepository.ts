@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {SingleWorkoutId, Workout} from '../types/workout';
+import { Workout } from '../types/workout';
 import Utils from '../components/Utils';
-import {PreLoadedRoutines} from './RoutineRepository.ts';
+import { PreLoadedRoutines } from './RoutineRepository.ts';
 
 const key = 'workouts';
 
@@ -32,9 +32,7 @@ export default class WorkoutRepository {
       }
     }
 
-    const workouts = all.filter(
-      x => x.routineId == routine || x.id == SingleWorkoutId,
-    );
+    const workouts = all.filter(x => x.routineId == routine);
 
     /* TODO this should work but handling per workout for now
     if (importLifts) {
@@ -78,8 +76,8 @@ export default class WorkoutRepository {
 
         return {
           ...lift,
-          sets: recentLift.sets.map(set => ({...set})),
-          goals: recentLift.goals?.map(goal => ({...goal})),
+          sets: recentLift.sets.map(set => ({ ...set })),
+          goals: recentLift.goals?.map(goal => ({ ...goal })),
         };
       }
 
@@ -107,12 +105,17 @@ export default class WorkoutRepository {
     let json: Workout[] = JSON.parse(value);
 
     // Fix deserialized date
+    // TODO temp instanceId should not need to be correct here long term
     json = json.map(wo => {
       const result: Workout = {
         ...wo,
         lastCompleted: wo.lastCompleted
           ? new Date(wo.lastCompleted)
           : undefined,
+        lifts: wo.lifts.map(lift => ({
+          ...lift,
+          instanceId: lift.instanceId ?? Utils.generate_uuidv4(),
+        })),
       };
       return result;
     });
@@ -161,7 +164,6 @@ export default class WorkoutRepository {
     const index = items.findIndex(item => item.id == workout.id);
 
     if (index >= 0) items[index] = workout;
-    else if (workout.id == SingleWorkoutId) items.push(workout);
     else throw new Error('Unable to find workout id ' + workout.id);
 
     await AsyncStorage.setItem(key, JSON.stringify(items));

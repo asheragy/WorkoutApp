@@ -1,4 +1,4 @@
-import React, {Dispatch, useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,30 +12,30 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import {useFocusEffect, useTheme} from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
-import {connect, useDispatch, useSelector} from 'react-redux';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
-import {MaterialHeaderButton} from '../components/Common';
-import {Lift, SingleWorkoutId, Workout} from '../types/workout';
+import { connect, useDispatch, useSelector } from 'react-redux';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
+import { MaterialHeaderButton } from '../components/Common';
+import { Lift, Workout } from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
-import {AppDispatch, AppState, updateSettings} from '../state/store';
+import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
 
 const mapStateToProps = (state: any) => {
-  const {settings} = state;
-  return {settings};
+  const { settings } = state;
+  return { settings };
 };
 
 export default connect(mapStateToProps)(WorkoutList);
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
-export function WorkoutList({navigation, route}: Props) {
+export function WorkoutList({ navigation, route }: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const dispatch: AppDispatch = useDispatch();
 
   React.useLayoutEffect(() => {
@@ -43,17 +43,19 @@ export function WorkoutList({navigation, route}: Props) {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
-            style={{marginHorizontal: 10}}
-            OverflowIcon={({color}) => (
+            style={{ marginHorizontal: 10 }}
+            OverflowIcon={({ color }) => (
               <Text
                 style={{
                   fontWeight: 'bold',
                   fontSize: 24,
                   color: colors.text,
-                }}>
+                }}
+              >
                 ...
               </Text>
-            )}>
+            )}
+          >
             {
               //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             }
@@ -72,13 +74,6 @@ export function WorkoutList({navigation, route}: Props) {
                   onChanged: importLifts => loadState(importLifts),
                 })
               }
-            />
-            <HiddenItem
-              title="Single Workout"
-              disabled={
-                workouts.find(x => x.id == SingleWorkoutId) != undefined
-              }
-              onPress={() => onSingleWorkout()}
             />
             <HiddenItem title="Goals" onPress={() => onGoals()} />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
@@ -104,7 +99,7 @@ export function WorkoutList({navigation, route}: Props) {
       RoutineRepository.getAll().then(routines => {
         const curr = routines.find(x => x.id == settings.routine);
         const title = curr?.id ? curr.title : 'Workouts';
-        navigation.setOptions({title});
+        navigation.setOptions({ title });
       });
 
       WorkoutRepository.getRoutine(settings.routine, importLifts).then(
@@ -112,7 +107,7 @@ export function WorkoutList({navigation, route}: Props) {
           const incompleted = result.filter(w => w.lastCompleted == null);
           const completed = result
             .filter(
-              (w): w is Workout & {lastCompleted: Date} =>
+              (w): w is Workout & { lastCompleted: Date } =>
                 w.lastCompleted != null,
             )
             .slice()
@@ -140,18 +135,6 @@ export function WorkoutList({navigation, route}: Props) {
   const onGoals = () => navigation.navigate('Goals');
   const onStats = () => navigation.navigate('Stats');
 
-  async function onSingleWorkout() {
-    const workout: Workout = {
-      id: SingleWorkoutId,
-      name: 'Single Workout',
-      lifts: [],
-    };
-
-    await WorkoutRepository.upsert(workout);
-    onSelect(workout);
-    loadState();
-  }
-
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {
       workoutId: item.id!,
@@ -167,18 +150,20 @@ export function WorkoutList({navigation, route}: Props) {
   const renderItem = (item: ListRenderItemInfo<Workout>) => (
     <TouchableOpacity
       onPress={() => onSelect(item.item)}
-      onLongPress={() => onEdit(item.item)}>
+      onLongPress={() => onEdit(item.item)}
+    >
       <WorkoutListItem workout={item.item}></WorkoutListItem>
     </TouchableOpacity>
   );
 
   return (
     <FlatList
-      style={{backgroundColor: colors.background}}
+      style={{ backgroundColor: colors.background }}
       data={workouts}
       renderItem={renderItem}
       // TODO workout.id should not be nullable probably?
-      keyExtractor={(workout, index) => workout.id || index + ''}></FlatList>
+      keyExtractor={(workout, index) => workout.id || index + ''}
+    ></FlatList>
   );
 }
 
@@ -186,35 +171,35 @@ interface WorkoutItemProps {
   workout: Workout;
 }
 
-function WorkoutListItem({workout}: WorkoutItemProps) {
-  const {colors} = useTheme();
+function WorkoutListItem({ workout }: WorkoutItemProps) {
+  const { colors } = useTheme();
 
   return (
-    <View style={[styles.workoutItem, {backgroundColor: colors.card}]}>
-      <Text style={[styles.titleText, {color: colors.text}]}>
+    <View style={[styles.workoutItem, { backgroundColor: colors.card }]}>
+      <Text style={[styles.titleText, { color: colors.text }]}>
         {workout.name}
       </Text>
 
       {workout.lifts
         .filter(x => !x.alternate)
         .map((lift, _) => (
-          <LiftItem lift={lift} key={lift.id}></LiftItem>
+          <LiftItem lift={lift} key={lift.instanceId}></LiftItem>
         ))}
-      <Text style={{paddingTop: 8, color: colors.text}}>
+      <Text style={{ paddingTop: 8, color: colors.text }}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
       </Text>
     </View>
   );
 }
 
-function LiftItem(props: {lift: Lift}) {
-  const {colors} = useTheme();
+function LiftItem(props: { lift: Lift }) {
+  const { colors } = useTheme();
   const sets = props.lift.sets.length;
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   return (
     <View>
-      <Text style={[styles.liftText, {color: colors.text}]}>
+      <Text style={[styles.liftText, { color: colors.text }]}>
         {Utils.defToString(defs[props.lift.id]) +
           (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>

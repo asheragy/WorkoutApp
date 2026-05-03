@@ -1,13 +1,10 @@
-import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
-import ChartUtils, {HistoryEntry} from './ChartUtils.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {LiftDef, MuscleGroup} from '../types/types.ts';
-
-jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+import ChartUtils, { HistoryEntry } from './ChartUtils.ts';
+import { Lifts } from '../repository/LiftDatabase.ts';
+import { LiftDef, MuscleGroup } from '../types/types.ts';
 
 test('progress by week', () => {
   const start = new Date('2025-11-01'); // November 1, 2025
-  const dates = Array.from({length: 10}, (_, i) => {
+  const dates = Array.from({ length: 10 }, (_, i) => {
     const d = new Date(start);
     d.setDate(start.getDate() + i * 5);
     return d;
@@ -34,8 +31,8 @@ test('progress by week', () => {
   );
   // only 2 entries
   result.set(Lifts.lunge.id, [
-    {timestamp: dates[1], value: 50},
-    {timestamp: dates[7], value: 55},
+    { timestamp: dates[1], value: 50 },
+    { timestamp: dates[7], value: 55 },
   ]);
 
   const defs: Record<string, LiftDef> = {

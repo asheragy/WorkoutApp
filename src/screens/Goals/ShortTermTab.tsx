@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Utils from '../../components/Utils.ts';
-import {useSelector} from 'react-redux';
-import {AppState} from '../../state/store.ts';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state/store.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
-import {GoalRow, ProgressList} from './Common.tsx';
-import {MuscleGroup} from '../../types/types.ts';
+import { GoalRow, ProgressList } from './Common.tsx';
+import { MuscleGroup } from '../../types/types.ts';
 
 export function ShortTermTab() {
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -28,7 +28,7 @@ export function ShortTermTab() {
         const def = defs[lift.id];
         const percent = Utils.goalPercent(def, lift);
         if (percent) {
-          result.push({id: def.id, lift: def, percent});
+          result.push({ id: lift.instanceId, lift: def, percent });
 
           def.muscleGroups.forEach(group => {
             const count = counts.get(group) ?? 0;
@@ -43,7 +43,7 @@ export function ShortTermTab() {
       counts.forEach((count, group) => {
         if (count > 1) {
           const percent = percentages.get(group)!! / count;
-          result.push({id: group.toString(), group, percent});
+          result.push({ id: group.toString(), group, percent });
         }
       });
 

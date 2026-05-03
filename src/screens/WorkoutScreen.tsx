@@ -1,27 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, Button, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
-import {AccessoryView} from '../components/Accessories';
-import {Lift, LiftSet, SingleWorkoutId, Workout} from '../types/workout';
+import React, { useEffect, useState } from 'react';
+import {
+  Alert,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
+import { AccessoryView } from '../components/Accessories';
+import { Lift, Workout } from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
 import {
   HeaderButtons,
   OverflowMenu,
   HiddenItem,
-  Item,
 } from 'react-navigation-header-buttons';
-import {MaterialHeaderButton} from '../components/Common';
-import {useSelector} from 'react-redux';
-import {AppState} from '../state/store';
+import { MaterialHeaderButton } from '../components/Common';
+import { useSelector } from 'react-redux';
+import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
-export function WorkoutScreen({route, navigation}: Props) {
-  const {colors} = useTheme();
+export function WorkoutScreen({ route, navigation }: Props) {
+  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const [workout, setWorkout] = useState<Workout>({
     name: '',
@@ -32,17 +38,16 @@ export function WorkoutScreen({route, navigation}: Props) {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
-          {workout.id == SingleWorkoutId && (
-            <Item title="+Exercise" onPress={onAddExercise} />
-          )}
           <OverflowMenu
-            style={{marginHorizontal: 10}}
+            style={{ marginHorizontal: 10 }}
             OverflowIcon={({}) => (
               <Text
-                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
+              >
                 ...
               </Text>
-            )}>
+            )}
+          >
             <HiddenItem title="History" onPress={() => onHistory()} />
             <HiddenItem title="Import Lifts" onPress={() => onImport()} />
           </OverflowMenu>
@@ -57,7 +62,7 @@ export function WorkoutScreen({route, navigation}: Props) {
         text: 'No',
         style: 'cancel',
       },
-      {text: 'Yes', style: 'destructive', onPress: () => onImportConfirmed()},
+      { text: 'Yes', style: 'destructive', onPress: () => onImportConfirmed() },
     ]);
   }
 
@@ -74,7 +79,7 @@ export function WorkoutScreen({route, navigation}: Props) {
         text: 'No',
         style: 'cancel',
       },
-      {text: 'Yes', onPress: () => onComplete()},
+      { text: 'Yes', onPress: () => onComplete() },
     ]);
   };
 
@@ -98,45 +103,11 @@ export function WorkoutScreen({route, navigation}: Props) {
     };
 
     await WorkoutRepository.upsert(resetWorkout);
-
-    if (resetWorkout.id == SingleWorkoutId)
-      await WorkoutRepository.delete(resetWorkout);
-
     navigation.goBack();
   };
 
-  function onAddExercise() {
-    navigation.navigate('LiftDefList', {onSelect: onExerciseAdded});
-  }
-
-  async function onExerciseAdded(defId: string) {
-    const history = await LiftHistoryRepository.get(defId);
-    let sets: LiftSet[] = [];
-    if (history.length > 0) {
-      const last = history[history.length - 1].sets;
-      sets = last.map(set => ({
-        weight: set.weight,
-        reps: set.reps,
-        warmup: set.warmup,
-      }));
-    }
-    const updatedWorkout: Workout = {
-      ...workout,
-      lifts: [
-        ...workout.lifts,
-        {
-          id: defId,
-          sets: sets,
-        },
-      ],
-    };
-
-    setWorkout(updatedWorkout);
-    await WorkoutRepository.upsert(updatedWorkout);
-  }
-
   async function onLiftChanged(lift: Lift) {
-    const index = workout.lifts.findIndex(x => x.id == lift.id);
+    const index = workout.lifts.findIndex(x => x.instanceId == lift.instanceId);
     const lifts = [...workout.lifts];
     lifts[index] = lift;
 
@@ -151,7 +122,9 @@ export function WorkoutScreen({route, navigation}: Props) {
   }
 
   function onHistory() {
-    navigation.navigate('WorkoutHistory', {workoutId: route.params.workoutId});
+    navigation.navigate('WorkoutHistory', {
+      workoutId: route.params.workoutId,
+    });
   }
 
   function loadState() {
@@ -169,15 +142,15 @@ export function WorkoutScreen({route, navigation}: Props) {
     if (!lift.alternate) {
       currentGroup++;
     }
-    idToGroup.set(lift.id, currentGroup);
+    idToGroup.set(lift.instanceId, currentGroup);
   }
 
   const completedAlts = getCompletedAlts(workout.lifts);
   const activeLifts = workout.lifts.filter(
-    x => !x.hide && !completedAlts.includes(x.id),
+    x => !x.hide && !completedAlts.includes(x.instanceId),
   );
   const hiddenLifts = workout.lifts.filter(
-    x => x.hide || completedAlts.includes(x.id),
+    x => x.hide || completedAlts.includes(x.instanceId),
   );
   const sortedLifts = activeLifts.concat(hiddenLifts);
 
@@ -186,15 +159,16 @@ export function WorkoutScreen({route, navigation}: Props) {
       {sortedLifts.map(lift => (
         <LiftItem
           lift={lift}
-          groupOrder={idToGroup.get(lift.id)}
+          groupOrder={idToGroup.get(lift.instanceId)}
           onEdit={() =>
             navigation.navigate('LiftEdit', {
               lift: lift,
               onFinish: onLiftChanged,
             })
           }
-          overrideComplete={completedAlts.includes(lift.id)}
-          key={lift.id}></LiftItem>
+          overrideComplete={completedAlts.includes(lift.instanceId)}
+          key={lift.instanceId}
+        ></LiftItem>
       ))}
 
       {workout.accessories != null && (
@@ -214,11 +188,11 @@ function getCompletedAlts(lifts: Lift[]): string[] {
   let curr: string[] = [];
   lifts.forEach(lift => {
     if (lift.alternate) {
-      curr.push(lift.id);
+      curr.push(lift.instanceId);
     } else {
       if (curr.length > 1) groups.push(curr);
 
-      curr = [lift.id];
+      curr = [lift.instanceId];
     }
   });
 
@@ -227,7 +201,7 @@ function getCompletedAlts(lifts: Lift[]): string[] {
   const result: string[] = [];
   groups.forEach(group => {
     // If at least 1 set in any lift is completed, the other lifts can be hidden
-    const liftsForGroup = lifts.filter(x => group.includes(x.id));
+    const liftsForGroup = lifts.filter(x => group.includes(x.instanceId));
     const anyCompleted =
       liftsForGroup
         .map(lift => lift.sets.filter(set => set.completed).length)
@@ -240,7 +214,7 @@ function getCompletedAlts(lifts: Lift[]): string[] {
     if (anyCompleted || anySkipped) {
       liftsForGroup.forEach(lift => {
         if (lift.sets.every(set => !set.completed)) {
-          result.push(lift.id);
+          result.push(lift.instanceId);
         }
       });
     }
