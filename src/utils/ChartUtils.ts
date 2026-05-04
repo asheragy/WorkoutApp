@@ -1,11 +1,4 @@
 import { LiftDef, MuscleGroup } from '../types/types.ts';
-import LiftHistoryRepository, {
-  LiftHistory,
-} from '../repository/LiftHistoryRepository.ts';
-import Utils from '../components/Utils.ts';
-export type ProgressByWeek = Record<string, number[]> & {
-  dates: Date[];
-};
 
 export type HistoryEntry = {
   value: number; // 1RM
@@ -13,31 +6,6 @@ export type HistoryEntry = {
 };
 
 export default class ChartUtils {
-  public static async getProgressByGroup(
-    group: MuscleGroup,
-    defs: Record<string, LiftDef>,
-  ): Promise<number[]> {
-    const ids = (await LiftHistoryRepository.listKeys()).filter(key =>
-      defs[key].muscleGroups.includes(group),
-    );
-    const result = new Map<string, HistoryEntry[]>();
-
-    for (const id of ids) {
-      const history: LiftHistory[] = await LiftHistoryRepository.get(id);
-      history.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-      const mapped: HistoryEntry[] = history.map(x => {
-        return {
-          timestamp: x.timestamp,
-          value: Utils.calculate1RMAverage(defs[id], x.sets),
-        };
-      });
-
-      result.set(id, mapped);
-    }
-
-    return this.toProgressByWeek(group, result, defs);
-  }
-
   public static toProgressByWeek(
     group: MuscleGroup,
     entries: Map<string, HistoryEntry[]>,

@@ -39,15 +39,16 @@ export const Lifts = createDictionary({
 
   // Shoulders
   ohp_barbell: { name: "Overhead Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_seated: { name: "Overhead Press (Seated)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps]},
   ohp_dumbbell: { name: "Overhead Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   ohp_plateMachine: { name: "Overhead Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
   ohp_machine: { name: "Overhead Press", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_btn: { name: "Behind the Neck Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders ]},
   reverseFly_machine: { name: "Reverse Flys", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   latRaise_dumbbell: { name: "Lat Raise", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders] },
   latRaise_machine: { name: "Lat Raise", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   facePull: { name: "Face Pulls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Shoulders] },
   uprightRow_barbell: { name: "Upright Rows", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders] },
-
 
   // Biceps
   curl_reverse: { name: "Curls (Reverse)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Biceps] },

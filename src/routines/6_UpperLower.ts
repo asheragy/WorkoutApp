@@ -1,13 +1,6 @@
-import {Routine, Workout} from '../types/workout.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {buildWorkout} from './helper.ts';
-
-/*
-
-// TODO new lifts
-OHP seated vs standing
-BTNP - standing only, pairr with lat raise machine
- */
+import { Routine, Workout } from '../types/workout.ts';
+import { Lifts } from '../repository/LiftDatabase.ts';
+import { buildWorkout } from './helper.ts';
 
 export const UpperLower6: [Routine, Workout[]] = [
   {
@@ -20,7 +13,7 @@ export const UpperLower6: [Routine, Workout[]] = [
       lifts: [
         [Lifts.inclinePress_barbell, Lifts.inclinePress_dumbbell],
         [Lifts.dip, Lifts.fly_machine],
-        Lifts.latRaise_machine,
+        [Lifts.latRaise_machine, Lifts.ohp_btn],
         [Lifts.pullup, Lifts.pullup_neutral],
         [Lifts.row_plateMachine, Lifts.row_machine], // Row chest supported
         [Lifts.curl_wrist, Lifts.shrug_dumbbell],
@@ -41,10 +34,10 @@ export const UpperLower6: [Routine, Workout[]] = [
     {
       name: 'Upper 2',
       lifts: [
-        [Lifts.ohp_barbell, Lifts.ohp_dumbbell], // Row Free-weight
+        [Lifts.ohp_barbell, Lifts.ohp_seated, Lifts.ohp_dumbbell],
         [Lifts.bench_closegrip, Lifts.dip_machine],
         [Lifts.uprightRow_barbell, Lifts.latRaise_dumbbell],
-        [Lifts.row_barbell, Lifts.row_dumbbell],
+        [Lifts.row_barbell, Lifts.row_dumbbell], // Row Free-weight
         [Lifts.curl_incline, Lifts.curl_ezBar],
         [Lifts.reverseFly_machine, Lifts.facePull],
         [Lifts.pullover_dumbbell, Lifts.pullover_machine],

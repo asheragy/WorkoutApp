@@ -8,10 +8,14 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import { useAppSelector } from '../state/store.ts';
 import { useTheme } from '@react-navigation/native';
 import { NumberControl } from '../components/NumberControl.tsx';
-import ChartUtils from '../utils/ChartUtils.ts';
+import ChartUtils, { HistoryEntry } from '../utils/ChartUtils.ts';
 import { ProgressChart } from '../components/ProgressChart.tsx';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { enumToItemsNumeric } from '../utils/EnumUtils.ts';
+import Utils from '../components/Utils.ts';
+import LiftHistoryRepository, {
+  LiftHistory,
+} from '../repository/LiftHistoryRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Stats'>;
 
@@ -38,7 +42,7 @@ export function StatsScreen({ route, navigation }: Props) {
   useEffect(onLoad, [value]);
 
   function onLoad() {
-    ChartUtils.getProgressByGroup(value, defs).then(values => {
+    getProgressByGroup(value, defs).then(values => {
       setProgress(values);
 
       // Faking dates since required for chart
@@ -103,7 +107,8 @@ export function StatsScreen({ route, navigation }: Props) {
     <View style={{ flex: 1, backgroundColor: colors.background, padding: 8 }}>
       <View style={{ marginBottom: 12 }}>
         {entriesNormalized.map(item => {
-          const key = item.group !== undefined ? MuscleGroup[item.group] : 'total';
+          const key =
+            item.group !== undefined ? MuscleGroup[item.group] : 'total';
 
           return (
             <View key={key} style={{ flexDirection: 'row' }}>
@@ -141,4 +146,29 @@ export function StatsScreen({ route, navigation }: Props) {
       <ProgressChart dates={progressDates} values={progress} />
     </View>
   );
+}
+
+async function getProgressByGroup(
+  group: MuscleGroup,
+  defs: Record<string, LiftDef>,
+): Promise<number[]> {
+  const ids = (await LiftHistoryRepository.listKeys()).filter(key =>
+    defs[key].muscleGroups.includes(group),
+  );
+  const result = new Map<string, HistoryEntry[]>();
+
+  for (const id of ids) {
+    const history: LiftHistory[] = await LiftHistoryRepository.get(id);
+    history.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+    const mapped: HistoryEntry[] = history.map(x => {
+      return {
+        timestamp: x.timestamp,
+        value: Utils.calculate1RMAverage(defs[id], x.sets),
+      };
+    });
+
+    result.set(id, mapped);
+  }
+
+  return ChartUtils.toProgressByWeek(group, result, defs);
 }
