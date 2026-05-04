@@ -1,5 +1,5 @@
-import {GlobalSettings, LiftType} from '../types/types';
-import {LiftSet} from '../types/workout';
+import { GlobalSettings, LiftType } from '../types/types';
+import { LiftSet } from '../types/workout';
 import SetUtils from './SetUtils';
 
 test('increment/decrement dumbbell - maxSet', () => {
@@ -10,6 +10,7 @@ test('increment/decrement dumbbell - maxSet', () => {
 
   const set: LiftSet = {
     weight: 40,
+    reps: 1,
   };
 
   // Increment

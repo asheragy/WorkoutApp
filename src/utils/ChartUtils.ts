@@ -1,4 +1,4 @@
-import {LiftDef, MuscleGroup} from '../types/types.ts';
+import { LiftDef, MuscleGroup } from '../types/types.ts';
 import LiftHistoryRepository, {
   LiftHistory,
 } from '../repository/LiftHistoryRepository.ts';
@@ -100,7 +100,7 @@ export default class ChartUtils {
 
     // Average all arrays
     const result = [0];
-    const length = weekArrays.values().next().value.length;
+    const length = weekArrays.values().next().value!!.length;
 
     for (let i = 1; i < length; i++) {
       let count = 0;

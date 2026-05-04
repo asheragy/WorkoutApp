@@ -1,7 +1,7 @@
-import {LiftDef, PersistedSet} from '../types/types';
-import {LiftSet, Workout} from '../types/workout';
+import { LiftDef, PersistedSet } from '../types/types';
+import { LiftSet, Workout } from '../types/workout';
 import Utils from '../components/Utils';
-import {db} from './db.ts';
+import { db } from './db.ts';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -148,14 +148,12 @@ export default class LiftHistoryRepository {
     sets: LiftSet[],
     def: LiftDef,
   ): PersistedSet[] {
-    const filtered = sets
-      .filter(x => x.reps != undefined && x.weight != undefined)
-      .filter(x => x.completed);
+    const filtered = sets.filter(x => x.completed);
 
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
     return filtered.map(set => {
-      let weight = set.weight!!;
+      let weight = set.weight;
       if (set.percentage) {
         if (def.trainingMax !== undefined)
           weight = Utils.calcPercentage(weight, def.trainingMax);
@@ -164,7 +162,7 @@ export default class LiftHistoryRepository {
 
       const res: PersistedSet = {
         weight: weight,
-        reps: set.reps!!,
+        reps: set.reps,
         warmup: set.warmup || false,
       };
 

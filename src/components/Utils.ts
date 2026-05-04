@@ -5,7 +5,7 @@ import {
   PersistedSet,
   PlateCount,
 } from '../types/types';
-import {Lift, LiftSet} from '../types/workout';
+import { Lift, LiftSet } from '../types/workout';
 import uuid from 'react-native-uuid';
 import SetUtils from '../utils/SetUtils.ts';
 
@@ -29,7 +29,7 @@ export default class Utils {
       else counter++;
 
       let weight = set.weight;
-      if (set.percentage && set.weight) {
+      if (set.percentage) {
         if (def.trainingMax == undefined) {
           //console.error('Training max required for percentage');
           weight = -1;
@@ -38,8 +38,8 @@ export default class Utils {
 
       const t: NormalizedSet = {
         // TODO depending on usages not sure if 0 is the correct default here
-        weight: (weight || 0) + 'lb',
-        reps: (set.reps || 0) + '',
+        weight: weight + 'lb',
+        reps: set.reps + '',
         label: label,
         completed: set.completed ? true : false,
       };
@@ -69,8 +69,8 @@ export default class Utils {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
     // TODO bodyweight as parameter that is based on last tracked weight
     const bodyweight = 200;
-    let weight = typeof set.weight === 'number' ? set.weight : set.weight || 0;
-    const reps = typeof set.reps === 'number' ? set.reps : set.reps || 0;
+    let weight = set.weight;
+    const reps = set.reps;
     const type = def.type;
 
     if ('percentage' in set && set.percentage == true) {

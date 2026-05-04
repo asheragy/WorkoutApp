@@ -1,5 +1,5 @@
 import { LiftSet } from '../../types/workout';
-import { GlobalSettings, LiftDef, PlateCount } from '../../types/types';
+import { GlobalSettings, LiftDef } from '../../types/types';
 import { useTheme } from '@react-navigation/native';
 import Utils from '../Utils';
 import React, { useRef } from 'react';
@@ -31,7 +31,7 @@ export function PersistedSetRow(props: {
 }) {
   const { colors } = useTheme();
 
-  const update = (weight?: number, reps?: number) => {
+  const update = (weight: number, reps: number) => {
     const updatedSet = { ...props.set };
     updatedSet.weight = weight;
     updatedSet.reps = reps;
@@ -195,7 +195,7 @@ export function PersistedSetRow(props: {
                   update(newWeightValue, props.set.reps)
                 }
                 decrementBy={() =>
-                  (props.set.weight || 0) -
+                  props.set.weight -
                   SetUtils.decrementWeight(
                     props.set,
                     props.def.type,
@@ -207,12 +207,12 @@ export function PersistedSetRow(props: {
                     props.set,
                     props.def.type,
                     props.settings,
-                  ) - (props.set.weight || 0)
+                  ) - props.set.weight
                 }
               ></NumberControl>
               {props.showPlates && (
                 <Text style={{ color: colors.text, textAlign: 'center' }}>
-                  {calcPlates(props.def, props.set.weight ?? 0)}
+                  {calcPlates(props.def, props.set.weight)}
                 </Text>
               )}
             </View>

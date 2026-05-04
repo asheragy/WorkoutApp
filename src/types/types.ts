@@ -1,3 +1,5 @@
+import { LiftSet } from './workout.ts';
+
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
@@ -57,11 +59,7 @@ export type GlobalSettings = {
 };
 
 // Subset of LiftSet, what gets persisted
-export type PersistedSet = {
-  weight: number;
-  reps: number;
-  warmup?: boolean;
-};
+export type PersistedSet = Pick<LiftSet, 'weight' | 'reps'| 'warmup'>
 
 export type PlateCount = {
   p45?: number;

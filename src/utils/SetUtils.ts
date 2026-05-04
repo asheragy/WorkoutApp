@@ -1,5 +1,5 @@
-import {GlobalSettings, LiftType, PersistedSet} from '../types/types';
-import {LiftSet} from '../types/workout';
+import { GlobalSettings, LiftType, PersistedSet } from '../types/types';
+import { LiftSet } from '../types/workout';
 
 export default class SetUtils {
   static incrementWeight(
@@ -7,7 +7,7 @@ export default class SetUtils {
     liftType: LiftType,
     settings: GlobalSettings,
   ): number {
-    const current = set.weight || 0;
+    const current = set.weight;
 
     let step = 5;
     if (
@@ -32,7 +32,7 @@ export default class SetUtils {
     liftType: LiftType,
     settings: GlobalSettings,
   ): number {
-    const current = set.weight || 0;
+    const current = set.weight;
     let step = 5;
     if (
       liftType == LiftType.Machine ||
@@ -52,10 +52,11 @@ export default class SetUtils {
   }
 
   // TODO limited scope and does not account for some things
+  // TODO warmup?
   static setToPersisted(set: LiftSet): PersistedSet {
     return {
-      weight: set.weight ?? 0,
-      reps: set.reps ?? 0,
+      weight: set.weight,
+      reps: set.reps,
     };
   }
 }

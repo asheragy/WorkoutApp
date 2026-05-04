@@ -75,7 +75,7 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
   function changeGoal(set: LiftSet) {
     setDef({
       ...def,
-      goal: { weight: set.weight!!, reps: set.reps!! },
+      goal: { weight: set.weight, reps: set.reps },
     });
   }
 

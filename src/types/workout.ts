@@ -23,10 +23,9 @@ export type Lift = {
   alternate?: boolean;
 };
 
-// TODO weight/reps not nullable + define as union with PersistedSet
 export type LiftSet = {
-  weight?: number;
-  reps?: number;
+  weight: number;
+  reps: number;
   warmup?: boolean;
   percentage?: boolean; // Weight is a percentage of training max
   completed?: boolean;

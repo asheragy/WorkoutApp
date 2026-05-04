@@ -1,4 +1,4 @@
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import {
   StyleSheet,
@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 
 export function NumberControl(props: {
-  value?: number;
+  value: number;
   precision?: number;
   decrementBy: () => number;
   incrementBy: () => number;
   onChange: (newValue: number) => void;
   disabled?: boolean;
 }) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const digits = props.precision ?? 1;
   const disabledOpacity = props.disabled ? 0.2 : undefined;
 
@@ -33,25 +33,28 @@ export function NumberControl(props: {
     props.onChange(parseFloat(strValue));
   }
 
-  const currValue = props.value || 0;
+  const currValue = props.value;
 
   return (
     <View
       style={{
         flexDirection: 'row',
         justifyContent: 'center',
-      }}>
+      }}
+    >
       <TouchableOpacity
-        style={{...styles.counterButtonContainer, opacity: disabledOpacity}}
-        onPress={() => setValue(currValue - props.decrementBy())}>
+        style={{ ...styles.counterButtonContainer, opacity: disabledOpacity }}
+        onPress={() => setValue(currValue - props.decrementBy())}
+      >
         <Text style={styles.counterButtonText}>-</Text>
       </TouchableOpacity>
 
       <TextInput
         editable={!props.disabled}
-        style={{color: colors.text, paddingVertical: 0, textAlign: 'center'}}
+        style={{ color: colors.text, paddingVertical: 0, textAlign: 'center' }}
         keyboardType="numeric"
-        onChangeText={onInput}>
+        onChangeText={onInput}
+      >
         {props.value}
       </TextInput>
       <TouchableOpacity
@@ -60,7 +63,8 @@ export function NumberControl(props: {
           ...styles.counterButtonContainer,
           opacity: disabledOpacity,
         }}
-        onPress={() => setValue(currValue + props.incrementBy())}>
+        onPress={() => setValue(currValue + props.incrementBy())}
+      >
         <Text style={styles.counterButtonText}>+</Text>
       </TouchableOpacity>
     </View>
