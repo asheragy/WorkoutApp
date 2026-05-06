@@ -1,9 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import LiftHistoryRepository from '../../repository/LiftHistoryRepository.ts';
 import Utils from '../../components/Utils.ts';
-import {useSelector} from 'react-redux';
-import {AppState} from '../../state/store.ts';
-import {GoalRow, ProgressList} from './Common.tsx';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state/store.ts';
+import { ProgressList } from './Common.tsx';
+import GoalRow from './Utils.ts';
 
 export function LongTermTab() {
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -25,8 +26,14 @@ export function LongTermTab() {
 
       for (const defWithGoal of goals) {
         const history = await LiftHistoryRepository.get(defWithGoal.id);
+        const name = Utils.defToString(defWithGoal);
+
         if (history.length == 0) {
-          result.push({id: defWithGoal.id, lift: defWithGoal, percent: 0});
+          result.push({
+            id: defWithGoal.id,
+            name,
+            percent: 0,
+          });
           continue;
         }
 
@@ -36,7 +43,7 @@ export function LongTermTab() {
 
         const percent =
           best / Utils.calculate1RM(defWithGoal, defWithGoal.goal!!);
-        result.push({id: defWithGoal.id, lift: defWithGoal, percent});
+        result.push({ id: defWithGoal.id, name, percent });
       }
 
       result.sort((a, b) => a.percent - b.percent);
