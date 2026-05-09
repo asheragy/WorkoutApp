@@ -67,32 +67,36 @@ export const Lifts = createDictionary({
   dip_machine: { name: "Dips", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
 
   // Quads
-  squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
-  squat_ssb: { name: "Squat", type: LiftType.SSB, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
-  squat_belt: { name: "Squat (Belt)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings]},
-  squat_v: { name: "Squat (V-Squat)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
-  squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
+  squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  squat_ssb: { name: "Squat", type: LiftType.SSB, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  squat_belt: { name: "Squat (Belt)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes]},
+  squat_v: { name: "Squat (V-Squat)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
   // TODO single leg should be the special case
-  legPress: { name: "Leg Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
-  legPress_double: { name: "Leg Press (Double)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads] },
-  lunge: { name: "Lunges", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings] },
+  legPress: { name: "Leg Press", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  legPress_double: { name: "Leg Press (Double)", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
   legExtensions: { name: "Leg Extensions", type: LiftType.Machine, muscleGroups: [MuscleGroup.Quads] },
-  splitSquat: { name: "Split Squat", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Hamstrings]},
 
-  // Hamstrings / Glutes
-  deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
-  deadlift_trapbar: { name: "Deadlift", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
-  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
-  deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back] },
-  deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Quads, MuscleGroup.Back]},
-  rdl_barbell: { name: "RDL", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
-  rdl_single: { name: "RDL (Single Leg)", type: LiftType.Other, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
-  hipThrust: { name: "Hip Thrust", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Hamstrings] },
+  // Glutes
+  lunge: { name: "Lunges", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads] },
+  splitSquat: { name: "Split Squat", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads]},
+  gluteKickback: { name: "Glute Kickback", type: LiftType.Machine, muscleGroups: [MuscleGroup.Glutes] },
+  hipThrust: { name: "Hip Thrust", type: LiftType.PlateMachine, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings] },
+
+  // Deadlifts
+  deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.Back] },
+  deadlift_trapbar: { name: "Deadlift", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.Back] },
+  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.Back] },
+  deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.Back] },
+  deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.Back]},
+
+  // Hamstrings
+  rdl_barbell: { name: "RDL", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes, MuscleGroup.Back] },
+  rdl_single: { name: "RDL (Single Leg)", type: LiftType.Other, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes, MuscleGroup.Back] },
   legCurl_seated: { name: "Leg Curls", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_kneeling: { name: "Leg Curls (Kneeling)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_laying: { name: "Leg Curls (Laying)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
-  backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Back] },
-  gluteKickback: { name: "Glute Kickback", type: LiftType.Machine, muscleGroups: [MuscleGroup.Hamstrings] },
+  backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes] },
 
   // Calves
   calfRaise_standing: { name: "Calf Raises (Standing)", type: LiftType.Machine, muscleGroups: [MuscleGroup.Calves] },

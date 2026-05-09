@@ -3,7 +3,6 @@ import { LiftSet } from './workout.ts';
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
-  // TODO cable type?
   Machine, // Weight stack machine
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
   SSB,
@@ -13,16 +12,18 @@ export enum LiftType {
 }
 
 export enum MuscleGroup {
-  Quads,
-  Hamstrings,
-  Calves,
-  Abs,
   Chest,
   Back,
   Shoulders,
   Biceps,
   Triceps,
+  Abs,
   Other,
+  // Lower
+  Quads,
+  Hamstrings,
+  Glutes,
+  Calves,
 }
 
 export type LiftDef = {
@@ -59,7 +60,7 @@ export type GlobalSettings = {
 };
 
 // Subset of LiftSet, what gets persisted
-export type PersistedSet = Pick<LiftSet, 'weight' | 'reps'| 'warmup'>
+export type PersistedSet = Pick<LiftSet, 'weight' | 'reps' | 'warmup'>;
 
 export type PlateCount = {
   p45?: number;
