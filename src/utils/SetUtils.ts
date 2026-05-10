@@ -11,9 +11,9 @@ export default class SetUtils {
 
     let step = 5;
     if (
-      liftType == LiftType.Machine ||
+      liftType == LiftType.MachineStack ||
       set.percentage ||
-      liftType == LiftType.PlateMachine ||
+      liftType == LiftType.MachinePlateSingle ||
       liftType == LiftType.Bodyweight
     )
       step = 2.5;
@@ -35,8 +35,8 @@ export default class SetUtils {
     const current = set.weight;
     let step = 5;
     if (
-      liftType == LiftType.Machine ||
-      liftType == LiftType.PlateMachine ||
+      liftType == LiftType.MachineStack ||
+      liftType == LiftType.MachinePlateSingle ||
       set.percentage
     )
       step = 2.5;

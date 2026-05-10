@@ -3,12 +3,13 @@ import { LiftSet } from './workout.ts';
 export enum LiftType {
   Barbell = 1,
   Dumbbell,
-  Machine, // Weight stack machine
+  MachineStack,
+  MachinePlateSingle,
+  MachinePlateDouble,
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
   SSB,
   TrapBar,
   Other,
-  PlateMachine, // Plate loaded machine
 }
 
 export enum MuscleGroup {
@@ -20,6 +21,7 @@ export enum MuscleGroup {
   Abs,
   Other,
   // Lower
+  LowerBack,
   Quads,
   Hamstrings,
   Glutes,

@@ -194,7 +194,8 @@ export default class Utils {
     if (
       type == LiftType.Barbell ||
       type == LiftType.SSB ||
-      type == LiftType.TrapBar
+      type == LiftType.TrapBar ||
+      type == LiftType.MachinePlateDouble
     ) {
       remaining = weight;
 
@@ -227,7 +228,7 @@ export default class Utils {
       }
 
       return result;
-    } else if (type == LiftType.PlateMachine) {
+    } else if (type == LiftType.MachinePlateSingle) {
       remaining = weight;
 
       while (remaining >= 45) {

@@ -16,7 +16,6 @@ export type Lift = {
   id: string;
   instanceId: string;
   sets: LiftSet[];
-  // TODO should be PersistedSet[]
   goals?: LiftSet[];
   hide?: boolean;
   note?: string;
@@ -35,13 +34,3 @@ export type AccessoryGroup = {
   name: string;
   lifts: string[];
 };
-
-// Min/max weight
-// min/max reps
-// AMRAP null max, optional null min
-/* TODO could be used as hint type for set range
-  export type Range = {
-    min?: number;
-    max?: number;
-  };
-  */
