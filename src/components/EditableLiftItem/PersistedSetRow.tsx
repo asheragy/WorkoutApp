@@ -292,7 +292,7 @@ export function PersistedSetRow(props: {
 }
 
 function calcPlates(def: LiftDef, weight: number): string {
-  const plates = Utils.calcPlates(def.type, weight);
+  const plates = Utils.calcPlates(def, weight);
   if (plates == undefined) return '';
 
   return Utils.platesToString(plates);

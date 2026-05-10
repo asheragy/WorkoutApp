@@ -68,7 +68,7 @@ export const Lifts = createDictionary({
 
   // Quads
   squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
-  squat_ssb: { name: "Squat", type: LiftType.SSB, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  squat_ssb: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70 },
   squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes]},
   squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
   squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
@@ -85,8 +85,8 @@ export const Lifts = createDictionary({
 
   // Deadlifts
   deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack] },
-  deadlift_trapbar: { name: "Deadlift", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack] },
-  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.TrapBar, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack] },
+  deadlift_trapbar: { name: "Deadlift", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], baseWeight: 60 },
+  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack], baseWeight: 55 },
   deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack] },
   deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack]},
 

@@ -7,8 +7,6 @@ export enum LiftType {
   MachinePlateSingle,
   MachinePlateDouble,
   Bodyweight, // Weight can be positive/negative with baseline on bodyweight
-  SSB,
-  TrapBar,
   Other,
 }
 
@@ -38,6 +36,7 @@ export type LiftDef = {
   goal?: PersistedSet;
   // TODO do this in repo and just set a display name?
   multiple?: boolean; // Derived value
+  baseWeight?: number;
 };
 
 /**

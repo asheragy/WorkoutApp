@@ -188,20 +188,15 @@ export default class Utils {
     else return '';
   }
 
-  static calcPlates(type: LiftType, weight: number): PlateCount | undefined {
+  static calcPlates(def: LiftDef, weight: number): PlateCount | undefined {
     let remaining;
+    const type = def.type;
     const result: PlateCount = {};
-    if (
-      type == LiftType.Barbell ||
-      type == LiftType.SSB ||
-      type == LiftType.TrapBar ||
-      type == LiftType.MachinePlateDouble
-    ) {
+    if (type == LiftType.Barbell || type == LiftType.MachinePlateDouble) {
       remaining = weight;
 
-      if (type == LiftType.Barbell) remaining -= 45;
-      else if (type == LiftType.SSB) remaining -= 70;
-      else if (type == LiftType.TrapBar) remaining -= 60;
+      if (def.baseWeight) remaining -= def.baseWeight;
+      else if (type == LiftType.Barbell) remaining -= 45;
 
       while (remaining >= 90) {
         result.p45 = result.p45 ? result.p45 + 1 : 1;
@@ -230,6 +225,7 @@ export default class Utils {
       return result;
     } else if (type == LiftType.MachinePlateSingle) {
       remaining = weight;
+      if (def.baseWeight) remaining -= def.baseWeight;
 
       while (remaining >= 45) {
         result.p45 = result.p45 ? result.p45 + 1 : 1;
