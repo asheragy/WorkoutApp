@@ -55,10 +55,11 @@ export default class Utils {
     let result = def.name;
 
     if (def.multiple && def.type != LiftType.Bodyweight) {
-      const type = LiftType[def.type].replaceAll(
-        'PlateMachine',
-        'Plate-Loaded',
-      );
+      const type = LiftType[def.type]
+        .replaceAll(LiftType[LiftType.MachinePlateSingle], 'Plate-Loaded')
+        .replaceAll(LiftType[LiftType.MachinePlateDouble], 'Plate-Loaded')
+        .replaceAll(LiftType[LiftType.MachineStack], 'Stack Machine');
+
       result += ` (${type})`;
     }
 

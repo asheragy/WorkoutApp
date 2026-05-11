@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LiftDef} from '../types/types';
+import { LiftDef } from '../types/types';
 import Utils from '../components/Utils';
-import {SystemLifts} from './LiftDatabase';
-import {AppDispatch, updateLiftDefs} from '../state/store.ts';
-import {dbReady} from './db.ts';
+import { SystemLifts } from './LiftDatabase';
+import { AppDispatch, updateLiftDefs } from '../state/store.ts';
+import { dbReady } from './db.ts';
 
 const key = 'liftdefs';
 
@@ -113,6 +113,9 @@ export default class LiftDefRepository {
         // Use hardcoded name for system lifts
         const entry = result[def.id];
         entry.name = def.name;
+        // For backwards compatability also type
+        entry.type = def.type;
+
         result[def.id] = entry;
       } else {
         result[def.id] = def;
