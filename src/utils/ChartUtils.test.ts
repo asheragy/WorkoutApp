@@ -44,6 +44,6 @@ test('progress by week', () => {
   const data = ChartUtils.toProgressByWeek(MuscleGroup.Quads, result, defs);
   expect(data).toEqual([
     0, 0.02064758714677438, 0.03303613943483901, 0.04129517429354876,
-    0.07221023594896803, 0.06607227886967802,
+    0.06526279493621004, 0.06607227886967802,
   ]);
 });

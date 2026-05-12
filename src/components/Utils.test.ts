@@ -177,3 +177,53 @@ test('uuid', () => {
   expect(uuid.length).toEqual(36);
   expect(uuid).toEqual(uuid.toLowerCase());
 });
+
+test('groupLifts', () => {
+  const lifts = [
+    {
+      id: '1a',
+    },
+    {
+      id: '1b',
+      alternate: true,
+    },
+    {
+      id: '2',
+    },
+    {
+      id: '3a',
+    },
+    {
+      id: '3b',
+      alternate: true,
+    },
+  ];
+
+  // @ts-ignore
+  const grouped = Utils.groupLifts(lifts);
+  expect(grouped).toStrictEqual([
+    [
+      {
+        id: '1a',
+      },
+      {
+        id: '1b',
+        alternate: true,
+      },
+    ],
+    [
+      {
+        id: '2',
+      },
+    ],
+    [
+      {
+        id: '3a',
+      },
+      {
+        id: '3b',
+        alternate: true,
+      },
+    ],
+  ]);
+});

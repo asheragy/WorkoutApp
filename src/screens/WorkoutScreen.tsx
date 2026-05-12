@@ -23,6 +23,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import { useTheme } from '@react-navigation/native';
+import Utils from '../components/Utils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
@@ -135,16 +136,6 @@ export function WorkoutScreen({ route, navigation }: Props) {
 
   useEffect(loadState, []);
 
-  // Group numbers
-  const idToGroup = new Map<string, number>();
-  let currentGroup = -1;
-  for (const lift of workout.lifts) {
-    if (!lift.alternate) {
-      currentGroup++;
-    }
-    idToGroup.set(lift.instanceId, currentGroup);
-  }
-
   const completedAlts = getCompletedAlts(workout.lifts);
   const activeLifts = workout.lifts.filter(
     x => !x.hide && !completedAlts.includes(x.instanceId),
@@ -159,7 +150,6 @@ export function WorkoutScreen({ route, navigation }: Props) {
       {sortedLifts.map(lift => (
         <LiftItem
           lift={lift}
-          groupOrder={idToGroup.get(lift.instanceId)}
           onEdit={() =>
             navigation.navigate('LiftEdit', {
               lift: lift,
@@ -182,37 +172,22 @@ export function WorkoutScreen({ route, navigation }: Props) {
 }
 
 function getCompletedAlts(lifts: Lift[]): string[] {
-  const groups: string[][] = [];
-
-  // Create groups of alternates with their primary
-  let curr: string[] = [];
-  lifts.forEach(lift => {
-    if (lift.alternate) {
-      curr.push(lift.instanceId);
-    } else {
-      if (curr.length > 1) groups.push(curr);
-
-      curr = [lift.instanceId];
-    }
-  });
-
-  if (curr.length > 1) groups.push(curr);
+  const groups = Utils.groupLifts(lifts);
 
   const result: string[] = [];
   groups.forEach(group => {
     // If at least 1 set in any lift is completed, the other lifts can be hidden
-    const liftsForGroup = lifts.filter(x => group.includes(x.instanceId));
     const anyCompleted =
-      liftsForGroup
+      group
         .map(lift => lift.sets.filter(set => set.completed).length)
         .filter(count => count > 0).length > 0;
 
     // If at least 1 is skipped, then others are too
-    const anySkipped = liftsForGroup.filter(x => x.hide).length > 0;
+    const anySkipped = group.filter(x => x.hide).length > 0;
 
     // Return all that have not completed yet
     if (anyCompleted || anySkipped) {
-      liftsForGroup.forEach(lift => {
+      group.forEach(lift => {
         if (lift.sets.every(set => !set.completed)) {
           result.push(lift.instanceId);
         }

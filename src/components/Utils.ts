@@ -257,4 +257,20 @@ export default class Utils {
 
     return undefined;
   }
+
+  static groupLifts(lifts: Lift[]): Lift[][] {
+    const result: Lift[][] = [];
+
+    for (const lift of lifts) {
+      if (lift.alternate && result.length > 0) {
+        // add to previous group
+        result[result.length - 1].push(lift);
+      } else {
+        // start a new group
+        result.push([lift]);
+      }
+    }
+
+    return result;
+  }
 }
