@@ -84,7 +84,7 @@ export const Lifts = createDictionary({
   hipThrust: { name: "Hip Thrust", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings] },
 
   // Deadlifts
-  deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack] },
+  deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack], factor: 2 },
   deadlift_trapbar: { name: "Deadlift (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], baseWeight: 60 },
   deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack], baseWeight: 55 },
   deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack] },
@@ -96,7 +96,7 @@ export const Lifts = createDictionary({
   legCurl_seated: { name: "Leg Curls", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_kneeling: { name: "Leg Curls (Kneeling)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_laying: { name: "Leg Curls (Laying)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
-  backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes] },
+  backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes], factor: 1.25 },
 
   // Calves
   calfRaise_standing: { name: "Calf Raises (Standing)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Calves] },

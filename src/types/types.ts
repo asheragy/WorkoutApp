@@ -37,6 +37,7 @@ export type LiftDef = {
   // TODO do this in repo and just set a display name?
   multiple?: boolean; // Derived value
   baseWeight?: number;
+  factor?: number;
 };
 
 /**

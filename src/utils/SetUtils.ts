@@ -72,6 +72,14 @@ export default class SetUtils {
     };
   }
 
+  static getSetsPerGroup(def: LiftDef): number[] {
+    const weight = def.factor
+      ? def.factor / (def.muscleGroups.length + 1)
+      : 0.5;
+
+    return [2 * weight, ...Array(def.muscleGroups.length - 1).fill(weight)];
+  }
+
   static getWorkingSets(
     defs: Record<string, LiftDef>,
     workouts: Workout[],
@@ -81,17 +89,14 @@ export default class SetUtils {
     workouts.forEach(workout => {
       Utils.groupLifts(workout.lifts).forEach(lifts => {
         lifts.forEach(lift => {
-          const workSets = lift.sets.filter(set => !set.warmup).length;
+          const workSets =
+            lift.sets.filter(set => !set.warmup).length / lifts.length;
 
           const def = defs[lift.id];
+          const setsPerGroup = this.getSetsPerGroup(def);
           def.muscleGroups.forEach((group, index) => {
-            let curr = result.get(group);
-            if (curr == undefined) curr = 0;
-
-            // Secondary counts as half set
-            const multiplier = (index == 0 ? 1 : 0.5) / lifts.length;
-
-            result.set(group, curr + workSets * multiplier);
+            let curr = result.get(group) ?? 0;
+            result.set(group, curr + setsPerGroup[index] * workSets);
           });
         });
       });

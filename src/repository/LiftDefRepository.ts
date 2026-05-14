@@ -115,6 +115,7 @@ export default class LiftDefRepository {
         entry.name = def.name;
         // For backwards compatability also type
         entry.type = def.type;
+        entry.muscleGroups = def.muscleGroups;
 
         result[def.id] = entry;
       } else {
