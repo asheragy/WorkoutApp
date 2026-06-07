@@ -1,4 +1,4 @@
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import {
   Image,
@@ -8,12 +8,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Lift} from '../../types/workout';
+import { Lift } from '../../types/workout';
 import Utils from '../Utils';
-import {Style_LiftText} from '../Common';
-import {useSelector} from 'react-redux';
-import {AppState} from '../../state/store';
-import {ReadOnlySetTable} from './ReadOnlySetTable';
+import { Style_LiftText } from '../Common';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../state/store';
+import { ReadOnlySetTable } from './ReadOnlySetTable';
+import { LiftDef } from '../../types/types.ts';
 
 export default function LiftItem(props: {
   lift: Lift;
@@ -21,7 +22,7 @@ export default function LiftItem(props: {
   onEdit: () => void;
   groupOrder?: number;
 }) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs[props.lift.id];
 
@@ -41,15 +42,17 @@ export default function LiftItem(props: {
     <View
       style={{
         marginBottom: 0,
-      }}>
+      }}
+    >
       <View
         style={{
           marginVertical: 8,
           flexDirection: 'row',
-        }}>
-        <View style={{width: '20%'}}></View>
-        <Text style={[Style_LiftText, headerText, {width: '60%'}]}>
-          {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
+        }}
+      >
+        <View style={{ width: '20%' }}></View>
+        <Text style={[Style_LiftText, headerText, { width: '60%' }]}>
+          {getTitle(def, props.lift)}
         </Text>
         <View
           style={{
@@ -57,7 +60,8 @@ export default function LiftItem(props: {
             flexDirection: 'row',
             alignContent: 'center',
             justifyContent: 'center',
-          }}>
+          }}
+        >
           <TouchableOpacity onPress={props.onEdit}>
             <Image style={{}} source={require('../../icons/edit.png')} />
           </TouchableOpacity>
@@ -68,4 +72,14 @@ export default function LiftItem(props: {
       )}
     </View>
   );
+}
+
+function getTitle(def: LiftDef, lift: Lift): string {
+  let t = Utils.defToString(def);
+  if (lift.alternate) t += ' / Alt';
+
+  const goalPercent = Utils.goalPercent(def, lift);
+  if (goalPercent) t += ' ' + (goalPercent * 100).toFixed(2) + '%';
+
+  return t;
 }

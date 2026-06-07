@@ -2,10 +2,14 @@ import { Routine, Workout } from '../types/workout.ts';
 import { Lifts } from '../repository/LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 
+// TODO
+/*
+Calves on every lower day
+ */
 export const UpperLower6: [Routine, Workout[]] = [
   {
     id: 'upperLower6',
-    title: '6-day Upper Lower',
+    title: '6-day Upper Lower (Template)',
   },
   [
     {
@@ -28,7 +32,8 @@ export const UpperLower6: [Routine, Workout[]] = [
         Lifts.deadlift_barbell,
         // TODO should be legPress_single
         [Lifts.legPress, Lifts.splitSquat],
-        // TODO core 1
+        Lifts.plank,
+        Lifts.calfRaise_seatedStack,
       ],
     },
     {
@@ -51,7 +56,7 @@ export const UpperLower6: [Routine, Workout[]] = [
         [Lifts.squat_front, Lifts.squat_barbell],
         [Lifts.rdl_barbell, Lifts.deadlift_deficit],
         [Lifts.calfRaise_seated, Lifts.calfRaise_standing], // TODO pick 1 and opposite on lower3
-        // TODO core 2
+        Lifts.legRaise,
       ],
     },
     {
@@ -59,7 +64,7 @@ export const UpperLower6: [Routine, Workout[]] = [
       lifts: [
         [Lifts.bench_dumbbell, Lifts.bench_barbell],
         [Lifts.ohp_plateMachine, Lifts.inclinePress_plateMachine],
-        Lifts.tricep_overhead,
+        [Lifts.tricep_overhead, Lifts.skull_crusher],
         [Lifts.row_cable, Lifts.row_cableWide], // Row Cable
         [
           Lifts.pulldown_cable,
@@ -77,7 +82,7 @@ export const UpperLower6: [Routine, Workout[]] = [
         [Lifts.deadlift_trapbar, Lifts.deadlift_sumo],
         [Lifts.hipThrust, Lifts.gluteKickback],
         [Lifts.calfRaise_seated, Lifts.calfRaise_standing],
-        // TODO core 3
+        Lifts.elevateCore,
         [Lifts.backExtension],
       ],
     },

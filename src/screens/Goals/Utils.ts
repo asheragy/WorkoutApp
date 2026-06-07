@@ -33,6 +33,7 @@ export function calcWorkoutGoals(
     const def = defs[liftId];
     const percents = lifts
       .map(lift => Utils.goalPercent(def, lift))
+      .filter(x => typeof x === 'number' && !isNaN(x))
       .filter(x => x !== undefined);
 
     if (percents.length > 0) {

@@ -62,16 +62,17 @@ export const Lifts = createDictionary({
   tricep_machine: { name: "Tricep (Machine)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
   tricep_rope: { name: "Tricep (Cable)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
   tricep_overhead: { name: "Tricep (Overhead)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
+  skull_crusher: { name: "Skull Crushers", type: LiftType.Other, muscleGroups: [MuscleGroup.Triceps]},
   bench_closegrip: { name: "Bench Press (Close-grip)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Triceps, MuscleGroup.Chest] },
   dip: { name: "Dips", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   dip_machine: { name: "Dips", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
 
   // Quads
-  squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
-  squat_ssb: { name: "Squat (SSB)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70 },
-  squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes]},
-  squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
-  squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
+  squat_ssb: { name: "Squat (SSB)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70, factor: 1.75 },
+  squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 60, factor: 1.5},
+  squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.5 },
+  squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
   // TODO single leg should be the special case
   legPress: { name: "Leg Press", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
   legPress_double: { name: "Leg Press (Double)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
@@ -85,10 +86,10 @@ export const Lifts = createDictionary({
 
   // Deadlifts
   deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack], factor: 2 },
-  deadlift_trapbar: { name: "Deadlift (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], baseWeight: 60 },
-  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack], baseWeight: 55 },
-  deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack] },
-  deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack]},
+  deadlift_trapbar: { name: "Deadlift (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], baseWeight: 60, factor: 1.75 },
+  deadlift_trapbar_high: { name: "Deadlift High (TrapBar)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack], baseWeight: 55, factor: 1.75 },
+  deadlift_sumo: { name: "Deadlift (Sumo)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], factor: 1.75 },
+  deadlift_deficit: { name: "Deadlift (Deficit)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack], factor: 1.75},
 
   // Hamstrings
   rdl_barbell: { name: "RDL", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes, MuscleGroup.LowerBack] },
@@ -99,8 +100,9 @@ export const Lifts = createDictionary({
   backExtension: { name: "Back Extensions", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes], factor: 1.25 },
 
   // Calves
-  calfRaise_standing: { name: "Calf Raises (Standing)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Calves] },
-  calfRaise_seated: { name: "Calf Raises (Seated)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_standing: { name: "Calf Raises (Standing)", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_seated: { name: "Calf Raises (Seated Plate)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_seatedStack: { name: "Calf Raises (Seated Stack)",  type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Calves] },
   calfRaise_bodyWeight: { name: "Calf Raises (Body weight)", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
 
   // Abs

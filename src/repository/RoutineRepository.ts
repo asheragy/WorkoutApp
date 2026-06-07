@@ -1,20 +1,22 @@
-import {Routine} from '../types/workout';
-import {UpperLower} from '../routines/4_UpperLower.ts';
-import {YatesSplit} from '../routines/4_Yates.ts';
-import {PPL_3Day} from '../routines/3_PPL.ts';
-import {HLM_3Day} from '../routines/3_HLM.ts';
-import {ULPPL} from '../routines/5_ULPPL.ts';
-import {UpperLower6} from '../routines/6_UpperLower.ts';
-import {ULArnold} from '../routines/5_ULArnold.ts';
-import {FullBody_1Day} from '../routines/1_Full.ts';
-import {YatesSplitModified} from '../routines/4_Yates_Modified.ts';
-import {UpperLower_2Day} from '../routines/2_UpperLower.ts';
+import { Routine } from '../types/workout';
+import { UpperLower } from '../routines/4_UpperLower.ts';
+import { YatesSplit } from '../routines/4_Yates.ts';
+import { PPL_3Day } from '../routines/3_PPL.ts';
+import { HLM_3Day } from '../routines/3_HLM.ts';
+import { ULPPL } from '../routines/5_ULPPL.ts';
+import { UpperLower6 } from '../routines/6_UpperLower.ts';
+import { ULArnold } from '../routines/5_ULArnold.ts';
+import { FullBody_1Day } from '../routines/1_Full.ts';
+import { YatesSplitModified } from '../routines/4_Yates_Modified.ts';
+import { UpperLower_2Day } from '../routines/2_UpperLower.ts';
+import { UpperLower2026 } from '../routines/6_UpperLower2026.ts';
 
 const key = 'routines';
 
 export const PreLoadedRoutines = [
   UpperLower,
   UpperLower6,
+  UpperLower2026,
   YatesSplit,
   YatesSplitModified,
   PPL_3Day,
@@ -41,6 +43,6 @@ export default class RoutineRepository {
     return result;
      */
 
-    return [{title: 'Default'}, ...PreLoadedRoutines.map(x => x[0])];
+    return [{ title: 'Default' }, ...PreLoadedRoutines.map(x => x[0])];
   }
 }

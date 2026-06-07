@@ -1,7 +1,8 @@
 import { LiftDef, LiftType } from '../types/types';
 import Utils from './Utils';
-import { LiftSet } from '../types/workout';
+import { Lift, LiftSet } from '../types/workout';
 import { Lifts, SystemLifts } from '../repository/LiftDatabase';
+import { TestLiftDefs } from '../test-utils/Common.ts';
 
 test('normalizeSets repeated lifts', () => {
   const sets: LiftSet[] = [
@@ -51,6 +52,28 @@ test('calc 1RM', () => {
   });
 
   expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
+});
+
+test('goal percentage', () => {
+  const def = TestLiftDefs[Lifts.pullover_dumbbell.id];
+  const lift: Lift = {
+    id: def.id,
+    instanceId: '',
+    sets: [
+      { weight: 40, reps: 11 },
+      { weight: 40, reps: 14 },
+    ],
+    goals: [
+      { weight: 55, reps: 12 },
+      { weight: 55, reps: 15 },
+    ],
+  };
+  let percent = Utils.goalPercent(def, lift);
+  expect(percent).toBeCloseTo(0.7092, 4);
+
+  lift.sets[1].reps = 15;
+  percent = Utils.goalPercent(def, lift);
+  expect(percent).toBeCloseTo(0.7188, 4);
 });
 
 test('calc 1RM percentage', () => {

@@ -101,7 +101,7 @@ export default class Utils {
       }
     }
 
-    return Math.round(sum / workSets);
+    return sum / workSets;
   }
 
   static goalPercent(def: LiftDef, lift: Lift): undefined | number {
