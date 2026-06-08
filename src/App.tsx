@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, useColorScheme } from 'react-native';
+import { Platform, StyleSheet, useColorScheme } from 'react-native';
 import { WorkoutScreen } from './screens/WorkoutScreen';
 import { WeightScreen } from './screens/WeightScreen';
 import {
@@ -91,6 +91,8 @@ const AppRoot = () => {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
+    console.log(Platform.constants.reactNativeVersion);
+
     new LiftDefRepository(dispatch).init();
   }, []);
 
