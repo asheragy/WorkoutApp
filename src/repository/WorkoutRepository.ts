@@ -2,13 +2,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Workout } from '../types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
+import { UpperLower2026 } from '../routines/6_UpperLower2026.ts';
 
 const key = 'workouts';
 
 export default class WorkoutRepository {
   static async get(id: string): Promise<Workout | undefined> {
     const workouts = await this.getAll();
-    return workouts.find(x => x.id == id);
+
+    const temp = UpperLower2026[1];
+    const result = [...workouts, ...temp].find(x => x.id == id);
+
+    return result;
   }
 
   static async getRoutine(
@@ -18,6 +23,13 @@ export default class WorkoutRepository {
     const all = await this.getAll();
     if (routine && all.filter(x => x.routineId == routine).length == 0) {
       const preloaded = findPreloaded(routine);
+
+      // TODO temp
+      if (routine == UpperLower2026[0].id) {
+        console.log('Returning reploaded');
+        return preloaded;
+      }
+
       if (preloaded.length > 0) {
         console.log(`Saving predefined routine ${routine}`);
         const workouts: Workout[] = preloaded.map(x => {
