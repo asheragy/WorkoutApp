@@ -3,10 +3,10 @@ import { GlobalSettings, LiftDef } from '../../types/types';
 import { useTheme } from '@react-navigation/native';
 import Utils from '../Utils';
 import React, { useRef } from 'react';
-import {
-  GestureHandlerRootView,
-  Swipeable,
-} from 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Swipeable, {
+  SwipeableMethods,
+} from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { Alert, Animated, Text, View } from 'react-native';
 import {
   Menu,
@@ -18,6 +18,7 @@ import { Widths } from './Widths';
 import { NumberControl } from '../NumberControl';
 import SetUtils from '../../utils/SetUtils';
 import CheckBox from '@react-native-community/checkbox';
+import { SharedValue } from 'react-native-reanimated';
 
 export function PersistedSetRow(props: {
   set: LiftSet;
@@ -72,7 +73,8 @@ export function PersistedSetRow(props: {
       Utils.calcPercentage(props.set.weight, props.def.trainingMax) + '';
   }
 
-  const swipeableRef: React.MutableRefObject<Swipeable | null> = useRef(null);
+  const swipeableRef: React.MutableRefObject<SwipeableMethods | null> =
+    useRef(null);
 
   function confirmDelete() {
     Alert.alert(
@@ -97,22 +99,17 @@ export function PersistedSetRow(props: {
   }
 
   const renderRightActions = (
-    _progress: Animated.AnimatedInterpolation<number>,
-    dragAnimatedValue: Animated.AnimatedInterpolation<number>,
+    progress: SharedValue<number>,
+    translation: SharedValue<number>,
+    swipeableMethods: SwipeableMethods,
   ) => {
-    const opacity = dragAnimatedValue.interpolate({
-      inputRange: [-80, 0],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    });
-
     return (
       <Animated.View
         style={{
           flexDirection: 'row',
           flex: 1,
           backgroundColor: 'red',
-          transform: [{ translateX: opacity }],
+          transform: [{ translateX: translation.value }],
         }}
       ></Animated.View>
     );
