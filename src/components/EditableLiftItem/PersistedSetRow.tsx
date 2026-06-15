@@ -7,7 +7,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable, {
   SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
-import { Alert, Animated, Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 import {
   Menu,
   MenuOption,
@@ -18,7 +18,6 @@ import { Widths } from './Widths';
 import { NumberControl } from '../NumberControl';
 import SetUtils from '../../utils/SetUtils';
 import CheckBox from '@react-native-community/checkbox';
-import { SharedValue } from 'react-native-reanimated';
 
 export function PersistedSetRow(props: {
   set: LiftSet;
@@ -98,20 +97,15 @@ export function PersistedSetRow(props: {
     );
   }
 
-  const renderRightActions = (
-    progress: SharedValue<number>,
-    translation: SharedValue<number>,
-    swipeableMethods: SwipeableMethods,
-  ) => {
+  const renderRightActions = () => {
     return (
-      <Animated.View
+      <View
         style={{
           flexDirection: 'row',
           flex: 1,
           backgroundColor: 'red',
-          transform: [{ translateX: translation.value }],
         }}
-      ></Animated.View>
+      ></View>
     );
   };
 

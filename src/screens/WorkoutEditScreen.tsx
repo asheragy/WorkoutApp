@@ -27,7 +27,9 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
   });
   const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   function loadState() {
     if (route.params.workoutId) {

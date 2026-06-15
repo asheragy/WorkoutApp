@@ -1,6 +1,6 @@
-import {useTheme} from '@react-navigation/native';
-import {StackScreenProps} from '@react-navigation/stack';
-import React, {useEffect, useState} from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   FlatList,
@@ -14,16 +14,16 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import {RootStackParamList} from '../App';
+import { RootStackParamList } from '../App';
 import WeightRepository from '../repository/WeightRepository';
-import {WeightEntry} from '../types/types';
-import {MaterialHeaderButton} from '../components/Common';
-import {NumberControl} from '../components/NumberControl';
-import {ProgressChart} from '../components/ProgressChart';
+import { WeightEntry } from '../types/types';
+import { MaterialHeaderButton } from '../components/Common';
+import { NumberControl } from '../components/NumberControl';
+import { ProgressChart } from '../components/ProgressChart';
 
 type Props = StackScreenProps<RootStackParamList, 'Weight'>;
 
-export function WeightScreen({route, navigation}: Props) {
+export function WeightScreen({ navigation }: Props) {
   const [current, setCurrent] = useState<number>(180);
   const [entries, setEntries] = useState<WeightEntry[]>([]);
 
@@ -36,7 +36,7 @@ export function WeightScreen({route, navigation}: Props) {
   }
 
   async function onAdd() {
-    var entry: WeightEntry = {
+    const entry: WeightEntry = {
       date: new Date(),
       weight: current,
     };
@@ -60,13 +60,15 @@ export function WeightScreen({route, navigation}: Props) {
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
-            style={{marginHorizontal: 10}}
-            OverflowIcon={({color}) => (
+            style={{ marginHorizontal: 10 }}
+            OverflowIcon={() => (
               <Text
-                style={{fontWeight: 'bold', fontSize: 24, color: colors.text}}>
+                style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
+              >
                 ...
               </Text>
-            )}>
+            )}
+          >
             <HiddenItem title="Reset" onPress={() => onReset()} />
             <HiddenItem title="Remove Last" onPress={() => onRemoveLast()} />
           </OverflowMenu>
@@ -77,40 +79,43 @@ export function WeightScreen({route, navigation}: Props) {
 
   useEffect(loadState, []);
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const dates = entries.map(x => x.date);
   const values = entries.map(x => x.weight);
 
   const renderItem = (item: ListRenderItemInfo<WeightEntry>) => (
     <View key={item.index} style={styles.entryRow}>
-      <Text style={{width: '50%', textAlign: 'center', color: colors.text}}>
+      <Text style={{ width: '50%', textAlign: 'center', color: colors.text }}>
         {item.item.date.toDateString()}
       </Text>
-      <Text style={{color: colors.text}}>{item.item.weight}</Text>
+      <Text style={{ color: colors.text }}>{item.item.weight}</Text>
     </View>
   );
 
   return (
-    <View style={{flexDirection: 'column'}}>
-      <View style={{height: '40%'}}>
+    <View style={{ flexDirection: 'column' }}>
+      <View style={{ height: '40%' }}>
         <ProgressChart
           title="Weight"
           dates={dates}
-          values={values}></ProgressChart>
+          values={values}
+        ></ProgressChart>
       </View>
 
       <FlatList
-        style={{backgroundColor: colors.background, height: '40%'}}
+        style={{ backgroundColor: colors.background, height: '40%' }}
         data={entries}
         renderItem={renderItem}
-        keyExtractor={entry => entry.date.toString()}></FlatList>
+        keyExtractor={entry => entry.date.toString()}
+      ></FlatList>
 
-      <View style={{height: '10%'}}>
+      <View style={{ height: '10%' }}>
         <NumberControl
           value={current}
           onChange={newValue => setCurrent(newValue)}
           decrementBy={() => 0.2}
-          incrementBy={() => 0.2}></NumberControl>
+          incrementBy={() => 0.2}
+        ></NumberControl>
         <Button title="Add" onPress={() => onAdd()} />
       </View>
     </View>

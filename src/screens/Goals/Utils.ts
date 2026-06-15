@@ -24,10 +24,13 @@ export function calcWorkoutGoals(
   const counts = new Map<MuscleGroup, number>();
   const percentages = new Map<MuscleGroup, number>();
 
-  const grouped = lifts.reduce((acc, lift) => {
-    (acc[lift.id] ||= []).push(lift);
-    return acc;
-  }, {} as Record<string, typeof lifts>);
+  const grouped = lifts.reduce(
+    (acc, lift) => {
+      (acc[lift.id] ||= []).push(lift);
+      return acc;
+    },
+    {} as Record<string, typeof lifts>,
+  );
 
   Object.entries(grouped).forEach(([liftId, lifts]) => {
     const def = defs[liftId];
@@ -56,7 +59,7 @@ export function calcWorkoutGoals(
   // Add group results
   counts.forEach((count, group) => {
     if (count > 1) {
-      const percent = percentages.get(group)!! / count;
+      const percent = percentages.get(group) ?? 0 / count;
       result.push({
         id: MuscleGroup[group],
         name: MuscleGroup[group],

@@ -1,8 +1,14 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { View, Button, ScrollView, StyleSheet, Text } from 'react-native';
+import {
+  View,
+  Button,
+  ScrollView,
+  StyleSheet,
+  Text,
+  Alert,
+} from 'react-native';
 import { useSelector } from 'react-redux';
-import { GlobalSettings } from '../types/types';
 import { Lift } from '../types/workout';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App.tsx';
@@ -15,6 +21,7 @@ import {
 import { MaterialHeaderButton } from '../components/Common.tsx';
 import { AppState } from '../state/store.ts';
 import Utils from '../components/Utils.ts';
+import WorkoutRepository from '../repository/WorkoutRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 
@@ -22,7 +29,6 @@ export default function LiftEditScreen({ route, navigation }: Props) {
   const [lift, setLift] = useState<Lift>(route.params.lift);
   const [showPlates, setShowPlates] = useState<boolean>(false);
   const { colors } = useTheme();
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
 
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs[lift.id];
@@ -41,7 +47,7 @@ export default function LiftEditScreen({ route, navigation }: Props) {
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={({ color }) => (
+            OverflowIcon={() => (
               <Text
                 style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
               >
@@ -67,13 +73,13 @@ export default function LiftEditScreen({ route, navigation }: Props) {
         </HeaderButtons>
       ),
     });
-  }, [navigation, showPlates]);
+  }, [navigation, showPlates, lift]);
 
-  function onToggleHide() {
-    let updatedLift: Lift = { ...lift };
+  async function onToggleHide() {
+    const updatedLift: Lift = { ...lift };
     updatedLift.hide = updatedLift.hide ? undefined : true;
 
-    route.params.onFinish(updatedLift);
+    await updateLift(updatedLift);
     navigation.pop();
   }
 
@@ -81,8 +87,31 @@ export default function LiftEditScreen({ route, navigation }: Props) {
     setShowPlates(prev => !prev);
   }
 
+  async function updateLift(updatedLift: Lift) {
+    const workout = await WorkoutRepository.get(route.params.workoutId);
+    if (workout) {
+      const index = workout.lifts.findIndex(
+        x => x.instanceId == updatedLift.instanceId,
+      );
+
+      if (index < 0) {
+        Alert.alert('Error', 'Unable to find lift instance id');
+        return;
+      }
+
+      const lifts = [...workout.lifts];
+      lifts[index] = updatedLift;
+
+      const updatedWorkout = {
+        ...workout,
+        lifts: lifts,
+      };
+      await WorkoutRepository.upsert(updatedWorkout);
+    }
+  }
+
   async function onDone() {
-    route.params.onFinish(lift);
+    await updateLift(lift);
     navigation.pop();
   }
 

@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 import { PersistedSetRow } from '../components/EditableLiftItem/PersistedSetRow.tsx';
 import { LiftSet } from '../types/workout.ts';
+import { AppState } from '../state/store.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
@@ -17,7 +18,9 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
   const systemDef = route.params.def?.system == true;
   const dispatch = useDispatch();
   const repo = new LiftDefRepository(dispatch);
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   const items = Object.values(LiftType)
     .filter(value => typeof value === 'string')

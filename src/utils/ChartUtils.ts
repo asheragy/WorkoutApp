@@ -68,7 +68,7 @@ export default class ChartUtils {
 
     // Average all arrays
     const result = [0];
-    const length = weekArrays.values().next().value!!.length;
+    const length = weekArrays.values().next().value?.length ?? 0;
 
     for (let i = 1; i < length; i++) {
       let count = 0;

@@ -6,9 +6,12 @@ import { View } from 'react-native';
 import SetItem from './SetItem';
 import React from 'react';
 import SetHeader from './SetHeader';
+import { AppState } from '../../state/store.ts';
 
 export function ReadOnlySetTable({ lift, def }: { lift: Lift; def: LiftDef }) {
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   function calcPlates(weight: string): PlateCount | undefined {
     if (settings.plateCount != true) return undefined;

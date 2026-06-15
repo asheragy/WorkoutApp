@@ -61,3 +61,11 @@ export const migrations: Migration[] = [
   },
   // add new steps here ↑ for future app versions
 ];
+
+export type LiftHistoryTableSchema = [
+  liftId: string,
+  workoutId: string,
+  timestamp: number,
+  position: number,
+  setsJson: string,
+];

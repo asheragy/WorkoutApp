@@ -1,18 +1,13 @@
 import React from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
-import {Button, ToastAndroid, View} from 'react-native';
+import { Button, ToastAndroid, View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import {
   exportAsyncStorage,
   importAsyncStorage,
 } from '../repository/ImportExport.ts';
-import LiftHistoryRepository from '../repository/LiftHistoryRepository.ts';
 
-type Props = StackScreenProps<RootStackParamList, 'Settings'>;
-
-export function SettingsScreen({route}: Props) {
+export function SettingsScreen() {
   async function logSettings() {
     const keys = await AsyncStorage.getAllKeys();
 

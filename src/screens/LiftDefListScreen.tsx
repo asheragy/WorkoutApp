@@ -1,26 +1,25 @@
 import React from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
+import { StackScreenProps } from '@react-navigation/stack';
 import {
-  Button,
   FlatList,
   ListRenderItemInfo,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {RootStackParamList} from '../App';
-import {LiftDef} from '../types/types';
-import {useTheme} from '@react-navigation/native';
-import {useAppSelector} from '../state/store';
+import { RootStackParamList } from '../App';
+import { LiftDef } from '../types/types';
+import { useTheme } from '@react-navigation/native';
+import { useAppSelector } from '../state/store';
 import Utils from '../components/Utils';
-import {HeaderButtons, Item} from 'react-navigation-header-buttons';
-import {MaterialHeaderButton} from '../components/Common.tsx';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import { MaterialHeaderButton } from '../components/Common.tsx';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
 
 // TODO better name for this, its a subset of
-export function LiftDefListScreen({route, navigation}: Props) {
+export function LiftDefListScreen({ route, navigation }: Props) {
   const isSelection = route.params.onSelect != undefined;
   const defs = useAppSelector(store => store.liftDefs);
   const lifts = Array.from(Object.values(defs)).sort((a, b) =>
@@ -32,7 +31,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <View style={{marginRight: 10}}>
+        <View style={{ marginRight: 10 }}>
           <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
             <Item title="add" iconName="plus" onPress={onAdd} />
           </HeaderButtons>
@@ -45,7 +44,7 @@ export function LiftDefListScreen({route, navigation}: Props) {
       route.params.onSelect(def.id);
       navigation.pop();
     } else {
-      navigation.navigate('LiftDefEdit', {def: def});
+      navigation.navigate('LiftDefEdit', { def: def });
     }
   }
 
@@ -65,11 +64,13 @@ export function LiftDefListScreen({route, navigation}: Props) {
         flex: 1,
         flexGrow: 1,
         paddingBottom: insets.bottom + 12,
-      }}>
+      }}
+    >
       <FlatList
         data={lifts}
         renderItem={renderItem}
-        keyExtractor={(def, _) => def.id}></FlatList>
+        keyExtractor={def => def.id}
+      ></FlatList>
     </View>
   );
 }
@@ -79,13 +80,13 @@ interface DefItemProps {
 }
 
 function DefListItem(props: DefItemProps) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const postfix = props.def.system ? '' : ' *';
 
   return (
-    <View style={{padding: 8}}>
-      <Text style={{color: colors.text}}>
+    <View style={{ padding: 8 }}>
+      <Text style={{ color: colors.text }}>
         {Utils.defToString(props.def) + postfix}
       </Text>
     </View>

@@ -1,11 +1,9 @@
 import { Text, View } from 'react-native';
-import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { GlobalSettings, LiftDef, MuscleGroup } from '../types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
-import { useAppSelector } from '../state/store.ts';
+import { AppState, useAppSelector } from '../state/store.ts';
 import { useTheme } from '@react-navigation/native';
 import { NumberControl } from '../components/NumberControl.tsx';
 import ChartUtils, { HistoryEntry } from '../utils/ChartUtils.ts';
@@ -18,9 +16,7 @@ import LiftHistoryRepository, {
 } from '../repository/LiftHistoryRepository.ts';
 import SetUtils, { WorkingSets } from '../utils/SetUtils.ts';
 
-type Props = StackScreenProps<RootStackParamList, 'Stats'>;
-
-export function StatsScreen({ route, navigation }: Props) {
+export function StatsScreen() {
   const { colors } = useTheme();
   const [interval, setInterval] = useState(7);
   const [entries, setEntries] = useState<WorkingSets[]>([]);
@@ -32,8 +28,12 @@ export function StatsScreen({ route, navigation }: Props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<MuscleGroup>(MuscleGroup.Quads);
 
-  const defs: Record<string, LiftDef> = useAppSelector(store => store.liftDefs);
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const defs: Record<string, LiftDef> = useAppSelector(
+    (store: AppState) => store.liftDefs,
+  );
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   useEffect(onLoad, [value]);
 

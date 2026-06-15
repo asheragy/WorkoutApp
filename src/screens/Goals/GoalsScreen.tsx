@@ -1,19 +1,15 @@
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../../App.tsx';
 import React from 'react';
-import {ShortTermTab} from './ShortTermTab.tsx';
-import {LongTermTab} from './LongTermTab.tsx';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-
-type Props = StackScreenProps<RootStackParamList, 'Goals'>;
+import { ShortTermTab } from './ShortTermTab.tsx';
+import { LongTermTab } from './LongTermTab.tsx';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
 const Tab = createMaterialTopTabNavigator();
 
-export function GoalsScreen({route, navigation}: Props) {
+export function GoalsScreen() {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Short Term" children={() => <ShortTermTab />} />
-      <Tab.Screen name="Long Term" children={() => <LongTermTab />} />
+      <Tab.Screen name="Short Term">{() => <ShortTermTab />}</Tab.Screen>
+      <Tab.Screen name="Long Term">{() => <LongTermTab />}</Tab.Screen>
     </Tab.Navigator>
   );
 }

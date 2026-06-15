@@ -15,7 +15,7 @@ import { LiftHistoryScreen } from './screens/LiftHistory/LiftHistoryScreen';
 import { LiftDefEditScreen } from './screens/LiftDefEditScreen';
 import { WorkoutEditScreen } from './screens/WorkoutEditScreen';
 import { WorkoutList } from './screens/Home';
-import { Lift, Workout } from './types/workout';
+import { Lift } from './types/workout';
 import { LiftDefListScreen } from './screens/LiftDefListScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
@@ -40,8 +40,8 @@ export type RootStackParamList = {
     workoutId: string;
   };
   LiftEdit: {
+    workoutId: string;
     lift: Lift;
-    onFinish: (lift: Lift) => void;
   };
   Weight: undefined;
   Stats: undefined;
@@ -59,6 +59,7 @@ export type RootStackParamList = {
     def?: LiftDef;
   };
   LiftDefList: {
+    // TODO no function parameters
     onSelect?: (defId: string) => void;
   };
   WorkoutEdit: {
@@ -67,6 +68,7 @@ export type RootStackParamList = {
   Settings: undefined;
   Goals: undefined;
   Routines: {
+    // TODO no function parameters
     onChanged: (importLifts: boolean) => void;
   };
 };

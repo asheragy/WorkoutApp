@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,7 +14,7 @@ import {
 } from 'react-navigation-header-buttons';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
 import { MaterialHeaderButton } from '../components/Common';
@@ -24,16 +24,9 @@ import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
 
-const mapStateToProps = (state: any) => {
-  const { settings } = state;
-  return { settings };
-};
-
-export default connect(mapStateToProps)(WorkoutList);
-
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
-export function WorkoutList({ navigation, route }: Props) {
+export function WorkoutList({ navigation }: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const { colors } = useTheme();
   const dispatch: AppDispatch = useDispatch();
@@ -44,7 +37,7 @@ export function WorkoutList({ navigation, route }: Props) {
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={({ color }) => (
+            OverflowIcon={() => (
               <Text
                 style={{
                   fontWeight: 'bold',
@@ -84,53 +77,49 @@ export function WorkoutList({ navigation, route }: Props) {
     });
   }, [navigation, workouts]);
 
-  function loadState(importLifts?: boolean) {
-    /*
-    LiftDefRepository.getLookupMap().then(result => {
-      dispatch(updateLiftDefs(result));
-    });
-    */
+  const loadState = useCallback(
+    (importLifts?: boolean) => {
+      SettingsRepository.get().then(settings => {
+        // TODO should this go in App.txs?
+        dispatch(updateSettings(settings));
 
-    SettingsRepository.get().then(settings => {
-      // TODO should this go in App.txs?
-      dispatch(updateSettings(settings));
+        console.log('Using routine: ' + settings.routine);
+        RoutineRepository.getAll().then(routines => {
+          const curr = routines.find(x => x.id == settings.routine);
+          const title = curr?.id ? curr.title : 'Workouts';
+          navigation.setOptions({ title });
+        });
 
-      console.log('Using routine: ' + settings.routine);
-      RoutineRepository.getAll().then(routines => {
-        const curr = routines.find(x => x.id == settings.routine);
-        const title = curr?.id ? curr.title : 'Workouts';
-        navigation.setOptions({ title });
+        WorkoutRepository.getRoutine(settings.routine, importLifts).then(
+          result => {
+            const incompleted = result.filter(w => w.lastCompleted == null);
+            const completed = result
+              .filter(
+                (w): w is Workout & { lastCompleted: Date } =>
+                  w.lastCompleted != null,
+              )
+              .slice()
+              .sort(
+                (a, b) => a.lastCompleted.getTime() - b.lastCompleted.getTime(),
+              );
+
+            setWorkouts([...incompleted, ...completed]);
+          },
+        );
       });
-
-      WorkoutRepository.getRoutine(settings.routine, importLifts).then(
-        result => {
-          const incompleted = result.filter(w => w.lastCompleted == null);
-          const completed = result
-            .filter(
-              (w): w is Workout & { lastCompleted: Date } =>
-                w.lastCompleted != null,
-            )
-            .slice()
-            .sort(
-              (a, b) => a.lastCompleted.getTime() - b.lastCompleted.getTime(),
-            );
-
-          setWorkouts([...incompleted, ...completed]);
-        },
-      );
-    });
-  }
-  useEffect(loadState, []);
+    },
+    [dispatch, navigation],
+  );
 
   useFocusEffect(
     useCallback(() => {
       loadState();
-    }, []),
+    }, [loadState]),
   );
 
   const onLifts = () => navigation.navigate('LiftList');
   const onLiftDefs = () => navigation.navigate('LiftDefList', {});
-  const onWeightLog = () => navigation.navigate('Weight');
+  //const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
   const onGoals = () => navigation.navigate('Goals');
   const onStats = () => navigation.navigate('Stats');
@@ -182,7 +171,7 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
 
       {workout.lifts
         .filter(x => !x.alternate)
-        .map((lift, _) => (
+        .map(lift => (
           <LiftItem lift={lift} key={lift.instanceId}></LiftItem>
         ))}
       <Text style={{ paddingTop: 8, color: colors.text }}>

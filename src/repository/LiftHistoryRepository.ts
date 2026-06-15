@@ -1,7 +1,8 @@
 import { LiftDef, PersistedSet } from '../types/types';
 import { LiftSet, Workout } from '../types/workout';
 import Utils from '../components/Utils';
-import { db } from './db.ts';
+import { db, LiftHistoryTableSchema } from './db.ts';
+import { Scalar } from '@op-engineering/op-sqlite';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -84,18 +85,18 @@ export default class LiftHistoryRepository {
     });
   }
 
-  private static async query(query: string, params?: any[]): Promise<Row[]> {
+  private static async query(query: string, params?: Scalar[]): Promise<Row[]> {
     try {
       const rows = await db.executeRaw(query, params);
       console.log(rows);
-      return rows.map(row => this.getRow(row));
+      return rows.map(row => this.getRow(row as LiftHistoryTableSchema));
     } catch (err) {
       console.log(err);
       throw err;
     }
   }
 
-  private static getRow(row: any[]): Row {
+  private static getRow(row: LiftHistoryTableSchema): Row {
     return {
       liftId: row[0],
       workoutId: row[1],

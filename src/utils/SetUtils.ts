@@ -95,7 +95,7 @@ export default class SetUtils {
           const def = defs[lift.id];
           const setsPerGroup = this.getSetsPerGroup(def);
           def.muscleGroups.forEach((group, index) => {
-            let curr = result.get(group) ?? 0;
+            const curr = result.get(group) ?? 0;
             result.set(group, curr + setsPerGroup[index] * workSets);
           });
         });

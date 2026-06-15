@@ -1,27 +1,27 @@
-import {StyleSheet, Text, View} from 'react-native';
-import {useTheme} from '@react-navigation/native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { useTheme } from '@react-navigation/native';
 
-export default function SetHeader(props: {showPlateCount: boolean}) {
-  const {colors} = useTheme();
+export default function SetHeader(props: { showPlateCount: boolean }) {
+  const { colors } = useTheme();
   const weightWidth = props.showPlateCount ? '30%' : '60%';
 
   return (
-    <View style={{flexDirection: 'row'}}>
-      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+    <View style={{ flexDirection: 'row' }}>
+      <Text style={[styles.liftHeader, { width: '20%', color: colors.text }]}>
         Set
       </Text>
       <Text
-        style={[styles.liftHeader, {width: weightWidth, color: colors.text}]}>
+        style={[styles.liftHeader, { width: weightWidth, color: colors.text }]}
+      >
         Weight
       </Text>
       {props.showPlateCount && (
         <Text
-          style={[
-            styles.liftHeader,
-            {width: '30%', color: colors.text},
-          ]}></Text>
+          style={[styles.liftHeader, { width: '30%', color: colors.text }]}
+        ></Text>
       )}
-      <Text style={[styles.liftHeader, {width: '20%', color: colors.text}]}>
+      <Text style={[styles.liftHeader, { width: '20%', color: colors.text }]}>
         Reps
       </Text>
     </View>

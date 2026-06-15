@@ -1,16 +1,10 @@
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import {
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import {LiftHistory} from '../../repository/LiftHistoryRepository';
+import { FlatList, ListRenderItemInfo, Text, View } from 'react-native';
+import { LiftHistory } from '../../repository/LiftHistoryRepository';
 
-export function LiftLogTab(props: {entries: LiftHistory[]}) {
-  const {colors} = useTheme();
+export function LiftLogTab(props: { entries: LiftHistory[] }) {
+  const { colors } = useTheme();
   const entries = props.entries.slice().reverse();
   const df: Intl.DateTimeFormatOptions = {
     month: '2-digit',
@@ -24,8 +18,8 @@ export function LiftLogTab(props: {entries: LiftHistory[]}) {
     );
 
     return (
-      <View style={{padding: 4}}>
-        <Text style={{color: colors.text}}>
+      <View style={{ padding: 4 }}>
+        <Text style={{ color: colors.text }}>
           {date + ' - ' + sets.join(', ')}
         </Text>
       </View>
@@ -34,13 +28,10 @@ export function LiftLogTab(props: {entries: LiftHistory[]}) {
 
   return (
     <FlatList
-      style={{backgroundColor: colors.background}}
+      style={{ backgroundColor: colors.background }}
       data={entries}
       renderItem={renderItem}
-      keyExtractor={(history, index) =>
-        history.timestamp.toString()
-      }></FlatList>
+      keyExtractor={history => history.timestamp.toString()}
+    ></FlatList>
   );
 }
-
-const styles = StyleSheet.create({});

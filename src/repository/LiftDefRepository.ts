@@ -55,12 +55,12 @@ export default class LiftDefRepository {
     };
     delete persistedDef.multiple; // Not persisted
 
-    let items = await LiftDefRepository.getAll();
-    let index = items.findIndex(item => item.id == persistedDef.id);
+    const items = await LiftDefRepository.getAll();
+    const index = items.findIndex(item => item.id == persistedDef.id);
 
     if (index < 0) {
       // Editing new systemDef for first time, add to list
-      let systemDef = SystemLifts.find(item => item.id == persistedDef.id);
+      const systemDef = SystemLifts.find(item => item.id == persistedDef.id);
       if (!systemDef)
         throw new Error(
           `Unable to find def '${persistedDef.id}', this should never happen `,
@@ -73,7 +73,7 @@ export default class LiftDefRepository {
 
     // Don't save system lifts that are unmodified
     const savedItems = items.filter(curr => {
-      let systemDef = SystemLifts.find(sys => sys.id == curr.id);
+      const systemDef = SystemLifts.find(sys => sys.id == curr.id);
 
       if (systemDef) {
         if (
@@ -123,7 +123,7 @@ export default class LiftDefRepository {
       }
     });
 
-    const nameMap = new Map<String, number>();
+    const nameMap = new Map<string, number>();
     Object.values(result).forEach(v => {
       let count = nameMap.get(v.name) ?? 0;
       count++;
@@ -131,7 +131,7 @@ export default class LiftDefRepository {
     });
 
     Object.values(result).forEach(v => {
-      let count = nameMap.get(v.name)!!;
+      const count = nameMap.get(v.name)!!;
       if (count > 1) v.multiple = true;
     });
 

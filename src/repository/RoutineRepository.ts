@@ -11,8 +11,6 @@ import { YatesSplitModified } from '../routines/4_Yates_Modified.ts';
 import { UpperLower_2Day } from '../routines/2_UpperLower.ts';
 import { UpperLower2026 } from '../routines/6_UpperLower2026.ts';
 
-const key = 'routines';
-
 export const PreLoadedRoutines = [
   UpperLower,
   UpperLower6,

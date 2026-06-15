@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   Alert,
   Button,
@@ -22,7 +22,7 @@ import { MaterialHeaderButton } from '../components/Common';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
-import { useTheme } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 import Utils from '../components/Utils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
@@ -41,7 +41,7 @@ export function WorkoutScreen({ route, navigation }: Props) {
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={({}) => (
+            OverflowIcon={() => (
               <Text
                 style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
               >
@@ -107,34 +107,19 @@ export function WorkoutScreen({ route, navigation }: Props) {
     navigation.goBack();
   };
 
-  async function onLiftChanged(lift: Lift) {
-    const index = workout.lifts.findIndex(x => x.instanceId == lift.instanceId);
-    const lifts = [...workout.lifts];
-    lifts[index] = lift;
-
-    //lifts.forEach(x => Log.lift(x));
-
-    const updatedWorkout = {
-      ...workout,
-      lifts: lifts,
-    };
-    setWorkout(updatedWorkout);
-    await WorkoutRepository.upsert(updatedWorkout);
-  }
-
   function onHistory() {
     navigation.navigate('WorkoutHistory', {
       workoutId: route.params.workoutId,
     });
   }
 
-  function loadState() {
-    WorkoutRepository.get(route.params.workoutId).then(result => {
-      if (result !== undefined) setWorkout(result);
-    });
-  }
-
-  useEffect(loadState, []);
+  useFocusEffect(
+    useCallback(() => {
+      WorkoutRepository.get(route.params.workoutId).then(result => {
+        if (result !== undefined) setWorkout(result);
+      });
+    }, [route.params.workoutId]),
+  );
 
   const completedAlts = getCompletedAlts(workout.lifts);
   const activeLifts = workout.lifts.filter(
@@ -152,8 +137,8 @@ export function WorkoutScreen({ route, navigation }: Props) {
           lift={lift}
           onEdit={() =>
             navigation.navigate('LiftEdit', {
+              workoutId: route.params.workoutId,
               lift: lift,
-              onFinish: onLiftChanged,
             })
           }
           overrideComplete={completedAlts.includes(lift.instanceId)}

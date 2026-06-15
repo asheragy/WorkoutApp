@@ -1,6 +1,6 @@
-import {useTheme} from '@react-navigation/native';
-import {StackScreenProps} from '@react-navigation/stack';
-import React, {useEffect, useState} from 'react';
+import { useTheme } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   ListRenderItemInfo,
@@ -8,20 +8,20 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {RootStackParamList} from '../App';
-import {LiftDef} from '../types/types';
-import {useSelector} from 'react-redux';
-import {AppState} from '../state/store';
+import { RootStackParamList } from '../App';
+import { LiftDef } from '../types/types';
+import { useSelector } from 'react-redux';
+import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import Utils from '../components/Utils.ts';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
 
 // TODO Better name for this, its the list of lifts with active history
-export function LiftListScreen({route, navigation}: Props) {
+export function LiftListScreen({ navigation }: Props) {
   const [lifts, setLifts] = useState<LiftDef[]>([]);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const insets = useSafeAreaInsets();
 
@@ -46,19 +46,22 @@ export function LiftListScreen({route, navigation}: Props) {
 
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
-      <View key={item.index} style={{padding: 10}}>
-        <Text style={{color: colors.text}}>{Utils.defToString(item.item)}</Text>
+      <View key={item.index} style={{ padding: 10 }}>
+        <Text style={{ color: colors.text }}>
+          {Utils.defToString(item.item)}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
   return (
-    <View style={{paddingBottom: insets.bottom + 12}}>
+    <View style={{ paddingBottom: insets.bottom + 12 }}>
       <FlatList
-        style={{backgroundColor: colors.background}}
+        style={{ backgroundColor: colors.background }}
         data={lifts}
         renderItem={renderItem}
-        keyExtractor={(def, _) => def.id}></FlatList>
+        keyExtractor={def => def.id}
+      ></FlatList>
     </View>
   );
 }

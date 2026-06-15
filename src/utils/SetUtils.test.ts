@@ -37,9 +37,9 @@ test('increment/decrement dumbbell - maxSet', () => {
 });
 
 test('setsPerGroup', () => {
-  var oneGroup = [MuscleGroup.Quads];
-  var twoGroup = [MuscleGroup.Quads, MuscleGroup.Hamstrings];
-  var threeGroup = [
+  const oneGroup = [MuscleGroup.Quads];
+  const twoGroup = [MuscleGroup.Quads, MuscleGroup.Hamstrings];
+  const threeGroup = [
     MuscleGroup.Quads,
     MuscleGroup.Hamstrings,
     MuscleGroup.Glutes,

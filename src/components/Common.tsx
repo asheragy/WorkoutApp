@@ -1,11 +1,14 @@
 import React from 'react';
-import {TextStyle} from 'react-native';
-import {HeaderButton} from 'react-navigation-header-buttons';
-import {MaterialDesignIcons} from '@react-native-vector-icons/material-design-icons';
+import { TextStyle } from 'react-native';
+import {
+  HeaderButton,
+  HeaderButtonProps,
+} from 'react-navigation-header-buttons';
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 
 // MaterialDesignIcons - https://pictogrammers.com/library/mdi/
 
-export const MaterialHeaderButton = (props: any) => (
+export const MaterialHeaderButton = (props: HeaderButtonProps) => (
   <HeaderButton
     {...props}
     iconSize={23}

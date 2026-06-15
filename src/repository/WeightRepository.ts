@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {WeightEntry} from '../types/types';
+import { WeightEntry } from '../types/types';
 
 const weightLogKey = 'weightLog';
 
@@ -9,7 +9,8 @@ export default class WeightRepository {
     console.log(value);
     if (value != null) {
       // Date is still a string
-      const stringResult: {date: string; weight: number}[] = JSON.parse(value);
+      const stringResult: { date: string; weight: number }[] =
+        JSON.parse(value);
 
       return stringResult.map(entry => {
         const we: WeightEntry = {
@@ -25,7 +26,7 @@ export default class WeightRepository {
   }
 
   static async add(entry: WeightEntry): Promise<void> {
-    var existing = await this.getAll();
+    const existing = await this.getAll();
     existing.push(entry);
     return AsyncStorage.setItem(weightLogKey, JSON.stringify(existing));
   }
@@ -33,11 +34,13 @@ export default class WeightRepository {
   static async clear(): Promise<void> {
     try {
       await AsyncStorage.removeItem(weightLogKey);
-    } catch (e) {}
+    } catch (_) {
+      // Ignore
+    }
   }
 
   static async removeLast(): Promise<void> {
-    var existing = await this.getAll();
+    const existing = await this.getAll();
     if (existing.length > 0) {
       existing.pop();
       return AsyncStorage.setItem(weightLogKey, JSON.stringify(existing));

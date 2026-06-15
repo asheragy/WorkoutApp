@@ -31,7 +31,9 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   const labels = Utils.normalizeSets(props.lift.sets, def).map(
     set => set.label,
   );
-  const settings: GlobalSettings = useSelector((store: any) => store.settings);
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   function onNoteChange(note: string) {
     props.onChange({ ...props.lift, note: note.length > 0 ? note : undefined });
