@@ -1,5 +1,5 @@
 import { Lift } from '../../types/workout';
-import { GlobalSettings, LiftDef, PlateCount } from '../../types/types';
+import { GlobalSettings, LiftDef } from '../../types/types';
 import { useSelector } from 'react-redux';
 import Utils from '../Utils';
 import { View } from 'react-native';
@@ -13,14 +13,6 @@ export function ReadOnlySetTable({ lift, def }: { lift: Lift; def: LiftDef }) {
     (store: AppState) => store.settings,
   );
 
-  function calcPlates(weight: string): PlateCount | undefined {
-    if (settings.plateCount != true) return undefined;
-
-    // Just using string since it already accounts for percentage lifts
-    const n = parseFloat(weight.replace('lb', ''));
-    return Utils.calcPlates(def, n);
-  }
-
   return (
     <View>
       <SetHeader showPlateCount={settings.plateCount == true}></SetHeader>
@@ -30,7 +22,6 @@ export function ReadOnlySetTable({ lift, def }: { lift: Lift; def: LiftDef }) {
             set={set}
             key={index}
             showPlateCount={settings.plateCount == true}
-            plates={calcPlates(set.weight)}
           ></SetItem>
         ))}
       </View>

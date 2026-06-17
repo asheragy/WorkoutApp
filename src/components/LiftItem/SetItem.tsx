@@ -1,15 +1,13 @@
-import {NormalizedSet, PlateCount} from '../../types/types';
-import {useTheme} from '@react-navigation/native';
-import {StyleProp, Text, TextStyle, View} from 'react-native';
-import Utils from '../Utils';
+import { NormalizedSet } from '../../types/types';
+import { useTheme } from '@react-navigation/native';
+import { StyleProp, Text, TextStyle, View } from 'react-native';
 import React from 'react';
 
 export default function SetItem(props: {
   set: NormalizedSet;
-  plates?: PlateCount;
   showPlateCount: boolean;
 }) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const weight = props.set.weight;
   const weightWidth = props.showPlateCount ? '30%' : '60%';
 
@@ -21,13 +19,14 @@ export default function SetItem(props: {
   };
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row' }}>
       <Text
         style={{
           width: '20%',
           textAlign: 'center',
           ...textStyle,
-        }}>
+        }}
+      >
         {props.set.label}
       </Text>
       <Text
@@ -35,12 +34,13 @@ export default function SetItem(props: {
           width: weightWidth,
           textAlign: 'center',
           ...textStyle,
-        }}>
+        }}
+      >
         {weight}
       </Text>
       {props.showPlateCount && (
-        <Text style={{width: '30%', textAlign: 'left', ...textStyle}}>
-          {props.plates ? Utils.platesToString(props.plates) : ''}
+        <Text style={{ width: '30%', textAlign: 'left', ...textStyle }}>
+          {props.set.plates ?? ''}
         </Text>
       )}
       <Text
@@ -48,7 +48,8 @@ export default function SetItem(props: {
           width: '20%',
           textAlign: 'center',
           ...textStyle,
-        }}>
+        }}
+      >
         {props.set.reps}
       </Text>
     </View>

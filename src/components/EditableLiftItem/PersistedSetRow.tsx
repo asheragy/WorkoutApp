@@ -203,7 +203,7 @@ export function PersistedSetRow(props: {
               ></NumberControl>
               {props.showPlates && (
                 <Text style={{ color: colors.text, textAlign: 'center' }}>
-                  {calcPlates(props.def, props.set.weight)}
+                  {Utils.calcPlatesStr(props.def, props.set.weight) ?? ''}
                 </Text>
               )}
             </View>
@@ -280,11 +280,4 @@ export function PersistedSetRow(props: {
       </Swipeable>
     </GestureHandlerRootView>
   );
-}
-
-function calcPlates(def: LiftDef, weight: number): string {
-  const plates = Utils.calcPlates(def, weight);
-  if (plates == undefined) return '';
-
-  return Utils.platesToString(plates);
 }

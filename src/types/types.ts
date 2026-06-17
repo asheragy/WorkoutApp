@@ -48,6 +48,7 @@ export type NormalizedSet = {
   reps: string;
   label: string;
   completed: boolean;
+  plates?: string;
 };
 
 export type WeightEntry = {

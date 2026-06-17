@@ -124,47 +124,19 @@ test('1RM Brzycki', () => {
 
 test('plate calculator', () => {
   const def = Lifts.deadlift_barbell;
-  let plates = Utils.calcPlates(def, 135);
-  expect(plates).toStrictEqual({
-    p45: 1,
-  });
-
-  plates = Utils.calcPlates(def, 405);
-  expect(plates).toStrictEqual({
-    p45: 4,
-  });
-
-  plates = Utils.calcPlates(def, 130);
-  expect(plates).toStrictEqual({
-    p25: 1,
-    p10: 1,
-    p5: 1,
-    p2point5: 1,
-  });
-
-  plates = Utils.calcPlates(def, 175);
-  expect(plates).toStrictEqual({
-    p45: 1,
-    p10: 2,
-  });
+  expect(Utils.calcPlatesStr(def, 135)).toEqual('|45|');
+  expect(Utils.calcPlatesStr(def, 405)).toEqual('|45|45|45|45|');
+  expect(Utils.calcPlatesStr(def, 130)).toEqual('|25|10|5|2.5|');
+  expect(Utils.calcPlatesStr(def, 175)).toEqual('|45|10|10|');
 
   // Special bars
-  plates = Utils.calcPlates(Lifts.deadlift_trapbar, 200);
-  expect(plates).toStrictEqual({
-    p45: 1,
-    p25: 1,
-  });
+  expect(Utils.calcPlatesStr(Lifts.deadlift_trapbar, 200)).toEqual('|45|25|');
+  expect(Utils.calcPlatesStr(Lifts.squat_ssb, 300)).toEqual('|45|45|25|');
 
-  plates = Utils.calcPlates(Lifts.squat_ssb, 300);
-  expect(plates).toStrictEqual({
-    p45: 2,
-    p25: 1,
-  });
-
-  plates = Utils.calcPlates(Lifts.calfRaise_seated, 90);
-  expect(plates).toStrictEqual({
-    p45: 2,
-  });
+  // Single plate loaded
+  expect(Utils.calcPlatesStr(Lifts.calfRaise_seated, 90)).toEqual('|45|45|');
+  // Double
+  expect(Utils.calcPlatesStr(Lifts.legPress, 180)).toEqual('|45|45|');
 });
 
 test('plate calculator - baseWeight override', () => {
@@ -173,26 +145,14 @@ test('plate calculator - baseWeight override', () => {
     baseWeight: 55,
   };
 
-  let plates = Utils.calcPlates(def, 135);
-  expect(plates).toStrictEqual({
-    p25: 1,
-    p10: 1,
-    p5: 1,
-  });
-
-  plates = Utils.calcPlates(def, 145);
-  expect(plates).toStrictEqual({
-    p45: 1,
-  });
+  expect(Utils.calcPlatesStr(def, 135)).toEqual('|25|10|5|');
+  expect(Utils.calcPlatesStr(def, 145)).toEqual('|45|');
 
   def = {
     ...Lifts.calfRaise_seated,
     baseWeight: 20,
   };
-  plates = Utils.calcPlates(def, 65);
-  expect(plates).toStrictEqual({
-    p45: 1,
-  });
+  expect(Utils.calcPlatesStr(def, 65)).toEqual('|45|');
 });
 
 test('uuid', () => {

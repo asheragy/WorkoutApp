@@ -59,7 +59,7 @@ export function calcWorkoutGoals(
   // Add group results
   counts.forEach((count, group) => {
     if (count > 1) {
-      const percent = percentages.get(group) ?? 0 / count;
+      const percent = (percentages.get(group) ?? 0) / count;
       result.push({
         id: MuscleGroup[group],
         name: MuscleGroup[group],

@@ -50,18 +50,18 @@ test('calcWorkoutGoals', async () => {
     {
       id: 'squat_front',
       name: 'Squat (Front)',
-      percent: 0.7838969233887669,
+      percent: 0.7833333333333334,
     },
     {
       group: true,
       id: 'Quads',
       name: 'Quads',
-      percent: 0.8700506514754054,
+      percent: 0.8678320548368013,
     },
     {
       id: 'legExtensions',
       name: 'Leg Extensions',
-      percent: 0.9562043795620438,
+      percent: 0.952330776340269,
     },
   ]);
 });

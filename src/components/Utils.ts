@@ -18,7 +18,6 @@ export default class Utils {
     return Math.round(x / 5) * 5;
   }
 
-  // TODO if this took lift type it could add PlateCount as well
   static normalizeSets(sets: LiftSet[], def: LiftDef): NormalizedSet[] {
     const result: NormalizedSet[] = [];
     let counter = 1;
@@ -41,7 +40,8 @@ export default class Utils {
         weight: weight + 'lb',
         reps: set.reps + '',
         label: label,
-        completed: set.completed ? true : false,
+        completed: !!set.completed,
+        plates: this.calcPlatesStr(def, set.weight),
       };
 
       result.push(t);
@@ -162,7 +162,7 @@ export default class Utils {
     }${ampm}`;
   }
 
-  static platesToString(platecount: PlateCount): string {
+  private static platesToString(platecount: PlateCount): string {
     let i;
     const result: string[] = [];
 
@@ -189,7 +189,15 @@ export default class Utils {
     else return '';
   }
 
-  static calcPlates(def: LiftDef, weight: number): PlateCount | undefined {
+  static calcPlatesStr(def: LiftDef, weight: number): string | undefined {
+    const plates = this.calcPlates(def, weight);
+    return plates ? this.platesToString(plates) : undefined;
+  }
+
+  private static calcPlates(
+    def: LiftDef,
+    weight: number,
+  ): PlateCount | undefined {
     let remaining;
     const type = def.type;
     const result: PlateCount = {};

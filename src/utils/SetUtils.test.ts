@@ -142,16 +142,16 @@ test('working sets', () => {
     name: '',
     lifts: [
       lift(Lifts.bench_barbell.id, 2),
-      lift(Lifts.squat_barbell.id, 2, true),
+      lift(Lifts.squat_barbell.id, 3, true),
     ],
   };
   sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Chest', sets: 1 },
     { group: 'Triceps', sets: 0.5 },
-    { group: 'Quads', sets: 1 },
-    { group: 'Glutes', sets: 0.5 },
-    { group: 'Total', sets: 3 },
+    { group: 'Quads', sets: 1.75 },
+    { group: 'Glutes', sets: 0.875 },
+    { group: 'Total', sets: 4.125 },
   ]);
 
   // Factor
