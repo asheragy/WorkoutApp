@@ -1,7 +1,6 @@
 import { LiftSet } from '../../types/workout';
 import { GlobalSettings, LiftDef } from '../../types/types';
 import { useTheme } from '@react-navigation/native';
-import Utils from '../Utils';
 import React, { useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable, {
@@ -68,8 +67,7 @@ export function PersistedSetRow(props: {
 
   let percentageWeight = '';
   if (props.set.percentage && props.set.weight && props.def.trainingMax) {
-    percentageWeight =
-      Utils.calcPercentage(props.set.weight, props.def.trainingMax) + '';
+    percentageWeight = SetUtils.percentageToWeight(props.def, props.set) + '';
   }
 
   const swipeableRef: React.MutableRefObject<SwipeableMethods | null> =
@@ -203,7 +201,7 @@ export function PersistedSetRow(props: {
               ></NumberControl>
               {props.showPlates && (
                 <Text style={{ color: colors.text, textAlign: 'center' }}>
-                  {Utils.calcPlatesStr(props.def, props.set.weight) ?? ''}
+                  {SetUtils.calcPlatesStr(props.def, props.set.weight)}
                 </Text>
               )}
             </View>
@@ -258,7 +256,7 @@ export function PersistedSetRow(props: {
             >
               {props.set.warmup
                 ? ''
-                : Math.round(Utils.calculate1RM(props.def, props.set) * 10) /
+                : Math.round(SetUtils.calculate1RM(props.def, props.set) * 10) /
                   10}
             </Text>
           </View>

@@ -1,8 +1,8 @@
 import { LiftDef, PersistedSet } from '../types/types';
 import { LiftSet, Workout } from '../types/workout';
-import Utils from '../components/Utils';
 import { db, LiftHistoryTableSchema } from './db.ts';
 import { Scalar } from '@op-engineering/op-sqlite';
+import SetUtils from '../utils/SetUtils.ts';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -154,12 +154,9 @@ export default class LiftHistoryRepository {
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
     return filtered.map(set => {
-      let weight = set.weight;
-      if (set.percentage) {
-        if (def.trainingMax !== undefined)
-          weight = Utils.calcPercentage(weight, def.trainingMax);
-        else weight = -1;
-      }
+      const weight = set.percentage
+        ? SetUtils.percentageToWeight(def, set)
+        : set.weight;
 
       const res: PersistedSet = {
         weight: weight,

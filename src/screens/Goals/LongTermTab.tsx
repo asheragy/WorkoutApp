@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store.ts';
 import { ProgressList } from './Common.tsx';
 import GoalRow from './Utils.ts';
+import SetUtils from '../../utils/SetUtils.ts';
 
 export function LongTermTab() {
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -38,11 +39,11 @@ export function LongTermTab() {
         }
 
         const sets = history.flatMap(h => h.sets).filter(set => !set.warmup);
-        const maxes = sets.map(set => Utils.calculate1RM(defWithGoal, set));
+        const maxes = sets.map(set => SetUtils.calculate1RM(defWithGoal, set));
         const best = Math.max(...maxes);
 
         const percent =
-          best / Utils.calculate1RM(defWithGoal, defWithGoal.goal!!);
+          best / SetUtils.calculate1RM(defWithGoal, defWithGoal.goal!!);
         result.push({ id: defWithGoal.id, name, percent });
       }
 

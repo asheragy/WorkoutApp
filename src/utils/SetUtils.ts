@@ -3,18 +3,20 @@ import {
   LiftDef,
   LiftType,
   MuscleGroup,
+  NormalizedSet,
   PersistedSet,
 } from '../types/types';
 import { LiftSet, Workout } from '../types/workout';
 import Utils from '../components/Utils.ts';
+import LiftUtils from './LiftUtils.ts';
 
 export type WorkingSets = {
   group: string;
   sets: number;
 };
 
-export default class SetUtils {
-  static incrementWeight(
+const SetUtils = {
+  incrementWeight(
     set: LiftSet,
     liftType: LiftType,
     settings: GlobalSettings,
@@ -37,9 +39,9 @@ export default class SetUtils {
     }
 
     return current + step;
-  }
+  },
 
-  static decrementWeight(
+  decrementWeight(
     set: LiftSet,
     liftType: LiftType,
     settings: GlobalSettings,
@@ -61,33 +63,33 @@ export default class SetUtils {
     }
 
     return current - step;
-  }
+  },
 
   // TODO limited scope and does not account for some things
   // TODO warmup?
-  static setToPersisted(set: LiftSet): PersistedSet {
+  setToPersisted(set: LiftSet): PersistedSet {
     return {
       weight: set.weight,
       reps: set.reps,
     };
-  }
+  },
 
-  static getSetsPerGroup(def: LiftDef): number[] {
+  getSetsPerGroup(def: LiftDef): number[] {
     const weight = def.factor
       ? def.factor / (def.muscleGroups.length + 1)
       : 0.5;
 
     return [2 * weight, ...Array(def.muscleGroups.length - 1).fill(weight)];
-  }
+  },
 
-  static getWorkingSets(
+  getWorkingSets(
     defs: Record<string, LiftDef>,
     workouts: Workout[],
   ): WorkingSets[] {
     const result = new Map<MuscleGroup, number>();
 
     workouts.forEach(workout => {
-      Utils.groupLifts(workout.lifts).forEach(lifts => {
+      LiftUtils.groupLifts(workout.lifts).forEach(lifts => {
         lifts.forEach(lift => {
           const workSets =
             lift.sets.filter(set => !set.warmup).length / lifts.length;
@@ -117,5 +119,180 @@ export default class SetUtils {
     });
 
     return entries;
-  }
+  },
+
+  calcPlatesStr(def: LiftDef, weight: number): string {
+    const plates = calcPlates(def, weight);
+    const str = plates.join('|');
+
+    if (str.length > 0) return '|' + str + '|';
+    else return '';
+  },
+
+  normalizeSets(sets: LiftSet[], def: LiftDef): NormalizedSet[] {
+    const result: NormalizedSet[] = [];
+    let counter = 1;
+
+    sets.forEach(set => {
+      let label = counter.toString();
+      if (set.warmup) label = 'W';
+      else counter++;
+
+      let weight = set.weight;
+      if (set.percentage) {
+        if (def.trainingMax == undefined) {
+          //console.error('Training max required for percentage');
+          weight = -1;
+        } else weight = Utils.round((def.trainingMax * set.weight) / 100);
+      }
+
+      const t: NormalizedSet = {
+        // TODO depending on usages not sure if 0 is the correct default here
+        weight: weight + 'lb',
+        reps: set.reps + '',
+        label: label,
+        completed: !!set.completed,
+        plates: this.calcPlatesStr(def, set.weight),
+      };
+
+      result.push(t);
+    });
+
+    return result;
+  },
+
+  calculateVolume(def: LiftDef, set: PersistedSet): number {
+    if (set.warmup == true) throw new Error('Volume calculation on warmup');
+
+    // TODO should be from global variable
+    const bodyweight = 200;
+    const weight =
+      set.weight + (def.type == LiftType.Bodyweight ? bodyweight : 0);
+    const reps = set.reps;
+
+    return weight * reps;
+  },
+
+  calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
+    if (set.warmup == true) throw new Error('1RM calculation on warmup');
+    // TODO get from settings
+    const bodyweight = 200;
+    let weight = set.weight;
+    const reps = set.reps;
+    const type = def.type;
+
+    if ('percentage' in set && set.percentage == true) {
+      weight = this.percentageToWeight(def, set);
+    }
+
+    if (type == LiftType.Bodyweight) weight += bodyweight;
+
+    const sum =
+      oneRMBrzycki(weight, reps) +
+      oneRMEpley(weight, reps) +
+      oneRMLombardi(weight, reps);
+
+    return sum / 3;
+  },
+
+  calculate1RMAverage(def: LiftDef, sets: PersistedSet[]): number {
+    let sum = 0;
+    let workSets = 0;
+
+    for (let i = 0; i < sets.length; i++) {
+      const set = sets[i];
+      if (set.warmup != true) {
+        sum += this.calculate1RM(def, set);
+        workSets++;
+      }
+    }
+
+    return sum / workSets;
+  },
+
+  percentageToWeight(def: LiftDef, set: LiftSet): number {
+    if (!def.trainingMax || !set.percentage) return -1;
+
+    return Utils.round((def.trainingMax * set.weight) / 100);
+  },
+};
+
+export function oneRMLombardi(weight: number, reps: number) {
+  return weight * Math.pow(reps, 0.1);
 }
+
+export function oneRMBrzycki(weight: number, reps: number) {
+  return weight * (36 / (37 - reps));
+}
+
+export function oneRMEpley(weight: number, reps: number): number {
+  if (reps == 1) return weight;
+  return weight * (1 + reps / 30);
+}
+
+function calcPlates(def: LiftDef, weight: number): number[] {
+  let remaining;
+  const type = def.type;
+  const result: number[] = [];
+  if (type == LiftType.Barbell || type == LiftType.MachinePlateDouble) {
+    remaining = weight;
+
+    if (def.baseWeight) remaining -= def.baseWeight;
+    else if (type == LiftType.Barbell) remaining -= 45;
+
+    while (remaining >= 90) {
+      result.push(45);
+      remaining -= 90;
+    }
+
+    if (remaining >= 50) {
+      result.push(25);
+      remaining -= 50;
+    }
+
+    while (remaining >= 20) {
+      result.push(10);
+      remaining -= 20;
+    }
+
+    if (remaining >= 10) {
+      result.push(5);
+      remaining -= 10;
+    }
+
+    if (remaining == 5) {
+      result.push(2.5);
+    }
+  } else if (type == LiftType.MachinePlateSingle) {
+    remaining = weight;
+    if (def.baseWeight) remaining -= def.baseWeight;
+
+    while (remaining >= 45) {
+      result.push(45);
+      remaining -= 45;
+    }
+
+    if (remaining >= 25) {
+      result.push(25);
+      remaining -= 25;
+    }
+
+    while (remaining >= 10) {
+      result.push(10);
+      remaining -= 10;
+    }
+
+    if (remaining >= 5) {
+      result.push(5);
+      remaining -= 5;
+    }
+
+    if (remaining == 2.5) {
+      result.push(2.5);
+    }
+  }
+
+  return result;
+}
+
+export default SetUtils;

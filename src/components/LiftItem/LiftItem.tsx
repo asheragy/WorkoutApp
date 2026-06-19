@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
 import { ReadOnlySetTable } from './ReadOnlySetTable';
 import { LiftDef } from '../../types/types.ts';
+import LiftUtils from '../../utils/LiftUtils.ts';
 
 export default function LiftItem(props: {
   lift: Lift;
@@ -78,7 +79,7 @@ function getTitle(def: LiftDef, lift: Lift): string {
   let t = Utils.defToString(def);
   if (lift.alternate) t += ' / Alt';
 
-  const goalPercent = Utils.goalPercent(def, lift);
+  const goalPercent = LiftUtils.goalPercent(def, lift);
   if (goalPercent) t += ' ' + (goalPercent * 100).toFixed(2) + '%';
 
   return t;

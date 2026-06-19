@@ -1,6 +1,7 @@
 import { LiftDef, MuscleGroup } from '../../types/types.ts';
 import { Workout } from '../../types/workout.ts';
 import Utils from '../../components/Utils.ts';
+import LiftUtils from '../../utils/LiftUtils.ts';
 
 type GoalRow = {
   id: string;
@@ -35,7 +36,7 @@ export function calcWorkoutGoals(
   Object.entries(grouped).forEach(([liftId, lifts]) => {
     const def = defs[liftId];
     const percents = lifts
-      .map(lift => Utils.goalPercent(def, lift))
+      .map(lift => LiftUtils.goalPercent(def, lift))
       .filter(x => typeof x === 'number' && !isNaN(x))
       .filter(x => x !== undefined);
 

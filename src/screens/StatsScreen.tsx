@@ -10,7 +10,6 @@ import ChartUtils, { HistoryEntry } from '../utils/ChartUtils.ts';
 import { ProgressChart } from '../components/ProgressChart.tsx';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { enumToItemsNumeric } from '../utils/EnumUtils.ts';
-import Utils from '../components/Utils.ts';
 import LiftHistoryRepository, {
   LiftHistory,
 } from '../repository/LiftHistoryRepository.ts';
@@ -123,7 +122,7 @@ async function getProgressByGroup(
     const mapped: HistoryEntry[] = history.map(x => {
       return {
         timestamp: x.timestamp,
-        value: Utils.calculate1RMAverage(defs[id], x.sets),
+        value: SetUtils.calculate1RMAverage(defs[id], x.sets),
       };
     });
 

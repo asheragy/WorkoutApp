@@ -64,11 +64,3 @@ export type GlobalSettings = {
 
 // Subset of LiftSet, what gets persisted
 export type PersistedSet = Pick<LiftSet, 'weight' | 'reps' | 'warmup'>;
-
-export type PlateCount = {
-  p45?: number;
-  p25?: number;
-  p10?: number;
-  p5?: number;
-  p2point5?: number;
-};

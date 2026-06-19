@@ -15,6 +15,8 @@ import {
 } from 'react-native-popup-menu';
 import { PersistedSetRow } from './PersistedSetRow';
 import { PersistedSetHeader } from './PersistedSetHeader';
+import SetUtils from '../../utils/SetUtils.ts';
+import LiftUtils from '../../utils/LiftUtils.ts';
 
 interface EditableLiftItemProps {
   lift: Lift;
@@ -28,7 +30,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const def = defs[props.lift.id];
-  const labels = Utils.normalizeSets(props.lift.sets, def).map(
+  const labels = SetUtils.normalizeSets(props.lift.sets, def).map(
     set => set.label,
   );
   const settings: GlobalSettings = useSelector(
@@ -114,7 +116,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  const goalPercent = Utils.goalPercent(def, props.lift);
+  const goalPercent = LiftUtils.goalPercent(def, props.lift);
 
   return (
     <View style={{ margin: 4 }}>

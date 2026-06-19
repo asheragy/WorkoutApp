@@ -23,7 +23,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
-import Utils from '../components/Utils.ts';
+import LiftUtils from '../utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
@@ -157,7 +157,7 @@ export function WorkoutScreen({ route, navigation }: Props) {
 }
 
 function getCompletedAlts(lifts: Lift[]): string[] {
-  const groups = Utils.groupLifts(lifts);
+  const groups = LiftUtils.groupLifts(lifts);
 
   const result: string[] = [];
   groups.forEach(group => {
