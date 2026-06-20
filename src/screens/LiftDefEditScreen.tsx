@@ -10,6 +10,7 @@ import { useTheme } from '@react-navigation/native';
 import { PersistedSetRow } from '../components/EditableLiftItem/PersistedSetRow.tsx';
 import { LiftSet } from '../types/workout.ts';
 import { AppState } from '../state/store.ts';
+import { NumberControl } from '../components/NumberControl.tsx';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftDefEdit'>;
 
@@ -54,6 +55,8 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
       : JSON.parse(JSON.stringify(route.params.def)),
   );
 
+  console.log(def);
+
   const [open, setOpen] = useState(false);
 
   const [primaryOpen, setPrimaryOpen] = useState(false);
@@ -67,6 +70,7 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
 
   const [type, setType] = useState(def.type);
   const [tm, setTM] = useState(def.trainingMax ? def.trainingMax : 0.0);
+  const [baseWeight, setBaseWeight] = useState(def.baseWeight ?? 0);
 
   function addGoal() {
     setDef({
@@ -96,6 +100,7 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
       ...def,
       muscleGroups: primary != null ? [primary, ...secondary] : [],
       trainingMax: tm > 0 ? tm : undefined,
+      baseWeight: baseWeight > 0 ? baseWeight : undefined,
     };
     console.log(defToSave);
 
@@ -201,6 +206,17 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
           ></PersistedSetRow>
         )}
         {!def.goal && <Button title="Add Goal" onPress={addGoal}></Button>}
+      </View>
+
+      <View style={styles.viewGroup}>
+        <Text style={{ color: colors.text }}>Base Weight</Text>
+        <NumberControl
+          precision={0}
+          value={baseWeight}
+          onChange={newValue => setBaseWeight(newValue)}
+          decrementBy={() => 5}
+          incrementBy={() => 5}
+        ></NumberControl>
       </View>
 
       {def.id.length > 0 && !def.system && (
