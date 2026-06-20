@@ -1,19 +1,25 @@
 import React from 'react';
 import { View } from 'react-native';
 import { LiftHistory } from '../../repository/LiftHistoryRepository';
-import { LiftDef, PersistedSet } from '../../types/types';
+import { GlobalSettings, LiftDef } from '../../types/types';
 import { ProgressChart } from '../../components/ProgressChart';
 import SetUtils from '../../utils/SetUtils.ts';
 
-export function LiftChartTab(props: { def: LiftDef; entries: LiftHistory[] }) {
+export function LiftChartTab(props: {
+  settings: GlobalSettings;
+  def: LiftDef;
+  entries: LiftHistory[];
+}) {
   // Needs at least 1 valid set
   const entries = props.entries.filter(x => x.sets.find(set => !set.warmup));
 
   const dates = entries.map(x => x.timestamp);
   const values = entries.map(x =>
-    SetUtils.calculate1RMAverage(props.def, x.sets),
+    SetUtils.calculate1RMAverage(props.settings, props.def, x.sets),
   );
-  const volume = entries.map(x => calculateVolume(props.def, x.sets));
+  const volume = entries.map(x =>
+    SetUtils.calculateVolume(props.settings, props.def, x.sets),
+  );
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -25,14 +31,4 @@ export function LiftChartTab(props: { def: LiftDef; entries: LiftHistory[] }) {
       ></ProgressChart>
     </View>
   );
-}
-
-function calculateVolume(def: LiftDef, sets: PersistedSet[]): number {
-  let sum = 0;
-  for (let i = 0; i < sets.length; i++) {
-    const set = sets[i];
-    if (set.warmup != true) sum += SetUtils.calculateVolume(def, set);
-  }
-
-  return sum;
 }

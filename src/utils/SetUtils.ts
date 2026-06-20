@@ -161,22 +161,33 @@ const SetUtils = {
     return result;
   },
 
-  calculateVolume(def: LiftDef, set: PersistedSet): number {
-    if (set.warmup == true) throw new Error('Volume calculation on warmup');
+  calculateVolume(
+    settings: GlobalSettings,
+    def: LiftDef,
+    sets: PersistedSet[],
+  ): number {
+    let sum = 0;
+    for (let i = 0; i < sets.length; i++) {
+      const set = sets[i];
+      if (set.warmup != true) {
+        const weight =
+          set.weight +
+          (def.type == LiftType.Bodyweight ? (settings.bodyweight ?? 0) : 0);
 
-    // TODO should be from global variable
-    const bodyweight = 200;
-    const weight =
-      set.weight + (def.type == LiftType.Bodyweight ? bodyweight : 0);
-    const reps = set.reps;
+        sum += weight * set.reps;
+      }
+    }
 
-    return weight * reps;
+    return sum;
   },
 
-  calculate1RM(def: LiftDef, set: LiftSet | PersistedSet): number {
+  calculate1RM(
+    settings: GlobalSettings,
+    def: LiftDef,
+    set: LiftSet | PersistedSet,
+  ): number {
     if (set.warmup == true) throw new Error('1RM calculation on warmup');
-    // TODO get from settings
-    const bodyweight = 200;
+
     let weight = set.weight;
     const reps = set.reps;
     const type = def.type;
@@ -185,7 +196,7 @@ const SetUtils = {
       weight = this.percentageToWeight(def, set);
     }
 
-    if (type == LiftType.Bodyweight) weight += bodyweight;
+    if (type == LiftType.Bodyweight) weight += settings.bodyweight ?? 0;
 
     const sum =
       oneRMBrzycki(weight, reps) +
@@ -195,19 +206,19 @@ const SetUtils = {
     return sum / 3;
   },
 
-  calculate1RMAverage(def: LiftDef, sets: PersistedSet[]): number {
-    let sum = 0;
-    let workSets = 0;
+  calculate1RMAverage(
+    settings: GlobalSettings,
+    def: LiftDef,
+    sets: PersistedSet[],
+  ): number {
+    const values = sets
+      .filter(x => !x.warmup)
+      .map(x => this.calculate1RM(settings, def, x));
 
-    for (let i = 0; i < sets.length; i++) {
-      const set = sets[i];
-      if (set.warmup != true) {
-        sum += this.calculate1RM(def, set);
-        workSets++;
-      }
-    }
+    if (values.length === 0) return 0;
 
-    return sum / workSets;
+    const sum = values.reduce((a, b) => a + b, 0);
+    return sum / values.length;
   },
 
   percentageToWeight(def: LiftDef, set: LiftSet): number {

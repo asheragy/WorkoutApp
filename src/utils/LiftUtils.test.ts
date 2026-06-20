@@ -67,10 +67,10 @@ test('goal percentage', () => {
       { weight: 55, reps: 15 },
     ],
   };
-  let percent = LiftUtils.goalPercent(def, lift);
+  let percent = LiftUtils.goalPercent({}, def, lift);
   expect(percent).toBeCloseTo(0.7092, 4);
 
   lift.sets[1].reps = 15;
-  percent = LiftUtils.goalPercent(def, lift);
+  percent = LiftUtils.goalPercent({}, def, lift);
   expect(percent).toBeCloseTo(0.7188, 4);
 });

@@ -30,6 +30,7 @@ type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 export function WorkoutScreen({ route, navigation }: Props) {
   const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const settings = useSelector((store: AppState) => store.settings);
   const [workout, setWorkout] = useState<Workout>({
     name: '',
     lifts: [],
@@ -135,6 +136,8 @@ export function WorkoutScreen({ route, navigation }: Props) {
       {sortedLifts.map(lift => (
         <LiftItem
           lift={lift}
+          def={defs[lift.id]}
+          settings={settings}
           onEdit={() =>
             navigation.navigate('LiftEdit', {
               workoutId: route.params.workoutId,

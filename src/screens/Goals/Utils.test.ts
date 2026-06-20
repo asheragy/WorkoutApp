@@ -44,7 +44,7 @@ test('calcWorkoutGoals', async () => {
     ],
   };
 
-  const rows = calcWorkoutGoals(TestLiftDefs, [workout]);
+  const rows = calcWorkoutGoals({}, TestLiftDefs, [workout]);
   expect(rows.length).toBe(3);
   expect(rows).toStrictEqual([
     {

@@ -263,7 +263,7 @@ test('calc 1RM', () => {
       reps: r,
     };
 
-    return Math.round(SetUtils.calculate1RM(def, set) * 10) / 10;
+    return Math.round(SetUtils.calculate1RM({}, def, set) * 10) / 10;
   });
 
   expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
@@ -285,10 +285,30 @@ test('calc 1RM percentage', () => {
       percentage: true,
     };
 
-    return Math.round(SetUtils.calculate1RM(def, set) * 10) / 10;
+    return Math.round(SetUtils.calculate1RM({}, def, set) * 10) / 10;
   });
 
   expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
+});
+
+test('calc 1RM bodyweight', () => {
+  const def: LiftDef = {
+    id: '',
+    name: '',
+    type: LiftType.Bodyweight,
+    muscleGroups: [],
+  };
+
+  const set: LiftSet = {
+    weight: 50,
+    reps: 2,
+  };
+
+  expect(SetUtils.calculate1RM({}, def, set)).toBeCloseTo(52.78, 2);
+  expect(SetUtils.calculate1RM({ bodyweight: 200 }, def, set)).toBeCloseTo(
+    263.92,
+    2,
+  );
 });
 
 test('1RM Lombardi', () => {

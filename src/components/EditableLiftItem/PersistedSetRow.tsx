@@ -256,8 +256,13 @@ export function PersistedSetRow(props: {
             >
               {props.set.warmup
                 ? ''
-                : Math.round(SetUtils.calculate1RM(props.def, props.set) * 10) /
-                  10}
+                : Math.round(
+                    SetUtils.calculate1RM(
+                      props.settings,
+                      props.def,
+                      props.set,
+                    ) * 10,
+                  ) / 10}
             </Text>
           </View>
           <View

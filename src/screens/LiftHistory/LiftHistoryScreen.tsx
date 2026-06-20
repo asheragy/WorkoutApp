@@ -10,6 +10,7 @@ import { LiftLogTab } from './LiftLogTab';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
 import Utils from '../../components/Utils';
+import { GlobalSettings } from '../../types/types.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftHistory'>;
 
@@ -18,6 +19,9 @@ const Tab = createMaterialTopTabNavigator();
 export function LiftHistoryScreen({ route, navigation }: Props) {
   const [entries, setEntries] = useState<LiftHistory[]>([]);
   const defs = useSelector((store: AppState) => store.liftDefs);
+  const settings: GlobalSettings = useSelector(
+    (store: AppState) => store.settings,
+  );
 
   const liftId = route.params.liftId;
   const def = defs[liftId];
@@ -39,7 +43,7 @@ export function LiftHistoryScreen({ route, navigation }: Props) {
         {() => <LiftLogTab entries={entries} />}
       </Tab.Screen>
       <Tab.Screen name="Charts">
-        {() => <LiftChartTab def={def} entries={entries} />}
+        {() => <LiftChartTab settings={settings} def={def} entries={entries} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

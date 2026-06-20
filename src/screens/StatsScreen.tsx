@@ -37,7 +37,7 @@ export function StatsScreen() {
   useEffect(onLoad, [value]);
 
   function onLoad() {
-    getProgressByGroup(value, defs).then(values => {
+    getProgressByGroup(settings, value, defs).then(values => {
       setProgress(values);
 
       // Faking dates since required for chart
@@ -108,6 +108,7 @@ export function StatsScreen() {
 }
 
 async function getProgressByGroup(
+  settings: GlobalSettings,
   group: MuscleGroup,
   defs: Record<string, LiftDef>,
 ): Promise<number[]> {
@@ -122,7 +123,7 @@ async function getProgressByGroup(
     const mapped: HistoryEntry[] = history.map(x => {
       return {
         timestamp: x.timestamp,
-        value: SetUtils.calculate1RMAverage(defs[id], x.sets),
+        value: SetUtils.calculate1RMAverage(settings, defs[id], x.sets),
       };
     });
 

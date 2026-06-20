@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {GlobalSettings} from '../types/types';
-import {dbReady} from './db.ts';
+import { GlobalSettings } from '../types/types';
+import { dbReady } from './db.ts';
 
 const SettingsKey = 'settings';
 
@@ -17,6 +17,7 @@ export default class SettingsRepository {
 
     result.largestHalfPoundDumbbell = 47.5;
     result.plateCount = true;
+    result.bodyweight = 200;
     return result;
   }
 

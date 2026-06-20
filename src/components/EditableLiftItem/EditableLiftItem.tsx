@@ -116,7 +116,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  const goalPercent = LiftUtils.goalPercent(def, props.lift);
+  const goalPercent = LiftUtils.goalPercent(settings, def, props.lift);
 
   return (
     <View style={{ margin: 4 }}>

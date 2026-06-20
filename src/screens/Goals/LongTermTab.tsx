@@ -6,8 +6,9 @@ import { AppState } from '../../state/store.ts';
 import { ProgressList } from './Common.tsx';
 import GoalRow from './Utils.ts';
 import SetUtils from '../../utils/SetUtils.ts';
+import { GlobalSettings } from '../../types/types.ts';
 
-export function LongTermTab() {
+export function LongTermTab(props: { settings: GlobalSettings }) {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const [goalRows, setGoalRows] = useState<GoalRow[]>([]);
 
@@ -39,12 +40,21 @@ export function LongTermTab() {
         }
 
         const sets = history.flatMap(h => h.sets).filter(set => !set.warmup);
-        const maxes = sets.map(set => SetUtils.calculate1RM(defWithGoal, set));
+        const maxes = sets.map(set =>
+          SetUtils.calculate1RM(props.settings, defWithGoal, set),
+        );
         const best = Math.max(...maxes);
 
-        const percent =
-          best / SetUtils.calculate1RM(defWithGoal, defWithGoal.goal!!);
-        result.push({ id: defWithGoal.id, name, percent });
+        if (defWithGoal.goal) {
+          const percent =
+            best /
+            SetUtils.calculate1RM(
+              props.settings,
+              defWithGoal,
+              defWithGoal.goal,
+            );
+          result.push({ id: defWithGoal.id, name, percent });
+        }
       }
 
       result.sort((a, b) => a.percent - b.percent);

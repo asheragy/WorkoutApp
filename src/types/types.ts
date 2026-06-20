@@ -60,6 +60,7 @@ export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
   plateCount?: boolean;
   routine?: string;
+  bodyweight?: number;
 };
 
 // Subset of LiftSet, what gets persisted

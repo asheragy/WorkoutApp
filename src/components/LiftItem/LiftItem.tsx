@@ -11,21 +11,19 @@ import {
 import { Lift } from '../../types/workout';
 import Utils from '../Utils';
 import { Style_LiftText } from '../Common';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../state/store';
 import { ReadOnlySetTable } from './ReadOnlySetTable';
-import { LiftDef } from '../../types/types.ts';
+import { GlobalSettings, LiftDef } from '../../types/types.ts';
 import LiftUtils from '../../utils/LiftUtils.ts';
 
 export default function LiftItem(props: {
   lift: Lift;
+  def: LiftDef;
+  settings: GlobalSettings;
   overrideComplete: boolean;
   onEdit: () => void;
   groupOrder?: number;
 }) {
   const { colors } = useTheme();
-  const defs = useSelector((store: AppState) => store.liftDefs);
-  const def = defs[props.lift.id];
 
   const completed =
     props.lift.hide ||
@@ -53,7 +51,7 @@ export default function LiftItem(props: {
       >
         <View style={{ width: '20%' }}></View>
         <Text style={[Style_LiftText, headerText, { width: '60%' }]}>
-          {getTitle(def, props.lift)}
+          {getTitle(props.def, props.lift, props.settings)}
         </Text>
         <View
           style={{
@@ -69,17 +67,17 @@ export default function LiftItem(props: {
         </View>
       </View>
       {!completed && (
-        <ReadOnlySetTable lift={props.lift} def={def}></ReadOnlySetTable>
+        <ReadOnlySetTable lift={props.lift} def={props.def}></ReadOnlySetTable>
       )}
     </View>
   );
 }
 
-function getTitle(def: LiftDef, lift: Lift): string {
+function getTitle(def: LiftDef, lift: Lift, settings: GlobalSettings): string {
   let t = Utils.defToString(def);
   if (lift.alternate) t += ' / Alt';
 
-  const goalPercent = LiftUtils.goalPercent(def, lift);
+  const goalPercent = LiftUtils.goalPercent(settings, def, lift);
   if (goalPercent) t += ' ' + (goalPercent * 100).toFixed(2) + '%';
 
   return t;

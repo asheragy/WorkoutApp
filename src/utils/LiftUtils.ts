@@ -1,7 +1,6 @@
 import { Lift } from '../types/workout.ts';
-import { LiftDef } from '../types/types.ts';
+import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
-import Utils from '../components/Utils.ts';
 
 const LiftUtils = {
   groupLifts(lifts: Lift[]): Lift[][] {
@@ -20,7 +19,11 @@ const LiftUtils = {
     return result;
   },
 
-  goalPercent(def: LiftDef, lift: Lift): undefined | number {
+  goalPercent(
+    settings: GlobalSettings,
+    def: LiftDef,
+    lift: Lift,
+  ): undefined | number {
     if (def.id != lift.id) throw new Error('Def must match lift Id');
 
     if (lift.sets.length > 0 && lift.goals && lift.goals.length > 0) {
@@ -30,8 +33,8 @@ const LiftUtils = {
       const goals = (lift.goals ?? []).map(x => SetUtils.setToPersisted(x));
 
       const percent =
-        SetUtils.calculate1RMAverage(def, sets) /
-        SetUtils.calculate1RMAverage(def, goals);
+        SetUtils.calculate1RMAverage(settings, def, sets) /
+        SetUtils.calculate1RMAverage(settings, def, goals);
 
       return percent;
     }
