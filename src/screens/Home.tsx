@@ -16,7 +16,7 @@ import { useFocusEffect, useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
 import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
-import { RootStackParamList } from '../App';
+import type { RootStackParamList } from '../App';
 import { MaterialHeaderButton } from '../components/Common';
 import { Lift, Workout } from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';

@@ -15,6 +15,7 @@ export const Lifts = createDictionary({
   // Chest
   bench_barbell: { name: "Bench Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   bench_dumbbell: { name: "Bench Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  bench_reverse: { name: "Bench Press (Reverse Grip)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   inclinePress_barbell: { name: "Incline Press", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   inclinePress_dumbbell: { name: "Incline Press", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
   inclinePress_plateMachine: { name: "Incline Press", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
@@ -34,6 +35,8 @@ export const Lifts = createDictionary({
   pulldown_hsHighRow: { name: "Pulldowns (High Row)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_plateMachine: { name: "Pulldowns", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_machine: { name: "Pulldowns", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_machineHS: { name: "Pulldowns (HammerStrength)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_highRow: { name: "Pulldowns (High Row)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pullup: { name: "Pullups", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pullup_neutral: { name: "Pullups (Neutral grip)", type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
 
@@ -54,6 +57,8 @@ export const Lifts = createDictionary({
   curl_reverse: { name: "Curls (Reverse)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Biceps] },
   curl_hammer: { name: "Curls (Hammer)", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Biceps] },
   curl_incline: { name: "Curls (Incline)", type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Biceps] },
+  curl_machine: { name: "Curls (Machine)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Biceps] },
+
   // Not a machine lift but it fits best with calculations
   curl_ezBar: { name: "Curls (EZ-bar)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Biceps] },
   curl_wrist: { name: "Curls (Wrist)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Other]},
@@ -70,12 +75,11 @@ export const Lifts = createDictionary({
   // Quads
   squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
   squat_ssb: { name: "Squat (SSB)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70, factor: 1.75 },
-  squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 60, factor: 1.5},
+  squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 65, factor: 1.5},
   squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.5 },
   squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
-  // TODO single leg should be the special case
-  legPress: { name: "Leg Press", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
-  legPress_double: { name: "Leg Press (Double)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  legPress: { name: "Leg Press", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
+  legPress_single: { name: "Leg Press (Single)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
   legExtensions: { name: "Leg Extensions", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Quads] },
 
   // Glutes

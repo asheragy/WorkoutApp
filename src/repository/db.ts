@@ -39,10 +39,12 @@ export async function migrate() {
 
 type Migration = { to: number; sql: string };
 
-/* TODO for repeat lifts per workout
-- id INTEGER PRIMARY KEY
-- INDEX (lift_id)
-- INDEX (workout_id)
+/* TODO new index
+- id TEXT NOT NULL      // lift.instanceId
+- lift_id TEXT NOT NULL // lift.id
+- PRIMARY KEY (id, timestamp)
+- INDEX (lift_id)    // Lookup lift history
+- INDEX (workout_id) // Lookup workout history
  */
 export const migrations: Migration[] = [
   {

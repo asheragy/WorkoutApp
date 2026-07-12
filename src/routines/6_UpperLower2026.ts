@@ -225,9 +225,8 @@ export const UpperLower2026: [Routine, Workout[]] = [
             { weight: 315, reps: 6 },
           ],
         },
-        // TODO should be legPress_single
         {
-          id: Lifts.legPress.id,
+          id: Lifts.legPress_single.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
             { weight: 0, reps: 0 },
@@ -318,8 +317,6 @@ export const UpperLower2026: [Routine, Workout[]] = [
             { weight: 175, reps: 13 },
           ],
         },
-        // TODO alternate reps?
-        // 135x8/10 and 185x9/11
         {
           id: Lifts.dip_machine.id,
           instanceId: Utils.generate_uuidv4(),
@@ -723,17 +720,15 @@ export const UpperLower2026: [Routine, Workout[]] = [
       name: 'Lower 3',
       lifts: [
         {
-          // TODO pick 1 of seated or laying, the other should be kneeling
-          id: Lifts.legCurl_seated.id,
+          id: Lifts.legCurl_kneeling.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 50, reps: 8 },
+            { weight: 50, reps: 10 },
           ],
           goals: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 70, reps: 8 },
+            { weight: 70, reps: 10 },
           ],
           alternate: false,
         },

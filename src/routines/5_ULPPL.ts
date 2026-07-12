@@ -1,7 +1,6 @@
-import {Routine, Workout} from '../types/workout.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {buildWorkout} from './helper.ts';
-
+import { Routine, Workout } from '../types/workout.ts';
+import { Lifts } from '../repository/LiftDatabase.ts';
+import { buildWorkout } from './helper.ts';
 
 export const ULPPL: [Routine, Workout[]] = [
   {
@@ -37,10 +36,7 @@ export const ULPPL: [Routine, Workout[]] = [
       name: 'Pull',
       lifts: [
         Lifts.row_barbell,
-        [
-          Lifts.pulldown_machine,
-          Lifts.pulldown_plateMachine,
-        ],
+        [Lifts.pulldown_machine, Lifts.pulldown_plateMachine],
         [Lifts.rdl_barbell, Lifts.backExtension],
         [Lifts.shrug_dumbbell],
         [Lifts.row_plateMachine, Lifts.row_machine], // Chest supported
@@ -56,7 +52,7 @@ export const ULPPL: [Routine, Workout[]] = [
         [Lifts.pullover_dumbbell, Lifts.pullover_machine],
         Lifts.fly_machine,
         [Lifts.reverseFly_machine, Lifts.facePull],
-        Lifts.ohp_dumbbell
+        Lifts.ohp_dumbbell,
       ],
     },
 
@@ -65,11 +61,11 @@ export const ULPPL: [Routine, Workout[]] = [
       lifts: [
         Lifts.hipAdduction,
         Lifts.hipAbduction,
-        [Lifts.squat_belt, Lifts.legPress_double],
+        [Lifts.squat_belt, Lifts.legPress],
         [Lifts.deadlift_trapbar, Lifts.deadlift_trapbar_high],
         Lifts.hipThrust,
         Lifts.legRaise,
-      ]
+      ],
     },
     {
       name: 'Deadlift',
@@ -79,7 +75,7 @@ export const ULPPL: [Routine, Workout[]] = [
           // TODO deadlift volume
         ],
         Lifts.plank,
-      ]
-    }
+      ],
+    },
   ].map(buildWorkout),
 ];
