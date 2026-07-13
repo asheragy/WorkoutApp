@@ -488,25 +488,19 @@ export const UpperLower2026: [Routine, Workout[]] = [
           id: Lifts.squat_front.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 135, reps: 6 },
+            { weight: 135, reps: 6 },
           ],
-          goals: [
-            { weight: 185, reps: 10 },
-            { weight: 225, reps: 5 },
-          ],
+          goals: [{ weight: 185, reps: 8 }],
         },
         {
           id: Lifts.squat_barbell.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 135, reps: 6 },
+            { weight: 135, reps: 6 },
           ],
-          goals: [
-            { weight: 185, reps: 10 },
-            { weight: 225, reps: 5 },
-          ],
+          goals: [{ weight: 185, reps: 8 }],
           alternate: false,
         },
         {
@@ -828,12 +822,12 @@ export const UpperLower2026: [Routine, Workout[]] = [
           id: Lifts.backExtension.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 0, reps: 12 },
+            { weight: 10, reps: 12 },
           ],
           goals: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 45, reps: 12 },
+            { weight: 45, reps: 15 },
           ],
         },
         {

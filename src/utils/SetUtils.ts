@@ -9,6 +9,7 @@ import {
 import { LiftSet, Workout } from '../types/workout';
 import Utils from '../components/Utils.ts';
 import LiftUtils from './LiftUtils.ts';
+import { Lifts } from '../repository/LiftDatabase.ts';
 
 export type WorkingSets = {
   group: string;
@@ -196,7 +197,12 @@ const SetUtils = {
       weight = this.percentageToWeight(def, set);
     }
 
-    if (type == LiftType.Bodyweight) weight += settings.bodyweight ?? 0;
+    if (type == LiftType.Bodyweight) {
+      // TODO special case, bodyweight % should be on lift def, pullups are ~65%
+      if (def.id == Lifts.backExtension.id)
+        weight += (settings.bodyweight ?? 0) / 2;
+      else weight += settings.bodyweight ?? 0;
+    }
 
     const sum =
       oneRMBrzycki(weight, reps) +

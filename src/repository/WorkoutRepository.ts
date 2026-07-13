@@ -23,13 +23,6 @@ export default class WorkoutRepository {
     const all = await this.getAll();
     if (routine && all.filter(x => x.routineId == routine).length == 0) {
       const preloaded = findPreloaded(routine);
-
-      // TODO temp
-      if (routine == UpperLower2026[0].id) {
-        console.log('Returning reploaded');
-        return preloaded;
-      }
-
       if (preloaded.length > 0) {
         console.log(`Saving predefined routine ${routine}`);
         const workouts: Workout[] = preloaded.map(x => {
@@ -117,17 +110,12 @@ export default class WorkoutRepository {
     let json: Workout[] = JSON.parse(value);
 
     // Fix deserialized date
-    // TODO temp instanceId should not need to be correct here long term
     json = json.map(wo => {
       const result: Workout = {
         ...wo,
         lastCompleted: wo.lastCompleted
           ? new Date(wo.lastCompleted)
           : undefined,
-        lifts: wo.lifts.map(lift => ({
-          ...lift,
-          instanceId: lift.instanceId ?? Utils.generate_uuidv4(),
-        })),
       };
       return result;
     });

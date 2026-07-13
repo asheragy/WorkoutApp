@@ -1,8 +1,8 @@
 import React from 'react';
-import {Dimensions, Text, View} from 'react-native';
-import {LineChart} from 'react-native-chart-kit';
-import {useTheme} from '@react-navigation/native';
-import {Dataset} from 'react-native-chart-kit/dist/HelperTypes';
+import { Dimensions, Text, View } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
+import { useTheme } from '@react-navigation/native';
+import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
 
 export function ProgressChart(props: {
   title?: string;
@@ -13,10 +13,10 @@ export function ProgressChart(props: {
   if (props.dates.length == 0) return <View></View>;
 
   const datasets: Dataset[] = Array.isArray(props.values[0])
-    ? (props.values as number[][]).map(x => ({data: x}))
-    : [{data: props.values as number[]}];
+    ? (props.values as number[][]).map(x => ({ data: x }))
+    : [{ data: props.values as number[] }];
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const maxDates = 10;
   const mod = Math.ceil(props.dates.length / maxDates);
   const labels = props.dates.map((date, index) => {
@@ -26,7 +26,6 @@ export function ProgressChart(props: {
 
     return date.getMonth() + 1 + '/' + date.getDate();
   });
-  console.log(mod);
 
   // https://www.npmjs.com/package/react-native-chart-kit
   return (
@@ -35,8 +34,9 @@ export function ProgressChart(props: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-      }}>
-      <Text style={{color: colors.text}}>{props.title}</Text>
+      }}
+    >
+      <Text style={{ color: colors.text }}>{props.title}</Text>
       <LineChart
         data={{
           labels: labels,
