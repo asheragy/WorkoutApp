@@ -9,6 +9,103 @@ export const UpperLower2026: [Routine, Workout[]] = [
   },
   [
     {
+      id: 'l1',
+      name: 'Lower 1',
+      lifts: [
+        {
+          id: Lifts.hipAdduction.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 100, reps: 15 },
+            { weight: 110, reps: 15 },
+            { weight: 115, reps: 15 },
+          ],
+          goals: [
+            { weight: 145, reps: 15 },
+            { weight: 160, reps: 15 },
+          ],
+        },
+        {
+          id: Lifts.hipAbduction.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 90, reps: 15 },
+            { weight: 95, reps: 15 },
+            { weight: 105, reps: 15 },
+          ],
+          goals: [
+            { weight: 130, reps: 15 },
+            { weight: 145, reps: 15 },
+          ],
+        },
+        {
+          id: Lifts.legExtensions.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+          goals: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+        },
+        {
+          id: Lifts.deadlift_barbell.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 225, reps: 5 },
+            { weight: 195, reps: 10 },
+          ],
+          goals: [
+            { weight: 275, reps: 10 },
+            { weight: 315, reps: 6 },
+          ],
+        },
+        {
+          id: Lifts.legPress_single.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+          goals: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+        },
+        {
+          id: Lifts.splitSquat.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+          // No goal just high rep and some weight
+          alternate: false,
+        },
+        {
+          id: Lifts.calfRaise_seatedStack.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+        },
+        {
+          id: Lifts.plank.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+        },
+      ],
+    },
+    {
       id: 'u1',
       name: 'Upper 1',
       lifts: [
@@ -171,35 +268,9 @@ export const UpperLower2026: [Routine, Workout[]] = [
       ],
     },
     {
-      id: 'l1',
-      name: 'Lower 1',
+      id: 'l2',
+      name: 'Lower 2',
       lifts: [
-        {
-          id: Lifts.hipAdduction.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 100, reps: 15 },
-            { weight: 110, reps: 15 },
-            { weight: 115, reps: 15 },
-          ],
-          goals: [
-            { weight: 145, reps: 15 },
-            { weight: 160, reps: 15 },
-          ],
-        },
-        {
-          id: Lifts.hipAbduction.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 90, reps: 15 },
-            { weight: 95, reps: 15 },
-            { weight: 105, reps: 15 },
-          ],
-          goals: [
-            { weight: 130, reps: 15 },
-            { weight: 145, reps: 15 },
-          ],
-        },
         {
           id: Lifts.legExtensions.id,
           instanceId: Utils.generate_uuidv4(),
@@ -214,21 +285,10 @@ export const UpperLower2026: [Routine, Workout[]] = [
           ],
         },
         {
-          id: Lifts.deadlift_barbell.id,
+          id: Lifts.legCurl_laying.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 225, reps: 5 },
-            { weight: 195, reps: 10 },
-          ],
-          goals: [
-            { weight: 275, reps: 10 },
-            { weight: 315, reps: 6 },
-          ],
-        },
-        {
-          id: Lifts.legPress_single.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
+            { weight: 0, reps: 0 },
             { weight: 0, reps: 0 },
             { weight: 0, reps: 0 },
           ],
@@ -238,26 +298,61 @@ export const UpperLower2026: [Routine, Workout[]] = [
           ],
         },
         {
-          id: Lifts.splitSquat.id,
+          id: Lifts.squat_front.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 135, reps: 6 },
+            { weight: 135, reps: 6 },
           ],
-          // No goal just high rep and some weight
+          goals: [{ weight: 185, reps: 8 }],
+        },
+        {
+          id: Lifts.squat_barbell.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 135, reps: 6 },
+            { weight: 135, reps: 6 },
+          ],
+          goals: [{ weight: 185, reps: 8 }],
           alternate: false,
         },
         {
-          id: Lifts.calfRaise_seatedStack.id,
+          id: Lifts.rdl_barbell.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 155, reps: 8 },
+            { weight: 155, reps: 10 },
+          ],
+          goals: [
+            { weight: 205, reps: 12 },
+            { weight: 225, reps: 8 },
           ],
         },
         {
-          id: Lifts.plank.id,
+          id: Lifts.deadlift_deficit.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 165, reps: 7 },
+            { weight: 165, reps: 10 },
+          ],
+          goals: [{ weight: 225, reps: 10 }],
+          alternate: false,
+        },
+        {
+          id: Lifts.calfRaise_seated.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 55, reps: 11 },
+            { weight: 55, reps: 11 },
+            { weight: 55, reps: 14 },
+          ],
+          goals: [
+            { weight: 80, reps: 10 },
+            { weight: 80, reps: 12 },
+          ],
+        },
+        {
+          id: Lifts.legRaise.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
             { weight: 0, reps: 0 },
@@ -455,68 +550,71 @@ export const UpperLower2026: [Routine, Workout[]] = [
       ],
     },
     {
-      id: 'l2',
-      name: 'Lower 2',
+      id: 'l3',
+      name: 'Lower 3',
       lifts: [
         {
-          id: Lifts.legExtensions.id,
+          id: Lifts.legCurl_kneeling.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 50, reps: 8 },
+            { weight: 50, reps: 10 },
           ],
           goals: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
+            { weight: 70, reps: 8 },
+            { weight: 70, reps: 10 },
           ],
-        },
-        {
-          id: Lifts.legCurl_laying.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-          ],
-          goals: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-          ],
-        },
-        {
-          id: Lifts.squat_front.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 135, reps: 6 },
-            { weight: 135, reps: 6 },
-          ],
-          goals: [{ weight: 185, reps: 8 }],
-        },
-        {
-          id: Lifts.squat_barbell.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 135, reps: 6 },
-            { weight: 135, reps: 6 },
-          ],
-          goals: [{ weight: 185, reps: 8 }],
           alternate: false,
         },
         {
-          id: Lifts.rdl_barbell.id,
+          id: Lifts.legPress.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 155, reps: 8 },
-            { weight: 155, reps: 10 },
+            { weight: 210, reps: 10 },
+            { weight: 180, reps: 15 },
           ],
           goals: [
-            { weight: 205, reps: 12 },
-            { weight: 225, reps: 8 },
+            { weight: 300, reps: 10 },
+            { weight: 250, reps: 15 },
           ],
         },
         {
-          id: Lifts.deadlift_deficit.id,
+          id: Lifts.squat_belt.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 150, reps: 7 },
+            { weight: 150, reps: 10 },
+          ],
+          goals: [
+            { weight: 210, reps: 8 },
+            { weight: 210, reps: 10 },
+          ],
+          alternate: false,
+        },
+        {
+          id: Lifts.squat_v.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+          // No goal but 45+10 x 10 would be good
+          alternate: true,
+        },
+        {
+          id: Lifts.deadlift_trapbar.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 190, reps: 6 },
+            { weight: 190, reps: 9 },
+          ],
+          goals: [
+            { weight: 260, reps: 8 },
+            { weight: 260, reps: 10 },
+          ],
+        },
+        {
+          id: Lifts.deadlift_sumo.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
             { weight: 165, reps: 7 },
@@ -526,20 +624,54 @@ export const UpperLower2026: [Routine, Workout[]] = [
           alternate: false,
         },
         {
-          id: Lifts.calfRaise_seated.id,
+          id: Lifts.hipThrust.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
-            { weight: 55, reps: 11 },
-            { weight: 55, reps: 11 },
-            { weight: 55, reps: 14 },
+            { weight: 80, reps: 8 },
+            { weight: 80, reps: 11 },
           ],
           goals: [
-            { weight: 80, reps: 10 },
-            { weight: 80, reps: 12 },
+            { weight: 115, reps: 8 },
+            { weight: 115, reps: 10 },
           ],
         },
         {
-          id: Lifts.legRaise.id,
+          id: Lifts.gluteKickback.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 0 },
+            { weight: 0, reps: 0 },
+          ],
+          // No goal, machine questionable
+          alternate: false,
+        },
+        {
+          id: Lifts.calfRaise_standing.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 5, reps: 10 },
+            { weight: 5, reps: 10 },
+            { weight: 5, reps: 12 },
+          ],
+          goals: [
+            { weight: 70, reps: 10 },
+            { weight: 70, reps: 12 },
+          ],
+        },
+        {
+          id: Lifts.backExtension.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 0, reps: 12 },
+            { weight: 10, reps: 12 },
+          ],
+          goals: [
+            { weight: 45, reps: 12 },
+            { weight: 45, reps: 15 },
+          ],
+        },
+        {
+          id: Lifts.elevateCore.id,
           instanceId: Utils.generate_uuidv4(),
           sets: [
             { weight: 0, reps: 0 },
@@ -706,138 +838,6 @@ export const UpperLower2026: [Routine, Workout[]] = [
             { weight: 70, reps: 12 },
           ],
           alternate: false,
-        },
-      ],
-    },
-    {
-      id: 'l3',
-      name: 'Lower 3',
-      lifts: [
-        {
-          id: Lifts.legCurl_kneeling.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 50, reps: 8 },
-            { weight: 50, reps: 10 },
-          ],
-          goals: [
-            { weight: 70, reps: 8 },
-            { weight: 70, reps: 10 },
-          ],
-          alternate: false,
-        },
-        {
-          id: Lifts.legPress.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 210, reps: 10 },
-            { weight: 180, reps: 15 },
-          ],
-          goals: [
-            { weight: 300, reps: 10 },
-            { weight: 250, reps: 15 },
-          ],
-        },
-        {
-          id: Lifts.squat_belt.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 150, reps: 7 },
-            { weight: 150, reps: 10 },
-          ],
-          goals: [
-            { weight: 210, reps: 8 },
-            { weight: 210, reps: 10 },
-          ],
-          alternate: false,
-        },
-        {
-          id: Lifts.squat_v.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-          ],
-          // No goal but 45+10 x 10 would be good
-          alternate: true,
-        },
-        {
-          id: Lifts.deadlift_trapbar.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 190, reps: 6 },
-            { weight: 190, reps: 9 },
-          ],
-          goals: [
-            { weight: 260, reps: 8 },
-            { weight: 260, reps: 10 },
-          ],
-        },
-        {
-          id: Lifts.deadlift_sumo.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 165, reps: 7 },
-            { weight: 165, reps: 10 },
-          ],
-          goals: [{ weight: 225, reps: 10 }],
-          alternate: false,
-        },
-        {
-          id: Lifts.hipThrust.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 80, reps: 8 },
-            { weight: 80, reps: 11 },
-          ],
-          goals: [
-            { weight: 115, reps: 8 },
-            { weight: 115, reps: 10 },
-          ],
-        },
-        {
-          id: Lifts.gluteKickback.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-          ],
-          // No goal, machine questionable
-          alternate: false,
-        },
-        {
-          id: Lifts.calfRaise_standing.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 5, reps: 10 },
-            { weight: 5, reps: 10 },
-            { weight: 5, reps: 12 },
-          ],
-          goals: [
-            { weight: 70, reps: 10 },
-            { weight: 70, reps: 12 },
-          ],
-        },
-        {
-          id: Lifts.backExtension.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 0, reps: 12 },
-            { weight: 10, reps: 12 },
-          ],
-          goals: [
-            { weight: 45, reps: 12 },
-            { weight: 45, reps: 15 },
-          ],
-        },
-        {
-          id: Lifts.elevateCore.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-            { weight: 0, reps: 0 },
-          ],
         },
       ],
     },
