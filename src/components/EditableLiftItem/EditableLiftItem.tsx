@@ -117,6 +117,10 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   }
 
   const goalPercent = LiftUtils.goalPercent(settings, def, props.lift);
+  const setMaxes = props.lift.sets
+    .filter(x => !x.warmup)
+    .map(x => SetUtils.calculate1RM(settings, def, x));
+  const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
 
   return (
     <View style={{ margin: 4 }}>
@@ -211,6 +215,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               showCompleteCheckbox={true}
               onDelete={() => onRemoveSet(index)}
               onChange={set => onSetChange(index, set)}
+              top1RM={top1RM}
             ></PersistedSetRow>
           ))}
           <View

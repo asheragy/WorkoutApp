@@ -27,6 +27,7 @@ export function PersistedSetRow(props: {
   showPlates?: boolean;
   onChange: (updatedSet: LiftSet) => void;
   onDelete: () => void;
+  top1RM?: number;
 }) {
   const { colors } = useTheme();
 
@@ -109,6 +110,8 @@ export function PersistedSetRow(props: {
 
   const disablePercentage =
     !props.set.percentage && props.def.trainingMax == undefined;
+
+  const set1RM = SetUtils.calculate1RM(props.settings, props.def, props.set);
 
   return (
     <GestureHandlerRootView style={{ padding: 2 }}>
@@ -255,14 +258,10 @@ export function PersistedSetRow(props: {
               }}
             >
               {props.set.warmup
-                ? ''
-                : Math.round(
-                    SetUtils.calculate1RM(
-                      props.settings,
-                      props.def,
-                      props.set,
-                    ) * 10,
-                  ) / 10}
+                ? props.top1RM
+                  ? Math.round((100 * set1RM) / props.top1RM) + '%'
+                  : ''
+                : Math.round(set1RM * 10) / 10}
             </Text>
           </View>
           <View

@@ -187,8 +187,6 @@ const SetUtils = {
     def: LiftDef,
     set: LiftSet | PersistedSet,
   ): number {
-    if (set.warmup == true) throw new Error('1RM calculation on warmup');
-
     let weight = set.weight;
     const reps = set.reps;
     const type = def.type;

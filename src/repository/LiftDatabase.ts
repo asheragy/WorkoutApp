@@ -137,6 +137,10 @@ const goals: Record<string, PersistedSet> = {
     weight: 315,
     reps: 1,
   },
+  [Lifts.bench_closegrip.id]: {
+    weight: 295,
+    reps: 1,
+  },
   [Lifts.inclinePress_barbell.id]: {
     weight: 275,
     reps: 1,
@@ -145,9 +149,17 @@ const goals: Record<string, PersistedSet> = {
     weight: 205,
     reps: 1,
   },
+  [Lifts.ohp_seated.id]: {
+    weight: 225,
+    reps: 1,
+  },
   [Lifts.row_barbell.id]: {
     weight: 225,
     reps: 10,
+  },
+  [Lifts.pullup.id]: {
+    weight: 45,
+    reps: 5,
   },
   [Lifts.hipThrust.id]: {
     weight: 135,
@@ -161,12 +173,12 @@ const goals: Record<string, PersistedSet> = {
     weight: 500,
     reps: 1,
   },
-  [Lifts.deadlift_trapbar.id]: {
-    weight: 455 + 15,
+  [Lifts.deadlift_deficit.id]: {
+    weight: 405,
     reps: 1,
   },
-  [Lifts.deadlift_trapbar_high.id]: {
-    weight: 545 + 15,
+  [Lifts.deadlift_trapbar.id]: {
+    weight: 455 + 15,
     reps: 1,
   },
   [Lifts.deadlift_sumo.id]: {
