@@ -182,6 +182,24 @@ test('working sets', () => {
     { group: 'Glutes', sets: 0.3125 },
     { group: 'Total', sets: 1.25 },
   ]);
+
+  // Combined
+  workout = {
+    name: '',
+    lifts: [
+      lift(Lifts.legCurl_seated.id, 0),
+      lift(Lifts.deadlift_barbell.id, 2),
+      lift(Lifts.squat_barbell.id, 2),
+    ],
+  };
+  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  expect(sets).toStrictEqual([
+    { group: 'Hamstrings', sets: 1 },
+    { group: 'Glutes', sets: 3.166666666666667 },
+    { group: 'LowerBack', sets: 1 },
+    { group: 'Quads', sets: 2.3333333333333335 },
+    { group: 'Total', sets: 7.5 },
+  ]);
 });
 
 test('plate calculator', () => {

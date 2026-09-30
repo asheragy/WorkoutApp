@@ -37,6 +37,9 @@ export function StatsScreen() {
   useEffect(onLoad, [value]);
 
   function onLoad() {
+    getCycleDates(settings).then(dates => {
+      console.log(dates);
+    });
     getProgressByGroup(settings, value, defs).then(values => {
       setProgress(values);
 
@@ -105,6 +108,29 @@ export function StatsScreen() {
       <ProgressChart dates={progressDates} values={progress} />
     </View>
   );
+}
+
+async function getCycleDates(settings: GlobalSettings): Promise<Date[]> {
+  const currentRoutine = await WorkoutRepository.getRoutine(settings.routine);
+  const cycleCount = currentRoutine.length;
+  const workoutIds = currentRoutine.map(x => x.id ?? '');
+  const completedWorkouts = await WorkoutRepository.listCompletedWorkouts();
+  const activeWorkouts = completedWorkouts.filter(x =>
+    workoutIds.includes(x.workoutId),
+  );
+
+  const result: Date[] = [];
+  if (activeWorkouts.length < cycleCount) return result;
+
+  activeWorkouts.forEach(x => console.log(x));
+
+  for (let i = 0; i < activeWorkouts.length; i += cycleCount) {
+    const cycleEnd = i + cycleCount - 1;
+    if (cycleEnd < activeWorkouts.length)
+      result.push(activeWorkouts[cycleEnd].timestamp);
+  }
+
+  return result;
 }
 
 async function getProgressByGroup(

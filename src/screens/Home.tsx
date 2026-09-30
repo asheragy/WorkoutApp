@@ -23,6 +23,7 @@ import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
+import SetUtils from '../utils/SetUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
@@ -162,6 +163,9 @@ interface WorkoutItemProps {
 
 function WorkoutListItem({ workout }: WorkoutItemProps) {
   const { colors } = useTheme();
+  const defs = useSelector((store: AppState) => store.liftDefs);
+  const workSets = SetUtils.getWorkingSets(defs, [...[workout]]);
+  const sets = workSets.filter(x => x.group == 'Total')[0].sets;
 
   return (
     <View style={[styles.workoutItem, { backgroundColor: colors.card }]}>
@@ -175,6 +179,9 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
           <LiftItem lift={lift} key={lift.instanceId}></LiftItem>
         ))}
       <Text style={{ paddingTop: 8, color: colors.text }}>
+        {Math.round(sets) + ' Sets'}
+      </Text>
+      <Text style={{ color: colors.text }}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
       </Text>
     </View>

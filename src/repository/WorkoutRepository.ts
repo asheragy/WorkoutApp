@@ -3,8 +3,14 @@ import { Workout } from '../types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
 import { UpperLower2026 } from '../routines/6_UpperLower2026.ts';
+import { db } from './db.ts';
 
 const key = 'workouts';
+
+export type CompletedWorkout = {
+  workoutId: string;
+  timestamp: Date;
+};
 
 export default class WorkoutRepository {
   static async get(id: string): Promise<Workout | undefined> {
@@ -139,6 +145,23 @@ export default class WorkoutRepository {
 
     items = items.filter(x => x.id != workoutId);
     await AsyncStorage.setItem(key, JSON.stringify(items));
+  }
+
+  static async listCompletedWorkouts(): Promise<CompletedWorkout[]> {
+    const rows = await db.executeRaw(
+      `
+        SELECT workout_id, timestamp
+        FROM lift_history
+        GROUP BY workout_id, timestamp
+        ORDER BY timestamp ASC
+      `,
+      [],
+    );
+
+    return rows.map(row => ({
+      workoutId: row[0],
+      timestamp: new Date(row[1]),
+    }));
   }
 
   private static async insert(workout: Workout) {
