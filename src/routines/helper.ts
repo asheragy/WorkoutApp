@@ -10,6 +10,8 @@ type WorkoutBuilder = {
 
 export function buildWorkout(builder: WorkoutBuilder): Workout {
   return {
+    // TODO this could be passed in via builder
+    routineId: '', // Set later
     name: builder.name,
     lifts: builder.lifts.flatMap(mapIds),
   };

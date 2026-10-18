@@ -1,6 +1,7 @@
-import {GlobalSettings, LiftDef} from '../types/types';
-import {configureStore} from '@reduxjs/toolkit';
-import {TypedUseSelectorHook, useSelector} from 'react-redux';
+import { GlobalSettings, LiftDef } from '../types/types';
+import { DEFAULT_ROUTINE } from '../types/workout';
+import { configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
 interface UpdateLiftDefAction {
   type: 'UPDATE_LIFTDEFS';
@@ -30,7 +31,9 @@ export interface AppState {
 }
 
 const initialState: AppState = {
-  settings: {},
+  settings: {
+    routine: DEFAULT_ROUTINE,
+  },
   liftDefs: {},
 };
 
@@ -39,15 +42,15 @@ export type AppAction = UpdateLiftDefAction | UpdateSettingsAction;
 const rootReducer = (state = initialState, action: AppAction): AppState => {
   switch (action.type) {
     case 'UPDATE_SETTINGS':
-      return {...state, settings: action.payload};
+      return { ...state, settings: action.payload };
     case 'UPDATE_LIFTDEFS':
-      return {...state, liftDefs: action.payload};
+      return { ...state, liftDefs: action.payload };
     default:
       return state;
   }
 };
 
-export const store = configureStore({reducer: rootReducer});
+export const store = configureStore({ reducer: rootReducer });
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

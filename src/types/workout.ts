@@ -1,11 +1,13 @@
+export const DEFAULT_ROUTINE = 'default';
+
 export type Routine = {
-  id?: string;
+  id: string;
   title: string;
 };
 
 export type Workout = {
   id?: string;
-  routineId?: string;
+  routineId: string;
   lastCompleted?: Date;
   name: string;
   lifts: Lift[];

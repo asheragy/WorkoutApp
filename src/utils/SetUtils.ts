@@ -183,7 +183,7 @@ const SetUtils = {
   },
 
   calculate1RM(
-    settings: GlobalSettings,
+    settings: Pick<GlobalSettings, 'bodyweight'>,
     def: LiftDef,
     set: LiftSet | PersistedSet,
   ): number {
@@ -211,7 +211,7 @@ const SetUtils = {
   },
 
   calculate1RMAverage(
-    settings: GlobalSettings,
+    settings: Pick<GlobalSettings, 'bodyweight'>,
     def: LiftDef,
     sets: PersistedSet[],
   ): number {

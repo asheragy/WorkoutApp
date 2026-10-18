@@ -6,6 +6,7 @@ import { calcWorkoutGoals } from './Utils.ts';
 test('calcWorkoutGoals', async () => {
   const workout: Workout = {
     name: '',
+    routineId: '',
     lifts: [
       {
         id: Lifts.squat_front.id,

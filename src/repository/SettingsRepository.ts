@@ -1,20 +1,25 @@
 import { GlobalSettings } from '../types/types';
 import { db, dbReady } from './db.ts';
+import { DEFAULT_ROUTINE } from '../types/workout';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {
     await dbReady(); // 1 of 2 locations to ensure db is initialized
 
-    const result: GlobalSettings = {};
+    const result: GlobalSettings = {
+      routine: DEFAULT_ROUTINE,
+      largestHalfPoundDumbbell: 47.5,
+      plateCount: true,
+      bodyweight: 200,
+    };
+
     const rows = await db.executeRaw('SELECT key, value_json FROM settings');
 
+    const writable = result as Record<string, unknown>;
     for (const [key, valueJson] of rows) {
-      result[key as keyof GlobalSettings] = JSON.parse(valueJson as string);
+      writable[key as string] = JSON.parse(valueJson as string);
     }
 
-    result.largestHalfPoundDumbbell ??= 47.5;
-    result.plateCount ??= true;
-    result.bodyweight ??= 200;
     return result;
   }
 

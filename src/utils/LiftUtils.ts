@@ -20,7 +20,7 @@ const LiftUtils = {
   },
 
   goalPercent(
-    settings: GlobalSettings,
+    settings: Pick<GlobalSettings, 'bodyweight'>,
     def: LiftDef,
     lift: Lift,
   ): undefined | number {

@@ -12,7 +12,7 @@ type GoalRow = {
 export default GoalRow;
 
 export function calcWorkoutGoals(
-  settings: GlobalSettings,
+  settings: Pick<GlobalSettings, 'bodyweight'>,
   defs: Record<string, LiftDef>,
   workouts: Workout[],
 ): GoalRow[] {

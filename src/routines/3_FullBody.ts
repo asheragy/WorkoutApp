@@ -2,15 +2,18 @@ import { Routine, Workout } from '../types/workout.ts';
 import { Lifts } from '../repository/LiftDatabase.ts';
 import Utils from '../components/Utils.ts';
 
+const ROUTINE_ID = 'fullBody3';
+
 export const FullBody_3day: [Routine, Workout[]] = [
   {
-    id: 'fullBody3',
+    id: ROUTINE_ID,
     title: '3-day Full Body',
   },
   [
     {
       id: 'd1',
       name: 'Legs',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.hipAdduction.id,
@@ -126,6 +129,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
     {
       id: 'misc',
       name: 'Misc',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.pullover_dumbbell.id,
@@ -172,6 +176,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
     {
       id: 'push',
       name: 'Push',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.bench_barbell.id,
@@ -258,6 +263,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
     {
       id: 'pull',
       name: 'Pull',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.pullup.id,

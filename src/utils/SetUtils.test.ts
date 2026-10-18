@@ -10,6 +10,7 @@ import SetUtils, {
 
 test('increment/decrement dumbbell - maxSet', () => {
   const settings: GlobalSettings = {
+    routine: '',
     largestHalfPoundDumbbell: 47.5,
   };
   const liftType = LiftType.Dumbbell;
@@ -106,6 +107,7 @@ test('setsPerGroup', () => {
 test('working sets', () => {
   let workout: Workout = {
     name: '',
+    routineId: '',
     lifts: [lift(Lifts.bench_barbell.id, 3)],
   };
 
@@ -118,6 +120,7 @@ test('working sets', () => {
 
   workout = {
     name: '',
+    routineId: '',
     lifts: [lift(Lifts.bench_barbell.id, 3), lift(Lifts.bench_dumbbell.id, 1)],
   };
   sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
@@ -130,6 +133,7 @@ test('working sets', () => {
   // Alternate is averaged
   workout = {
     name: '',
+    routineId: '',
     lifts: [
       lift(Lifts.bench_barbell.id, 3),
       lift(Lifts.bench_dumbbell.id, 1, true),
@@ -144,6 +148,7 @@ test('working sets', () => {
 
   workout = {
     name: '',
+    routineId: '',
     lifts: [
       lift(Lifts.bench_barbell.id, 2),
       lift(Lifts.squat_barbell.id, 3, true),
@@ -161,6 +166,7 @@ test('working sets', () => {
   // Factor
   workout = {
     name: '',
+    routineId: '',
     lifts: [lift(Lifts.deadlift_barbell.id, 1)],
   };
   sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
@@ -173,6 +179,7 @@ test('working sets', () => {
 
   workout = {
     name: '',
+    routineId: '',
     lifts: [lift(Lifts.backExtension.id, 1)],
   };
   sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
@@ -186,6 +193,7 @@ test('working sets', () => {
   // Combined
   workout = {
     name: '',
+    routineId: '',
     lifts: [
       lift(Lifts.legCurl_seated.id, 0),
       lift(Lifts.deadlift_barbell.id, 2),
@@ -218,7 +226,7 @@ test('plate calculator', () => {
   // Single plate loaded
   expect(SetUtils.calcPlatesStr(Lifts.calfRaise_seated, 90)).toEqual('|45|45|');
   // Double
-  expect(SetUtils.calcPlatesStr(Lifts.legPress, 180)).toEqual('|45|45|');
+  expect(SetUtils.calcPlatesStr(Lifts.legPress, 280)).toEqual('|45|45|');
 });
 
 test('plate calculator - baseWeight override', () => {

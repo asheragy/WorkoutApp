@@ -54,7 +54,7 @@ export type NormalizedSet = {
 export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
   plateCount?: boolean;
-  routine?: string;
+  routine: string;
   bodyweight?: number;
 };
 

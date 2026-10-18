@@ -2,15 +2,17 @@ import { Routine, Workout } from '../types/workout.ts';
 import { Lifts } from '../repository/LiftDatabase.ts';
 import Utils from '../components/Utils.ts';
 
+const ROUTINE_ID = 'upperLower2026';
 export const UpperLower2026: [Routine, Workout[]] = [
   {
-    id: 'upperLower2026',
+    id: ROUTINE_ID,
     title: '6-day Upper Lower',
   },
   [
     {
       id: 'l1',
       name: 'Lower 1',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.hipAdduction.id,
@@ -108,6 +110,7 @@ export const UpperLower2026: [Routine, Workout[]] = [
     {
       id: 'u1',
       name: 'Upper 1',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.inclinePress_barbell.id,
@@ -270,6 +273,7 @@ export const UpperLower2026: [Routine, Workout[]] = [
     {
       id: 'l2',
       name: 'Lower 2',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.legExtensions.id,
@@ -365,6 +369,7 @@ export const UpperLower2026: [Routine, Workout[]] = [
     {
       id: 'u2',
       name: 'Upper 2',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.ohp_barbell.id,
@@ -552,6 +557,7 @@ export const UpperLower2026: [Routine, Workout[]] = [
     {
       id: 'l3',
       name: 'Lower 3',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.legCurl_kneeling.id,
@@ -684,6 +690,7 @@ export const UpperLower2026: [Routine, Workout[]] = [
     {
       id: 'u3',
       name: 'Upper 3',
+      routineId: ROUTINE_ID,
       lifts: [
         {
           id: Lifts.bench_dumbbell.id,

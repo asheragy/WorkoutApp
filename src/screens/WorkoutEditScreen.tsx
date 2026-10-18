@@ -21,15 +21,17 @@ import DraggableFlatList, {
 type Props = StackScreenProps<RootStackParamList, 'WorkoutEdit'>;
 
 export function WorkoutEditScreen({ route, navigation }: Props) {
-  const [workout, setWorkout] = useState<Workout>({
-    name: 'Workout Title',
-    lifts: [],
-  });
   const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings: GlobalSettings = useSelector(
     (store: AppState) => store.settings,
   );
+
+  const [workout, setWorkout] = useState<Workout>({
+    name: 'Workout Title',
+    lifts: [],
+    routineId: settings.routine,
+  });
 
   function loadState() {
     if (route.params.workoutId) {
@@ -67,10 +69,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
       return;
     }
 
-    const workoutToSave: Workout = {
-      ...workout,
-      routineId: workout.routineId ?? settings.routine,
-    };
+    const workoutToSave: Workout = { ...workout };
 
     try {
       await WorkoutRepository.upsert(workoutToSave);

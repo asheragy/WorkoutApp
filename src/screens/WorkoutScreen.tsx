@@ -31,7 +31,9 @@ export function WorkoutScreen({ route, navigation }: Props) {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings = useSelector((store: AppState) => store.settings);
   const [workout, setWorkout] = useState<Workout>({
+    // TODO should just be undefined to start?
     name: '',
+    routineId: '',
     lifts: [],
   });
 

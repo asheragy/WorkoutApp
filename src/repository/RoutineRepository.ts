@@ -1,4 +1,4 @@
-import { Routine } from '../types/workout';
+import { DEFAULT_ROUTINE, Routine } from '../types/workout';
 import { UpperLower } from '../routines/4_UpperLower.ts';
 import { YatesSplit } from '../routines/4_Yates.ts';
 import { PPL_3Day } from '../routines/3_PPL.ts';
@@ -41,6 +41,9 @@ export default class RoutineRepository {
     return result;
      */
 
-    return [{ title: 'Default' }, ...PreLoadedRoutines.map(x => x[0])];
+    return [
+      { id: DEFAULT_ROUTINE, title: 'Default' },
+      ...PreLoadedRoutines.map(x => x[0]),
+    ];
   }
 }
