@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
-import { AccessoryView } from '../components/Accessories';
 import { Lift, Workout } from '../types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
@@ -149,9 +148,6 @@ export function WorkoutScreen({ route, navigation }: Props) {
         ></LiftItem>
       ))}
 
-      {workout.accessories != null && (
-        <AccessoryView accessories={workout.accessories}></AccessoryView>
-      )}
       <View style={styles.bottom}>
         <Button title="Complete" onPress={() => confirmComplete()}></Button>
       </View>

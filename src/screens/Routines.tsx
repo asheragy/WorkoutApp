@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {StackScreenProps} from '@react-navigation/stack';
-import {RootStackParamList} from '../App';
+import React, { useEffect, useState } from 'react';
+import { StackScreenProps } from '@react-navigation/stack';
+import { RootStackParamList } from '../App';
 import {
   Alert,
   FlatList,
@@ -9,17 +9,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Routine} from '../types/workout';
+import { Routine } from '../types/workout';
 import RoutineRepository from '../repository/RoutineRepository';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
 
 type Props = StackScreenProps<RootStackParamList, 'Routines'>;
 
-export function RoutinesScreen({route, navigation}: Props) {
+export function RoutinesScreen({ route, navigation }: Props) {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   function load() {
     SettingsRepository.get().then(settings => setSelected(settings.routine));
@@ -61,10 +61,11 @@ export function RoutinesScreen({route, navigation}: Props) {
     ]);
   };
 
+  // TODO bold text for selected only
   const renderItem = (item: ListRenderItemInfo<Routine>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
       <View key={item.item.id}>
-        <Text style={{color: colors.text, padding: 10}}>
+        <Text style={{ color: colors.text, padding: 10 }}>
           {(item.item.id == selected ? '**' : '') + item.item.title}
         </Text>
       </View>
@@ -76,7 +77,8 @@ export function RoutinesScreen({route, navigation}: Props) {
       <FlatList
         data={routines}
         renderItem={renderItem}
-        keyExtractor={(_, index) => 'idx_' + index}></FlatList>
+        keyExtractor={(_, index) => 'idx_' + index}
+      ></FlatList>
     </View>
   );
 }

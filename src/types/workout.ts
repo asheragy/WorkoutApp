@@ -9,7 +9,6 @@ export type Workout = {
   lastCompleted?: Date;
   name: string;
   lifts: Lift[];
-  accessories?: AccessoryGroup[];
 };
 
 export type Lift = {
@@ -28,9 +27,4 @@ export type LiftSet = {
   warmup?: boolean;
   percentage?: boolean; // Weight is a percentage of training max
   completed?: boolean;
-};
-
-export type AccessoryGroup = {
-  name: string;
-  lifts: string[];
 };

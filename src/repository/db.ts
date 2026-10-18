@@ -1,5 +1,5 @@
 // db/init.ts
-import { open } from '@op-engineering/op-sqlite';
+import { open, Transaction } from '@op-engineering/op-sqlite';
 import RNFS from 'react-native-fs';
 
 export const db = open({
@@ -28,7 +28,12 @@ export async function migrate() {
     for (const m of pending) {
       try {
         console.log(`Executing migration ${m.to}`);
+        // Run SQL
         await tx.execute(m.sql);
+        // Run Code
+        if (m.run)
+          await m.run(tx);
+
       } catch (err) {
         console.error(err);
         throw err; // ensure rollback
@@ -37,7 +42,11 @@ export async function migrate() {
   });
 }
 
-type Migration = { to: number; sql: string };
+type Migration = {
+  to: number;
+  sql: string;
+  run?: (tx: Transaction) => Promise<void>;
+};
 
 /* TODO new index
 - id TEXT NOT NULL      // lift.instanceId

@@ -51,11 +51,6 @@ export type NormalizedSet = {
   plates?: string;
 };
 
-export type WeightEntry = {
-  date: Date;
-  weight: number;
-};
-
 export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
   plateCount?: boolean;

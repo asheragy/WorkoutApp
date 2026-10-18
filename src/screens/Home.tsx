@@ -164,7 +164,7 @@ interface WorkoutItemProps {
 function WorkoutListItem({ workout }: WorkoutItemProps) {
   const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
-  const workSets = SetUtils.getWorkingSets(defs, [...[workout]]);
+  const workSets = SetUtils.getWorkingSets(defs, [workout]);
   const sets = workSets.filter(x => x.group == 'Total')[0].sets;
 
   return (

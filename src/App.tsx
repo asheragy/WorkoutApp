@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Platform, StyleSheet, useColorScheme } from 'react-native';
 import { WorkoutScreen } from './screens/WorkoutScreen';
-import { WeightScreen } from './screens/WeightScreen';
 import {
   DarkTheme,
   DefaultTheme,
@@ -123,13 +122,6 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             })}
             component={LiftEditScreen}
-          />
-          <Stack.Screen
-            name="Weight"
-            options={{
-              headerStyle: styles.headerStyle,
-            }}
-            component={WeightScreen}
           />
           <Stack.Screen
             name="Stats"

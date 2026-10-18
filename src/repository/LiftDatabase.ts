@@ -158,8 +158,12 @@ const goals: Record<string, PersistedSet> = {
     reps: 10,
   },
   [Lifts.pullup.id]: {
-    weight: 45,
-    reps: 5,
+    weight: 0,
+    reps: 12,
+  },
+  [Lifts.pullup_neutral.id]: {
+    weight: 0,
+    reps: 15,
   },
   [Lifts.hipThrust.id]: {
     weight: 135,
