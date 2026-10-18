@@ -29,6 +29,7 @@ export function LiftListScreen({ navigation }: Props) {
     // TODO can this just be from defs?
     LiftHistoryRepository.listKeys().then(result => {
       const arr = result
+        .filter(key => defs[key] != undefined)
         .map(key => defs[key])
         .sort((a, b) => a.name.localeCompare(b.name));
 

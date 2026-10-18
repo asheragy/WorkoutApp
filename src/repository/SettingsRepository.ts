@@ -1,8 +1,5 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { GlobalSettings } from '../types/types';
 import { db, dbReady } from './db.ts';
-
-const SettingsKey = 'settings';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {
@@ -35,17 +32,5 @@ export default class SettingsRepository {
        ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json`,
       [key, JSON.stringify(value)],
     );
-  }
-
-  // deprecated
-  static async getLegacy(): Promise<GlobalSettings> {
-    const value = await AsyncStorage.getItem(SettingsKey);
-    let result: GlobalSettings = {};
-
-    if (value != null) {
-      result = JSON.parse(value);
-    }
-
-    return result;
   }
 }

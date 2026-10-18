@@ -138,8 +138,10 @@ async function getProgressByGroup(
   group: MuscleGroup,
   defs: Record<string, LiftDef>,
 ): Promise<number[]> {
-  const ids = (await LiftHistoryRepository.listKeys()).filter(key =>
-    defs[key].muscleGroups.includes(group),
+  const ids = (await LiftHistoryRepository.listKeys()).filter(
+    key =>
+      // Deleted def is unknown group
+      defs[key] != undefined && defs[key].muscleGroups.includes(group),
   );
   const result = new Map<string, HistoryEntry[]>();
 

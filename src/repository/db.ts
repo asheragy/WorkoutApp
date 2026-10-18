@@ -1,7 +1,6 @@
 // db/init.ts
 import { open, Transaction } from '@op-engineering/op-sqlite';
 import RNFS from 'react-native-fs';
-import SettingsRepository from './SettingsRepository.ts';
 
 export const db = open({
   name: 'app.sqlite',
@@ -78,16 +77,6 @@ export const migrations: Migration[] = [
       ) STRICT;
       PRAGMA user_version = 2;
     `,
-    run: async tx => {
-      // TODO temp code
-      const oldSettings = await SettingsRepository.getLegacy();
-
-      await tx.execute(
-        `INSERT INTO settings (key, value_json) VALUES (?, ?)
-       ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json`,
-        ['routine', JSON.stringify(oldSettings.routine)],
-      );
-    },
   },
 ];
 
