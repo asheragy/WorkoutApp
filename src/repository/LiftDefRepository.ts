@@ -1,11 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LiftDef } from '../types/types';
 import Utils from '../components/Utils';
 import { SystemLifts } from './LiftDatabase';
 import { AppDispatch, updateLiftDefs } from '../state/store.ts';
-import { dbReady } from './db.ts';
-
-const key = 'liftdefs';
+import { db, dbReady } from './db.ts';
 
 export default class LiftDefRepository {
   private readonly dispatch: AppDispatch;
@@ -27,10 +24,7 @@ export default class LiftDefRepository {
   }
 
   async delete(id: string) {
-    let items = await LiftDefRepository.getAll();
-    items = items.filter(item => item.id != id);
-
-    await AsyncStorage.setItem(key, JSON.stringify(items));
+    await LiftDefRepository.deleteRow(id);
     await this.init();
   }
 
@@ -40,10 +34,7 @@ export default class LiftDefRepository {
       id: Utils.generate_uuidv4(),
     };
 
-    const items = await LiftDefRepository.getAll();
-    items.push(defToInsert);
-
-    await AsyncStorage.setItem(key, JSON.stringify(items));
+    await LiftDefRepository.upsertRow(defToInsert);
     await this.init();
 
     return defToInsert;
@@ -55,35 +46,31 @@ export default class LiftDefRepository {
     };
     delete persistedDef.multiple; // Not persisted
 
-    const items = await LiftDefRepository.getAll();
-    const index = items.findIndex(item => item.id == persistedDef.id);
+    const existing = await LiftDefRepository.getById(persistedDef.id);
     const systemDef = SystemLifts.find(item => item.id == persistedDef.id);
 
     if (!systemDef) {
-      if (index < 0) {
+      if (!existing) {
         throw new Error(
           `Unable to find def '${persistedDef.id}', this should never happen `,
         );
-      } else {
-        console.log('Updating existing CustomDef');
-        items[index] = persistedDef;
       }
+      console.log('Updating existing CustomDef');
+      await LiftDefRepository.upsertRow(persistedDef);
     } else if (
       LiftDefRepository.matchesSystemDefault(persistedDef, systemDef)
     ) {
-      if (index >= 0) {
+      if (existing) {
         console.log('Update matches SystemDef, removing');
-        items.splice(index, 1);
+        await LiftDefRepository.deleteRow(persistedDef.id);
       } else console.log('SystemDef unmodified, no-op');
-    } else if (index < 0) {
-      console.log('Adding modified SystemDef');
-      items.push(persistedDef);
     } else {
-      console.log('Updating systemDef');
-      items[index] = persistedDef;
+      console.log(
+        existing ? 'Updating systemDef' : 'Adding modified SystemDef',
+      );
+      await LiftDefRepository.upsertRow(persistedDef);
     }
 
-    await AsyncStorage.setItem(key, JSON.stringify(items));
     await this.init();
 
     return persistedDef;
@@ -109,10 +96,43 @@ export default class LiftDefRepository {
   }
 
   static async getAll(): Promise<LiftDef[]> {
-    const value = await AsyncStorage.getItem(key);
-    if (value == null) return [];
+    const rows = await db.executeRaw('SELECT id, data_json FROM lift_defs');
 
-    return JSON.parse(value);
+    return rows.map(([id, dataJson]) =>
+      LiftDefRepository.fromRow(id as string, dataJson as string),
+    );
+  }
+
+  private static async getById(id: string): Promise<LiftDef | undefined> {
+    const rows = await db.executeRaw(
+      'SELECT id, data_json FROM lift_defs WHERE id = ?',
+      [id],
+    );
+    if (rows.length == 0) return undefined;
+
+    const [rowId, dataJson] = rows[0];
+    return LiftDefRepository.fromRow(rowId as string, dataJson as string);
+  }
+
+  private static async upsertRow(def: LiftDef): Promise<void> {
+    // id is stored in its own column, everything else goes in data_json
+    const { id, ...data } = def;
+
+    await db.execute(
+      `INSERT INTO lift_defs (id, data_json, updated_at) VALUES (?, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET
+         data_json = excluded.data_json,
+         updated_at = excluded.updated_at`,
+      [id, JSON.stringify(data), Date.now()],
+    );
+  }
+
+  private static async deleteRow(id: string): Promise<void> {
+    await db.execute('DELETE FROM lift_defs WHERE id = ?', [id]);
+  }
+
+  private static fromRow(id: string, dataJson: string): LiftDef {
+    return { ...JSON.parse(dataJson), id };
   }
 
   private static async getLookupMap(): Promise<Record<string, LiftDef>> {

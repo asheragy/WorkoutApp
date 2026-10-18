@@ -78,6 +78,17 @@ export const migrations: Migration[] = [
       PRAGMA user_version = 2;
     `,
   },
+  {
+    to: 3,
+    sql: `
+      CREATE TABLE IF NOT EXISTS lift_defs (
+        id          TEXT PRIMARY KEY,  -- system id ('bench_barbell') or uuid for custom
+        data_json   TEXT NOT NULL,     -- LiftDef minus immutable fields
+        updated_at  INTEGER NOT NULL
+      ) STRICT;
+      PRAGMA user_version = 3;
+    `,
+  },
 ];
 
 export type LiftHistoryTableSchema = [

@@ -21,6 +21,7 @@ export function SettingsScreen() {
   async function logLiftDefs() {
     const defs = await LiftDefRepository.getAll();
     console.log('Defs');
+    if (defs.length == 0) console.log('  0');
     defs.forEach(x => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
