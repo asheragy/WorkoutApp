@@ -1,6 +1,7 @@
 // db/init.ts
 import { open, Transaction } from '@op-engineering/op-sqlite';
 import RNFS from 'react-native-fs';
+import SettingsRepository from './SettingsRepository.ts';
 
 export const db = open({
   name: 'app.sqlite',
@@ -31,9 +32,7 @@ export async function migrate() {
         // Run SQL
         await tx.execute(m.sql);
         // Run Code
-        if (m.run)
-          await m.run(tx);
-
+        if (m.run) await m.run(tx);
       } catch (err) {
         console.error(err);
         throw err; // ensure rollback
@@ -70,7 +69,26 @@ export const migrations: Migration[] = [
       PRAGMA user_version = 1;
     `,
   },
-  // add new steps here ↑ for future app versions
+  {
+    to: 2,
+    sql: `
+      CREATE TABLE IF NOT EXISTS settings (
+        key         TEXT PRIMARY KEY,
+        value_json  TEXT NOT NULL
+      ) STRICT;
+      PRAGMA user_version = 2;
+    `,
+    run: async tx => {
+      // TODO temp code
+      const oldSettings = await SettingsRepository.getLegacy();
+
+      await tx.execute(
+        `INSERT INTO settings (key, value_json) VALUES (?, ?)
+       ON CONFLICT(key) DO UPDATE SET value_json = excluded.value_json`,
+        ['routine', JSON.stringify(oldSettings.routine)],
+      );
+    },
+  },
 ];
 
 export type LiftHistoryTableSchema = [
