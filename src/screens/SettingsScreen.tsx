@@ -6,9 +6,11 @@ import {
   exportAsyncStorage,
   importAsyncStorage,
 } from '../repository/ImportExport.ts';
+import { LiftType, MuscleGroup } from '../types/types.ts';
+import SettingsRepository from '../repository/SettingsRepository.ts';
 
 export function SettingsScreen() {
-  async function logSettings() {
+  async function logKeys() {
     const keys = await AsyncStorage.getAllKeys();
 
     keys.forEach(key => {
@@ -20,10 +22,19 @@ export function SettingsScreen() {
     const defs = await LiftDefRepository.getAll();
     console.log('Defs');
     defs.forEach(x => {
-      const max = x.trainingMax ? x.trainingMax + '' : '';
-      const sys = x.system ? 'sys' : '';
-      console.log(x.id.padEnd(38, ' ') + max + '\t' + sys + '\t' + x.name);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      x.type = LiftType[x.type];
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      x.muscleGroups = x.muscleGroups.map(g => MuscleGroup[g]);
+      console.log('  ' + JSON.stringify(x));
     });
+  }
+
+  async function logSettings() {
+    const settings = await SettingsRepository.get();
+    console.log(JSON.stringify(settings));
   }
 
   async function onExport() {
@@ -49,8 +60,9 @@ export function SettingsScreen() {
 
   return (
     <View>
-      <Button title="Log Keys" onPress={logSettings}></Button>
+      <Button title="Log Keys" onPress={logKeys}></Button>
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
+      <Button title="Log Settings" onPress={logSettings}></Button>
       <Button title="Export Database" onPress={onExport}></Button>
       <Button title="Import Database" onPress={onImport}></Button>
     </View>

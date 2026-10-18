@@ -29,6 +29,7 @@ export const Lifts = createDictionary({
   row_cableWide: { name: "Rows (Cable Wide-Grip)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_plateMachine: { name: "Rows", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   row_machine: { name: "Rows", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps]},
+  row_plateLow: { name: "Rows (Low Plate)", type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   // Rows T-Bar (Plate loaded machine)
   // Rows T-Bar (Barbell)
   pulldown_cable: { name: "Pulldowns (Cable)", type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
@@ -76,7 +77,7 @@ export const Lifts = createDictionary({
   squat_barbell: { name: "Squat", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
   squat_ssb: { name: "Squat (SSB)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70, factor: 1.75 },
   squat_belt: { name: "Squat (Belt)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 65, factor: 1.5},
-  squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.5 },
+  squat_v: { name: "Squat (V-Squat)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.5, baseWeight: 95 },
   squat_front: { name: "Squat (Front)", type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
   legPress: { name: "Leg Press", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
   legPress_single: { name: "Leg Press (Single)", type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
@@ -166,7 +167,7 @@ const goals: Record<string, PersistedSet> = {
     reps: 15,
   },
   [Lifts.hipThrust.id]: {
-    weight: 135,
+    weight: 270,
     reps: 10,
   },
   [Lifts.squat_front.id]: {
