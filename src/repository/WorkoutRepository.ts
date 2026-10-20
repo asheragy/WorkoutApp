@@ -1,28 +1,30 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Workout } from '../types/workout';
+import { DEFAULT_ROUTINE, Workout } from '../types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
-import { db } from './db.ts';
-
-const key = 'workouts';
+import { db, dbReady } from './db.ts';
 
 export type CompletedWorkout = {
   workoutId: string;
   timestamp: Date;
 };
 
-export default class WorkoutRepository {
-  static async get(id: string): Promise<Workout | undefined> {
-    const workouts = await this.getAll();
-    return workouts.find(x => x.id == id);
-  }
+// Shape of data_json: everything on Workout except the columns, with the
+// Date flattened to epoch ms so it survives JSON round trips.
+type WorkoutData = Omit<Workout, 'id' | 'routineId' | 'lastCompleted'> & {
+  lastCompleted?: number;
+};
 
+export default class WorkoutRepository {
   static async getRoutine(
     routine: string,
     importLifts?: boolean,
   ): Promise<Workout[]> {
-    const all = await this.getAll();
-    if (all.filter(x => x.routineId == routine).length == 0) {
+    const workouts = await this.getAllByRoutine(routine);
+    // eslint-disable-next-line no-constant-condition
+    if (true) {
+      console.log('Temporary block until migration is done');
+    } else if (workouts.length == 0) {
       const preloaded = findPreloaded(routine);
       if (preloaded.length > 0) {
         console.log(`Saving predefined routine ${routine}`);
@@ -37,8 +39,6 @@ export default class WorkoutRepository {
         return this.getRoutine(routine, importLifts);
       }
     }
-
-    const workouts = all.filter(x => x.routineId == routine);
 
     /* TODO this should work but handling per workout for now
     if (importLifts) {
@@ -104,45 +104,14 @@ export default class WorkoutRepository {
     return updatedWorkout;
   }
 
-  private static async getAll(): Promise<Workout[]> {
-    const value = await AsyncStorage.getItem(key);
-    if (value == null) return [];
-
-    let json: Workout[] = JSON.parse(value);
-
-    // Fix deserialized date
-    json = json.map(wo => {
-      const result: Workout = {
-        ...wo,
-        lastCompleted: wo.lastCompleted
-          ? new Date(wo.lastCompleted)
-          : undefined,
-      };
-      return result;
-    });
-
-    return json;
-  }
-
   static async upsert(workout: Workout) {
     if (workout.id == undefined) await this.insert(workout);
     else await this.update(workout);
   }
 
-  static async delete(workout: Workout) {
-    if (workout.id) await this.deleteById(workout.id);
-  }
-
-  static async deleteById(workoutId: string) {
-    let items = await this.getAll();
-    const index = items.findIndex(item => item.id == workoutId);
-    if (index < 0) throw new Error('Unable to find id ' + workoutId);
-
-    items = items.filter(x => x.id != workoutId);
-    await AsyncStorage.setItem(key, JSON.stringify(items));
-  }
-
   static async listCompletedWorkouts(): Promise<CompletedWorkout[]> {
+    await dbReady();
+
     const rows = await db.executeRaw(
       `
         SELECT workout_id, timestamp
@@ -163,28 +132,161 @@ export default class WorkoutRepository {
     await this.insertAll([workout]);
   }
 
-  private static async insertAll(workouts: Workout[]) {
-    const withIds = workouts.map(x => {
-      return {
-        ...x,
-        id: Utils.generate_uuidv4(),
-      };
+  // ----- Database layer only -----
+
+  static async get(id: string): Promise<Workout | undefined> {
+    await dbReady();
+
+    const rows = await db.executeRaw(
+      'SELECT id, routine_id, data_json FROM workouts WHERE id = ?',
+      [id],
+    );
+    if (rows.length == 0) return undefined;
+
+    return this.fromRow(rows[0]);
+  }
+
+  static async deleteById(workoutId: string) {
+    await dbReady();
+
+    const result = await db.execute('DELETE FROM workouts WHERE id = ?', [
+      workoutId,
+    ]);
+    if (result.rowsAffected == 0)
+      throw new Error('Unable to find id ' + workoutId);
+  }
+
+  private static async getAllByRoutine(routine: string): Promise<Workout[]> {
+    await dbReady();
+
+    const rows = await db.executeRaw(
+      'SELECT id, routine_id, data_json FROM workouts WHERE routine_id = ?',
+      [routine],
+    );
+
+    return rows.map(row => this.fromRow(row));
+  }
+
+  private static async getAll(): Promise<Workout[]> {
+    await dbReady();
+
+    const rows = await db.executeRaw(
+      'SELECT id, routine_id, data_json FROM workouts',
+    );
+
+    return rows.map(row => this.fromRow(row));
+  }
+
+  // Temporary needed to stay for migrations. Inserts the workouts as-is,
+  // keeping the existing ids so lift_history.workout_id still matches.
+  // Refuses to run if the table already has rows so it cannot double-insert.
+  static async insertForMigration(workouts: Workout[]): Promise<number> {
+    await dbReady();
+
+    const rows = await db.executeRaw('SELECT COUNT(*) FROM workouts');
+    const existing = Number(rows[0][0]);
+    if (existing > 0)
+      throw new Error(`workouts table already has ${existing} rows`);
+
+    const now = Date.now();
+    await db.transaction(async tx => {
+      for (const workout of workouts) {
+        await tx.execute(
+          `INSERT INTO workouts (id, routine_id, data_json, updated_at)
+           VALUES (?, ?, ?, ?)`,
+          [
+            workout.id ?? Utils.generate_uuidv4(),
+            workout.routineId ?? DEFAULT_ROUTINE,
+            this.toDataJson(workout),
+            now,
+          ],
+        );
+      }
     });
 
-    const items = await this.getAll();
-    items.push(...withIds);
+    return workouts.length;
+  }
 
-    await AsyncStorage.setItem(key, JSON.stringify(items));
+  // Temporary needed to stay for migrations
+  static async getAllAsyncStorage(): Promise<Workout[]> {
+    const value = await AsyncStorage.getItem('workouts');
+    if (value == null) return [];
+
+    let json: Workout[] = JSON.parse(value);
+
+    // Fix deserialized date
+    json = json.map(wo => {
+      const result: Workout = {
+        ...wo,
+        lastCompleted: wo.lastCompleted
+          ? new Date(wo.lastCompleted)
+          : undefined,
+      };
+      return result;
+    });
+
+    return json;
   }
 
   private static async update(workout: Workout) {
-    const items = await this.getAll();
-    const index = items.findIndex(item => item.id == workout.id);
+    await dbReady();
 
-    if (index >= 0) items[index] = workout;
-    else throw new Error('Unable to find workout id ' + workout.id);
+    const result = await db.execute(
+      `UPDATE workouts
+       SET routine_id = ?, data_json = ?, updated_at = ?
+       WHERE id = ?`,
+      [workout.routineId, this.toDataJson(workout), Date.now(), workout.id!],
+    );
 
-    await AsyncStorage.setItem(key, JSON.stringify(items));
+    if (result.rowsAffected == 0)
+      throw new Error('Unable to find workout id ' + workout.id);
+  }
+
+  private static async insertAll(workouts: Workout[]) {
+    await dbReady();
+
+    const now = Date.now();
+    await db.transaction(async tx => {
+      for (const workout of workouts) {
+        await tx.execute(
+          `INSERT INTO workouts (id, routine_id, data_json, updated_at)
+           VALUES (?, ?, ?, ?)`,
+          [
+            Utils.generate_uuidv4(),
+            workout.routineId,
+            this.toDataJson(workout),
+            now,
+          ],
+        );
+      }
+    });
+  }
+
+  private static toDataJson(workout: Workout): string {
+    // id and routineId are stored in their own columns
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, routineId, lastCompleted, ...rest } = workout;
+    const data: WorkoutData = {
+      ...rest,
+      lastCompleted: lastCompleted?.getTime(),
+    };
+
+    return JSON.stringify(data);
+  }
+
+  private static fromRow(row: unknown[]): Workout {
+    const [id, routineId, dataJson] = row;
+    const data: WorkoutData = JSON.parse(dataJson as string);
+
+    return {
+      ...data,
+      id: id as string,
+      routineId: routineId as string,
+      lastCompleted:
+        data.lastCompleted != undefined
+          ? new Date(data.lastCompleted)
+          : undefined,
+    };
   }
 }
 

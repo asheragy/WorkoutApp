@@ -8,6 +8,7 @@ import {
 } from '../repository/ImportExport.ts';
 import { LiftType, MuscleGroup } from '../types/types.ts';
 import SettingsRepository from '../repository/SettingsRepository.ts';
+import WorkoutRepository from '../repository/WorkoutRepository.ts';
 
 export function SettingsScreen() {
   async function logKeys() {
@@ -46,6 +47,18 @@ export function SettingsScreen() {
     );
   }
 
+  async function onMigrateWorkouts() {
+    try {
+      const workouts = await WorkoutRepository.getAllAsyncStorage();
+      const count = await WorkoutRepository.insertForMigration(workouts);
+      console.log(`Migrated ${count} workouts`);
+      ToastAndroid.show(`Copied ${count} workouts`, ToastAndroid.SHORT);
+    } catch (err) {
+      console.error(err);
+      ToastAndroid.show(`Migration failed: ${err}`, ToastAndroid.LONG);
+    }
+  }
+
   async function onImport() {
     const keys = await AsyncStorage.getAllKeys();
     if (keys.length > 0)
@@ -66,6 +79,7 @@ export function SettingsScreen() {
       <Button title="Log Settings" onPress={logSettings}></Button>
       <Button title="Export Database" onPress={onExport}></Button>
       <Button title="Import Database" onPress={onImport}></Button>
+      <Button title="Migrate Workouts" onPress={onMigrateWorkouts}></Button>
     </View>
   );
 }

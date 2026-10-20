@@ -89,6 +89,19 @@ export const migrations: Migration[] = [
       PRAGMA user_version = 3;
     `,
   },
+  {
+    to: 4,
+    sql: `
+      CREATE TABLE IF NOT EXISTS workouts (
+        id          TEXT PRIMARY KEY,  -- uuid
+        routine_id  TEXT NOT NULL,
+        data_json   TEXT NOT NULL,     -- Workout minus id/routineId, lastCompleted as epoch ms
+        updated_at  INTEGER NOT NULL
+      ) STRICT;
+      CREATE INDEX IF NOT EXISTS workouts_routine ON workouts(routine_id);
+      PRAGMA user_version = 4;
+    `,
+  },
 ];
 
 export type LiftHistoryTableSchema = [

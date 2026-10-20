@@ -1,6 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFS from 'react-native-fs';
 
+// TODO once workouts are migrated off AsyncStorage (see ASYNC_STORAGE_MIGRATION.md
+// section 3.3): replace exportAsyncStorage with an SQLite snapshot
+// (VACUUM INTO '<ExternalDirectoryPath>/app_<timestamp>.sqlite') and
+// importAsyncStorage with close db -> copy file over app.sqlite -> reopen.
+
 export async function exportAsyncStorage() {
   const timestamp = new Date()
     .toISOString()

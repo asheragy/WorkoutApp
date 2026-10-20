@@ -4,7 +4,7 @@ import { DEFAULT_ROUTINE } from '../types/workout';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {
-    await dbReady(); // 1 of 2 locations to ensure db is initialized
+    await dbReady();
 
     const result: GlobalSettings = {
       routine: DEFAULT_ROUTINE,

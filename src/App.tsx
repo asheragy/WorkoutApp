@@ -20,6 +20,7 @@ import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { WorkoutHistoryScreen } from './screens/WorkoutHistoryScreen';
 import LiftDefRepository from './repository/LiftDefRepository';
+import { dbReady } from './repository/db.ts';
 import { MenuProvider } from 'react-native-popup-menu';
 import { RoutinesScreen } from './screens/Routines';
 import { store } from './state/store.ts';
@@ -94,7 +95,8 @@ const AppRoot = () => {
   useEffect(() => {
     console.log(Platform.constants.reactNativeVersion);
 
-    new LiftDefRepository(dispatch).init();
+    // Run pending migrations before anything hits a repository
+    dbReady().then(() => new LiftDefRepository(dispatch).init());
   }, []);
 
   return (

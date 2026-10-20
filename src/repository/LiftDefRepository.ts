@@ -12,7 +12,7 @@ export default class LiftDefRepository {
   }
 
   async init(): Promise<void> {
-    await dbReady(); // 1 of 2 locations to ensure db is initialized
+    await dbReady();
 
     const data = await LiftDefRepository.getLookupMap();
     this.dispatch(updateLiftDefs(data));
