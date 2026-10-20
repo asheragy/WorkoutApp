@@ -1,24 +1,23 @@
 import React from 'react';
-import { Button, ToastAndroid, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert, Button, ToastAndroid, View } from 'react-native';
+import RNFS from 'react-native-fs';
 import LiftDefRepository from '../repository/LiftDefRepository';
-import {
-  exportAsyncStorage,
-  importAsyncStorage,
-} from '../repository/ImportExport.ts';
 import { LiftType, MuscleGroup } from '../types/types.ts';
 import SettingsRepository from '../repository/SettingsRepository.ts';
-import WorkoutRepository from '../repository/WorkoutRepository.ts';
+import { getDb } from '../repository/db.ts';
+
+const BACKUP_DIR = `${RNFS.ExternalStorageDirectoryPath}/Documents/WorkoutApp`;
+
+function timestamp() {
+  const d = new Date();
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return (
+    `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}` +
+    `_${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`
+  );
+}
 
 export function SettingsScreen() {
-  async function logKeys() {
-    const keys = await AsyncStorage.getAllKeys();
-
-    keys.forEach(key => {
-      console.log(key);
-    });
-  }
-
   async function logLiftDefs() {
     const defs = await LiftDefRepository.getAll();
     console.log('Defs');
@@ -39,47 +38,36 @@ export function SettingsScreen() {
     console.log(JSON.stringify(settings));
   }
 
-  async function onExport() {
-    const path = await exportAsyncStorage();
-    ToastAndroid.show(
-      'Saved to ' + path.substring(path.lastIndexOf('/') + 1),
-      ToastAndroid.LONG,
-    );
-  }
+  async function onBackup() {
+    const filename = `app_${timestamp()}.sqlite`;
+    // VACUUM INTO writes a consistent snapshot. Write it next to the live db
+    // first (always writable), then move it to the shared Documents folder.
+    const tmpPath = `${RNFS.ExternalDirectoryPath}/${filename}`;
+    const destPath = `${BACKUP_DIR}/${filename}`;
 
-  async function onMigrateWorkouts() {
     try {
-      const workouts = await WorkoutRepository.getAllAsyncStorage();
-      const count = await WorkoutRepository.insertForMigration(workouts);
-      console.log(`Migrated ${count} workouts`);
-      ToastAndroid.show(`Copied ${count} workouts`, ToastAndroid.SHORT);
-    } catch (err) {
-      console.error(err);
-      ToastAndroid.show(`Migration failed: ${err}`, ToastAndroid.LONG);
-    }
-  }
+      const db = await getDb();
+      await db.execute('VACUUM INTO ?', [tmpPath]);
 
-  async function onImport() {
-    const keys = await AsyncStorage.getAllKeys();
-    if (keys.length > 0)
+      await RNFS.mkdir(BACKUP_DIR);
+      await RNFS.moveFile(tmpPath, destPath);
+
       ToastAndroid.show(
-        'Can only import on empty database',
-        ToastAndroid.SHORT,
+        'Saved to Documents/WorkoutApp/' + filename,
+        ToastAndroid.LONG,
       );
-    else {
-      await importAsyncStorage();
-      ToastAndroid.show('Successfully imported database', ToastAndroid.SHORT);
+    } catch (e) {
+      console.error('Backup failed', e);
+      RNFS.unlink(tmpPath).catch(() => {});
+      Alert.alert('Backup failed', e instanceof Error ? e.message : String(e));
     }
   }
 
   return (
     <View>
-      <Button title="Log Keys" onPress={logKeys}></Button>
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
       <Button title="Log Settings" onPress={logSettings}></Button>
-      <Button title="Export Database" onPress={onExport}></Button>
-      <Button title="Import Database" onPress={onImport}></Button>
-      <Button title="Migrate Workouts" onPress={onMigrateWorkouts}></Button>
+      <Button title="Backup Database" onPress={onBackup}></Button>
     </View>
   );
 }

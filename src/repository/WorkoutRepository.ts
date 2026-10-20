@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { DEFAULT_ROUTINE, Workout } from '../types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
@@ -21,10 +20,9 @@ export default class WorkoutRepository {
     importLifts?: boolean,
   ): Promise<Workout[]> {
     const workouts = await this.getAllByRoutine(routine);
-    // eslint-disable-next-line no-constant-condition
-    if (true) {
-      console.log('Temporary block until migration is done');
-    } else if (workouts.length == 0) {
+
+    /* TODO temporarily leaving off on device
+    if (workouts.length == 0) {
       const preloaded = findPreloaded(routine);
       if (preloaded.length > 0) {
         console.log(`Saving predefined routine ${routine}`);
@@ -39,6 +37,7 @@ export default class WorkoutRepository {
         return this.getRoutine(routine, importLifts);
       }
     }
+     */
 
     /* TODO this should work but handling per workout for now
     if (importLifts) {
@@ -205,27 +204,6 @@ export default class WorkoutRepository {
     });
 
     return workouts.length;
-  }
-
-  // Temporary needed to stay for migrations
-  static async getAllAsyncStorage(): Promise<Workout[]> {
-    const value = await AsyncStorage.getItem('workouts');
-    if (value == null) return [];
-
-    let json: Workout[] = JSON.parse(value);
-
-    // Fix deserialized date
-    json = json.map(wo => {
-      const result: Workout = {
-        ...wo,
-        lastCompleted: wo.lastCompleted
-          ? new Date(wo.lastCompleted)
-          : undefined,
-      };
-      return result;
-    });
-
-    return json;
   }
 
   private static async update(workout: Workout) {

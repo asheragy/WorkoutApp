@@ -13,6 +13,12 @@ export function dbReady() {
   return _ready;
 }
 
+/** Returns the shared DB instance once migrations have run. */
+export async function getDb() {
+  await dbReady();
+  return db;
+}
+
 export async function migrate() {
   // read current version
   const res = await db.execute('PRAGMA user_version;');
