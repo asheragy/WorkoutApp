@@ -12,7 +12,8 @@
     "depcheck": "depcheck",
     "emulator": "$ANDROID_HOME/emulator/emulator -avd Pixel_3a_API_34_extension_level_7_x86_64",
     "apk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
-    "release": "cd ./android && ./gradlew app:assembleRelease"
+    "release": "cd ./android && ./gradlew app:assembleRelease",
+    "web": "yarn workspace web dev"
   },
   "dependencies": {
     "@op-engineering/op-sqlite": "^16.2.0",
@@ -70,5 +71,8 @@
   },
   "engines": {
     "node": ">=22.11.0"
-  }
+  },
+  "workspaces": [
+    "web"
+  ]
 }
