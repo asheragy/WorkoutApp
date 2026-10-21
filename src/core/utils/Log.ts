@@ -1,4 +1,4 @@
-import {Lift} from '../types/workout';
+import { Lift } from '../types/workout.ts';
 
 export default class Log {
   static lift(lift: Lift) {

@@ -4,7 +4,7 @@ import { AppState } from '../../state/store.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
 import { ProgressList } from './Common.tsx';
 import GoalRow, { calcWorkoutGoals } from './Utils.ts';
-import { GlobalSettings } from '../../types/types.ts';
+import { GlobalSettings } from '../../core/types/types.ts';
 
 export function ShortTermTab(props: { settings: GlobalSettings }) {
   const defs = useSelector((store: AppState) => store.liftDefs);

@@ -1,6 +1,6 @@
-import { LiftDef } from '../types/types';
+import { LiftDef } from '../core/types/types';
 import Utils from '../components/Utils';
-import { SystemLifts } from './LiftDatabase';
+import { SystemLifts } from '../core/LiftDatabase.ts';
 import { AppDispatch, updateLiftDefs } from '../state/store.ts';
 import { db, dbReady } from './db.ts';
 

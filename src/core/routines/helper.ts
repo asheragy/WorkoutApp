@@ -1,5 +1,5 @@
 import { Lift, Workout } from '../types/workout.ts';
-import Utils from '../components/Utils.ts';
+import Utils from '../../components/Utils.ts';
 
 type LiftBuilder = { id: string } | { id: string }[];
 

@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store.ts';
 import { ProgressList } from './Common.tsx';
 import GoalRow from './Utils.ts';
-import SetUtils from '../../utils/SetUtils.ts';
-import { GlobalSettings } from '../../types/types.ts';
+import SetUtils from '../../core/utils/SetUtils.ts';
+import { GlobalSettings } from '../../core/types/types.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
 
 export function LongTermTab(props: { settings: GlobalSettings }) {

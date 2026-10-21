@@ -1,5 +1,5 @@
-import { GlobalSettings, LiftDef } from '../types/types';
-import { DEFAULT_ROUTINE } from '../types/workout';
+import { GlobalSettings, LiftDef } from '../core/types/types';
+import { DEFAULT_ROUTINE } from '../core/types/workout';
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useSelector } from 'react-redux';
 

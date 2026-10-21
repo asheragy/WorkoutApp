@@ -5,11 +5,11 @@ import {
   MuscleGroup,
   NormalizedSet,
   PersistedSet,
-} from '../types/types';
-import { LiftSet, Workout } from '../types/workout';
-import Utils from '../components/Utils.ts';
+} from '../types/types.ts';
+import { LiftSet, Workout } from '../types/workout.ts';
+import Utils from '../../components/Utils.ts';
 import LiftUtils from './LiftUtils.ts';
-import { Lifts } from '../repository/LiftDatabase.ts';
+import { Lifts } from '../LiftDatabase.ts';
 
 export type WorkingSets = {
   group: string;

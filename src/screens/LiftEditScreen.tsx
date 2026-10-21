@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useSelector } from 'react-redux';
-import { Lift } from '../types/workout';
+import { Lift } from '../core/types/workout';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App.tsx';
 import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem.tsx';

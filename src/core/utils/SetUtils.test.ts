@@ -1,7 +1,12 @@
-import { GlobalSettings, LiftDef, LiftType, MuscleGroup } from '../types/types';
-import { Lift, LiftSet, Workout } from '../types/workout';
-import { Lifts, SystemLifts } from '../repository/LiftDatabase.ts';
-import { TestLiftDefs } from '../test-utils/Common.ts';
+import {
+  GlobalSettings,
+  LiftDef,
+  LiftType,
+  MuscleGroup,
+} from '../types/types.ts';
+import { Lift, LiftSet, Workout } from '../types/workout.ts';
+import { Lifts, SystemLifts } from '../LiftDatabase.ts';
+import { TestLiftDefs } from '../../test-utils/Common.ts';
 import SetUtils, {
   oneRMBrzycki,
   oneRMEpley,

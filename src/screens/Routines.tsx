@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Routine } from '../types/workout';
+import { Routine } from '../core/types/workout';
 import RoutineRepository from '../repository/RoutineRepository';
 import { useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';

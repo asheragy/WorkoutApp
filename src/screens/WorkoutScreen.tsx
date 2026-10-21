@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
-import { Lift, Workout } from '../types/workout';
+import { Lift, Workout } from '../core/types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
 import {
@@ -22,7 +22,7 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
-import LiftUtils from '../utils/LiftUtils.ts';
+import LiftUtils from '../core/utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 

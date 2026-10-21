@@ -1,6 +1,6 @@
-import {Routine, Workout} from '../types/workout.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {buildWorkout} from './helper.ts';
+import { Routine, Workout } from '../types/workout.ts';
+import { Lifts } from '../LiftDatabase.ts';
+import { buildWorkout } from './helper.ts';
 
 /*
 Upper 1: Vertical Press / Horizontal Pull

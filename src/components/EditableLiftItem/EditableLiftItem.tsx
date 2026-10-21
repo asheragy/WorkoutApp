@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Image, Text, TextInput, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
-import { Lift, LiftSet } from '../../types/workout';
+import { Lift, LiftSet } from '../../core/types/workout';
 import { Style_LiftText } from '../Common';
-import { GlobalSettings } from '../../types/types';
+import { GlobalSettings } from '../../core/types/types';
 import Utils from '../Utils';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
@@ -15,8 +15,8 @@ import {
 } from 'react-native-popup-menu';
 import { PersistedSetRow } from './PersistedSetRow';
 import { PersistedSetHeader } from './PersistedSetHeader';
-import SetUtils from '../../utils/SetUtils.ts';
-import LiftUtils from '../../utils/LiftUtils.ts';
+import SetUtils from '../../core/utils/SetUtils.ts';
+import LiftUtils from '../../core/utils/LiftUtils.ts';
 
 interface EditableLiftItemProps {
   lift: Lift;

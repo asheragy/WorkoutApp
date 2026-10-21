@@ -3,12 +3,17 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { RootStackParamList } from '../App';
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
-import { GlobalSettings, LiftDef, LiftType, MuscleGroup } from '../types/types';
+import {
+  GlobalSettings,
+  LiftDef,
+  LiftType,
+  MuscleGroup,
+} from '../core/types/types';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 import { PersistedSetRow } from '../components/EditableLiftItem/PersistedSetRow.tsx';
-import { LiftSet } from '../types/workout.ts';
+import { LiftSet } from '../core/types/workout.ts';
 import { AppState } from '../state/store.ts';
 import { NumberControl } from '../components/NumberControl.tsx';
 

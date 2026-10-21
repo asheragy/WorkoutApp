@@ -1,22 +1,22 @@
-import {useTheme} from '@react-navigation/native';
-import {StackScreenProps} from '@react-navigation/stack';
-import React, {useEffect, useState} from 'react';
-import {FlatList, ListRenderItemInfo, Text, View} from 'react-native';
-import {RootStackParamList} from '../App';
+import { useTheme } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
+import React, { useEffect, useState } from 'react';
+import { FlatList, ListRenderItemInfo, Text, View } from 'react-native';
+import { RootStackParamList } from '../App';
 import LiftHistoryRepository, {
   WorkoutHistory,
 } from '../repository/LiftHistoryRepository';
 import Utils from '../components/Utils';
-import {useSelector} from 'react-redux';
-import {AppState} from '../state/store';
-import {LiftDef} from '../types/types.ts';
+import { useSelector } from 'react-redux';
+import { AppState } from '../state/store';
+import { LiftDef } from '../core/types/types.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'WorkoutHistory'>;
 
-export function WorkoutHistoryScreen({route}: Props) {
+export function WorkoutHistoryScreen({ route }: Props) {
   const workoutId = route.params.workoutId;
   const [entries, setEntries] = useState<WorkoutHistory[]>([]);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
 
   function loadState() {
@@ -30,15 +30,17 @@ export function WorkoutHistoryScreen({route}: Props) {
   const renderItem = (item: ListRenderItemInfo<WorkoutHistory>) => (
     <WorkoutHistoryListItem
       entry={item.item}
-      defs={defs}></WorkoutHistoryListItem>
+      defs={defs}
+    ></WorkoutHistoryListItem>
   );
 
   return (
     <FlatList
-      style={{backgroundColor: colors.background}}
+      style={{ backgroundColor: colors.background }}
       data={entries}
       renderItem={renderItem}
-      keyExtractor={entry => entry.timestamp.toString()}></FlatList>
+      keyExtractor={entry => entry.timestamp.toString()}
+    ></FlatList>
   );
 }
 
@@ -49,11 +51,11 @@ function WorkoutHistoryListItem({
   entry: WorkoutHistory;
   defs: Record<string, LiftDef>;
 }) {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
-    <View style={{backgroundColor: colors.card, margin: 4, padding: 4}}>
-      <Text style={{color: colors.text}}>
+    <View style={{ backgroundColor: colors.card, margin: 4, padding: 4 }}>
+      <Text style={{ color: colors.text }}>
         {Utils.lastCompleted(entry.timestamp)}
       </Text>
       {entry.lifts.map(lift => {
@@ -62,8 +64,8 @@ function WorkoutHistoryListItem({
         );
 
         return (
-          <View style={{paddingTop: 4}} key={lift.liftId}>
-            <Text style={{fontWeight: 'bold', color: colors.text}}>
+          <View style={{ paddingTop: 4 }} key={lift.liftId}>
+            <Text style={{ fontWeight: 'bold', color: colors.text }}>
               {Utils.defToString(defs[lift.liftId]) + ' - ' + sets.join(', ')}
             </Text>
           </View>

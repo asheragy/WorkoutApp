@@ -1,5 +1,5 @@
-import { LiftSet, Workout } from '../../types/workout.ts';
-import { Lifts } from '../../repository/LiftDatabase.ts';
+import { LiftSet, Workout } from '../../core/types/workout.ts';
+import { Lifts } from '../../core/LiftDatabase.ts';
 import { TestLiftDefs } from '../../test-utils/Common.ts';
 import { calcWorkoutGoals } from './Utils.ts';
 

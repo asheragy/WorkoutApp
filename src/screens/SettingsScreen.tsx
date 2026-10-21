@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Button, ToastAndroid, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import LiftDefRepository from '../repository/LiftDefRepository';
-import { LiftType, MuscleGroup } from '../types/types.ts';
+import { LiftType, MuscleGroup } from '../core/types/types.ts';
 import SettingsRepository from '../repository/SettingsRepository.ts';
 import { getDb } from '../repository/db.ts';
 

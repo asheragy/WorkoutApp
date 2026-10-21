@@ -1,6 +1,6 @@
-import { SystemLifts } from '../src/repository/LiftDatabase.ts';
-import SetUtils from '../src/utils/SetUtils.ts';
-import { FullBody_3day } from '../src/routines/3_FullBody.ts';
+import { SystemLifts } from '../src/core/LiftDatabase.ts';
+import SetUtils from '../src/core/utils/SetUtils.ts';
+import { FullBody_3day } from '../src/core/routines/3_FullBody.ts';
 
 /*
 6-day Upper Lower

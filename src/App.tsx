@@ -7,14 +7,14 @@ import {
   NavigationContainer,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { GlobalSettings, LiftDef } from './types/types';
+import { GlobalSettings, LiftDef } from './core/types/types';
 import { Provider, useDispatch } from 'react-redux';
 import { LiftListScreen } from './screens/LiftListScreen';
 import { LiftHistoryScreen } from './screens/LiftHistory/LiftHistoryScreen';
 import { LiftDefEditScreen } from './screens/LiftDefEditScreen';
 import { WorkoutEditScreen } from './screens/WorkoutEditScreen';
 import { WorkoutList } from './screens/Home';
-import { Lift } from './types/workout';
+import { Lift } from './core/types/workout';
 import { LiftDefListScreen } from './screens/LiftDefListScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';

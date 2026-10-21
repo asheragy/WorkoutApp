@@ -1,6 +1,6 @@
-import { GlobalSettings } from '../types/types';
+import { GlobalSettings } from '../core/types/types';
 import { db, dbReady } from './db.ts';
-import { DEFAULT_ROUTINE } from '../types/workout';
+import { DEFAULT_ROUTINE } from '../core/types/workout';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {

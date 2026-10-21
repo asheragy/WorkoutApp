@@ -1,6 +1,6 @@
 import { Routine, Workout } from '../types/workout.ts';
-import { Lifts } from '../repository/LiftDatabase.ts';
-import Utils from '../components/Utils.ts';
+import { Lifts } from '../LiftDatabase.ts';
+import Utils from '../../components/Utils.ts';
 
 const ROUTINE_ID = 'upperLower2026';
 export const UpperLower2026: [Routine, Workout[]] = [

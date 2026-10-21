@@ -1,19 +1,19 @@
 import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
-import { GlobalSettings, LiftDef, MuscleGroup } from '../types/types';
+import { GlobalSettings, LiftDef, MuscleGroup } from '../core/types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import { AppState, useAppSelector } from '../state/store.ts';
 import { useTheme } from '@react-navigation/native';
 import { NumberControl } from '../components/NumberControl.tsx';
-import ChartUtils, { HistoryEntry } from '../utils/ChartUtils.ts';
+import ChartUtils, { HistoryEntry } from '../core/utils/ChartUtils.ts';
 import { ProgressChart } from '../components/ProgressChart.tsx';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { enumToItemsNumeric } from '../utils/EnumUtils.ts';
+import { enumToItemsNumeric } from '../core/utils/EnumUtils.ts';
 import LiftHistoryRepository, {
   LiftHistory,
 } from '../repository/LiftHistoryRepository.ts';
-import SetUtils, { WorkingSets } from '../utils/SetUtils.ts';
+import SetUtils, { WorkingSets } from '../core/utils/SetUtils.ts';
 
 export function StatsScreen() {
   const { colors } = useTheme();

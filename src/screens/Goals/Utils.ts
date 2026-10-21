@@ -1,7 +1,11 @@
-import { GlobalSettings, LiftDef, MuscleGroup } from '../../types/types.ts';
-import { Workout } from '../../types/workout.ts';
+import {
+  GlobalSettings,
+  LiftDef,
+  MuscleGroup,
+} from '../../core/types/types.ts';
+import { Workout } from '../../core/types/workout.ts';
 import Utils from '../../components/Utils.ts';
-import LiftUtils from '../../utils/LiftUtils.ts';
+import LiftUtils from '../../core/utils/LiftUtils.ts';
 
 type GoalRow = {
   id: string;

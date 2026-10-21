@@ -8,12 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { Lift } from '../../types/workout';
+import { Lift } from '../../core/types/workout';
 import Utils from '../Utils';
 import { Style_LiftText } from '../Common';
 import { ReadOnlySetTable } from './ReadOnlySetTable';
-import { GlobalSettings, LiftDef } from '../../types/types.ts';
-import LiftUtils from '../../utils/LiftUtils.ts';
+import { GlobalSettings, LiftDef } from '../../core/types/types.ts';
+import LiftUtils from '../../core/utils/LiftUtils.ts';
 
 export default function LiftItem(props: {
   lift: Lift;

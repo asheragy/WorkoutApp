@@ -1,4 +1,4 @@
-import { NormalizedSet } from '../../types/types';
+import { NormalizedSet } from '../../core/types/types';
 import { useTheme } from '@react-navigation/native';
 import { StyleProp, Text, TextStyle, View } from 'react-native';
 import React from 'react';

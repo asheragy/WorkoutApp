@@ -1,7 +1,7 @@
-import {Routine, Workout} from '../types/workout.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {buildWorkout} from './helper.ts';
-import {SharedLower1, SharedLower2} from './4_UpperLower.ts';
+import { Routine, Workout } from '../types/workout.ts';
+import { Lifts } from '../LiftDatabase.ts';
+import { buildWorkout } from './helper.ts';
+import { SharedLower1, SharedLower2 } from './4_UpperLower.ts';
 
 export const ULArnold: [Routine, Workout[]] = [
   {

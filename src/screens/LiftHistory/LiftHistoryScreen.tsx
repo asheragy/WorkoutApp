@@ -10,7 +10,7 @@ import { LiftLogTab } from './LiftLogTab';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
 import Utils from '../../components/Utils';
-import { GlobalSettings } from '../../types/types.ts';
+import { GlobalSettings } from '../../core/types/types.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftHistory'>;
 

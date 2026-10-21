@@ -1,5 +1,5 @@
 import ChartUtils, { HistoryEntry } from './ChartUtils.ts';
-import { Lifts } from '../repository/LiftDatabase.ts';
+import { Lifts } from '../LiftDatabase.ts';
 import { LiftDef, MuscleGroup } from '../types/types.ts';
 
 test('progress by week', () => {

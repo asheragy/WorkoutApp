@@ -1,5 +1,5 @@
-import { LiftDef } from '../types/types.ts';
-import { SystemLifts } from '../repository/LiftDatabase.ts';
+import { LiftDef } from '../core/types/types.ts';
+import { SystemLifts } from '../core/LiftDatabase.ts';
 
 export const TestLiftDefs: Record<string, LiftDef> = (() => {
   const result: Record<string, LiftDef> = {};

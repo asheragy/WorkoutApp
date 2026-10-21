@@ -1,4 +1,4 @@
-import {Lifts} from '../repository/LiftDatabase.ts';
+import { Lifts } from '../LiftDatabase.ts';
 
 export const SharedDeadliftCardio = [
   [

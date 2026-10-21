@@ -1,15 +1,15 @@
-import { DEFAULT_ROUTINE, Routine } from '../types/workout';
-import { UpperLower } from '../routines/4_UpperLower.ts';
-import { YatesSplit } from '../routines/4_Yates.ts';
-import { PPL_3Day } from '../routines/3_PPL.ts';
-import { HLM_3Day } from '../routines/3_HLM.ts';
-import { ULPPL } from '../routines/5_ULPPL.ts';
-import { UpperLower6 } from '../routines/6_UpperLower.ts';
-import { ULArnold } from '../routines/5_ULArnold.ts';
-import { FullBody_1Day } from '../routines/1_Full.ts';
-import { YatesSplitModified } from '../routines/4_Yates_Modified.ts';
-import { UpperLower_2Day } from '../routines/2_UpperLower.ts';
-import { UpperLower2026 } from '../routines/6_UpperLower2026.ts';
+import { DEFAULT_ROUTINE, Routine } from '../core/types/workout';
+import { UpperLower } from '../core/routines/4_UpperLower.ts';
+import { YatesSplit } from '../core/routines/4_Yates.ts';
+import { PPL_3Day } from '../core/routines/3_PPL.ts';
+import { HLM_3Day } from '../core/routines/3_HLM.ts';
+import { ULPPL } from '../core/routines/5_ULPPL.ts';
+import { UpperLower6 } from '../core/routines/6_UpperLower.ts';
+import { ULArnold } from '../core/routines/5_ULArnold.ts';
+import { FullBody_1Day } from '../core/routines/1_Full.ts';
+import { YatesSplitModified } from '../core/routines/4_Yates_Modified.ts';
+import { UpperLower_2Day } from '../core/routines/2_UpperLower.ts';
+import { UpperLower2026 } from '../core/routines/6_UpperLower2026.ts';
 
 export const PreLoadedRoutines = [
   UpperLower,

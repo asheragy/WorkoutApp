@@ -5,10 +5,10 @@
 - Quadriceps, Hamstrings and Calves
  */
 
-import {Routine, Workout} from '../types/workout.ts';
-import {Lifts} from '../repository/LiftDatabase.ts';
-import {buildWorkout} from './helper.ts';
-import {SharedDeadliftCardio} from './shared.ts';
+import { Routine, Workout } from '../types/workout.ts';
+import { Lifts } from '../LiftDatabase.ts';
+import { buildWorkout } from './helper.ts';
+import { SharedDeadliftCardio } from './shared.ts';
 
 export const YatesSplitModified: [Routine, Workout[]] = [
   {

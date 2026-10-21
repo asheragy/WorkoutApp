@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { RootStackParamList } from '../App';
-import { LiftDef } from '../types/types';
+import { LiftDef } from '../core/types/types';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';

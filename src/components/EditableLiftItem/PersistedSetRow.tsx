@@ -1,5 +1,5 @@
-import { LiftSet } from '../../types/workout';
-import { GlobalSettings, LiftDef } from '../../types/types';
+import { LiftSet } from '../../core/types/workout';
+import { GlobalSettings, LiftDef } from '../../core/types/types';
 import { useTheme } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -15,7 +15,7 @@ import {
 } from 'react-native-popup-menu';
 import { Widths } from './Widths';
 import { NumberControl } from '../NumberControl';
-import SetUtils from '../../utils/SetUtils';
+import SetUtils from '../../core/utils/SetUtils';
 import CheckBox from '@react-native-community/checkbox';
 
 export function PersistedSetRow(props: {

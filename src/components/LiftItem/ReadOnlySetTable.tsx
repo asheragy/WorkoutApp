@@ -1,12 +1,12 @@
-import { Lift } from '../../types/workout';
-import { GlobalSettings, LiftDef } from '../../types/types';
+import { Lift } from '../../core/types/workout';
+import { GlobalSettings, LiftDef } from '../../core/types/types';
 import { useSelector } from 'react-redux';
 import { View } from 'react-native';
 import SetItem from './SetItem';
 import React from 'react';
 import SetHeader from './SetHeader';
 import { AppState } from '../../state/store.ts';
-import SetUtils from '../../utils/SetUtils.ts';
+import SetUtils from '../../core/utils/SetUtils.ts';
 
 export function ReadOnlySetTable({ lift, def }: { lift: Lift; def: LiftDef }) {
   const settings: GlobalSettings = useSelector(

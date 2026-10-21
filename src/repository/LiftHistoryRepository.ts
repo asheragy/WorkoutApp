@@ -1,8 +1,8 @@
-import { LiftDef, PersistedSet } from '../types/types';
-import { LiftSet, Workout } from '../types/workout';
+import { LiftDef, PersistedSet } from '../core/types/types';
+import { LiftSet, Workout } from '../core/types/workout';
 import { db, LiftHistoryTableSchema } from './db.ts';
 import { Scalar } from '@op-engineering/op-sqlite';
-import SetUtils from '../utils/SetUtils.ts';
+import SetUtils from '../core/utils/SetUtils.ts';
 
 export type LiftHistory = {
   timestamp: Date;

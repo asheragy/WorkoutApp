@@ -1,4 +1,4 @@
-import { DEFAULT_ROUTINE, Workout } from '../types/workout';
+import { DEFAULT_ROUTINE, Workout } from '../core/types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
 import { db, dbReady } from './db.ts';

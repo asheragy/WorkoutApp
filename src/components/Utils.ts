@@ -1,4 +1,4 @@
-import { LiftDef, LiftType } from '../types/types';
+import { LiftDef, LiftType } from '../core/types/types';
 import uuid from 'react-native-uuid';
 
 export default class Utils {

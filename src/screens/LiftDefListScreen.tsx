@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import { RootStackParamList } from '../App';
-import { LiftDef } from '../types/types';
+import { LiftDef } from '../core/types/types';
 import { useTheme } from '@react-navigation/native';
 import { useAppSelector } from '../state/store';
 import Utils from '../components/Utils';

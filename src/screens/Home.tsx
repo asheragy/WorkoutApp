@@ -18,12 +18,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
 import { MaterialHeaderButton } from '../components/Common';
-import { Lift, Workout } from '../types/workout';
+import { Lift, Workout } from '../core/types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
-import SetUtils from '../utils/SetUtils.ts';
+import SetUtils from '../core/utils/SetUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 

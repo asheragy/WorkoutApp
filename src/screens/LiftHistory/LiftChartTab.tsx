@@ -1,9 +1,9 @@
 import React from 'react';
 import { View } from 'react-native';
 import { LiftHistory } from '../../repository/LiftHistoryRepository';
-import { GlobalSettings, LiftDef } from '../../types/types';
+import { GlobalSettings, LiftDef } from '../../core/types/types';
 import { ProgressChart } from '../../components/ProgressChart';
-import SetUtils from '../../utils/SetUtils.ts';
+import SetUtils from '../../core/utils/SetUtils.ts';
 
 export function LiftChartTab(props: {
   settings: GlobalSettings;

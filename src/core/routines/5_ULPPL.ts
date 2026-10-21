@@ -1,5 +1,5 @@
 import { Routine, Workout } from '../types/workout.ts';
-import { Lifts } from '../repository/LiftDatabase.ts';
+import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 
 export const ULPPL: [Routine, Workout[]] = [

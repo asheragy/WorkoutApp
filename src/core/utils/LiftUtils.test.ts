@@ -1,6 +1,6 @@
 import LiftUtils from './LiftUtils.ts';
-import { TestLiftDefs } from '../test-utils/Common.ts';
-import { Lifts } from '../repository/LiftDatabase.ts';
+import { TestLiftDefs } from '../../test-utils/Common.ts';
+import { Lifts } from '../LiftDatabase.ts';
 import { Lift } from '../types/workout.ts';
 
 test('groupLifts', () => {
