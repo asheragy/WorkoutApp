@@ -599,3 +599,19 @@ export const SystemLifts = Object.values(Lifts).map(def => {
     system: true,
   };
 });
+
+export function defToString(def: LiftDef) {
+  if (def == undefined) return '';
+  let result = def.name;
+
+  if (def.multiple && def.type != LiftType.Bodyweight) {
+    const type = LiftType[def.type]
+      .replaceAll(LiftType[LiftType.MachinePlateSingle], 'Plate-Loaded')
+      .replaceAll(LiftType[LiftType.MachinePlateDouble], 'Plate-Loaded')
+      .replaceAll(LiftType[LiftType.MachineStack], 'Stack Machine');
+
+    result += ` (${type})`;
+  }
+
+  return result;
+}

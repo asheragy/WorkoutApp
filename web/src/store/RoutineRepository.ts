@@ -1,7 +1,7 @@
 // Copied from src/repository/RoutineRepository.ts. The web app keeps its own
 // copy because the two will drift: the phone app will read routines from
 // SQLite, the web app from code files and web/data JSON.
-import { DEFAULT_ROUTINE, Routine } from '@shared/types/workout.ts';
+import { DEFAULT_ROUTINE, Routine, Workout } from '@shared/types/workout.ts';
 import { UpperLower } from '@shared/routines/4_UpperLower.ts';
 import { YatesSplit } from '@shared/routines/4_Yates.ts';
 import { PPL_3Day } from '@shared/routines/3_PPL.ts';
@@ -29,10 +29,15 @@ export const PreLoadedRoutines = [
 ];
 
 export default class RoutineRepository {
-  static async getAll(): Promise<Routine[]> {
+  static async listAll(): Promise<Routine[]> {
     return [
       { id: DEFAULT_ROUTINE, title: 'Default' },
       ...PreLoadedRoutines.map(x => x[0]),
     ];
+  }
+
+  static async get(id: string): Promise<Workout[]> {
+    const entry = PreLoadedRoutines.find(x => x[0].id === id);
+    return entry ? entry[1] : [];
   }
 }

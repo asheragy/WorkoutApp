@@ -1,25 +1,15 @@
 import { LiftDef, LiftType } from '../core/types/types';
 import uuid from 'react-native-uuid';
+import { defToString } from '../core/LiftDatabase.ts';
 
 export default class Utils {
   static round(x: number): number {
     return Math.round(x / 5) * 5;
   }
 
+  // TODO remove
   static defToString(def: LiftDef) {
-    if (def == undefined) return '';
-    let result = def.name;
-
-    if (def.multiple && def.type != LiftType.Bodyweight) {
-      const type = LiftType[def.type]
-        .replaceAll(LiftType[LiftType.MachinePlateSingle], 'Plate-Loaded')
-        .replaceAll(LiftType[LiftType.MachinePlateDouble], 'Plate-Loaded')
-        .replaceAll(LiftType[LiftType.MachineStack], 'Stack Machine');
-
-      result += ` (${type})`;
-    }
-
-    return result;
+    return defToString(def);
   }
 
   static generate_uuidv4(): string {
