@@ -53,6 +53,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
       ...props.lift,
       sets: [...props.lift.sets],
       goals: props.lift.goals ? [...props.lift.goals] : undefined,
+      goals2: props.lift.goals2 ? [...props.lift.goals2] : undefined,
     };
   }
 
@@ -70,10 +71,12 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  function addGoal() {
+  function addGoal(primary: boolean) {
     let goal: LiftSet = { weight: 0, reps: 0 };
-    if (props.lift.goals && props.lift.goals?.length > 0)
+    if (primary && props.lift.goals && props.lift.goals?.length > 0)
       goal = { ...props.lift.goals[props.lift.goals.length - 1] };
+    else if (!primary && props.lift.goals2 && props.lift.goals2?.length > 0)
+      goal = { ...props.lift.goals2[props.lift.goals2.length - 1] };
     else if (props.lift.sets.length > 0) {
       goal = { ...props.lift.sets[props.lift.sets.length - 1] };
       // Clears all other fields
@@ -84,15 +87,22 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     }
 
     const updatedLift = getUpdatedLift();
-    if (props.lift.goals) updatedLift.goals = [...props.lift.goals, goal];
-    else updatedLift.goals = [goal];
+    if (primary) {
+      if (props.lift.goals) updatedLift.goals = [...props.lift.goals, goal];
+      else updatedLift.goals = [goal];
+    } else {
+      if (props.lift.goals2) updatedLift.goals2 = [...props.lift.goals2, goal];
+      else updatedLift.goals2 = [goal];
+    }
 
     props.onChange(updatedLift);
   }
 
-  function onRemoveGoal(index: number) {
+  function onRemoveGoal(primary: boolean, index: number) {
     const updatedLift = getUpdatedLift();
-    updatedLift.goals!!.splice(index, 1);
+
+    if (primary) updatedLift.goals!!.splice(index, 1);
+    else updatedLift.goals2!!.splice(index, 1);
 
     props.onChange(updatedLift);
   }
@@ -110,13 +120,17 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  function onGoalChange(index: number, updated: LiftSet) {
+  function onGoalChange(primary: boolean, index: number, updated: LiftSet) {
     const updatedLift = getUpdatedLift();
-    updatedLift.goals!![index] = updated;
+
+    if (primary) updatedLift.goals!![index] = updated;
+    else updatedLift.goals2!![index] = updated;
     props.onChange(updatedLift);
   }
 
   const goalPercent = LiftUtils.goalPercent(settings, def, props.lift);
+  const goal2Percent = LiftUtils.goal2Percent(settings, def, props.lift);
+
   const setMaxes = props.lift.sets
     .filter(x => !x.warmup)
     .map(x => SetUtils.calculate1RM(settings, def, x));
@@ -184,7 +198,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
             {'Sets: ' +
               props.lift.sets.length +
               ' Goals: ' +
-              props.lift.goals?.length}
+              ((props.lift.goals?.length ?? 0) +
+                (props.lift.goals2?.length ?? 0))}
           </Text>
           <TextInput
             placeholder={'Note'}
@@ -241,8 +256,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               key={index}
               showPlates={props.showPlates}
               showCompleteCheckbox={false}
-              onDelete={() => onRemoveGoal(index)}
-              onChange={set => onGoalChange(index, set)}
+              onDelete={() => onRemoveGoal(true, index)}
+              onChange={set => onGoalChange(true, index, set)}
             ></PersistedSetRow>
           ))}
           <View
@@ -252,7 +267,35 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               alignItems: 'center',
             }}
           >
-            <Button title="Add Goal" onPress={addGoal}></Button>
+            <Button title="Add Goal" onPress={() => addGoal(true)}></Button>
+          </View>
+
+          {goal2Percent && (
+            <Text style={{ color: colors.text, textAlign: 'center' }}>
+              {(goal2Percent * 100).toFixed(2) + '%'}
+            </Text>
+          )}
+          {props.lift.goals2?.map((set, index) => (
+            <PersistedSetRow
+              set={set}
+              label=""
+              settings={settings}
+              def={def}
+              key={index}
+              showPlates={props.showPlates}
+              showCompleteCheckbox={false}
+              onDelete={() => onRemoveGoal(false, index)}
+              onChange={set => onGoalChange(false, index, set)}
+            ></PersistedSetRow>
+          ))}
+          <View
+            style={{
+              margin: 10,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Button title="Add Goal2" onPress={() => addGoal(false)}></Button>
           </View>
         </>
       )}

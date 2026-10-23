@@ -41,6 +41,29 @@ const LiftUtils = {
 
     return undefined;
   },
+
+  goal2Percent(
+    settings: Pick<GlobalSettings, 'bodyweight'>,
+    def: LiftDef,
+    lift: Lift,
+  ): undefined | number {
+    if (def.id != lift.id) throw new Error('Def must match lift Id');
+
+    if (lift.sets.length > 0 && lift.goals2 && lift.goals2.length > 0) {
+      const sets = lift.sets
+        .filter(x => !x.warmup)
+        .map(x => SetUtils.setToPersisted(x));
+      const goals = (lift.goals2 ?? []).map(x => SetUtils.setToPersisted(x));
+
+      const percent =
+        SetUtils.calculate1RMAverage(settings, def, sets) /
+        SetUtils.calculate1RMAverage(settings, def, goals);
+
+      return percent * 1.2;
+    }
+
+    return undefined;
+  },
 };
 
 export default LiftUtils;

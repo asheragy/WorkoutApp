@@ -13,7 +13,10 @@ export function GoalsScreen() {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Short Term">
-        {() => <ShortTermTab settings={settings} />}
+        {() => <ShortTermTab settings={settings} primary={true} />}
+      </Tab.Screen>
+      <Tab.Screen name="Mid Term">
+        {() => <ShortTermTab settings={settings} primary={false} />}
       </Tab.Screen>
       <Tab.Screen name="Long Term">
         {() => <LongTermTab settings={settings} />}

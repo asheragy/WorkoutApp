@@ -19,13 +19,18 @@ export function calcWorkoutGoals(
   settings: Pick<GlobalSettings, 'bodyweight'>,
   defs: Record<string, LiftDef>,
   workouts: Workout[],
+  primary: boolean,
 ): GoalRow[] {
   const result: GoalRow[] = [];
 
   const lifts = workouts
     .flatMap(x => x.lifts)
     .filter(x => x.sets.length > 0)
-    .filter(x => x.goals != undefined && x.goals.length > 0);
+    .filter(
+      x =>
+        (primary && x.goals != undefined && x.goals.length > 0) ||
+        (!primary && x.goals2 != undefined && x.goals2.length > 0),
+    );
 
   const counts = new Map<MuscleGroup, number>();
   const percentages = new Map<MuscleGroup, number>();
@@ -41,7 +46,11 @@ export function calcWorkoutGoals(
   Object.entries(grouped).forEach(([liftId, lifts]) => {
     const def = defs[liftId];
     const percents = lifts
-      .map(lift => LiftUtils.goalPercent(settings, def, lift))
+      .map(lift =>
+        primary
+          ? LiftUtils.goalPercent(settings, def, lift)
+          : LiftUtils.goal2Percent(settings, def, lift),
+      )
       .filter(x => typeof x === 'number' && !isNaN(x))
       .filter(x => x !== undefined);
 

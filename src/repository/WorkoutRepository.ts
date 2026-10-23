@@ -1,4 +1,4 @@
-import { DEFAULT_ROUTINE, Workout } from '../core/types/workout';
+import { Workout } from '../core/types/workout';
 import Utils from '../components/Utils';
 import { PreLoadedRoutines } from './RoutineRepository.ts';
 import { db, dbReady } from './db.ts';
@@ -83,6 +83,7 @@ export default class WorkoutRepository {
           ...lift,
           sets: recentLift.sets.map(set => ({ ...set })),
           goals: recentLift.goals?.map(goal => ({ ...goal })),
+          goals2: recentLift.goals2?.map(goal => ({ ...goal })),
         };
       }
 
@@ -174,36 +175,6 @@ export default class WorkoutRepository {
     );
 
     return rows.map(row => this.fromRow(row));
-  }
-
-  // Temporary needed to stay for migrations. Inserts the workouts as-is,
-  // keeping the existing ids so lift_history.workout_id still matches.
-  // Refuses to run if the table already has rows so it cannot double-insert.
-  static async insertForMigration(workouts: Workout[]): Promise<number> {
-    await dbReady();
-
-    const rows = await db.executeRaw('SELECT COUNT(*) FROM workouts');
-    const existing = Number(rows[0][0]);
-    if (existing > 0)
-      throw new Error(`workouts table already has ${existing} rows`);
-
-    const now = Date.now();
-    await db.transaction(async tx => {
-      for (const workout of workouts) {
-        await tx.execute(
-          `INSERT INTO workouts (id, routine_id, data_json, updated_at)
-           VALUES (?, ?, ?, ?)`,
-          [
-            workout.id ?? Utils.generate_uuidv4(),
-            workout.routineId ?? DEFAULT_ROUTINE,
-            this.toDataJson(workout),
-            now,
-          ],
-        );
-      }
-    });
-
-    return workouts.length;
   }
 
   private static async update(workout: Workout) {

@@ -18,6 +18,7 @@ export type Lift = {
   instanceId: string;
   sets: LiftSet[];
   goals?: LiftSet[];
+  goals2?: LiftSet[];
   hide?: boolean;
   note?: string;
   alternate?: boolean;

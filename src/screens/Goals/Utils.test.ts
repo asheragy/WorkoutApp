@@ -29,6 +29,12 @@ test('calcWorkoutGoals', async () => {
             reps: 5,
           },
         ],
+        goals2: [
+          {
+            weight: 300,
+            reps: 5,
+          },
+        ],
       },
       {
         id: Lifts.legExtensions.id,
@@ -45,7 +51,7 @@ test('calcWorkoutGoals', async () => {
     ],
   };
 
-  const rows = calcWorkoutGoals({}, TestLiftDefs, [workout]);
+  let rows = calcWorkoutGoals({}, TestLiftDefs, [workout], true);
   expect(rows.length).toBe(3);
   expect(rows).toStrictEqual([
     {
@@ -63,6 +69,16 @@ test('calcWorkoutGoals', async () => {
       id: 'legExtensions',
       name: 'Leg Extensions',
       percent: 0.952330776340269,
+    },
+  ]);
+
+  rows = calcWorkoutGoals({}, TestLiftDefs, [workout], false);
+  expect(rows.length).toBe(1);
+  expect(rows).toStrictEqual([
+    {
+      id: 'squat_front',
+      name: 'Squat (Front)',
+      percent: 0.9199999999999999,
     },
   ]);
 });
