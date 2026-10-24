@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Lift as LiftType, LiftSet } from '@shared/types/workout.ts';
-import { LiftDef } from '@shared/types/types.ts';
-import { defToString, Lifts } from '@shared/LiftDatabase.ts';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import Set from './Set.tsx';
 import { settings } from '../store/Settings.ts';
+import { liftDefs } from '../store/LiftDefs.ts';
 
 type Props = {
   lift: LiftType;
@@ -19,16 +18,9 @@ type Props = {
   onMoveDown?: () => void;
 };
 
-// TODO: duplicates the `multiple` derivation in LiftDefRepository (phone app).
-// Move it into shared code so both apps call the same helper.
-const nameCounts = new Map<string, number>();
-Object.values(Lifts).forEach(def => nameCounts.set(def.name, (nameCounts.get(def.name) ?? 0) + 1));
-
-const liftOptions = Object.values(Lifts)
-  .map(def => ({ id: def.id, label: defToString({ ...def, multiple: nameCounts.get(def.name)! > 1 }) }))
+const liftOptions = Object.values(liftDefs)
+  .map(def => ({ id: def.id, label: def.displayName }))
   .sort((a, b) => a.label.localeCompare(b.label));
-
-const liftDefs = Lifts as Record<string, LiftDef>;
 
 const headerStyle = { fontWeight: 'bold', textAlign: 'center' as const, fontSize: 14 };
 const centerStyle = { textAlign: 'center' as const };

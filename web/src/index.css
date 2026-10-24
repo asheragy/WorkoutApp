@@ -30,3 +30,40 @@ button {
 button:hover {
   background: #2a2a2a;
 }
+
+.tabs a {
+  color: var(--fg);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+
+.tabs a:hover {
+  background: #2a2a2a;
+}
+
+.tabs a.active {
+  background: #333;
+  font-weight: bold;
+}
+
+.data-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data-table th,
+.data-table td {
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.data-table th {
+  background: var(--input-bg);
+}
+
+.data-table tbody tr:hover {
+  background: #1a1a1a;
+}
