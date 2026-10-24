@@ -1,6 +1,7 @@
-import { Lift } from '../types/workout.ts';
+import { Lift, WorkoutItem } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
+import Utils from '../../components/Utils.ts';
 
 const LiftUtils = {
   groupLifts(lifts: Lift[]): Lift[][] {
@@ -17,6 +18,25 @@ const LiftUtils = {
     }
 
     return result;
+  },
+
+  // Converts positional `alternate` flags into explicit groups. The flag is
+  // dropped from every lift since the group now carries that information.
+  toWorkoutItems(lifts: Lift[]): WorkoutItem[] {
+    const groups = this.groupLifts(lifts).map(group =>
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      group.map(({ alternate, ...lift }) => lift),
+    );
+    return groups.map(group => {
+      if (group.length == 1) return group[0];
+      else {
+        return {
+          kind: 'oneOf',
+          instanceId: Utils.generate_uuidv4(),
+          lifts: group,
+        };
+      }
+    });
   },
 
   goalPercent(

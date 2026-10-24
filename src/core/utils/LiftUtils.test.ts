@@ -24,7 +24,7 @@ test('groupLifts', () => {
     },
   ];
 
-  // @ts-ignore
+  // @ts-expect-error partial lifts are enough for grouping
   const grouped = LiftUtils.groupLifts(lifts);
   expect(grouped).toStrictEqual([
     [
@@ -50,6 +50,40 @@ test('groupLifts', () => {
         alternate: true,
       },
     ],
+  ]);
+
+  // @ts-expect-error partial lifts are enough for grouping
+  const items = LiftUtils.toWorkoutItems(lifts);
+  // Group instanceIds are freshly generated uuids, so only check their type.
+  // `alternate` is dropped; the group carries that information now.
+  expect(items).toStrictEqual([
+    {
+      kind: 'oneOf',
+      instanceId: expect.any(String),
+      lifts: [
+        {
+          id: '1a',
+        },
+        {
+          id: '1b',
+        },
+      ],
+    },
+    {
+      id: '2',
+    },
+    {
+      kind: 'oneOf',
+      instanceId: expect.any(String),
+      lifts: [
+        {
+          id: '3a',
+        },
+        {
+          id: '3b',
+        },
+      ],
+    },
   ]);
 });
 

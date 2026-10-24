@@ -1,4 +1,4 @@
-import { LiftDef, LiftType } from '../core/types/types';
+import { LiftDef } from '../core/types/types';
 import uuid from 'react-native-uuid';
 import { defToString } from '../core/LiftDatabase.ts';
 

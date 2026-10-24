@@ -11,6 +11,14 @@ export type Workout = {
   lastCompleted?: Date;
   name: string;
   lifts: Lift[];
+  // TODO items: WorkoutItem[];
+};
+
+export type WorkoutItem = Lift | LiftGroup;
+export type LiftGroup = {
+  kind: 'oneOf'; // only kind for now; room for 'superset' later
+  instanceId: string;
+  lifts: Lift[]; // always 2 or more; a group of 1 is just a Lift
 };
 
 export type Lift = {
