@@ -1,19 +1,20 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Routine, Workout as WorkoutType } from '@shared/types/workout.ts';
-import RoutineRepository from './store/RoutineRepository.ts';
+import { Routine } from '@shared/types/workout.ts';
+import { WorkoutTemplate } from '@shared/types/template.ts';
+import TemplateRepository from './store/TemplateRepository.ts';
 import Workout from './components/Workout.tsx';
 import './index.css';
 
 function App() {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [activeId, setActiveId] = useState('');
-  const [workouts, setWorkouts] = useState<WorkoutType[]>([]);
+  const [workouts, setWorkouts] = useState<WorkoutTemplate[]>([]);
   const [compact, setCompact] = useState(false);
   const [reorder, setReorder] = useState(false);
 
   useEffect(() => {
-    RoutineRepository.listAll().then(list => {
+    TemplateRepository.listAll().then(list => {
       setRoutines(list);
       setActiveId(prev => prev || list[0]?.id || '');
     });
@@ -21,7 +22,7 @@ function App() {
 
   useEffect(() => {
     if (!activeId) return;
-    RoutineRepository.get(activeId).then(setWorkouts);
+    TemplateRepository.get(activeId).then(t => setWorkouts(t?.workouts ?? []));
   }, [activeId]);
 
   return (

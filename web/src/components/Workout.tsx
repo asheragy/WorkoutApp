@@ -1,21 +1,22 @@
 import { useState } from 'react';
-import { Workout as WorkoutType } from '@shared/types/workout.ts';
+import { isLiftGroup, WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
+import LiftGroup from './LiftGroup.tsx';
 
 type Props = {
-  workout: WorkoutType;
+  workout: WorkoutTemplate;
   compact: boolean;
   reorder: boolean;
-  onChange: (workout: WorkoutType) => void;
+  onChange: (workout: WorkoutTemplate) => void;
 };
 
 export default function Workout({ workout, compact, reorder, onChange }: Props) {
   const [collapsed, setCollapsed] = useState(false);
 
-  function swapLifts(a: number, b: number) {
-    const lifts = [...workout.lifts];
-    [lifts[a], lifts[b]] = [lifts[b], lifts[a]];
-    onChange({ ...workout, lifts });
+  function swapItems(a: number, b: number) {
+    const items = [...workout.items];
+    [items[a], items[b]] = [items[b], items[a]];
+    onChange({ ...workout, items });
   }
 
   const toggle = (
@@ -71,19 +72,22 @@ export default function Workout({ workout, compact, reorder, onChange }: Props) 
           onChange={e => onChange({ ...workout, name: e.target.value })}
         />
       </div>
-      {workout.lifts.map((lift, i) => (
-        <Lift
-          key={lift.instanceId}
-          lift={lift}
-          compact={compact}
-          reorder={reorder}
-          onMoveUp={i > 0 ? () => swapLifts(i, i - 1) : undefined}
-          onMoveDown={i < workout.lifts.length - 1 ? () => swapLifts(i, i + 1) : undefined}
-          onChange={updated =>
-            onChange({ ...workout, lifts: workout.lifts.map((x, j) => (j === i ? updated : x)) })
-          }
-        />
-      ))}
+      {workout.items.map((item, i) => {
+        const shared = {
+          compact,
+          reorder,
+          onMoveUp: i > 0 ? () => swapItems(i, i - 1) : undefined,
+          onMoveDown: i < workout.items.length - 1 ? () => swapItems(i, i + 1) : undefined,
+        };
+        const replace = (updated: typeof item) =>
+          onChange({ ...workout, items: workout.items.map((x, j) => (j === i ? updated : x)) });
+
+        return isLiftGroup(item) ? (
+          <LiftGroup key={item.instanceId} group={item} onChange={replace} {...shared} />
+        ) : (
+          <Lift key={item.instanceId} lift={item} onChange={replace} {...shared} />
+        );
+      })}
     </div>
   );
 }
