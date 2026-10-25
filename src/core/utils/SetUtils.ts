@@ -6,7 +6,7 @@ import {
   NormalizedSet,
   PersistedSet,
 } from '../types/types.ts';
-import { LiftSet, Workout } from '../types/workout.ts';
+import { isLiftGroup, Lift, LiftSet, Workout } from '../types/workout.ts';
 import Utils from '../../components/Utils.ts';
 import LiftUtils from './LiftUtils.ts';
 import { Lifts } from '../LiftDatabase.ts';
@@ -90,7 +90,9 @@ const SetUtils = {
     const result = new Map<MuscleGroup, number>();
 
     workouts.forEach(workout => {
-      LiftUtils.groupLifts(workout.lifts).forEach(lifts => {
+      LiftUtils.getWorkoutItems(workout).forEach(item => {
+        const lifts = isLiftGroup(item) ? item.lifts : [item];
+
         lifts.forEach(lift => {
           const workSets =
             lift.sets.filter(set => !set.warmup).length / lifts.length;

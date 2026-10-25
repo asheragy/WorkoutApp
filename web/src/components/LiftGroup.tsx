@@ -1,4 +1,4 @@
-import { LiftGroup as LiftGroupType } from '@shared/types/template.ts';
+import { LiftGroup as LiftGroupType } from '@shared/types/workout.ts';
 import Lift from './Lift.tsx';
 
 type Props = {
@@ -14,7 +14,14 @@ type Props = {
 
 const arrowStyle = { width: 28, padding: 0, flex: '0 0 auto' };
 
-export default function LiftGroup({ group, compact, reorder, onChange, onMoveUp, onMoveDown }: Props) {
+export default function LiftGroup({
+  group,
+  compact,
+  reorder,
+  onChange,
+  onMoveUp,
+  onMoveDown,
+}: Props) {
   function swapLifts(a: number, b: number) {
     const lifts = [...group.lifts];
     [lifts[a], lifts[b]] = [lifts[b], lifts[a]];
@@ -30,19 +37,34 @@ export default function LiftGroup({ group, compact, reorder, onChange, onMoveUp,
         border: '1px dashed #666',
         borderRadius: 4,
         padding: 8,
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
         {reorder && (
           <>
-            <button type="button" onClick={onMoveUp} disabled={!onMoveUp} title="Move group up" style={arrowStyle}>
+            <button
+              type="button"
+              onClick={onMoveUp}
+              disabled={!onMoveUp}
+              title="Move group up"
+              style={arrowStyle}
+            >
               ↑
             </button>
-            <button type="button" onClick={onMoveDown} disabled={!onMoveDown} title="Move group down" style={arrowStyle}>
+            <button
+              type="button"
+              onClick={onMoveDown}
+              disabled={!onMoveDown}
+              title="Move group down"
+              style={arrowStyle}
+            >
               ↓
             </button>
           </>
         )}
-        <span style={{ flex: 1, fontSize: 14, fontStyle: 'italic' }}>One of</span>
+        <span style={{ flex: 1, fontSize: 14, fontStyle: 'italic' }}>
+          One of
+        </span>
       </div>
       {group.lifts.map((lift, i) => (
         <Lift
@@ -51,8 +73,15 @@ export default function LiftGroup({ group, compact, reorder, onChange, onMoveUp,
           compact={compact}
           reorder={reorder}
           onMoveUp={i > 0 ? () => swapLifts(i, i - 1) : undefined}
-          onMoveDown={i < group.lifts.length - 1 ? () => swapLifts(i, i + 1) : undefined}
-          onChange={updated => onChange({ ...group, lifts: group.lifts.map((x, j) => (j === i ? updated : x)) })}
+          onMoveDown={
+            i < group.lifts.length - 1 ? () => swapLifts(i, i + 1) : undefined
+          }
+          onChange={updated =>
+            onChange({
+              ...group,
+              lifts: group.lifts.map((x, j) => (j === i ? updated : x)),
+            })
+          }
         />
       ))}
     </div>

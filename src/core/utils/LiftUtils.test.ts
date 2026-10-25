@@ -1,7 +1,7 @@
 import LiftUtils from './LiftUtils.ts';
 import { TestLiftDefs } from '../../test-utils/Common.ts';
 import { Lifts } from '../LiftDatabase.ts';
-import { Lift } from '../types/workout.ts';
+import { Lift, WorkoutItem } from '../types/workout.ts';
 
 test('groupLifts', () => {
   const lifts = [
@@ -22,7 +22,12 @@ test('groupLifts', () => {
       id: '3b',
       alternate: true,
     },
-  ];
+  ].map(x => {
+    return {
+      ...x,
+      instanceId: 'unused',
+    };
+  });
 
   // @ts-expect-error partial lifts are enough for grouping
   const grouped = LiftUtils.groupLifts(lifts);
@@ -30,24 +35,29 @@ test('groupLifts', () => {
     [
       {
         id: '1a',
+        instanceId: expect.any(String),
       },
       {
         id: '1b',
         alternate: true,
+        instanceId: expect.any(String),
       },
     ],
     [
       {
         id: '2',
+        instanceId: expect.any(String),
       },
     ],
     [
       {
         id: '3a',
+        instanceId: expect.any(String),
       },
       {
         id: '3b',
         alternate: true,
+        instanceId: expect.any(String),
       },
     ],
   ]);
@@ -63,14 +73,17 @@ test('groupLifts', () => {
       lifts: [
         {
           id: '1a',
+          instanceId: expect.any(String),
         },
         {
           id: '1b',
+          instanceId: expect.any(String),
         },
       ],
     },
     {
       id: '2',
+      instanceId: expect.any(String),
     },
     {
       kind: 'oneOf',
@@ -78,13 +91,67 @@ test('groupLifts', () => {
       lifts: [
         {
           id: '3a',
+          instanceId: expect.any(String),
         },
         {
           id: '3b',
+          instanceId: expect.any(String),
         },
       ],
     },
   ]);
+
+  const flat = LiftUtils.flatten(items);
+  expect(flat).toStrictEqual([
+    {
+      id: '1a',
+      instanceId: expect.any(String),
+    },
+    {
+      id: '1b',
+      instanceId: expect.any(String),
+    },
+    {
+      id: '2',
+      instanceId: expect.any(String),
+    },
+    {
+      id: '3a',
+      instanceId: expect.any(String),
+    },
+    {
+      id: '3b',
+      instanceId: expect.any(String),
+    },
+  ]);
+});
+
+test('flatten', () => {
+  const lift = (id: string): Lift => ({ id, instanceId: 'i' + id, sets: [] });
+  const items: WorkoutItem[] = [
+    { kind: 'oneOf', instanceId: 'g1', lifts: [lift('1a'), lift('1b')] },
+    lift('2'),
+    {
+      kind: 'oneOf',
+      instanceId: 'g3',
+      lifts: [lift('3a'), lift('3b'), lift('3c')],
+    },
+  ];
+
+  expect(LiftUtils.flatten(items).map(x => x.id)).toStrictEqual([
+    '1a',
+    '1b',
+    '2',
+    '3a',
+    '3b',
+    '3c',
+  ]);
+  expect(LiftUtils.flatten([])).toStrictEqual([]);
+
+  // Lifts are the same objects, not copies, and carry no alternate flag.
+  const flat = LiftUtils.flatten(items);
+  expect(flat[0]).toBe((items[0] as { lifts: Lift[] }).lifts[0]);
+  expect(flat.every(x => x.alternate === undefined)).toBe(true);
 });
 
 test('goal percentage', () => {

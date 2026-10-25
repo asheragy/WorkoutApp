@@ -1,8 +1,13 @@
 import { SystemLifts } from '../src/core/LiftDatabase.ts';
 import SetUtils from '../src/core/utils/SetUtils.ts';
 import { FullBody_3day } from '../src/core/routines/3_FullBody.ts';
+import LiftUtils from '../src/core/utils/LiftUtils.ts';
+import { isLiftGroup } from '../src/core/types/workout.ts';
 
 /*
+
+npx tsx scripts/working-sets.ts
+
 6-day Upper Lower
 ┌─────────┬──────────────┬───────┐
 │ (index) │ group        │ sets  │
@@ -32,15 +37,20 @@ workouts.forEach(wo => {
   )[0].sets;
   console.log(wo.name + ' (' + sets + ')');
 
-  wo.lifts.forEach(lift => {
-    console.log(
-      '  ' +
-        lift.sets.length +
-        ' ' +
-        defs[lift.id].name +
-        ' ' +
-        (lift.alternate ? '****' : ''),
-    );
+  LiftUtils.getWorkoutItems(wo).forEach(item => {
+    if (isLiftGroup(item)) {
+      const total = item.lifts
+        .map(l => l.sets.length)
+        .reduce((a, b) => a + b, 0);
+      const count = item.lifts.length;
+      const sets = total / count;
+      console.log('  ' + sets + ' oneOf');
+      item.lifts.forEach(lift => {
+        console.log('    ' + lift.sets.length + ' ' + defs[lift.id].name);
+      });
+    } else {
+      console.log('  ' + item.sets.length + ' ' + defs[item.id].name);
+    }
   });
 });
 

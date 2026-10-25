@@ -137,7 +137,17 @@ export const FullBody_3day: [Routine, Workout[]] = [
           sets: [
             { weight: 40, reps: 11 },
             { weight: 40, reps: 14 },
+            { weight: 40, reps: 14 },
           ],
+        },
+        {
+          id: Lifts.pullover_machine.id,
+          instanceId: Utils.generate_uuidv4(),
+          sets: [
+            { weight: 100, reps: 11 },
+            { weight: 100, reps: 14 },
+          ],
+          alternate: true,
         },
         {
           id: Lifts.plank.id,

@@ -1,7 +1,6 @@
-import { Lift, WorkoutItem } from '../types/workout.ts';
+import { Lift, Workout, WorkoutItem } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
-import Utils from '../../components/Utils.ts';
 
 const LiftUtils = {
   groupLifts(lifts: Lift[]): Lift[][] {
@@ -32,11 +31,27 @@ const LiftUtils = {
       else {
         return {
           kind: 'oneOf',
-          instanceId: Utils.generate_uuidv4(),
+          instanceId: group[0].instanceId,
           lifts: group,
         };
       }
     });
+  },
+
+  getWorkoutItems(workout: Workout): WorkoutItem[] {
+    return this.toWorkoutItems(workout.lifts);
+  },
+
+  // Flat list of every lift in order, groups expanded in place. No
+  // `alternate` flags are added; use this wherever the grouping is irrelevant
+  // (history, goals, lookups by instanceId).
+  flatten(items: WorkoutItem[]): Lift[] {
+    return items.flatMap(item => ('kind' in item ? item.lifts : [item]));
+  },
+
+  getAllLifts(workout: Workout): Lift[] {
+    // TODO needs to change when replaced by WorkoutItem
+    return workout.lifts;
   },
 
   goalPercent(

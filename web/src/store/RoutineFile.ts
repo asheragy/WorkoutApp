@@ -1,5 +1,10 @@
-import { RoutineTemplate, WorkoutItem, isLiftGroup } from '@shared/types/template.ts';
-import { Lift, LiftSet } from '@shared/types/workout.ts';
+import { RoutineTemplate } from '@shared/types/template.ts';
+import {
+  isLiftGroup,
+  Lift,
+  LiftSet,
+  WorkoutItem,
+} from '@shared/types/workout.ts';
 
 // On-disk format for src/core/routinesNew/<routineId>.json: the RoutineTemplate shape
 // plus a version field. Runtime-only fields (completed, lastCompleted, hide) are
@@ -27,17 +32,25 @@ export function serialize(template: RoutineTemplate): string {
 
 // PUT the routine to the dev-server plugin (web/plugins/routinesApi.ts).
 export async function saveRoutine(template: RoutineTemplate): Promise<void> {
-  const res = await fetch(`/api/routines/${encodeURIComponent(template.routine.id)}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: serialize(template),
-  });
-  if (!res.ok) throw new Error(`Save failed (${res.status}): ${await res.text()}`);
+  const res = await fetch(
+    `/api/routines/${encodeURIComponent(template.routine.id)}`,
+    {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: serialize(template),
+    },
+  );
+  if (!res.ok)
+    throw new Error(`Save failed (${res.status}): ${await res.text()}`);
 }
 
 function cleanItem(item: WorkoutItem): WorkoutItem {
   return isLiftGroup(item)
-    ? { kind: 'oneOf', instanceId: item.instanceId, lifts: item.lifts.map(cleanLift) }
+    ? {
+        kind: 'oneOf',
+        instanceId: item.instanceId,
+        lifts: item.lifts.map(cleanLift),
+      }
     : cleanLift(item);
 }
 

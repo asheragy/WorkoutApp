@@ -21,7 +21,6 @@ export default function LiftItem(props: {
   settings: GlobalSettings;
   overrideComplete: boolean;
   onEdit: () => void;
-  groupOrder?: number;
 }) {
   const { colors } = useTheme();
 

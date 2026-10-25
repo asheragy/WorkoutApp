@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { isLiftGroup, WorkoutTemplate } from '@shared/types/template.ts';
+import { WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
 import LiftGroup from './LiftGroup.tsx';
+import { isLiftGroup } from '@shared/types/workout.ts';
 
 type Props = {
   workout: WorkoutTemplate;
@@ -10,7 +11,12 @@ type Props = {
   onChange: (workout: WorkoutTemplate) => void;
 };
 
-export default function Workout({ workout, compact, reorder, onChange }: Props) {
+export default function Workout({
+  workout,
+  compact,
+  reorder,
+  onChange,
+}: Props) {
   const [collapsed, setCollapsed] = useState(false);
 
   function swapItems(a: number, b: number) {
@@ -24,7 +30,8 @@ export default function Workout({ workout, compact, reorder, onChange }: Props) 
       type="button"
       onClick={() => setCollapsed(c => !c)}
       title={collapsed ? 'Expand' : 'Collapse'}
-      style={{ width: 28, padding: 0 }}>
+      style={{ width: 28, padding: 0 }}
+    >
       {collapsed ? '▶' : '◀'}
     </button>
   );
@@ -43,9 +50,16 @@ export default function Workout({ workout, compact, reorder, onChange }: Props) 
           padding: 8,
           cursor: 'pointer',
         }}
-        onClick={() => setCollapsed(false)}>
+        onClick={() => setCollapsed(false)}
+      >
         {toggle}
-        <span style={{ writingMode: 'vertical-rl', whiteSpace: 'nowrap', fontSize: 14 }}>
+        <span
+          style={{
+            writingMode: 'vertical-rl',
+            whiteSpace: 'nowrap',
+            fontSize: 14,
+          }}
+        >
           {workout.name || '(unnamed)'}
         </span>
       </div>
@@ -62,7 +76,8 @@ export default function Workout({ workout, compact, reorder, onChange }: Props) 
         border: '1px solid #555',
         borderRadius: 4,
         padding: 8,
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', gap: 4 }}>
         {toggle}
         <input
@@ -77,15 +92,31 @@ export default function Workout({ workout, compact, reorder, onChange }: Props) 
           compact,
           reorder,
           onMoveUp: i > 0 ? () => swapItems(i, i - 1) : undefined,
-          onMoveDown: i < workout.items.length - 1 ? () => swapItems(i, i + 1) : undefined,
+          onMoveDown:
+            i < workout.items.length - 1
+              ? () => swapItems(i, i + 1)
+              : undefined,
         };
         const replace = (updated: typeof item) =>
-          onChange({ ...workout, items: workout.items.map((x, j) => (j === i ? updated : x)) });
+          onChange({
+            ...workout,
+            items: workout.items.map((x, j) => (j === i ? updated : x)),
+          });
 
         return isLiftGroup(item) ? (
-          <LiftGroup key={item.instanceId} group={item} onChange={replace} {...shared} />
+          <LiftGroup
+            key={item.instanceId}
+            group={item}
+            onChange={replace}
+            {...shared}
+          />
         ) : (
-          <Lift key={item.instanceId} lift={item} onChange={replace} {...shared} />
+          <Lift
+            key={item.instanceId}
+            lift={item}
+            onChange={replace}
+            {...shared}
+          />
         );
       })}
     </div>

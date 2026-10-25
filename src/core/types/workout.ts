@@ -21,6 +21,10 @@ export type LiftGroup = {
   lifts: Lift[]; // always 2 or more; a group of 1 is just a Lift
 };
 
+export function isLiftGroup(item: WorkoutItem): item is LiftGroup {
+  return 'kind' in item;
+}
+
 export type Lift = {
   id: string;
   instanceId: string;

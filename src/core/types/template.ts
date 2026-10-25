@@ -1,4 +1,4 @@
-import { LiftGroup, Routine, WorkoutItem } from './workout.ts';
+import { Routine, WorkoutItem } from './workout.ts';
 
 export type RoutineTemplate = {
   routine: Routine;
@@ -12,7 +12,3 @@ export type WorkoutTemplate = {
   name: string;
   items: WorkoutItem[];
 };
-
-export function isLiftGroup(item: WorkoutItem): item is LiftGroup {
-  return 'kind' in item;
-}

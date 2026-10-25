@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { WorkoutTemplate, isLiftGroup } from '@shared/types/template.ts';
+import { WorkoutTemplate } from '@shared/types/template.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import TemplateRepository from '../store/TemplateRepository.ts';
 import { settings } from '../store/Settings.ts';
 import { liftDefs } from '../store/LiftDefs.ts';
 import Page from '../components/Page.tsx';
+import { isLiftGroup } from '@shared/types/workout.ts';
 
 type GoalRow = { id: string; name: string; percent: number };
 
@@ -37,7 +38,9 @@ export default function GoalsPage() {
   const [rows, setRows] = useState<GoalRow[]>([]);
 
   useEffect(() => {
-    TemplateRepository.get(routineId).then(t => setRows(calcGoals(t?.workouts ?? [])));
+    TemplateRepository.get(routineId).then(t =>
+      setRows(calcGoals(t?.workouts ?? [])),
+    );
   }, [routineId]);
 
   return (
@@ -57,7 +60,9 @@ export default function GoalsPage() {
             {rows.map(row => (
               <tr key={row.id}>
                 <td>{row.name}</td>
-                <td style={{ textAlign: 'right' }}>{(100 * row.percent).toFixed(1)}%</td>
+                <td style={{ textAlign: 'right' }}>
+                  {(100 * row.percent).toFixed(1)}%
+                </td>
               </tr>
             ))}
           </tbody>

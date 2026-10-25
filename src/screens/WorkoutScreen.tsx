@@ -123,32 +123,43 @@ export function WorkoutScreen({ route, navigation }: Props) {
     }, [route.params.workoutId]),
   );
 
-  const completedAlts = getCompletedAlts(workout.lifts);
-  const activeLifts = workout.lifts.filter(
-    x => !x.hide && !completedAlts.includes(x.instanceId),
-  );
-  const hiddenLifts = workout.lifts.filter(
-    x => x.hide || completedAlts.includes(x.instanceId),
-  );
-  const sortedLifts = activeLifts.concat(hiddenLifts);
-
   return (
     <ScrollView style={styles.container}>
-      {sortedLifts.map(lift => (
-        <LiftItem
-          lift={lift}
-          def={defs[lift.id]}
-          settings={settings}
-          onEdit={() =>
-            navigation.navigate('LiftEdit', {
-              workoutId: route.params.workoutId,
-              lift: lift,
-            })
-          }
-          overrideComplete={completedAlts.includes(lift.instanceId)}
-          key={lift.instanceId}
-        ></LiftItem>
-      ))}
+      {
+        // TODO cannot use toWorkoutItems because it drops alternate when saving
+        LiftUtils.groupLifts(workout.lifts).map(item => {
+          if (item.length > 1)
+            return (
+              <GroupItem
+                group={item}
+                key={item[0].instanceId}
+                onEditLift={lift =>
+                  navigation.navigate('LiftEdit', {
+                    workoutId: route.params.workoutId,
+                    lift: lift,
+                  })
+                }
+              />
+            );
+
+          const lift = item[0];
+          return (
+            <LiftItem
+              lift={lift}
+              def={defs[lift.id]}
+              settings={settings}
+              onEdit={() =>
+                navigation.navigate('LiftEdit', {
+                  workoutId: route.params.workoutId,
+                  lift: lift,
+                })
+              }
+              overrideComplete={false}
+              key={lift.instanceId}
+            ></LiftItem>
+          );
+        })
+      }
 
       <View style={styles.bottom}>
         <Button title="Complete" onPress={() => confirmComplete()}></Button>
@@ -157,31 +168,39 @@ export function WorkoutScreen({ route, navigation }: Props) {
   );
 }
 
-function getCompletedAlts(lifts: Lift[]): string[] {
-  const groups = LiftUtils.groupLifts(lifts);
+function GroupItem(props: { group: Lift[]; onEditLift: (lift: Lift) => void }) {
+  const defs = useSelector((store: AppState) => store.liftDefs);
+  const settings = useSelector((store: AppState) => store.settings);
+  const { colors } = useTheme();
 
-  const result: string[] = [];
-  groups.forEach(group => {
-    // If at least 1 set in any lift is completed, the other lifts can be hidden
-    const anyCompleted =
-      group
-        .map(lift => lift.sets.filter(set => set.completed).length)
-        .filter(count => count > 0).length > 0;
+  const anyCompleted =
+    props.group
+      .map(lift => lift.sets.filter(set => set.completed).length)
+      .filter(count => count > 0).length > 0;
 
-    // If at least 1 is skipped, then others are too
-    const anySkipped = group.filter(x => x.hide).length > 0;
-
-    // Return all that have not completed yet
-    if (anyCompleted || anySkipped) {
-      group.forEach(lift => {
-        if (lift.sets.every(set => !set.completed)) {
-          result.push(lift.instanceId);
-        }
-      });
-    }
-  });
-
-  return result;
+  return (
+    <View
+      style={{
+        borderLeftWidth: 3,
+        borderLeftColor: colors.primary,
+      }}
+    >
+      {props.group.map(lift => {
+        return (
+          <LiftItem
+            lift={lift}
+            def={defs[lift.id]}
+            settings={settings}
+            onEdit={() => props.onEditLift(lift)}
+            overrideComplete={
+              anyCompleted && lift.sets.every(set => !set.completed)
+            }
+            key={lift.instanceId}
+          ></LiftItem>
+        );
+      })}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

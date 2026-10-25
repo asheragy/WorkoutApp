@@ -18,12 +18,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
 import { MaterialHeaderButton } from '../components/Common';
-import { Lift, Workout } from '../core/types/workout';
+import { isLiftGroup, Lift, LiftGroup, Workout } from '../core/types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
 import SetUtils from '../core/utils/SetUtils.ts';
+import LiftUtils from '../core/utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 
@@ -173,11 +174,11 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
         {workout.name}
       </Text>
 
-      {workout.lifts
-        .filter(x => !x.alternate)
-        .map(lift => (
-          <LiftItem lift={lift} key={lift.instanceId}></LiftItem>
-        ))}
+      {LiftUtils.getWorkoutItems(workout).map(item => {
+        if (isLiftGroup(item))
+          return <GroupRow group={item} key={item.instanceId}></GroupRow>;
+        else return <LiftRow lift={item} key={item.instanceId}></LiftRow>;
+      })}
       <Text style={{ paddingTop: 8, color: colors.text }}>
         {Math.round(sets) + ' Sets'}
       </Text>
@@ -188,7 +189,7 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
   );
 }
 
-function LiftItem(props: { lift: Lift }) {
+function LiftRow(props: { lift: Lift }) {
   const { colors } = useTheme();
   const sets = props.lift.sets.length;
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -208,6 +209,31 @@ function LiftItem(props: { lift: Lift }) {
         ))}
       </View>
       */}
+    </View>
+  );
+}
+
+function GroupRow(props: { group: LiftGroup }) {
+  const { colors } = useTheme();
+  const lift = props.group.lifts[0];
+  const sets = lift.sets.length;
+  const defs = useSelector((store: AppState) => store.liftDefs);
+
+  return (
+    <View>
+      <Text style={[styles.liftText, { color: colors.text }]}>
+        {Utils.defToString(defs[lift.id]) +
+          (sets > 1 ? `... (` + sets + ' Sets)' : '')}
+      </Text>
+      {/**
+       <View style={styles.liftSetRow}>
+       {Utils.normalizeSets(props.lift.sets).map((set, index) => (
+       <Text style={{color: colors.text}} key={index}>
+       {set.weight + ' x ' + set.reps}
+       </Text>
+       ))}
+       </View>
+       */}
     </View>
   );
 }
