@@ -70,6 +70,5 @@ function cleanSet(set: LiftSet): LiftSet {
     weight: set.weight,
     reps: set.reps,
     ...(set.warmup && { warmup: true }),
-    ...(set.percentage && { percentage: true }),
   };
 }

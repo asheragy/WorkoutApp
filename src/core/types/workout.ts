@@ -40,6 +40,5 @@ export type LiftSet = {
   weight: number;
   reps: number;
   warmup?: boolean;
-  percentage?: boolean; // Weight is a percentage of training max
   completed?: boolean;
 };

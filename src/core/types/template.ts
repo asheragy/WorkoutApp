@@ -12,4 +12,3 @@ export type WorkoutTemplate = {
   name: string;
   items: WorkoutItem[];
 };
-export class WorkoutItemTemplate {}

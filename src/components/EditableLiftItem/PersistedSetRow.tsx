@@ -48,15 +48,6 @@ export function PersistedSetRow(props: {
     props.onChange(updatedSet);
   };
 
-  const onTogglePercent = () => {
-    const updatedSet: LiftSet = {
-      ...props.set,
-      percentage: !props.set.percentage,
-    };
-
-    props.onChange(updatedSet);
-  };
-
   const onToggleComplete = () => {
     const updatedSet: LiftSet = {
       ...props.set,
@@ -65,11 +56,6 @@ export function PersistedSetRow(props: {
 
     props.onChange(updatedSet);
   };
-
-  let percentageWeight = '';
-  if (props.set.percentage && props.set.weight && props.def.trainingMax) {
-    percentageWeight = SetUtils.percentageToWeight(props.def, props.set) + '';
-  }
 
   const swipeableRef: React.MutableRefObject<SwipeableMethods | null> =
     useRef(null);
@@ -107,9 +93,6 @@ export function PersistedSetRow(props: {
       ></View>
     );
   };
-
-  const disablePercentage =
-    !props.set.percentage && props.def.trainingMax == undefined;
 
   const set1RM = SetUtils.calculate1RM(props.settings, props.def, props.set);
 
@@ -155,20 +138,6 @@ export function PersistedSetRow(props: {
                 onSelect={onToggleWarmup}
                 text={props.set.warmup ? 'Work Set' : 'Warmup'}
               ></MenuOption>
-              <MenuOption
-                customStyles={{
-                  optionText: {
-                    fontSize: 16,
-                    color: colors.text,
-                    opacity: disablePercentage ? 0.5 : 1,
-                  },
-                }}
-                onSelect={onTogglePercent}
-                disabled={disablePercentage}
-                text={
-                  props.set.percentage ? 'Disable Percentage' : 'Percentage'
-                }
-              ></MenuOption>
             </MenuOptions>
           </Menu>
 
@@ -213,19 +182,10 @@ export function PersistedSetRow(props: {
             style={{
               width: Widths[2],
               flexDirection: 'row',
+              backgroundColor: 'orange',
               justifyContent: 'center',
             }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                textAlignVertical: 'center',
-                color: colors.text,
-              }}
-            >
-              {percentageWeight}
-            </Text>
-          </View>
+          ></View>
 
           <View
             style={{

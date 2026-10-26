@@ -28,7 +28,6 @@ const SetUtils = {
     let step = 5;
     if (
       liftType == LiftType.MachineStack ||
-      set.percentage ||
       liftType == LiftType.MachinePlateSingle ||
       liftType == LiftType.Bodyweight
     )
@@ -52,8 +51,7 @@ const SetUtils = {
     let step = 5;
     if (
       liftType == LiftType.MachineStack ||
-      liftType == LiftType.MachinePlateSingle ||
-      set.percentage
+      liftType == LiftType.MachinePlateSingle
     )
       step = 2.5;
     else if (
@@ -184,17 +182,8 @@ const SetUtils = {
       if (set.warmup) label = 'W';
       else counter++;
 
-      let weight = set.weight;
-      if (set.percentage) {
-        if (def.trainingMax == undefined) {
-          //console.error('Training max required for percentage');
-          weight = -1;
-        } else weight = Utils.round((def.trainingMax * set.weight) / 100);
-      }
-
       const t: NormalizedSet = {
-        // TODO depending on usages not sure if 0 is the correct default here
-        weight: weight + 'lb',
+        weight: set.weight + 'lb',
         reps: set.reps + '',
         label: label,
         completed: !!set.completed,
@@ -236,10 +225,6 @@ const SetUtils = {
     const reps = set.reps;
     const type = def.type;
 
-    if ('percentage' in set && set.percentage == true) {
-      weight = this.percentageToWeight(def, set);
-    }
-
     if (type == LiftType.Bodyweight) {
       // TODO special case, bodyweight % should be on lift def, pullups are ~65%
       if (def.id == Lifts.backExtension.id)
@@ -268,12 +253,6 @@ const SetUtils = {
 
     const sum = values.reduce((a, b) => a + b, 0);
     return sum / values.length;
-  },
-
-  percentageToWeight(def: LiftDef, set: LiftSet): number {
-    if (!def.trainingMax || !set.percentage) return -1;
-
-    return Utils.round((def.trainingMax * set.weight) / 100);
   },
 };
 

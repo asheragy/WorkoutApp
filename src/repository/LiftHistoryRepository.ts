@@ -2,7 +2,6 @@ import { LiftDef, PersistedSet } from '../core/types/types';
 import { LiftSet, Workout } from '../core/types/workout';
 import { db, LiftHistoryTableSchema } from './db.ts';
 import { Scalar } from '@op-engineering/op-sqlite';
-import SetUtils from '../core/utils/SetUtils.ts';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -127,13 +126,6 @@ export default class LiftHistoryRepository {
     workoutId: string,
     position: number,
   ) {
-    if (
-      sets.filter(x => x.percentage).length > 0 &&
-      def.trainingMax == undefined
-    ) {
-      console.error('Training max required for persisted lift');
-    }
-
     const persistedSets = LiftHistoryRepository.setsToPersisted(sets, def);
 
     await this.addHistorySql(
@@ -154,12 +146,8 @@ export default class LiftHistoryRepository {
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
     return filtered.map(set => {
-      const weight = set.percentage
-        ? SetUtils.percentageToWeight(def, set)
-        : set.weight;
-
       const res: PersistedSet = {
-        weight: weight,
+        weight: set.weight,
         reps: set.reps,
         warmup: set.warmup || false,
       };

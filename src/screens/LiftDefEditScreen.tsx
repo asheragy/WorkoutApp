@@ -74,7 +74,6 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
   );
 
   const [type, setType] = useState(def.type);
-  const [tm, setTM] = useState(def.trainingMax ? def.trainingMax : 0.0);
   const [baseWeight, setBaseWeight] = useState(def.baseWeight ?? 0);
 
   function addGoal() {
@@ -104,7 +103,6 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
     const defToSave: LiftDef = {
       ...def,
       muscleGroups: primary != null ? [primary, ...secondary] : [],
-      trainingMax: tm > 0 ? tm : undefined,
       baseWeight: baseWeight > 0 ? baseWeight : undefined,
     };
     console.log(defToSave);
@@ -180,22 +178,6 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
           zIndex={70}
         />
       </View>
-
-      {false && (
-        <View style={styles.viewGroup}>
-          <Text style={{ color: colors.text }}>Training Max:</Text>
-          <TextInput
-            style={{ color: colors.text }}
-            keyboardType="numeric"
-            onChangeText={newText => {
-              const parsed = parseFloat(newText);
-              if (!Number.isNaN(parsed)) setTM(parseFloat(newText));
-            }}
-          >
-            {tm}
-          </TextInput>
-        </View>
-      )}
 
       <View style={styles.viewGroup}>
         <Text style={{ color: colors.text }}>Goal</Text>

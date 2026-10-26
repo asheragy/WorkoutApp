@@ -300,28 +300,6 @@ test('calc 1RM', () => {
   expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
 });
 
-test('calc 1RM percentage', () => {
-  const def: LiftDef = {
-    id: '',
-    name: '',
-    type: LiftType.Barbell,
-    trainingMax: 250,
-    muscleGroups: [],
-  };
-
-  const oneRM = ONE_RM_REPS.map(r => {
-    const set: LiftSet = {
-      weight: 80, // 80% of training max = 200
-      reps: r,
-      percentage: true,
-    };
-
-    return Math.round(SetUtils.calculate1RM({}, def, set) * 10) / 10;
-  });
-
-  expect(oneRM).toStrictEqual([200, 211.1, 231.1, 261.7, 342.2, 569.9]);
-});
-
 test('calc 1RM bodyweight', () => {
   const def: LiftDef = {
     id: '',
@@ -362,23 +340,6 @@ test('1RM Brzycki', () => {
   );
 
   expect(oneRM).toStrictEqual([200, 205.7, 225, 266.7, 423.5, 1028.6]);
-});
-
-test('percentageToWeight', () => {
-  const def: LiftDef = Lifts.deadlift_barbell;
-  def.trainingMax = 200;
-  const set: LiftSet = { reps: 0, weight: 80 };
-  expect(SetUtils.percentageToWeight(def, set)).toEqual(-1);
-
-  set.percentage = true;
-  expect(SetUtils.percentageToWeight(def, set)).toEqual(160);
-  set.weight = 81;
-  expect(SetUtils.percentageToWeight(def, set)).toEqual(160);
-  set.weight = 82;
-  expect(SetUtils.percentageToWeight(def, set)).toEqual(165);
-
-  def.trainingMax = undefined;
-  expect(SetUtils.percentageToWeight(def, set)).toEqual(-1);
 });
 
 function lift(id: string, sets: number, alt?: boolean): Lift {

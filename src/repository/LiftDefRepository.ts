@@ -81,8 +81,6 @@ export default class LiftDefRepository {
     systemDef: LiftDef,
   ): boolean {
     return (
-      LiftDefRepository.optionalNumber(def.trainingMax) ===
-        LiftDefRepository.optionalNumber(systemDef.trainingMax) &&
       JSON.stringify(def.muscleGroups) ===
         JSON.stringify(systemDef.muscleGroups) &&
       JSON.stringify(def.goal) === JSON.stringify(systemDef.goal) &&
