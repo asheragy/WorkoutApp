@@ -1,12 +1,13 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
 // TODO
 /*
 Calves on every lower day
  */
-export const UpperLower6: [Routine, Workout[]] = [
+export const UpperLower6: [Routine, WorkoutTemplate[]] = [
   {
     id: 'upperLower6',
     title: '6-day Upper Lower (Template)',

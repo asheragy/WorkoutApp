@@ -1,7 +1,6 @@
 import { SystemLifts } from '../src/core/LiftDatabase.ts';
 import SetUtils from '../src/core/utils/SetUtils.ts';
 import { FullBody_3day } from '../src/core/routines/3_FullBody.ts';
-import LiftUtils from '../src/core/utils/LiftUtils.ts';
 import { isLiftGroup } from '../src/core/types/workout.ts';
 
 /*
@@ -32,12 +31,12 @@ const defs = Object.fromEntries(SystemLifts.map(def => [def.id, def]));
 const [routine, workouts] = FullBody_3day;
 
 workouts.forEach(wo => {
-  const sets = SetUtils.getWorkingSets(defs, [wo]).filter(
+  const sets = SetUtils.getWorkingSets2(defs, [wo]).filter(
     x => x.group == 'Total',
   )[0].sets;
   console.log(wo.name + ' (' + sets + ')');
 
-  LiftUtils.getWorkoutItems(wo).forEach(item => {
+  wo.items.forEach(item => {
     if (isLiftGroup(item)) {
       const total = item.lifts
         .map(l => l.sets.length)
@@ -55,7 +54,7 @@ workouts.forEach(wo => {
 });
 
 const interval = 4.5;
-const entries = SetUtils.getWorkingSets(defs, workouts);
+const entries = SetUtils.getWorkingSets2(defs, workouts);
 const entriesNormalized = entries.map(entry => ({
   group: entry.group,
   sets: Math.round(10 * entry.sets * (7 / interval)) / 10,

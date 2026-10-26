@@ -5,12 +5,13 @@
 - Quadriceps, Hamstrings and Calves
  */
 
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 import { SharedDeadliftCardio } from './shared.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const YatesSplitModified: [Routine, Workout[]] = [
+export const YatesSplitModified: [Routine, WorkoutTemplate[]] = [
   {
     id: '832b1e89-0bbd-4b9b-aed8-eeb8cd848061',
     title: '4-day Yates Modified',

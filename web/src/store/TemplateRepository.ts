@@ -1,6 +1,5 @@
-import { DEFAULT_ROUTINE, Routine, Workout } from '@shared/types/workout.ts';
-import { RoutineTemplate, WorkoutTemplate } from '@shared/types/template.ts';
-import LiftUtils from '@shared/utils/LiftUtils.ts';
+import { DEFAULT_ROUTINE, Routine } from '@shared/types/workout.ts';
+import { RoutineTemplate } from '@shared/types/template.ts';
 import { UpperLower } from '@shared/routines/4_UpperLower.ts';
 import { UpperLower6 } from '@shared/routines/6_UpperLower.ts';
 import { UpperLower2026 } from '@shared/routines/6_UpperLower2026.ts';
@@ -12,6 +11,7 @@ import { ULPPL } from '@shared/routines/5_ULPPL.ts';
 import { ULArnold } from '@shared/routines/5_ULArnold.ts';
 import { FullBody_1Day } from '@shared/routines/1_Full.ts';
 import { UpperLower_2Day } from '@shared/routines/2_UpperLower.ts';
+import { FullBody_3day } from '../../../src/core/routines/3_FullBody.ts';
 
 const PreLoadedRoutines = [
   UpperLower,
@@ -24,6 +24,7 @@ const PreLoadedRoutines = [
   ULPPL,
   ULArnold,
   FullBody_1Day,
+  FullBody_3day,
   UpperLower_2Day,
 ];
 
@@ -40,26 +41,10 @@ export default class TemplateRepository {
     if (entry) {
       return {
         routine: entry[0],
-        workouts: entry[1].map(toTemplate),
+        workouts: entry[1],
       };
     }
 
     return undefined;
   }
-}
-
-// Converts the legacy positional `alternate` flags into explicit groups.
-// Remove once Workout shares the WorkoutTemplate shape.
-function toTemplate(workout: Workout): WorkoutTemplate {
-  return {
-    id: workout.id,
-    routineId: workout.routineId,
-    name: workout.name,
-    items: LiftUtils.groupLifts(workout.lifts).map(group => {
-      const lifts = group.map(({ alternate: _alternate, ...lift }) => lift);
-      return lifts.length === 1
-        ? lifts[0]
-        : { kind: 'oneOf', instanceId: lifts[0].instanceId, lifts };
-    }),
-  };
 }

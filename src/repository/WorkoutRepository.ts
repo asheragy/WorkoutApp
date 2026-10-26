@@ -1,6 +1,5 @@
 import { Workout } from '../core/types/workout';
 import Utils from '../components/Utils';
-import { PreLoadedRoutines } from './RoutineRepository.ts';
 import { db, dbReady } from './db.ts';
 
 export type CompletedWorkout = {
@@ -237,11 +236,4 @@ export default class WorkoutRepository {
           : undefined,
     };
   }
-}
-
-function findPreloaded(routineId: string): Workout[] {
-  const result = PreLoadedRoutines.find(x => x[0].id == routineId);
-  if (result) return result[1];
-
-  return [];
 }

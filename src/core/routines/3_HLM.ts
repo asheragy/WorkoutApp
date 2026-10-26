@@ -1,9 +1,10 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 import { SharedDeadliftCardio } from './shared.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const HLM_3Day: [Routine, Workout[]] = [
+export const HLM_3Day: [Routine, WorkoutTemplate[]] = [
   {
     id: 'c22e48fd-6664-4e07-93f8-918f06165195',
     title: '3-day HLM',

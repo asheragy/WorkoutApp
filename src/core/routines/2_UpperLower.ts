@@ -1,8 +1,9 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const UpperLower_2Day: [Routine, Workout[]] = [
+export const UpperLower_2Day: [Routine, WorkoutTemplate[]] = [
   {
     id: 'twoUpperLower',
     title: '2-day Upper Lower',

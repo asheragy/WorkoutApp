@@ -1,8 +1,9 @@
 import { Routine, Workout } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const ULPPL: [Routine, Workout[]] = [
+export const ULPPL: [Routine, WorkoutTemplate[]] = [
   {
     id: 'upperLowerPPL',
     title: '5-day UL/PPL',

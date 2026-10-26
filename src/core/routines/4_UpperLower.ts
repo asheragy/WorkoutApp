@@ -1,6 +1,7 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
 /*
 Upper 1: Vertical Press / Horizontal Pull
@@ -31,7 +32,7 @@ export const SharedLower2 = [
   [Lifts.legPress, Lifts.squat_v],
 ];
 
-export const UpperLower: [Routine, Workout[]] = [
+export const UpperLower: [Routine, WorkoutTemplate[]] = [
   {
     id: '3995deca-8204-4dc9-841b-1f4db64a486f',
     title: '4-day Upper Lower',

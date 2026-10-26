@@ -1,9 +1,10 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 import { SharedDeadliftCardio } from './shared.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const PPL_3Day: [Routine, Workout[]] = [
+export const PPL_3Day: [Routine, WorkoutTemplate[]] = [
   {
     id: '7c4ee2f5-fef3-4bda-a1af-8509ac0392f7',
     title: '3-day PPL',

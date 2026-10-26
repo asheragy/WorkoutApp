@@ -1,10 +1,11 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import Utils from '../../components/Utils.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
 const ROUTINE_ID = 'fullBody3';
 
-export const FullBody_3day: [Routine, Workout[]] = [
+export const FullBody_3day: [Routine, WorkoutTemplate[]] = [
   {
     id: ROUTINE_ID,
     title: '3-day Full Body',
@@ -14,7 +15,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
       id: 'd1',
       name: 'Legs',
       routineId: ROUTINE_ID,
-      lifts: [
+      items: [
         {
           id: Lifts.hipAdduction.id,
           instanceId: Utils.generate_uuidv4(),
@@ -130,7 +131,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
       id: 'misc',
       name: 'Misc',
       routineId: ROUTINE_ID,
-      lifts: [
+      items: [
         {
           id: Lifts.pullover_dumbbell.id,
           instanceId: Utils.generate_uuidv4(),
@@ -187,7 +188,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
       id: 'push',
       name: 'Push',
       routineId: ROUTINE_ID,
-      lifts: [
+      items: [
         {
           id: Lifts.bench_barbell.id,
           instanceId: Utils.generate_uuidv4(),
@@ -274,7 +275,7 @@ export const FullBody_3day: [Routine, Workout[]] = [
       id: 'pull',
       name: 'Pull',
       routineId: ROUTINE_ID,
-      lifts: [
+      items: [
         {
           id: Lifts.pullup.id,
           instanceId: Utils.generate_uuidv4(),

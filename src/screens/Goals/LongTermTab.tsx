@@ -7,6 +7,7 @@ import GoalRow from './Utils.ts';
 import SetUtils from '../../core/utils/SetUtils.ts';
 import { GlobalSettings } from '../../core/types/types.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
+import LiftUtils from '../../core/utils/LiftUtils.ts';
 
 export function LongTermTab(props: { settings: GlobalSettings }) {
   const defs = useSelector((store: AppState) => store.liftDefs);
@@ -30,7 +31,7 @@ export function LongTermTab(props: { settings: GlobalSettings }) {
 
       for (const defWithGoal of goals) {
         const lifts = workouts
-          .flatMap(workout => workout.lifts)
+          .flatMap(workout => LiftUtils.getAllLifts(workout))
           .filter(lift => lift.id === defWithGoal.id);
         const name = Utils.defToString(defWithGoal);
 

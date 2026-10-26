@@ -2,8 +2,9 @@ import { Routine, Workout } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 import { SharedLower1, SharedLower2 } from './4_UpperLower.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const ULArnold: [Routine, Workout[]] = [
+export const ULArnold: [Routine, WorkoutTemplate[]] = [
   {
     id: 'upperLowerArnold',
     title: '5-day UL/Arnold',

@@ -1,8 +1,9 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
-export const FullBody_1Day: [Routine, Workout[]] = [
+export const FullBody_1Day: [Routine, WorkoutTemplate[]] = [
   {
     id: 'oneDayFull',
     title: '1-day Full Body',

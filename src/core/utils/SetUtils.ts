@@ -6,10 +6,11 @@ import {
   NormalizedSet,
   PersistedSet,
 } from '../types/types.ts';
-import { isLiftGroup, Lift, LiftSet, Workout } from '../types/workout.ts';
+import { isLiftGroup, LiftSet, Workout } from '../types/workout.ts';
 import Utils from '../../components/Utils.ts';
 import LiftUtils from './LiftUtils.ts';
 import { Lifts } from '../LiftDatabase.ts';
+import { WorkoutTemplate } from '../types/template.ts';
 
 export type WorkingSets = {
   group: string;
@@ -91,6 +92,48 @@ const SetUtils = {
 
     workouts.forEach(workout => {
       LiftUtils.getWorkoutItems(workout).forEach(item => {
+        const lifts = isLiftGroup(item) ? item.lifts : [item];
+
+        lifts.forEach(lift => {
+          const workSets =
+            lift.sets.filter(set => !set.warmup).length / lifts.length;
+
+          const def = defs[lift.id];
+          const setsPerGroup = this.getSetsPerGroup(def);
+          def.muscleGroups.forEach((group, index) => {
+            const curr = result.get(group) ?? 0;
+            result.set(group, curr + setsPerGroup[index] * workSets);
+          });
+        });
+      });
+    });
+
+    const entries: WorkingSets[] = [];
+    result.forEach((sets, group) =>
+      entries.push({
+        group: MuscleGroup[group],
+        sets,
+      }),
+    );
+
+    const total = entries.map(e => e.sets).reduce((a, b) => a + b, 0);
+    entries.push({
+      group: 'Total',
+      sets: total,
+    });
+
+    return entries;
+  },
+
+  // TODO this will replace the above eventually
+  getWorkingSets2(
+    defs: Record<string, LiftDef>,
+    workouts: WorkoutTemplate[],
+  ): WorkingSets[] {
+    const result = new Map<MuscleGroup, number>();
+
+    workouts.forEach(workout => {
+      workout.items.forEach(item => {
         const lifts = isLiftGroup(item) ? item.lifts : [item];
 
         lifts.forEach(lift => {

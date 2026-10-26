@@ -16,7 +16,7 @@ export function calcGoals(workouts: WorkoutTemplate[]): GoalRow[] {
   const percents = new Map<string, number[]>();
 
   workouts
-    .flatMap(w => w.items)
+    .flatMap(w => LiftUtils.flatten(w.items))
     .flatMap(item => (isLiftGroup(item) ? item.lifts : [item]))
     .forEach(lift => {
       const percent = LiftUtils.goalPercent(settings, liftDefs[lift.id], lift);
