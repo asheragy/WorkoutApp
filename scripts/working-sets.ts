@@ -1,4 +1,4 @@
-import { SystemLifts } from '../src/core/LiftDatabase.ts';
+import { SystemLiftDefs } from '../src/core/LiftDatabase.ts';
 import SetUtils from '../src/core/utils/SetUtils.ts';
 import { FullBody_3day } from '../src/core/routines/3_FullBody.ts';
 import { isLiftGroup } from '../src/core/types/workout.ts';
@@ -27,7 +27,7 @@ npx tsx scripts/working-sets.ts
 └─────────┴──────────────┴───────┘
  */
 
-const defs = Object.fromEntries(SystemLifts.map(def => [def.id, def]));
+const defs = SystemLiftDefs;
 const [routine, workouts] = FullBody_3day;
 
 workouts.forEach(wo => {

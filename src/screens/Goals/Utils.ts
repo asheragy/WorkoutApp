@@ -4,7 +4,6 @@ import {
   MuscleGroup,
 } from '../../core/types/types.ts';
 import { Workout } from '../../core/types/workout.ts';
-import Utils from '../../components/Utils.ts';
 import LiftUtils from '../../core/utils/LiftUtils.ts';
 
 type GoalRow = {
@@ -58,7 +57,7 @@ export function calcWorkoutGoals(
       const percent = percents.reduce((sum, n) => sum + n, 0) / percents.length;
       result.push({
         id: liftId,
-        name: Utils.defToString(def),
+        name: def.displayName,
         percent,
       });
 

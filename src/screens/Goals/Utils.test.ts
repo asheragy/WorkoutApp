@@ -1,6 +1,5 @@
 import { LiftSet, Workout } from '../../core/types/workout.ts';
-import { Lifts } from '../../core/LiftDatabase.ts';
-import { TestLiftDefs } from '../../test-utils/Common.ts';
+import { Lifts, SystemLiftDefs } from '../../core/LiftDatabase.ts';
 import { calcWorkoutGoals } from './Utils.ts';
 
 test('calcWorkoutGoals', async () => {
@@ -51,7 +50,7 @@ test('calcWorkoutGoals', async () => {
     ],
   };
 
-  let rows = calcWorkoutGoals({}, TestLiftDefs, [workout], true);
+  let rows = calcWorkoutGoals({}, SystemLiftDefs, [workout], true);
   expect(rows.length).toBe(3);
   expect(rows).toStrictEqual([
     {
@@ -72,7 +71,7 @@ test('calcWorkoutGoals', async () => {
     },
   ]);
 
-  rows = calcWorkoutGoals({}, TestLiftDefs, [workout], false);
+  rows = calcWorkoutGoals({}, SystemLiftDefs, [workout], false);
   expect(rows.length).toBe(1);
   expect(rows).toStrictEqual([
     {

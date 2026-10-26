@@ -5,8 +5,7 @@ import {
   MuscleGroup,
 } from '../types/types.ts';
 import { Lift, LiftSet, Workout } from '../types/workout.ts';
-import { Lifts, SystemLifts } from '../LiftDatabase.ts';
-import { TestLiftDefs } from '../../test-utils/Common.ts';
+import { Lifts, SystemLiftDefs } from '../LiftDatabase.ts';
 import SetUtils, {
   oneRMBrzycki,
   oneRMEpley,
@@ -57,6 +56,7 @@ test('setsPerGroup', () => {
 
   const def: LiftDef = {
     id: '',
+    displayName: '',
     muscleGroups: oneGroup,
     name: '',
     type: LiftType.Barbell,
@@ -116,7 +116,7 @@ test('working sets', () => {
     lifts: [lift(Lifts.bench_barbell.id, 3)],
   };
 
-  let sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  let sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Chest', sets: 3 },
     { group: 'Triceps', sets: 1.5 },
@@ -128,7 +128,7 @@ test('working sets', () => {
     routineId: '',
     lifts: [lift(Lifts.bench_barbell.id, 3), lift(Lifts.bench_dumbbell.id, 1)],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Chest', sets: 4 },
     { group: 'Triceps', sets: 2 },
@@ -144,7 +144,7 @@ test('working sets', () => {
       lift(Lifts.bench_dumbbell.id, 1, true),
     ],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Chest', sets: 2 },
     { group: 'Triceps', sets: 1 },
@@ -159,7 +159,7 @@ test('working sets', () => {
       lift(Lifts.squat_barbell.id, 3, true),
     ],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Chest', sets: 1 },
     { group: 'Triceps', sets: 0.5 },
@@ -174,7 +174,7 @@ test('working sets', () => {
     routineId: '',
     lifts: [lift(Lifts.deadlift_barbell.id, 1)],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Glutes', sets: 1 },
     { group: 'Hamstrings', sets: 0.5 },
@@ -187,7 +187,7 @@ test('working sets', () => {
     routineId: '',
     lifts: [lift(Lifts.backExtension.id, 1)],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'LowerBack', sets: 0.625 },
     { group: 'Hamstrings', sets: 0.3125 },
@@ -205,7 +205,7 @@ test('working sets', () => {
       lift(Lifts.squat_barbell.id, 2),
     ],
   };
-  sets = SetUtils.getWorkingSets(TestLiftDefs, [workout]);
+  sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
     { group: 'Hamstrings', sets: 1 },
     { group: 'Glutes', sets: 3.166666666666667 },
@@ -216,27 +216,33 @@ test('working sets', () => {
 });
 
 test('plate calculator', () => {
-  const def = Lifts.deadlift_barbell;
+  const def = SystemLiftDefs[Lifts.deadlift_barbell.id];
   expect(SetUtils.calcPlatesStr(def, 135)).toEqual('|45|');
   expect(SetUtils.calcPlatesStr(def, 405)).toEqual('|45|45|45|45|');
   expect(SetUtils.calcPlatesStr(def, 130)).toEqual('|25|10|5|2.5|');
   expect(SetUtils.calcPlatesStr(def, 175)).toEqual('|45|10|10|');
 
   // Special bars
-  expect(SetUtils.calcPlatesStr(Lifts.deadlift_trapbar, 200)).toEqual(
-    '|45|25|',
-  );
-  expect(SetUtils.calcPlatesStr(Lifts.squat_ssb, 300)).toEqual('|45|45|25|');
+  expect(
+    SetUtils.calcPlatesStr(SystemLiftDefs[Lifts.deadlift_trapbar.id], 200),
+  ).toEqual('|45|25|');
+  expect(
+    SetUtils.calcPlatesStr(SystemLiftDefs[Lifts.squat_ssb.id], 300),
+  ).toEqual('|45|45|25|');
 
   // Single plate loaded
-  expect(SetUtils.calcPlatesStr(Lifts.calfRaise_seated, 90)).toEqual('|45|45|');
+  expect(
+    SetUtils.calcPlatesStr(SystemLiftDefs[Lifts.calfRaise_seated.id], 90),
+  ).toEqual('|45|45|');
   // Double
-  expect(SetUtils.calcPlatesStr(Lifts.legPress, 280)).toEqual('|45|45|');
+  expect(
+    SetUtils.calcPlatesStr(SystemLiftDefs[Lifts.legPress.id], 280),
+  ).toEqual('|45|45|');
 });
 
 test('plate calculator - baseWeight override', () => {
   let def: LiftDef = {
-    ...Lifts.deadlift_barbell,
+    ...SystemLiftDefs[Lifts.deadlift_barbell.id],
     baseWeight: 55,
   };
 
@@ -244,7 +250,7 @@ test('plate calculator - baseWeight override', () => {
   expect(SetUtils.calcPlatesStr(def, 145)).toEqual('|45|');
 
   def = {
-    ...Lifts.calfRaise_seated,
+    ...SystemLiftDefs[Lifts.calfRaise_seated.id],
     baseWeight: 20,
   };
   expect(SetUtils.calcPlatesStr(def, 65)).toEqual('|45|');
@@ -270,7 +276,7 @@ test('normalizeSets repeated lifts', () => {
     },
   ];
 
-  const def = SystemLifts[0];
+  const def = SystemLiftDefs[Lifts.bench_barbell.id];
   const normalized = SetUtils.normalizeSets(sets, def);
   expect(normalized.length).toBe(4);
   expect(normalized[0].weight).toBe('100lb');
@@ -284,6 +290,7 @@ test('calc 1RM', () => {
   const def: LiftDef = {
     id: '',
     name: '',
+    displayName: '',
     type: LiftType.Barbell,
     muscleGroups: [],
   };
@@ -304,6 +311,7 @@ test('calc 1RM bodyweight', () => {
   const def: LiftDef = {
     id: '',
     name: '',
+    displayName: '',
     type: LiftType.Bodyweight,
     muscleGroups: [],
   };

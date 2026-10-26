@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Lift } from '../core/types/workout';
+import { displayName } from '../core/LiftDatabase.ts';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App.tsx';
 import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem.tsx';
@@ -20,7 +21,6 @@ import {
 } from 'react-navigation-header-buttons';
 import { MaterialHeaderButton } from '../components/Common.tsx';
 import { AppState } from '../state/store.ts';
-import Utils from '../components/Utils.ts';
 import WorkoutRepository from '../repository/WorkoutRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
@@ -31,15 +31,14 @@ export default function LiftEditScreen({ route, navigation }: Props) {
   const { colors } = useTheme();
 
   const defs = useSelector((store: AppState) => store.liftDefs);
-  const def = defs[lift.id];
 
   function onLiftChanged(lift: Lift) {
     setLift(lift);
   }
 
   useEffect(() => {
-    navigation.setOptions({ title: Utils.defToString(def) });
-  }, [def, navigation]);
+    navigation.setOptions({ title: displayName(defs, lift.id) });
+  }, [defs, lift.id, navigation]);
 
   React.useLayoutEffect(() => {
     navigation.setOptions({

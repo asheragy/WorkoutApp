@@ -1,11 +1,16 @@
 import { LiftDef, LiftType, MuscleGroup, PersistedSet } from './types/types.ts';
 
-const createDictionary = <T extends Record<string, Omit<LiftDef, 'id'>>>(obj: {
+// A LiftDef before its displayName has been derived, see assignDisplayNames
+export type LiftDefBase = Omit<LiftDef, 'displayName'>;
+
+const createDictionary = <
+  T extends Record<string, Omit<LiftDefBase, 'id'>>,
+>(obj: {
   readonly [K in keyof T]: Readonly<T[K]>;
-}): { [K in keyof T]: LiftDef & { id: K } } => {
+}): { [K in keyof T]: LiftDefBase & { id: K } } => {
   return Object.fromEntries(
     Object.entries(obj).map(([key, value]) => [key, { ...value, id: key }]),
-  ) as { [K in keyof T]: LiftDef & { id: K } };
+  ) as { [K in keyof T]: LiftDefBase & { id: K } };
 };
 
 export const Lifts = createDictionary({
@@ -585,7 +590,7 @@ const goals: Record<string, PersistedSet> = {
   },
 };
 
-export const SystemLifts = Object.values(Lifts).map(def => {
+export const SystemLifts: LiftDefBase[] = Object.values(Lifts).map(def => {
   if (goals[def.id]) {
     return {
       ...def,
@@ -600,11 +605,41 @@ export const SystemLifts = Object.values(Lifts).map(def => {
   };
 });
 
-export function defToString(def: LiftDef) {
-  if (def == undefined) return '';
+// System lifts with display names, no custom defs. Used by the web app and unit tests
+export const SystemLiftDefs: Record<string, LiftDef> = assignDisplayNames(
+  Object.fromEntries(SystemLifts.map(def => [def.id, def])),
+);
+
+// Sets displayName on every def, disambiguating by type when more than one def shares a name.
+// Returns copies, the input objects are not modified.
+export function assignDisplayNames(
+  defs: Record<string, LiftDefBase>,
+): Record<string, LiftDef> {
+  const nameCounts = new Map<string, number>();
+  Object.values(defs).forEach(def =>
+    nameCounts.set(def.name, (nameCounts.get(def.name) ?? 0) + 1),
+  );
+
+  return Object.fromEntries(
+    Object.entries(defs).map(([id, def]) => [
+      id,
+      { ...def, displayName: defToString(def, nameCounts.get(def.name)! > 1) },
+    ]),
+  );
+}
+
+// Display name for a lift id, empty string if the def is missing (defs not loaded yet or deleted)
+export function displayName(defs: Record<string, LiftDef>, id: string): string {
+  return defs[id]?.displayName ?? '';
+}
+
+export function defToString(
+  def: Pick<LiftDef, 'name' | 'type'>,
+  multiple: boolean,
+) {
   let result = def.name;
 
-  if (def.multiple && def.type != LiftType.Bodyweight) {
+  if (multiple && def.type != LiftType.Bodyweight) {
     const type = LiftType[def.type]
       .replaceAll(LiftType[LiftType.MachinePlateSingle], 'Plate-Loaded')
       .replaceAll(LiftType[LiftType.MachinePlateDouble], 'Plate-Loaded')

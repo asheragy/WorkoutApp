@@ -1,6 +1,5 @@
 import LiftUtils from './LiftUtils.ts';
-import { TestLiftDefs } from '../../test-utils/Common.ts';
-import { Lifts } from '../LiftDatabase.ts';
+import { Lifts, SystemLiftDefs } from '../LiftDatabase.ts';
 import { Lift, WorkoutItem } from '../types/workout.ts';
 
 test('groupLifts', () => {
@@ -155,7 +154,7 @@ test('flatten', () => {
 });
 
 test('goal percentage', () => {
-  const def = TestLiftDefs[Lifts.pullover_dumbbell.id];
+  const def = SystemLiftDefs[Lifts.pullover_dumbbell.id];
   const lift: Lift = {
     id: def.id,
     instanceId: '',

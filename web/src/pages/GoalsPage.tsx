@@ -4,7 +4,7 @@ import { WorkoutTemplate } from '@shared/types/template.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import TemplateRepository from '../store/TemplateRepository.ts';
 import { settings } from '../store/Settings.ts';
-import { liftDefs } from '../store/LiftDefs.ts';
+import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 import Page from '../components/Page.tsx';
 import { isLiftGroup } from '@shared/types/workout.ts';
 

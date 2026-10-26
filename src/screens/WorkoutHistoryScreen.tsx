@@ -7,6 +7,7 @@ import LiftHistoryRepository, {
   WorkoutHistory,
 } from '../repository/LiftHistoryRepository';
 import Utils from '../components/Utils';
+import { displayName } from '../core/LiftDatabase.ts';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import { LiftDef } from '../core/types/types.ts';
@@ -66,7 +67,7 @@ function WorkoutHistoryListItem({
         return (
           <View style={{ paddingTop: 4 }} key={lift.liftId}>
             <Text style={{ fontWeight: 'bold', color: colors.text }}>
-              {Utils.defToString(defs[lift.liftId]) + ' - ' + sets.join(', ')}
+              {displayName(defs, lift.liftId) + ' - ' + sets.join(', ')}
             </Text>
           </View>
         );

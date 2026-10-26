@@ -9,8 +9,8 @@ import { LiftChartTab } from './LiftChartTab';
 import { LiftLogTab } from './LiftLogTab';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
-import Utils from '../../components/Utils';
 import { GlobalSettings } from '../../core/types/types.ts';
+import { displayName } from '../../core/LiftDatabase.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftHistory'>;
 
@@ -34,7 +34,7 @@ export function LiftHistoryScreen({ route, navigation }: Props) {
 
   useEffect(() => {
     loadState();
-    navigation.setOptions({ title: Utils.defToString(def) });
+    navigation.setOptions({ title: displayName(defs, liftId) });
   }, []);
 
   return (

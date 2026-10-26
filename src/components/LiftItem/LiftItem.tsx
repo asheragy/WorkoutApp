@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import { Lift } from '../../core/types/workout';
-import Utils from '../Utils';
 import { Style_LiftText } from '../Common';
 import { ReadOnlySetTable } from './ReadOnlySetTable';
 import { GlobalSettings, LiftDef } from '../../core/types/types.ts';
@@ -73,7 +72,7 @@ export default function LiftItem(props: {
 }
 
 function getTitle(def: LiftDef, lift: Lift, settings: GlobalSettings): string {
-  let t = Utils.defToString(def);
+  let t = def.displayName;
   if (lift.alternate) t += ' / Alt';
 
   const goalPercent = LiftUtils.goalPercent(settings, def, lift);

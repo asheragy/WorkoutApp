@@ -4,7 +4,7 @@ import SetUtils from '@shared/utils/SetUtils.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import Set from './Set.tsx';
 import { settings } from '../store/Settings.ts';
-import { liftDefs } from '../store/LiftDefs.ts';
+import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 
 type Props = {
   lift: LiftType;

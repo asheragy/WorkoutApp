@@ -19,6 +19,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
 import { MaterialHeaderButton } from '../components/Common';
 import { isLiftGroup, Lift, LiftGroup, Workout } from '../core/types/workout';
+import { displayName } from '../core/LiftDatabase.ts';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
@@ -197,7 +198,7 @@ function LiftRow(props: { lift: Lift }) {
   return (
     <View>
       <Text style={[styles.liftText, { color: colors.text }]}>
-        {Utils.defToString(defs[props.lift.id]) +
+        {displayName(defs, props.lift.id) +
           (sets > 1 ? ' (' + sets + ' Sets)' : '')}
       </Text>
       {/**
@@ -222,7 +223,7 @@ function GroupRow(props: { group: LiftGroup }) {
   return (
     <View>
       <Text style={[styles.liftText, { color: colors.text }]}>
-        {Utils.defToString(defs[lift.id]) +
+        {displayName(defs, lift.id) +
           (sets > 1 ? `... (` + sets + ' Sets)' : '')}
       </Text>
       {/**

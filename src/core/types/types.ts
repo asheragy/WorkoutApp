@@ -29,12 +29,11 @@ export enum MuscleGroup {
 export type LiftDef = {
   id: string;
   name: string;
+  displayName: string;
   type: LiftType;
   system?: boolean;
   muscleGroups: ReadonlyArray<MuscleGroup>;
   goal?: PersistedSet;
-  // TODO do this in repo and just set a display name?
-  multiple?: boolean; // Derived value
   baseWeight?: number;
   factor?: number;
 };

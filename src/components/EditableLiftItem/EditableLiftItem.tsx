@@ -4,7 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { Lift, LiftSet } from '../../core/types/workout';
 import { Style_LiftText } from '../Common';
 import { GlobalSettings } from '../../core/types/types';
-import Utils from '../Utils';
+import { displayName } from '../../core/LiftDatabase.ts';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store';
 import {
@@ -148,7 +148,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         >
           <View style={{ width: '20%' }}></View>
           <Text style={[Style_LiftText, { color: colors.text, width: '60%' }]}>
-            {Utils.defToString(def) + (props.lift.alternate ? ' / Alt' : '')}
+            {displayName(defs, props.lift.id) +
+              (props.lift.alternate ? ' / Alt' : '')}
           </Text>
           <View
             style={{

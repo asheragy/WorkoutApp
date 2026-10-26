@@ -1,15 +1,8 @@
-import { LiftDef } from '../core/types/types';
 import uuid from 'react-native-uuid';
-import { defToString } from '../core/LiftDatabase.ts';
 
 export default class Utils {
   static round(x: number): number {
     return Math.round(x / 5) * 5;
-  }
-
-  // TODO remove
-  static defToString(def: LiftDef) {
-    return defToString(def);
   }
 
   static generate_uuidv4(): string {

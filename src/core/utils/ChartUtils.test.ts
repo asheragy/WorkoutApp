@@ -1,5 +1,5 @@
 import ChartUtils, { HistoryEntry } from './ChartUtils.ts';
-import { Lifts } from '../LiftDatabase.ts';
+import { Lifts, SystemLiftDefs } from '../LiftDatabase.ts';
 import { LiftDef, MuscleGroup } from '../types/types.ts';
 
 test('progress by week', () => {
@@ -36,9 +36,9 @@ test('progress by week', () => {
   ]);
 
   const defs: Record<string, LiftDef> = {
-    [Lifts.squat_barbell.id]: Lifts.squat_barbell,
-    [Lifts.deadlift_barbell.id]: Lifts.deadlift_barbell,
-    [Lifts.lunge.id]: Lifts.lunge,
+    [Lifts.squat_barbell.id]: SystemLiftDefs[Lifts.squat_barbell.id],
+    [Lifts.deadlift_barbell.id]: SystemLiftDefs[Lifts.deadlift_barbell.id],
+    [Lifts.lunge.id]: SystemLiftDefs[Lifts.lunge.id],
   };
 
   const data = ChartUtils.toProgressByWeek(MuscleGroup.Quads, result, defs);

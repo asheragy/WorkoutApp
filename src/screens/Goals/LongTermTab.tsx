@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Utils from '../../components/Utils.ts';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store.ts';
 import { ProgressList } from './Common.tsx';
@@ -33,7 +32,6 @@ export function LongTermTab(props: { settings: GlobalSettings }) {
         const lifts = workouts
           .flatMap(workout => LiftUtils.getAllLifts(workout))
           .filter(lift => lift.id === defWithGoal.id);
-        const name = Utils.defToString(defWithGoal);
 
         if (lifts.length == 0) continue;
 
@@ -52,7 +50,11 @@ export function LongTermTab(props: { settings: GlobalSettings }) {
             defWithGoal.goal,
           );
           const percent = target > 0 ? best / target : 0;
-          result.push({ id: defWithGoal.id, name, percent });
+          result.push({
+            id: defWithGoal.id,
+            name: defWithGoal.displayName,
+            percent,
+          });
         }
       }
 

@@ -1,6 +1,10 @@
 import { LiftDef } from '../core/types/types';
 import Utils from '../components/Utils';
-import { SystemLifts } from '../core/LiftDatabase.ts';
+import {
+  assignDisplayNames,
+  LiftDefBase,
+  SystemLifts,
+} from '../core/LiftDatabase.ts';
 import { AppDispatch, updateLiftDefs } from '../state/store.ts';
 import { db, dbReady } from './db.ts';
 
@@ -44,7 +48,6 @@ export default class LiftDefRepository {
     const persistedDef: LiftDef = {
       ...def,
     };
-    delete persistedDef.multiple; // Not persisted
 
     const existing = await LiftDefRepository.getById(persistedDef.id);
     const systemDef = SystemLifts.find(item => item.id == persistedDef.id);
@@ -78,7 +81,7 @@ export default class LiftDefRepository {
 
   private static matchesSystemDefault(
     def: LiftDef,
-    systemDef: LiftDef,
+    systemDef: LiftDefBase,
   ): boolean {
     return (
       JSON.stringify(def.muscleGroups) ===
@@ -113,8 +116,10 @@ export default class LiftDefRepository {
   }
 
   private static async upsertRow(def: LiftDef): Promise<void> {
-    // id is stored in its own column, everything else goes in data_json
-    const { id, ...data } = def;
+    // id is stored in its own column, everything else goes in data_json.
+    // displayName is derived on load and never persisted.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, displayName, ...data } = def;
 
     await db.execute(
       `INSERT INTO lift_defs (id, data_json, updated_at) VALUES (?, ?, ?)
@@ -135,7 +140,7 @@ export default class LiftDefRepository {
 
   private static async getLookupMap(): Promise<Record<string, LiftDef>> {
     const customDefs = await this.getAll();
-    const result: Record<string, LiftDef> = {};
+    const result: Record<string, LiftDefBase> = {};
 
     customDefs.forEach(def => (result[def.id] = def));
     SystemLifts.forEach(def => {
@@ -153,18 +158,6 @@ export default class LiftDefRepository {
       }
     });
 
-    const nameMap = new Map<string, number>();
-    Object.values(result).forEach(v => {
-      let count = nameMap.get(v.name) ?? 0;
-      count++;
-      nameMap.set(v.name, count);
-    });
-
-    Object.values(result).forEach(v => {
-      const count = nameMap.get(v.name)!;
-      if (count > 1) v.multiple = true;
-    });
-
-    return result;
+    return assignDisplayNames(result);
   }
 }

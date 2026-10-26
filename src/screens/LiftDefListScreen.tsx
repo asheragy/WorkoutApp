@@ -11,7 +11,6 @@ import { RootStackParamList } from '../App';
 import { LiftDef } from '../core/types/types';
 import { useTheme } from '@react-navigation/native';
 import { useAppSelector } from '../state/store';
-import Utils from '../components/Utils';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { MaterialHeaderButton } from '../components/Common.tsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -87,7 +86,7 @@ function DefListItem(props: DefItemProps) {
   return (
     <View style={{ padding: 8 }}>
       <Text style={{ color: colors.text }}>
-        {Utils.defToString(props.def) + postfix}
+        {props.def.displayName + postfix}
       </Text>
     </View>
   );

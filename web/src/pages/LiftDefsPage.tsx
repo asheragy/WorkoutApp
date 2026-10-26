@@ -1,5 +1,5 @@
 import { LiftDef, LiftType, MuscleGroup } from '@shared/types/types.ts';
-import { liftDefs, WebLiftDef } from '../store/LiftDefs.ts';
+import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 import Page from '../components/Page.tsx';
 
 // Grouped by primary muscle group name, then by display name, both alphabetically.
@@ -19,7 +19,7 @@ const COLUMNS: { key: keyof Omit<LiftDef, 'id'>; label: string }[] = [
   { key: 'goal', label: 'Goal' },
 ];
 
-function formatCell(def: WebLiftDef, key: (typeof COLUMNS)[number]['key']): string {
+function formatCell(def: LiftDef, key: (typeof COLUMNS)[number]['key']): string {
   const value = def[key];
   if (value === undefined) return '';
   switch (key) {

@@ -13,7 +13,6 @@ import { LiftDef } from '../core/types/types';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
-import Utils from '../components/Utils.ts';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftList'>;
@@ -48,9 +47,7 @@ export function LiftListScreen({ navigation }: Props) {
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
       <View key={item.index} style={{ padding: 10 }}>
-        <Text style={{ color: colors.text }}>
-          {Utils.defToString(item.item)}
-        </Text>
+        <Text style={{ color: colors.text }}>{item.item.displayName}</Text>
       </View>
     </TouchableOpacity>
   );

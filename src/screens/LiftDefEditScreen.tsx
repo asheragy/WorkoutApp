@@ -54,10 +54,11 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
       ? {
           id: '',
           name: '',
+          displayName: '',
           type: LiftType.Barbell,
           muscleGroups: [],
         }
-      : JSON.parse(JSON.stringify(route.params.def)),
+      : (JSON.parse(JSON.stringify(route.params.def)) as LiftDef),
   );
 
   console.log(def);
