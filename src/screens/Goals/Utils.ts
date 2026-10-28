@@ -23,7 +23,7 @@ export function calcWorkoutGoals(
   const result: GoalRow[] = [];
 
   const lifts = workouts
-    .flatMap(x => LiftUtils.getAllLifts(x))
+    .flatMap(x => LiftUtils.flatten(x.items))
     .filter(x => x.sets.length > 0)
     .filter(
       x =>

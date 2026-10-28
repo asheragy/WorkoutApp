@@ -25,7 +25,6 @@ import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import RoutineRepository from '../repository/RoutineRepository.ts';
 import SetUtils from '../core/utils/SetUtils.ts';
-import LiftUtils from '../core/utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
 

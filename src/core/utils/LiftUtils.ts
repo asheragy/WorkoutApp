@@ -1,4 +1,4 @@
-import { isLiftGroup, Lift, Workout, WorkoutItem } from '../types/workout.ts';
+import { isLiftGroup, Lift, WorkoutItem } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
 
@@ -45,10 +45,6 @@ const LiftUtils = {
   // (history, goals, lookups by instanceId).
   flatten(items: WorkoutItem[]): Lift[] {
     return items.flatMap(item => ('kind' in item ? item.lifts : [item]));
-  },
-
-  getAllLifts(workout: Workout): Lift[] {
-    return this.flatten(workout.items);
   },
 
   // Replaces the lift with a matching instanceId, whether it sits at the top

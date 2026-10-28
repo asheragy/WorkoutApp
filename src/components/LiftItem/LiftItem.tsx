@@ -73,7 +73,6 @@ export default function LiftItem(props: {
 
 function getTitle(def: LiftDef, lift: Lift, settings: GlobalSettings): string {
   let t = def.displayName;
-  if (lift.alternate) t += ' / Alt';
 
   const goalPercent = LiftUtils.goalPercent(settings, def, lift);
   if (goalPercent) t += ' ' + (goalPercent * 100).toFixed(2) + '%';

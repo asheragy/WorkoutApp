@@ -11,7 +11,13 @@ import {
 import { RootStackParamList } from '../App';
 import { GlobalSettings } from '../core/types/types';
 import { TextInput } from 'react-native-gesture-handler';
-import { isLiftGroup, Lift, Workout, WorkoutItem } from '../core/types/workout';
+import {
+  isLiftGroup,
+  Lift,
+  LiftGroup,
+  Workout,
+  WorkoutItem,
+} from '../core/types/workout';
 import LiftUtils from '../core/utils/LiftUtils';
 import Utils from '../components/Utils';
 import WorkoutRepository from '../repository/WorkoutRepository';
@@ -126,6 +132,69 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
     }));
   }
 
+  function onAddToGroup(instanceId: string) {
+    setWorkout(prev => {
+      const items = prev.items;
+      const index = items.findIndex(x => x.instanceId == instanceId);
+      const lift = items[index];
+      if (index < 0 || isLiftGroup(lift) || items.length < 2) return prev;
+
+      // First item joins the one after it, everything else joins the one before
+      const neighborIndex = index == 0 ? 1 : index - 1;
+      const neighbor = items[neighborIndex];
+
+      // This lift goes first when merging forward, last when merging backward
+      const lifts = isLiftGroup(neighbor) ? neighbor.lifts : [neighbor];
+      const merged: LiftGroup = {
+        kind: 'oneOf',
+        instanceId: isLiftGroup(neighbor)
+          ? neighbor.instanceId
+          : Utils.generate_uuidv4(),
+        lifts: index == 0 ? [lift, ...lifts] : [...lifts, lift],
+      };
+
+      const first = Math.min(index, neighborIndex);
+      return {
+        ...prev,
+        items: [...items.slice(0, first), merged, ...items.slice(first + 2)],
+      };
+    });
+  }
+
+  function onRemoveFromGroup(groupId: string, liftId: string) {
+    setWorkout(prev => {
+      const items = prev.items;
+      const index = items.findIndex(x => x.instanceId == groupId);
+      const group = items[index];
+      if (index < 0 || !isLiftGroup(group)) {
+        console.log('Error: group not found ' + groupId);
+        return prev;
+      }
+
+      const lift = group.lifts.find(x => x.instanceId == liftId);
+      if (!lift) {
+        console.log('Error: lift not found in group ' + liftId);
+        return prev;
+      }
+
+      // Split into: remaining group, then the removed lift directly after it.
+      // A group of one is just a lift, so collapse it.
+      const remaining = group.lifts.filter(x => x.instanceId != liftId);
+      const rest: WorkoutItem =
+        remaining.length == 1 ? remaining[0] : { ...group, lifts: remaining };
+
+      return {
+        ...prev,
+        items: [
+          ...items.slice(0, index),
+          rest,
+          lift,
+          ...items.slice(index + 1),
+        ],
+      };
+    });
+  }
+
   function setLifts(items: WorkoutItem[]) {
     setWorkout(prev => ({
       ...prev,
@@ -185,20 +254,50 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
             mode={'workout_edit'}
             onChange={onLiftChanged}
             onDelete={() => confirmLiftDelete(params.getIndex()!)}
+            onGroup={() => onAddToGroup(params.item.instanceId)}
+            inGroup={false}
           ></EditableLiftItem>
         )}
         {isLiftGroup(params.item) && (
-          <View>
-            <Text style={{ color: colors.text }}>oneOf</Text>
-            {params.item.lifts.map(lift => {
+          <View
+            style={{
+              borderLeftWidth: 3,
+              borderLeftColor: colors.primary,
+            }}
+          >
+            <Text
+              style={{
+                color: colors.primary,
+                fontSize: 12,
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                paddingHorizontal: 8,
+                paddingTop: 4,
+              }}
+            >
+              One of
+            </Text>
+            {params.item.lifts.map((lift, idx) => {
               return (
-                <EditableLiftItem
-                  lift={lift}
+                <View
                   key={lift.instanceId}
-                  mode={'workout_edit'}
-                  onChange={onLiftChanged}
-                  onDelete={() => console.log('Not allowed for groups')}
-                ></EditableLiftItem>
+                  style={
+                    idx > 0
+                      ? { borderTopWidth: 1, borderTopColor: colors.border }
+                      : undefined
+                  }
+                >
+                  <EditableLiftItem
+                    lift={lift}
+                    mode={'workout_edit'}
+                    onChange={onLiftChanged}
+                    onDelete={() => console.log('Not allowed for groups')}
+                    onGroup={() =>
+                      onRemoveFromGroup(params.item.instanceId, lift.instanceId)
+                    }
+                    inGroup={true}
+                  ></EditableLiftItem>
+                </View>
               );
             })}
           </View>

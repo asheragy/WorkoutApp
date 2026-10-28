@@ -30,7 +30,7 @@ export function LongTermTab(props: { settings: GlobalSettings }) {
 
       for (const defWithGoal of goals) {
         const lifts = workouts
-          .flatMap(workout => LiftUtils.getAllLifts(workout))
+          .flatMap(workout => LiftUtils.flatten(workout.items))
           .filter(lift => lift.id === defWithGoal.id);
 
         if (lifts.length == 0) continue;

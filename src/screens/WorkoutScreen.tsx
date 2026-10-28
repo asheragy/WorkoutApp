@@ -135,40 +135,37 @@ export function WorkoutScreen({ route, navigation }: Props) {
 
   return (
     <ScrollView style={styles.container}>
-      {
-        // TODO cannot use toWorkoutItems because it drops alternate when saving
-        workout.items.map(item => {
-          if (isLiftGroup(item))
-            return (
-              <GroupItem
-                group={item}
-                key={item.instanceId}
-                onEditLift={lift =>
-                  navigation.navigate('LiftEdit', {
-                    workoutId: route.params.workoutId,
-                    lift: lift,
-                  })
-                }
-              />
-            );
-
+      {workout.items.map(item => {
+        if (isLiftGroup(item))
           return (
-            <LiftItem
-              lift={item}
-              def={defs[item.id]}
-              settings={settings}
-              onEdit={() =>
+            <GroupItem
+              group={item}
+              key={item.instanceId}
+              onEditLift={lift =>
                 navigation.navigate('LiftEdit', {
                   workoutId: route.params.workoutId,
-                  lift: item,
+                  lift: lift,
                 })
               }
-              overrideComplete={false}
-              key={item.instanceId}
-            ></LiftItem>
+            />
           );
-        })
-      }
+
+        return (
+          <LiftItem
+            lift={item}
+            def={defs[item.id]}
+            settings={settings}
+            onEdit={() =>
+              navigation.navigate('LiftEdit', {
+                workoutId: route.params.workoutId,
+                lift: item,
+              })
+            }
+            overrideComplete={false}
+            key={item.instanceId}
+          ></LiftItem>
+        );
+      })}
 
       <View style={styles.bottom}>
         <Button title="Complete" onPress={() => confirmComplete()}></Button>

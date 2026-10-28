@@ -22,8 +22,10 @@ interface EditableLiftItemProps {
   lift: Lift;
   onChange: (lift: Lift) => void;
   onDelete?: () => void;
+  onGroup?: () => void;
   mode: 'workout_edit' | 'lift_edit';
   showPlates?: boolean;
+  inGroup?: boolean;
 }
 
 export default function EditableLiftItem(props: EditableLiftItemProps) {
@@ -39,13 +41,6 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
   function onNoteChange(note: string) {
     props.onChange({ ...props.lift, note: note.length > 0 ? note : undefined });
-  }
-
-  function onToggleAlt() {
-    props.onChange({
-      ...props.lift,
-      alternate: props.lift.alternate ? undefined : true,
-    });
   }
 
   function getUpdatedLift() {
@@ -101,8 +96,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   function onRemoveGoal(primary: boolean, index: number) {
     const updatedLift = getUpdatedLift();
 
-    if (primary) updatedLift.goals!!.splice(index, 1);
-    else updatedLift.goals2!!.splice(index, 1);
+    if (primary) updatedLift.goals!.splice(index, 1);
+    else updatedLift.goals2!.splice(index, 1);
 
     props.onChange(updatedLift);
   }
@@ -123,8 +118,8 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   function onGoalChange(primary: boolean, index: number, updated: LiftSet) {
     const updatedLift = getUpdatedLift();
 
-    if (primary) updatedLift.goals!![index] = updated;
-    else updatedLift.goals2!![index] = updated;
+    if (primary) updatedLift.goals![index] = updated;
+    else updatedLift.goals2![index] = updated;
     props.onChange(updatedLift);
   }
 
@@ -148,8 +143,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
         >
           <View style={{ width: '20%' }}></View>
           <Text style={[Style_LiftText, { color: colors.text, width: '60%' }]}>
-            {displayName(defs, props.lift.id) +
-              (props.lift.alternate ? ' / Alt' : '')}
+            {displayName(defs, props.lift.id)}
           </Text>
           <View
             style={{
@@ -173,20 +167,33 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
                 customStyles={{ optionsContainer: {} }}
                 optionsContainerStyle={{ backgroundColor: colors.border }}
               >
-                <MenuOption
-                  customStyles={{
-                    optionText: { color: colors.notification, fontSize: 16 },
-                  }}
-                  onSelect={() => props.onDelete?.()}
-                  text="Delete"
-                />
-                <MenuOption
-                  customStyles={{
-                    optionText: { color: colors.notification, fontSize: 16 },
-                  }}
-                  onSelect={onToggleAlt}
-                  text="Alternate"
-                />
+                {props.inGroup && (
+                  <MenuOption
+                    customStyles={{
+                      optionText: { color: colors.notification, fontSize: 16 },
+                    }}
+                    onSelect={() => props.onGroup?.()}
+                    text="Remove"
+                  />
+                )}
+                {!props.inGroup && (
+                  <MenuOption
+                    customStyles={{
+                      optionText: { color: colors.notification, fontSize: 16 },
+                    }}
+                    onSelect={() => props.onDelete?.()}
+                    text="Delete"
+                  />
+                )}
+                {!props.inGroup && (
+                  <MenuOption
+                    customStyles={{
+                      optionText: { color: colors.notification, fontSize: 16 },
+                    }}
+                    onSelect={() => props.onGroup?.()}
+                    text="Group"
+                  />
+                )}
               </MenuOptions>
             </Menu>
           </View>

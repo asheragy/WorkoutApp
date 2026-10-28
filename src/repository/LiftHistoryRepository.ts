@@ -109,7 +109,7 @@ export default class LiftHistoryRepository {
   static async addWorkout(workout: Workout, defs: Record<string, LiftDef>) {
     const timestamp = new Date();
     const key = workout.id!;
-    const lifts = LiftUtils.getAllLifts(workout).filter(
+    const lifts = LiftUtils.flatten(workout.items).filter(
       lift => lift.sets.find(set => set.completed) != undefined,
     );
 
