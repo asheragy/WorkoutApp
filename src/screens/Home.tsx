@@ -175,7 +175,7 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
         {workout.name}
       </Text>
 
-      {LiftUtils.getWorkoutItems(workout).map(item => {
+      {workout.items.map(item => {
         if (isLiftGroup(item))
           return <GroupRow group={item} key={item.instanceId}></GroupRow>;
         else return <LiftRow lift={item} key={item.instanceId}></LiftRow>;

@@ -6,7 +6,7 @@ test('calcWorkoutGoals', async () => {
   const workout: Workout = {
     name: '',
     routineId: '',
-    lifts: [
+    items: [
       {
         id: Lifts.squat_front.id,
         instanceId: '',

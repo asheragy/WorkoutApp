@@ -29,39 +29,6 @@ test('groupLifts', () => {
   });
 
   // @ts-expect-error partial lifts are enough for grouping
-  const grouped = LiftUtils.groupLifts(lifts);
-  expect(grouped).toStrictEqual([
-    [
-      {
-        id: '1a',
-        instanceId: expect.any(String),
-      },
-      {
-        id: '1b',
-        alternate: true,
-        instanceId: expect.any(String),
-      },
-    ],
-    [
-      {
-        id: '2',
-        instanceId: expect.any(String),
-      },
-    ],
-    [
-      {
-        id: '3a',
-        instanceId: expect.any(String),
-      },
-      {
-        id: '3b',
-        alternate: true,
-        instanceId: expect.any(String),
-      },
-    ],
-  ]);
-
-  // @ts-expect-error partial lifts are enough for grouping
   const items = LiftUtils.toWorkoutItems(lifts);
   // Group instanceIds are freshly generated uuids, so only check their type.
   // `alternate` is dropped; the group carries that information now.
@@ -173,4 +140,31 @@ test('goal percentage', () => {
   lift.sets[1].reps = 15;
   percent = LiftUtils.goalPercent({}, def, lift);
   expect(percent).toBeCloseTo(0.7188, 4);
+});
+
+test('replaceLift', () => {
+  const lift = (instanceId: string, reps = 5): Lift => ({
+    id: 'x',
+    instanceId,
+    sets: [{ weight: 100, reps }],
+  });
+  const items: WorkoutItem[] = [
+    lift('a'),
+    { kind: 'oneOf', instanceId: 'g', lifts: [lift('b'), lift('c')] },
+  ];
+
+  expect(LiftUtils.replaceLift(items, lift('a', 8))).toStrictEqual([
+    lift('a', 8),
+    items[1],
+  ]);
+
+  expect(LiftUtils.replaceLift(items, lift('c', 8))).toStrictEqual([
+    items[0],
+    { kind: 'oneOf', instanceId: 'g', lifts: [lift('b'), lift('c', 8)] },
+  ]);
+
+  expect(LiftUtils.replaceLift(items, lift('missing'))).toBeUndefined();
+
+  // Input is not mutated
+  expect(items[0]).toStrictEqual(lift('a'));
 });

@@ -1,6 +1,7 @@
 import { Workout } from '../core/types/workout';
 import Utils from '../components/Utils';
 import { db, dbReady } from './db.ts';
+import LiftUtils from '../core/utils/LiftUtils.ts';
 
 export type CompletedWorkout = {
   workoutId: string;
@@ -52,15 +53,19 @@ export default class WorkoutRepository {
   }
 
   static async importLatestLifts(workout: Workout): Promise<Workout> {
-    const all = await this.getAll();
-    return await this.importLatestLiftsInternal(workout, all);
+    // TODO need to refactor for lifts if this is even used still
+    throw new Error('Not implemented');
+    //const all = await this.getAll();
+    //return await this.importLatestLiftsInternal(workout, all);
   }
 
+  /*
   private static async importLatestLiftsInternal(
     workout: Workout,
     allWorkouts: Workout[],
   ): Promise<Workout> {
     let updated = false;
+    // T
     const updatedLifts = workout.lifts.map(lift => {
       const recentWorkoutWithLift = allWorkouts
         .filter(
@@ -102,6 +107,8 @@ export default class WorkoutRepository {
 
     return updatedWorkout;
   }
+
+   */
 
   static async upsert(workout: Workout) {
     if (workout.id == undefined) await this.insert(workout);
@@ -225,6 +232,13 @@ export default class WorkoutRepository {
   private static fromRow(row: unknown[]): Workout {
     const [id, routineId, dataJson] = row;
     const data: WorkoutData = JSON.parse(dataJson as string);
+
+    if (data.lifts && !data.items)
+      data.items = LiftUtils.toWorkoutItems(data.lifts, true);
+
+    if (!data.items) data.items = [];
+
+    delete data.lifts;
 
     return {
       ...data,

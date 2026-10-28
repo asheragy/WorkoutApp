@@ -10,8 +10,8 @@ export type Workout = {
   routineId: string;
   lastCompleted?: Date;
   name: string;
-  lifts: Lift[];
-  // TODO items: WorkoutItem[];
+  lifts?: Lift[];
+  items: WorkoutItem[];
 };
 
 export type WorkoutItem = Lift | LiftGroup;

@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../App';
-import { Lift, Workout } from '../core/types/workout';
+import { isLiftGroup, Lift, LiftGroup, Workout } from '../core/types/workout';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import LiftItem from '../components/LiftItem/LiftItem';
 import {
@@ -22,7 +22,6 @@ import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
 import { useFocusEffect, useTheme } from '@react-navigation/native';
-import LiftUtils from '../core/utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
@@ -34,7 +33,7 @@ export function WorkoutScreen({ route, navigation }: Props) {
     // TODO should just be undefined to start?
     name: '',
     routineId: '',
-    lifts: [],
+    items: [],
   });
 
   React.useLayoutEffect(() => {
@@ -86,6 +85,17 @@ export function WorkoutScreen({ route, navigation }: Props) {
     ]);
   };
 
+  const completeLift = (lift: Lift): Lift => {
+    return {
+      ...lift,
+      hide: undefined,
+      sets: lift.sets.map(set => ({
+        ...set,
+        completed: undefined,
+      })),
+    };
+  };
+
   const onComplete = async () => {
     const completedWorkout: Workout = {
       ...workout,
@@ -95,14 +105,14 @@ export function WorkoutScreen({ route, navigation }: Props) {
 
     const resetWorkout: Workout = {
       ...completedWorkout,
-      lifts: completedWorkout.lifts.map(lift => ({
-        ...lift,
-        hide: undefined,
-        sets: lift.sets.map(set => ({
-          ...set,
-          completed: undefined,
-        })),
-      })),
+      items: completedWorkout.items.map(item => {
+        if (isLiftGroup(item))
+          return {
+            ...item,
+            lifts: item.lifts.map(completeLift),
+          };
+        else return completeLift(item);
+      }),
     };
 
     await WorkoutRepository.upsert(resetWorkout);
@@ -127,12 +137,12 @@ export function WorkoutScreen({ route, navigation }: Props) {
     <ScrollView style={styles.container}>
       {
         // TODO cannot use toWorkoutItems because it drops alternate when saving
-        LiftUtils.groupLifts(workout.lifts).map(item => {
-          if (item.length > 1)
+        workout.items.map(item => {
+          if (isLiftGroup(item))
             return (
               <GroupItem
                 group={item}
-                key={item[0].instanceId}
+                key={item.instanceId}
                 onEditLift={lift =>
                   navigation.navigate('LiftEdit', {
                     workoutId: route.params.workoutId,
@@ -142,20 +152,19 @@ export function WorkoutScreen({ route, navigation }: Props) {
               />
             );
 
-          const lift = item[0];
           return (
             <LiftItem
-              lift={lift}
-              def={defs[lift.id]}
+              lift={item}
+              def={defs[item.id]}
               settings={settings}
               onEdit={() =>
                 navigation.navigate('LiftEdit', {
                   workoutId: route.params.workoutId,
-                  lift: lift,
+                  lift: item,
                 })
               }
               overrideComplete={false}
-              key={lift.instanceId}
+              key={item.instanceId}
             ></LiftItem>
           );
         })
@@ -168,13 +177,16 @@ export function WorkoutScreen({ route, navigation }: Props) {
   );
 }
 
-function GroupItem(props: { group: Lift[]; onEditLift: (lift: Lift) => void }) {
+function GroupItem(props: {
+  group: LiftGroup;
+  onEditLift: (lift: Lift) => void;
+}) {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings = useSelector((store: AppState) => store.settings);
   const { colors } = useTheme();
 
   const anyCompleted =
-    props.group
+    props.group.lifts
       .map(lift => lift.sets.filter(set => set.completed).length)
       .filter(count => count > 0).length > 0;
 
@@ -185,7 +197,7 @@ function GroupItem(props: { group: Lift[]; onEditLift: (lift: Lift) => void }) {
         borderLeftColor: colors.primary,
       }}
     >
-      {props.group.map(lift => {
+      {props.group.lifts.map(lift => {
         return (
           <LiftItem
             lift={lift}

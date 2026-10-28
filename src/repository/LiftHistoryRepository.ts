@@ -2,6 +2,7 @@ import { LiftDef, PersistedSet } from '../core/types/types';
 import { LiftSet, Workout } from '../core/types/workout';
 import { db, LiftHistoryTableSchema } from './db.ts';
 import { Scalar } from '@op-engineering/op-sqlite';
+import LiftUtils from '../core/utils/LiftUtils.ts';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -108,7 +109,7 @@ export default class LiftHistoryRepository {
   static async addWorkout(workout: Workout, defs: Record<string, LiftDef>) {
     const timestamp = new Date();
     const key = workout.id!;
-    const lifts = workout.lifts.filter(
+    const lifts = LiftUtils.getAllLifts(workout).filter(
       lift => lift.sets.find(set => set.completed) != undefined,
     );
 

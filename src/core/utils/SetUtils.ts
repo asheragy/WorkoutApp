@@ -7,8 +7,6 @@ import {
   PersistedSet,
 } from '../types/types.ts';
 import { isLiftGroup, LiftSet, Workout } from '../types/workout.ts';
-import Utils from '../../components/Utils.ts';
-import LiftUtils from './LiftUtils.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { WorkoutTemplate } from '../types/template.ts';
 
@@ -89,7 +87,7 @@ const SetUtils = {
     const result = new Map<MuscleGroup, number>();
 
     workouts.forEach(workout => {
-      LiftUtils.getWorkoutItems(workout).forEach(item => {
+      workout.items.forEach(item => {
         const lifts = isLiftGroup(item) ? item.lifts : [item];
 
         lifts.forEach(lift => {

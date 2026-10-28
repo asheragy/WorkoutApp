@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Alert, Button, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Button,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { RootStackParamList } from '../App';
 import { GlobalSettings } from '../core/types/types';
 import { TextInput } from 'react-native-gesture-handler';
-import { Lift, Workout } from '../core/types/workout';
+import { isLiftGroup, Lift, Workout, WorkoutItem } from '../core/types/workout';
+import LiftUtils from '../core/utils/LiftUtils';
 import Utils from '../components/Utils';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import EditableLiftItem from '../components/EditableLiftItem/EditableLiftItem';
@@ -29,7 +37,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
 
   const [workout, setWorkout] = useState<Workout>({
     name: 'Workout Title',
-    lifts: [],
+    items: [],
     routineId: settings.routine,
   });
 
@@ -64,11 +72,6 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
   }, [navigation, workout]);
 
   async function onSave() {
-    if (workout.lifts.length > 0 && workout.lifts[0].alternate) {
-      Alert.alert('Error', 'First lift cannot be an alternate');
-      return;
-    }
-
     const workoutToSave: Workout = { ...workout };
 
     try {
@@ -105,28 +108,28 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
     };
     setWorkout(prev => ({
       ...prev,
-      lifts: [...prev.lifts, lift],
+      items: [...prev.items, lift],
     }));
   }
 
   function onExerciseDelete(index: number) {
     setWorkout(prev => ({
       ...prev,
-      lifts: prev.lifts.filter((_, i) => i !== index),
+      items: prev.items.filter((_, i) => i !== index),
     }));
   }
 
-  function onLiftChanged(index: number, lift: Lift) {
+  function onLiftChanged(lift: Lift) {
     setWorkout(prev => ({
       ...prev,
-      lifts: prev.lifts.map((l, i) => (i === index ? lift : l)),
+      items: LiftUtils.replaceLift(prev.items, lift) ?? prev.items,
     }));
   }
 
-  function setLifts(lifts: Lift[]) {
+  function setLifts(items: WorkoutItem[]) {
     setWorkout(prev => ({
       ...prev,
-      lifts: lifts,
+      items: items,
     }));
   }
 
@@ -143,37 +146,63 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
   }
 
   function confirmLiftDelete(index: number) {
-    const liftId = workout.lifts[index].id;
-
-    Alert.alert(
-      `Delete ${defs[liftId].name}?`,
-      undefined,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Delete',
-          onPress: () => onExerciseDelete(index),
-        },
-      ],
-      { cancelable: false },
-    );
+    const item = workout.items[index];
+    if (isLiftGroup(item)) {
+      ToastAndroid.show(
+        'Error: should not be able to delete group',
+        ToastAndroid.LONG,
+      );
+      return;
+    } else {
+      const liftId = item.id;
+      Alert.alert(
+        `Delete ${defs[liftId].name}?`,
+        undefined,
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Delete',
+            onPress: () => onExerciseDelete(index),
+          },
+        ],
+        { cancelable: false },
+      );
+    }
   }
 
-  const renderItem = (item: RenderItemParams<Lift>) => (
+  const renderItem = (params: RenderItemParams<WorkoutItem>) => (
     <ScaleDecorator>
       <TouchableOpacity
-        onLongPress={item.drag}
+        onLongPress={params.drag}
         style={{ margin: 4, backgroundColor: colors.card }}
       >
-        <EditableLiftItem
-          lift={item.item}
-          mode={'workout_edit'}
-          onChange={lift => onLiftChanged(item.getIndex()!, lift)}
-          onDelete={() => confirmLiftDelete(item.getIndex()!)}
-        ></EditableLiftItem>
+        {!isLiftGroup(params.item) && (
+          <EditableLiftItem
+            lift={params.item}
+            mode={'workout_edit'}
+            onChange={onLiftChanged}
+            onDelete={() => confirmLiftDelete(params.getIndex()!)}
+          ></EditableLiftItem>
+        )}
+        {isLiftGroup(params.item) && (
+          <View>
+            <Text style={{ color: colors.text }}>oneOf</Text>
+            {params.item.lifts.map(lift => {
+              return (
+                <EditableLiftItem
+                  lift={lift}
+                  key={lift.instanceId}
+                  mode={'workout_edit'}
+                  onChange={onLiftChanged}
+                  onDelete={() => console.log('Not allowed for groups')}
+                ></EditableLiftItem>
+              );
+            })}
+          </View>
+        )}
       </TouchableOpacity>
     </ScaleDecorator>
   );
@@ -196,7 +225,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
         }}
       >
         <DraggableFlatList
-          data={workout.lifts}
+          data={workout.items}
           renderItem={renderItem}
           onDragEnd={({ data }) => setLifts(data)}
           keyExtractor={lift => lift.instanceId}

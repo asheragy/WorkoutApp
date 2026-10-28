@@ -113,7 +113,7 @@ test('working sets', () => {
   let workout: Workout = {
     name: '',
     routineId: '',
-    lifts: [lift(Lifts.bench_barbell.id, 3)],
+    items: [lift(Lifts.bench_barbell.id, 3)],
   };
 
   let sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
@@ -126,7 +126,7 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [lift(Lifts.bench_barbell.id, 3), lift(Lifts.bench_dumbbell.id, 1)],
+    items: [lift(Lifts.bench_barbell.id, 3), lift(Lifts.bench_dumbbell.id, 1)],
   };
   sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
@@ -139,9 +139,15 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [
-      lift(Lifts.bench_barbell.id, 3),
-      lift(Lifts.bench_dumbbell.id, 1, true),
+    items: [
+      {
+        kind: 'oneOf',
+        instanceId: '',
+        lifts: [
+          lift(Lifts.bench_barbell.id, 3),
+          lift(Lifts.bench_dumbbell.id, 1),
+        ],
+      },
     ],
   };
   sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
@@ -154,9 +160,15 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [
-      lift(Lifts.bench_barbell.id, 2),
-      lift(Lifts.squat_barbell.id, 3, true),
+    items: [
+      {
+        kind: 'oneOf',
+        instanceId: '',
+        lifts: [
+          lift(Lifts.bench_barbell.id, 2),
+          lift(Lifts.squat_barbell.id, 3),
+        ],
+      },
     ],
   };
   sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
@@ -172,7 +184,7 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [lift(Lifts.deadlift_barbell.id, 1)],
+    items: [lift(Lifts.deadlift_barbell.id, 1)],
   };
   sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
@@ -185,7 +197,7 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [lift(Lifts.backExtension.id, 1)],
+    items: [lift(Lifts.backExtension.id, 1)],
   };
   sets = SetUtils.getWorkingSets(SystemLiftDefs, [workout]);
   expect(sets).toStrictEqual([
@@ -199,7 +211,7 @@ test('working sets', () => {
   workout = {
     name: '',
     routineId: '',
-    lifts: [
+    items: [
       lift(Lifts.legCurl_seated.id, 0),
       lift(Lifts.deadlift_barbell.id, 2),
       lift(Lifts.squat_barbell.id, 2),
@@ -350,7 +362,7 @@ test('1RM Brzycki', () => {
   expect(oneRM).toStrictEqual([200, 205.7, 225, 266.7, 423.5, 1028.6]);
 });
 
-function lift(id: string, sets: number, alt?: boolean): Lift {
+function lift(id: string, sets: number): Lift {
   return {
     id: id,
     instanceId: '',
@@ -358,6 +370,5 @@ function lift(id: string, sets: number, alt?: boolean): Lift {
       weight: 100,
       reps: 10,
     })),
-    alternate: alt,
   };
 }

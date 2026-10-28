@@ -1,28 +1,30 @@
-import { Lift, Workout, WorkoutItem } from '../types/workout.ts';
+import { isLiftGroup, Lift, Workout, WorkoutItem } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
 
-const LiftUtils = {
-  groupLifts(lifts: Lift[]): Lift[][] {
-    const result: Lift[][] = [];
+function groupLifts(lifts: Lift[]): Lift[][] {
+  const result: Lift[][] = [];
 
-    for (const lift of lifts) {
-      if (lift.alternate && result.length > 0) {
-        // add to previous group
-        result[result.length - 1].push(lift);
-      } else {
-        // start a new group
-        result.push([lift]);
-      }
+  for (const lift of lifts) {
+    if (lift.alternate && result.length > 0) {
+      // add to previous group
+      result[result.length - 1].push(lift);
+    } else {
+      // start a new group
+      result.push([lift]);
     }
+  }
 
-    return result;
-  },
+  return result;
+}
 
+const LiftUtils = {
   // Converts positional `alternate` flags into explicit groups. The flag is
   // dropped from every lift since the group now carries that information.
-  toWorkoutItems(lifts: Lift[]): WorkoutItem[] {
-    const groups = this.groupLifts(lifts).map(group =>
+  toWorkoutItems(lifts: Lift[], legit?: boolean): WorkoutItem[] {
+    if (!legit) console.log('deprecated: toWorkoutItems');
+
+    const groups = groupLifts(lifts).map(group =>
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       group.map(({ alternate, ...lift }) => lift),
     );
@@ -38,10 +40,6 @@ const LiftUtils = {
     });
   },
 
-  getWorkoutItems(workout: Workout): WorkoutItem[] {
-    return this.toWorkoutItems(workout.lifts);
-  },
-
   // Flat list of every lift in order, groups expanded in place. No
   // `alternate` flags are added; use this wherever the grouping is irrelevant
   // (history, goals, lookups by instanceId).
@@ -50,8 +48,28 @@ const LiftUtils = {
   },
 
   getAllLifts(workout: Workout): Lift[] {
-    // TODO needs to change when replaced by WorkoutItem
-    return workout.lifts;
+    return this.flatten(workout.items);
+  },
+
+  // Replaces the lift with a matching instanceId, whether it sits at the top
+  // level or inside a group. Returns a new items array, or undefined if no
+  // lift matched.
+  replaceLift(items: WorkoutItem[], lift: Lift): WorkoutItem[] | undefined {
+    const matches = (l: Lift) => l.instanceId == lift.instanceId;
+    let found = false;
+
+    const result = items.map(item => {
+      if (isLiftGroup(item)) {
+        if (!item.lifts.some(matches)) return item;
+        found = true;
+        return { ...item, lifts: item.lifts.map(l => (matches(l) ? lift : l)) };
+      }
+      if (!matches(item)) return item;
+      found = true;
+      return lift;
+    });
+
+    return found ? result : undefined;
   },
 
   goalPercent(

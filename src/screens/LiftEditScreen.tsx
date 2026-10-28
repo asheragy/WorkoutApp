@@ -22,6 +22,7 @@ import {
 import { MaterialHeaderButton } from '../components/Common.tsx';
 import { AppState } from '../state/store.ts';
 import WorkoutRepository from '../repository/WorkoutRepository.ts';
+import LiftUtils from '../core/utils/LiftUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 
@@ -88,25 +89,15 @@ export default function LiftEditScreen({ route, navigation }: Props) {
 
   async function updateLift(updatedLift: Lift) {
     const workout = await WorkoutRepository.get(route.params.workoutId);
-    if (workout) {
-      const index = workout.lifts.findIndex(
-        x => x.instanceId == updatedLift.instanceId,
-      );
+    if (!workout) return;
 
-      if (index < 0) {
-        Alert.alert('Error', 'Unable to find lift instance id');
-        return;
-      }
-
-      const lifts = [...workout.lifts];
-      lifts[index] = updatedLift;
-
-      const updatedWorkout = {
-        ...workout,
-        lifts: lifts,
-      };
-      await WorkoutRepository.upsert(updatedWorkout);
+    const items = LiftUtils.replaceLift(workout.items, updatedLift);
+    if (!items) {
+      Alert.alert('Error', 'Unable to find lift instance id');
+      return;
     }
+
+    await WorkoutRepository.upsert({ ...workout, items });
   }
 
   async function onDone() {
