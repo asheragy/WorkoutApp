@@ -133,22 +133,27 @@ export const FullBody_3day: [Routine, WorkoutTemplate[]] = [
       routineId: ROUTINE_ID,
       items: [
         {
-          id: Lifts.pullover_dumbbell.id,
+          kind: 'oneOf',
           instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 40, reps: 11 },
-            { weight: 40, reps: 14 },
-            { weight: 40, reps: 14 },
+          lifts: [
+            {
+              id: Lifts.pullover_dumbbell.id,
+              instanceId: Utils.generate_uuidv4(),
+              sets: [
+                { weight: 40, reps: 11 },
+                { weight: 40, reps: 14 },
+                { weight: 40, reps: 14 },
+              ],
+            },
+            {
+              id: Lifts.pullover_machine.id,
+              instanceId: Utils.generate_uuidv4(),
+              sets: [
+                { weight: 100, reps: 11 },
+                { weight: 100, reps: 14 },
+              ],
+            },
           ],
-        },
-        {
-          id: Lifts.pullover_machine.id,
-          instanceId: Utils.generate_uuidv4(),
-          sets: [
-            { weight: 100, reps: 11 },
-            { weight: 100, reps: 14 },
-          ],
-          alternate: true,
         },
         {
           id: Lifts.plank.id,

@@ -10,7 +10,6 @@ export type Workout = {
   routineId: string;
   lastCompleted?: Date;
   name: string;
-  lifts?: Lift[];
   items: WorkoutItem[];
 };
 
@@ -33,7 +32,6 @@ export type Lift = {
   goals2?: LiftSet[];
   hide?: boolean;
   note?: string;
-  alternate?: boolean;
 };
 
 export type LiftSet = {

@@ -2,44 +2,7 @@ import { isLiftGroup, Lift, WorkoutItem } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
 import SetUtils from './SetUtils.ts';
 
-function groupLifts(lifts: Lift[]): Lift[][] {
-  const result: Lift[][] = [];
-
-  for (const lift of lifts) {
-    if (lift.alternate && result.length > 0) {
-      // add to previous group
-      result[result.length - 1].push(lift);
-    } else {
-      // start a new group
-      result.push([lift]);
-    }
-  }
-
-  return result;
-}
-
 const LiftUtils = {
-  // Converts positional `alternate` flags into explicit groups. The flag is
-  // dropped from every lift since the group now carries that information.
-  toWorkoutItems(lifts: Lift[], legit?: boolean): WorkoutItem[] {
-    if (!legit) console.log('deprecated: toWorkoutItems');
-
-    const groups = groupLifts(lifts).map(group =>
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      group.map(({ alternate, ...lift }) => lift),
-    );
-    return groups.map(group => {
-      if (group.length == 1) return group[0];
-      else {
-        return {
-          kind: 'oneOf',
-          instanceId: group[0].instanceId,
-          lifts: group,
-        };
-      }
-    });
-  },
-
   // Flat list of every lift in order, groups expanded in place. No
   // `alternate` flags are added; use this wherever the grouping is irrelevant
   // (history, goals, lookups by instanceId).

@@ -2,96 +2,6 @@ import LiftUtils from './LiftUtils.ts';
 import { Lifts, SystemLiftDefs } from '../LiftDatabase.ts';
 import { Lift, WorkoutItem } from '../types/workout.ts';
 
-test('groupLifts', () => {
-  const lifts = [
-    {
-      id: '1a',
-    },
-    {
-      id: '1b',
-      alternate: true,
-    },
-    {
-      id: '2',
-    },
-    {
-      id: '3a',
-    },
-    {
-      id: '3b',
-      alternate: true,
-    },
-  ].map(x => {
-    return {
-      ...x,
-      instanceId: 'unused',
-    };
-  });
-
-  // @ts-expect-error partial lifts are enough for grouping
-  const items = LiftUtils.toWorkoutItems(lifts);
-  // Group instanceIds are freshly generated uuids, so only check their type.
-  // `alternate` is dropped; the group carries that information now.
-  expect(items).toStrictEqual([
-    {
-      kind: 'oneOf',
-      instanceId: expect.any(String),
-      lifts: [
-        {
-          id: '1a',
-          instanceId: expect.any(String),
-        },
-        {
-          id: '1b',
-          instanceId: expect.any(String),
-        },
-      ],
-    },
-    {
-      id: '2',
-      instanceId: expect.any(String),
-    },
-    {
-      kind: 'oneOf',
-      instanceId: expect.any(String),
-      lifts: [
-        {
-          id: '3a',
-          instanceId: expect.any(String),
-        },
-        {
-          id: '3b',
-          instanceId: expect.any(String),
-        },
-      ],
-    },
-  ]);
-
-  const flat = LiftUtils.flatten(items);
-  expect(flat).toStrictEqual([
-    {
-      id: '1a',
-      instanceId: expect.any(String),
-    },
-    {
-      id: '1b',
-      instanceId: expect.any(String),
-    },
-    {
-      id: '2',
-      instanceId: expect.any(String),
-    },
-    {
-      id: '3a',
-      instanceId: expect.any(String),
-    },
-    {
-      id: '3b',
-      instanceId: expect.any(String),
-    },
-  ]);
-});
-
 test('flatten', () => {
   const lift = (id: string): Lift => ({ id, instanceId: 'i' + id, sets: [] });
   const items: WorkoutItem[] = [
@@ -114,10 +24,9 @@ test('flatten', () => {
   ]);
   expect(LiftUtils.flatten([])).toStrictEqual([]);
 
-  // Lifts are the same objects, not copies, and carry no alternate flag.
+  // Lifts are the same objects, not copies
   const flat = LiftUtils.flatten(items);
   expect(flat[0]).toBe((items[0] as { lifts: Lift[] }).lifts[0]);
-  expect(flat.every(x => x.alternate === undefined)).toBe(true);
 });
 
 test('goal percentage', () => {
