@@ -233,8 +233,10 @@ export default class WorkoutRepository {
     const [id, routineId, dataJson] = row;
     const data: WorkoutData = JSON.parse(dataJson as string);
 
-    if (data.lifts && !data.items)
+    if (data.lifts && !data.items) {
+      console.log('Migrating lifts ' + data.name);
       data.items = LiftUtils.toWorkoutItems(data.lifts, true);
+    }
 
     if (!data.items) data.items = [];
 

@@ -2,7 +2,7 @@ import { DEFAULT_ROUTINE, Routine } from '@shared/types/workout.ts';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import { UpperLower } from '@shared/routines/4_UpperLower.ts';
 import { UpperLower6 } from '@shared/routines/6_UpperLower.ts';
-import { UpperLower2026 } from '@shared/routines/6_UpperLower2026.ts';
+import { UpperLower2026 } from '../../../src/core/routines/6_UpperLower.ts';
 import { YatesSplit } from '@shared/routines/4_Yates.ts';
 import { YatesSplitModified } from '@shared/routines/4_Yates_Modified.ts';
 import { PPL_3Day } from '@shared/routines/3_PPL.ts';

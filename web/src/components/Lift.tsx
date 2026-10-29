@@ -122,15 +122,17 @@ export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMov
       {/* Sets and goals share one table so their columns stay aligned. */}
       {!collapsed && (
         <table>
-          <thead>
-            <tr>
-              <th style={headerStyle}>Set</th>
-              <th style={headerStyle}>Weight</th>
-              <th style={headerStyle}>Reps</th>
-              <th style={headerStyle}>1RM</th>
-              <th />
-            </tr>
-          </thead>
+          {lift.sets.length > 0 && (
+            <thead>
+              <tr>
+                <th style={headerStyle}>Set</th>
+                <th style={headerStyle}>Weight</th>
+                <th style={headerStyle}>Reps</th>
+                <th style={headerStyle}>1RM</th>
+                <th />
+              </tr>
+            </thead>
+          )}
           <tbody>
             {lift.sets.map((set, i) => (
               <Set
@@ -161,13 +163,15 @@ export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMov
                 </td>
               </tr>
             )}
-            <tr>
-              <th />
-              <th style={headerStyle}>Weight</th>
-              <th style={headerStyle}>Reps</th>
-              <th style={headerStyle}>1RM</th>
-              <th />
-            </tr>
+            {(lift.goals?.length ?? 0) > 0 && (
+              <tr>
+                <th />
+                <th style={headerStyle}>Weight</th>
+                <th style={headerStyle}>Reps</th>
+                <th style={headerStyle}>1RM</th>
+                <th />
+              </tr>
+            )}
             {lift.goals?.map((goal, i) => (
               <Set
                 key={i}

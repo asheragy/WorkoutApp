@@ -9,7 +9,7 @@ import { ULArnold } from '../core/routines/5_ULArnold.ts';
 import { FullBody_1Day } from '../core/routines/1_Full.ts';
 import { YatesSplitModified } from '../core/routines/4_Yates_Modified.ts';
 import { UpperLower_2Day } from '../core/routines/2_UpperLower.ts';
-import { UpperLower2026 } from '../core/routines/6_UpperLower2026.ts';
+import { UpperLower2026 } from '../core/routines/6_UpperLower.ts';
 
 export const PreLoadedRoutines = [
   UpperLower,

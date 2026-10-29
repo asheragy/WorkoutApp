@@ -53,4 +53,5 @@ yarn-error.log
 web/dist/
 
 # Temporary
-src/core/routinesNew
+src/core/routinesNew/*
+!src/core/routinesNew/*.test.ts

@@ -1,4 +1,4 @@
-import { Routine, Workout } from '../types/workout.ts';
+import { Routine } from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 import { buildWorkout } from './helper.ts';
 import { SharedLower1, SharedLower2 } from './4_UpperLower.ts';
