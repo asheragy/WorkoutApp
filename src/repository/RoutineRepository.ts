@@ -4,7 +4,6 @@ import { YatesSplit } from '../core/routines/4_Yates.ts';
 import { PPL_3Day } from '../core/routines/3_PPL.ts';
 import { HLM_3Day } from '../core/routines/3_HLM.ts';
 import { ULPPL } from '../core/routines/5_ULPPL.ts';
-import { UpperLower6 } from '../core/routines/6_UpperLower.ts';
 import { ULArnold } from '../core/routines/5_ULArnold.ts';
 import { FullBody_1Day } from '../core/routines/1_Full.ts';
 import { YatesSplitModified } from '../core/routines/4_Yates_Modified.ts';
@@ -13,7 +12,6 @@ import { UpperLower2026 } from '../core/routines/6_UpperLower.ts';
 
 export const PreLoadedRoutines = [
   UpperLower,
-  UpperLower6,
   UpperLower2026,
   YatesSplit,
   YatesSplitModified,
