@@ -1,16 +1,15 @@
 import { DEFAULT_ROUTINE, Routine } from '@shared/types/workout.ts';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import { UpperLower } from '@shared/routines/4_UpperLower.ts';
-import { UpperLower2026 } from '../../../src/core/routines/6_UpperLower.ts';
+import { UpperLower2026 } from '@shared/routines/6_UpperLower.ts';
 import { YatesSplit } from '@shared/routines/4_Yates.ts';
 import { YatesSplitModified } from '@shared/routines/4_Yates_Modified.ts';
 import { PPL_3Day } from '@shared/routines/3_PPL.ts';
 import { HLM_3Day } from '@shared/routines/3_HLM.ts';
 import { ULPPL } from '@shared/routines/5_ULPPL.ts';
 import { ULArnold } from '@shared/routines/5_ULArnold.ts';
-import { FullBody_1Day } from '@shared/routines/1_Full.ts';
 import { UpperLower_2Day } from '@shared/routines/2_UpperLower.ts';
-import { FullBody_3day } from '../../../src/core/routines/3_FullBody.ts';
+import { FullBody_3day } from '@shared/routines/3_FullBody.ts';
 
 const PreLoadedRoutines = [
   UpperLower,
@@ -21,7 +20,6 @@ const PreLoadedRoutines = [
   HLM_3Day,
   ULPPL,
   ULArnold,
-  FullBody_1Day,
   FullBody_3day,
   UpperLower_2Day,
 ];

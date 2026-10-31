@@ -1,0 +1,1719 @@
+{
+  "version": 1,
+  "routine": {
+    "id": "upperLower2026",
+    "title": "6-day Upper Lower"
+  },
+  "workouts": [
+    {
+      "id": "l1",
+      "name": "Lower 1",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "id": "hipAdduction",
+          "instanceId": "e26f7fed-8b81-48c9-9883-7d409ef74bf4",
+          "sets": [
+            {
+              "weight": 100,
+              "reps": 15
+            },
+            {
+              "weight": 110,
+              "reps": 15
+            },
+            {
+              "weight": 115,
+              "reps": 15
+            }
+          ],
+          "goals": [
+            {
+              "weight": 145,
+              "reps": 15
+            },
+            {
+              "weight": 160,
+              "reps": 15
+            }
+          ]
+        },
+        {
+          "id": "hipAbduction",
+          "instanceId": "1ba796c3-0df0-420a-8952-fa1b8592c487",
+          "sets": [
+            {
+              "weight": 90,
+              "reps": 15
+            },
+            {
+              "weight": 95,
+              "reps": 15
+            },
+            {
+              "weight": 105,
+              "reps": 15
+            }
+          ],
+          "goals": [
+            {
+              "weight": 130,
+              "reps": 15
+            },
+            {
+              "weight": 145,
+              "reps": 15
+            }
+          ]
+        },
+        {
+          "id": "legExtensions",
+          "instanceId": "b0920b97-9441-464b-a398-89dc2c17b95b",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ],
+          "goals": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        },
+        {
+          "id": "deadlift_barbell",
+          "instanceId": "a879e70e-cb65-4dd7-b7fd-3d1cb058d453",
+          "sets": [
+            {
+              "weight": 225,
+              "reps": 5
+            },
+            {
+              "weight": 195,
+              "reps": 10
+            }
+          ],
+          "goals": [
+            {
+              "weight": 275,
+              "reps": 10
+            },
+            {
+              "weight": 315,
+              "reps": 6
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "61e5d230-6c86-4c0b-8ee2-63a04629c902",
+          "lifts": [
+            {
+              "id": "legPress_single",
+              "instanceId": "201d5f18-1756-4baa-940e-5de36fae49a0",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            },
+            {
+              "id": "splitSquat",
+              "instanceId": "1ffa7759-03c9-4a1e-be93-e6d78187a4d5",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "calfRaise_seatedStack",
+          "instanceId": "ec560dcd-d1e3-4cf0-a326-537331987bd0",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        },
+        {
+          "id": "plank",
+          "instanceId": "17ae4a4c-0acd-44a2-ae78-ed1214fc0bba",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u1",
+      "name": "Upper 1",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "kind": "oneOf",
+          "instanceId": "4d0afd29-675f-4f6c-a404-631b1825bf0a",
+          "lifts": [
+            {
+              "id": "inclinePress_barbell",
+              "instanceId": "b32f983f-3983-41cb-8539-b0120f02be43",
+              "sets": [
+                {
+                  "weight": 115,
+                  "reps": 10
+                },
+                {
+                  "weight": 115,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 170,
+                  "reps": 8
+                },
+                {
+                  "weight": 170,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "inclinePress_dumbbell",
+              "instanceId": "c5a4c66a-8e42-42cc-afc4-0a2381e463de",
+              "sets": [
+                {
+                  "weight": 55,
+                  "reps": 8
+                },
+                {
+                  "weight": 55,
+                  "reps": 11
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 75,
+                  "reps": 10
+                },
+                {
+                  "weight": 75,
+                  "reps": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "cfac42ca-e0e2-4350-9290-17a841d5560e",
+          "lifts": [
+            {
+              "id": "dip",
+              "instanceId": "704ba757-f286-478b-85bb-12fda72e9fa8",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 5
+                },
+                {
+                  "weight": 0,
+                  "reps": 5
+                }
+              ]
+            },
+            {
+              "id": "fly_machine",
+              "instanceId": "e9ea1ef5-948c-4cc1-ab58-b74e08dbc1fc",
+              "sets": [
+                {
+                  "weight": 105,
+                  "reps": 12
+                },
+                {
+                  "weight": 105,
+                  "reps": 15
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 150,
+                  "reps": 12
+                },
+                {
+                  "weight": 150,
+                  "reps": 15
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "95e0bfd1-aaf7-4cd0-8bd9-6ad621ffab69",
+          "lifts": [
+            {
+              "id": "latRaise_machine",
+              "instanceId": "79f2443e-48bd-4276-85c7-fbd82915ba9f",
+              "sets": [
+                {
+                  "weight": 55,
+                  "reps": 9
+                },
+                {
+                  "weight": 55,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 75,
+                  "reps": 11
+                },
+                {
+                  "weight": 75,
+                  "reps": 13
+                }
+              ]
+            },
+            {
+              "id": "ohp_btn",
+              "instanceId": "99c9c942-f348-4104-8c6b-3128052b89c8",
+              "sets": [
+                {
+                  "weight": 65,
+                  "reps": 8
+                },
+                {
+                  "weight": 65,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 95,
+                  "reps": 7
+                },
+                {
+                  "weight": 95,
+                  "reps": 9
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "3e310ca0-c85d-4a5e-9301-63e9789a87f6",
+          "lifts": [
+            {
+              "id": "pullup",
+              "instanceId": "6fd941b7-6a2c-417d-9cd6-67ccdeac1496",
+              "sets": [
+                {
+                  "weight": -70,
+                  "reps": 8
+                },
+                {
+                  "weight": -70,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "pullup_neutral",
+              "instanceId": "4e201080-b7c0-40e8-b189-70ad756dc388",
+              "sets": [
+                {
+                  "weight": -60,
+                  "reps": 8
+                },
+                {
+                  "weight": -60,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 0,
+                  "reps": 8
+                },
+                {
+                  "weight": 0,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "pullup_neutral",
+              "instanceId": "2d00eebf-9e8d-44c0-8ea1-6797f06083b5",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 3
+                },
+                {
+                  "weight": 0,
+                  "reps": 3
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 35,
+                  "reps": 5
+                },
+                {
+                  "weight": 0,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "00e30d57-f1a3-4cee-b144-c156b8430bfd",
+          "lifts": [
+            {
+              "id": "row_plateMachine",
+              "instanceId": "e82edec8-6b83-458b-9f9a-2799b42e032c",
+              "sets": [
+                {
+                  "weight": 70,
+                  "reps": 9
+                },
+                {
+                  "weight": 70,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 100,
+                  "reps": 9
+                },
+                {
+                  "weight": 100,
+                  "reps": 11
+                }
+              ]
+            },
+            {
+              "id": "row_machine",
+              "instanceId": "8e7b90f9-37f2-4dff-8917-a920a8dbd341",
+              "sets": [
+                {
+                  "weight": 100,
+                  "reps": 9
+                },
+                {
+                  "weight": 100,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 140,
+                  "reps": 10
+                },
+                {
+                  "weight": 140,
+                  "reps": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "b37cb17e-d4de-4a92-8d61-a2f46875f306",
+          "lifts": [
+            {
+              "id": "curl_wrist",
+              "instanceId": "303c54c5-495f-4ae9-994f-06310a3830c2",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            },
+            {
+              "id": "shrug_dumbbell",
+              "instanceId": "bc04fa60-5680-423c-9e31-56849be50de4",
+              "sets": [
+                {
+                  "weight": 70,
+                  "reps": 12
+                },
+                {
+                  "weight": 70,
+                  "reps": 12
+                },
+                {
+                  "weight": 70,
+                  "reps": 15
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 100,
+                  "reps": 12
+                },
+                {
+                  "weight": 100,
+                  "reps": 14
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l2",
+      "name": "Lower 2",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "id": "legExtensions",
+          "instanceId": "4a7a53ac-7619-4f35-a76c-3b883c78841a",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ],
+          "goals": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        },
+        {
+          "id": "legCurl_laying",
+          "instanceId": "b18340f6-b147-4968-833a-f79729f0b8d6",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ],
+          "goals": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "ff5582a8-eacf-4ee5-a00b-2ff82e2466c7",
+          "lifts": [
+            {
+              "id": "squat_front",
+              "instanceId": "914d3d36-2431-47bc-a53b-cc7d0eaf703f",
+              "sets": [
+                {
+                  "weight": 135,
+                  "reps": 6
+                },
+                {
+                  "weight": 135,
+                  "reps": 6
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 185,
+                  "reps": 8
+                }
+              ]
+            },
+            {
+              "id": "squat_barbell",
+              "instanceId": "59d0f6a9-d417-4b5c-a2ae-dc5c0b4bb7fe",
+              "sets": [
+                {
+                  "weight": 135,
+                  "reps": 6
+                },
+                {
+                  "weight": 135,
+                  "reps": 6
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 185,
+                  "reps": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "0cbf2ca7-198e-4bdb-a3d9-5774a0de1270",
+          "lifts": [
+            {
+              "id": "rdl_barbell",
+              "instanceId": "c980b54e-c126-44ab-8f7d-abc63e78639b",
+              "sets": [
+                {
+                  "weight": 155,
+                  "reps": 8
+                },
+                {
+                  "weight": 155,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 205,
+                  "reps": 12
+                },
+                {
+                  "weight": 225,
+                  "reps": 8
+                }
+              ]
+            },
+            {
+              "id": "deadlift_deficit",
+              "instanceId": "89b99617-c051-4690-afab-69d87bc3a929",
+              "sets": [
+                {
+                  "weight": 165,
+                  "reps": 7
+                },
+                {
+                  "weight": 165,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 225,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "calfRaise_seated",
+          "instanceId": "94e8ea2e-dac4-4799-a079-4f20a4728e2b",
+          "sets": [
+            {
+              "weight": 55,
+              "reps": 11
+            },
+            {
+              "weight": 55,
+              "reps": 11
+            },
+            {
+              "weight": 55,
+              "reps": 14
+            }
+          ],
+          "goals": [
+            {
+              "weight": 80,
+              "reps": 10
+            },
+            {
+              "weight": 80,
+              "reps": 12
+            }
+          ]
+        },
+        {
+          "id": "legRaise",
+          "instanceId": "a2747acb-f406-477c-8938-818aac804f57",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u2",
+      "name": "Upper 2",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "kind": "oneOf",
+          "instanceId": "fd3cc101-310c-4e91-b7cd-3ac5bbd5422e",
+          "lifts": [
+            {
+              "id": "ohp_barbell",
+              "instanceId": "8d8d1d86-32f5-4808-871e-85c6c9c70c56",
+              "sets": [
+                {
+                  "weight": 85,
+                  "reps": 7
+                },
+                {
+                  "weight": 85,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 120,
+                  "reps": 8
+                },
+                {
+                  "weight": 120,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "ohp_seated",
+              "instanceId": "08047fd2-3a83-45b0-843d-08703c1b08ae",
+              "sets": [
+                {
+                  "weight": 90,
+                  "reps": 7
+                },
+                {
+                  "weight": 90,
+                  "reps": 9
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 125,
+                  "reps": 8
+                },
+                {
+                  "weight": 125,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ohp_dumbbell",
+          "instanceId": "4ae7c085-350b-4102-8324-eae32bc48a1d",
+          "sets": [
+            {
+              "weight": 35,
+              "reps": 8
+            },
+            {
+              "weight": 35,
+              "reps": 10
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "894adb83-9a55-449a-91c0-029cce292bc3",
+          "lifts": [
+            {
+              "id": "bench_closegrip",
+              "instanceId": "c0a98e4d-3bf3-4b8b-bc0f-8b3a6772f0cc",
+              "sets": [
+                {
+                  "weight": 145,
+                  "reps": 7
+                },
+                {
+                  "weight": 135,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 195,
+                  "reps": 10
+                },
+                {
+                  "weight": 175,
+                  "reps": 13
+                }
+              ]
+            },
+            {
+              "id": "dip_machine",
+              "instanceId": "11b948b7-04ce-4fbb-8bb0-b2e457f72051",
+              "sets": [
+                {
+                  "weight": 230,
+                  "reps": 10
+                },
+                {
+                  "weight": 230,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 340,
+                  "reps": 8
+                },
+                {
+                  "weight": 340,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "4b21a6d1-476e-4ae7-a311-91218bc90c2a",
+          "lifts": [
+            {
+              "id": "uprightRow_barbell",
+              "instanceId": "4c7d51c4-64f6-4644-b845-f68b29b5f217",
+              "sets": [
+                {
+                  "weight": 65,
+                  "reps": 8
+                },
+                {
+                  "weight": 65,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 85,
+                  "reps": 11
+                },
+                {
+                  "weight": 85,
+                  "reps": 13
+                }
+              ]
+            },
+            {
+              "id": "latRaise_dumbbell",
+              "instanceId": "c5fa68b9-195b-4955-bb83-029e14fdd9f6",
+              "sets": [
+                {
+                  "weight": 17.5,
+                  "reps": 11
+                },
+                {
+                  "weight": 17.5,
+                  "reps": 14
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 25,
+                  "reps": 10
+                },
+                {
+                  "weight": 25,
+                  "reps": 13
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "22996f37-f968-4d94-9043-70a8ff018910",
+          "lifts": [
+            {
+              "id": "row_barbell",
+              "instanceId": "fd0fe497-9117-45f3-b56c-10570bffa8bf",
+              "sets": [
+                {
+                  "weight": 135,
+                  "reps": 10
+                },
+                {
+                  "weight": 115,
+                  "reps": 15
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 195,
+                  "reps": 9
+                },
+                {
+                  "weight": 165,
+                  "reps": 15
+                }
+              ]
+            },
+            {
+              "id": "row_dumbbell",
+              "instanceId": "0ee1a318-91bf-4d9a-9222-2dc47d868f65",
+              "sets": [
+                {
+                  "weight": 50,
+                  "reps": 8
+                },
+                {
+                  "weight": 50,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "380de7c8-a88d-4303-875c-dbc2b0fa915c",
+          "lifts": [
+            {
+              "id": "curl_incline",
+              "instanceId": "a3193ae2-c134-4b1d-b1b5-1bd2c2566215",
+              "sets": [
+                {
+                  "weight": 30,
+                  "reps": 8
+                },
+                {
+                  "weight": 30,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 40,
+                  "reps": 10
+                },
+                {
+                  "weight": 40,
+                  "reps": 12
+                }
+              ]
+            },
+            {
+              "id": "curl_ezBar",
+              "instanceId": "14c57095-c597-4fe3-a91d-4dd78f3afc84",
+              "sets": [
+                {
+                  "weight": 65,
+                  "reps": 6
+                },
+                {
+                  "weight": 65,
+                  "reps": 9
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 85,
+                  "reps": 10
+                },
+                {
+                  "weight": 85,
+                  "reps": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "fb086477-cf08-4360-ad0d-baf15d6b45b7",
+          "lifts": [
+            {
+              "id": "reverseFly_machine",
+              "instanceId": "ec9d3392-a184-4e40-ab46-c6950b02e7f4",
+              "sets": [
+                {
+                  "weight": 85,
+                  "reps": 9
+                },
+                {
+                  "weight": 85,
+                  "reps": 11
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 110,
+                  "reps": 12
+                },
+                {
+                  "weight": 110,
+                  "reps": 15
+                }
+              ]
+            },
+            {
+              "id": "facePull",
+              "instanceId": "e55b97ae-40fe-4862-aa67-619c579f5431",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "8ae6daae-7a12-4dea-bdfb-f39932336cb8",
+          "lifts": [
+            {
+              "id": "pullover_dumbbell",
+              "instanceId": "1a5385ad-13e4-44f5-b896-c743e37345ec",
+              "sets": [
+                {
+                  "weight": 40,
+                  "reps": 11
+                },
+                {
+                  "weight": 40,
+                  "reps": 11
+                },
+                {
+                  "weight": 40,
+                  "reps": 14
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 55,
+                  "reps": 12
+                },
+                {
+                  "weight": 55,
+                  "reps": 15
+                }
+              ]
+            },
+            {
+              "id": "pullover_machine",
+              "instanceId": "99c73686-2095-4436-b64a-1bac2e2da7cc",
+              "sets": [
+                {
+                  "weight": 85,
+                  "reps": 12
+                },
+                {
+                  "weight": 85,
+                  "reps": 12
+                },
+                {
+                  "weight": 85,
+                  "reps": 15
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 120,
+                  "reps": 12
+                },
+                {
+                  "weight": 120,
+                  "reps": 15
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "l3",
+      "name": "Lower 3",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "id": "legCurl_kneeling",
+          "instanceId": "10793a12-2210-46b7-82d7-771b8242e344",
+          "sets": [
+            {
+              "weight": 50,
+              "reps": 8
+            },
+            {
+              "weight": 50,
+              "reps": 10
+            }
+          ],
+          "goals": [
+            {
+              "weight": 70,
+              "reps": 8
+            },
+            {
+              "weight": 70,
+              "reps": 10
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "4e29c0f0-5f15-40b1-ad0e-fba238ac9449",
+          "lifts": [
+            {
+              "id": "legPress",
+              "instanceId": "4add9ebf-412a-450f-b0fd-ba8ec0840527",
+              "sets": [
+                {
+                  "weight": 210,
+                  "reps": 10
+                },
+                {
+                  "weight": 180,
+                  "reps": 15
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 300,
+                  "reps": 10
+                },
+                {
+                  "weight": 250,
+                  "reps": 15
+                }
+              ]
+            },
+            {
+              "id": "squat_belt",
+              "instanceId": "5b9aed65-b38b-41ff-b04f-888bf8d69f9e",
+              "sets": [
+                {
+                  "weight": 150,
+                  "reps": 7
+                },
+                {
+                  "weight": 150,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 210,
+                  "reps": 8
+                },
+                {
+                  "weight": 210,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "squat_v",
+              "instanceId": "a31ac27a-6701-4d81-a6e5-c31efee1a66a",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "0c5e795f-a508-4ea9-b419-d0867d4e4a45",
+          "lifts": [
+            {
+              "id": "deadlift_trapbar",
+              "instanceId": "d2dee7d2-c8f6-4693-850d-80ac0fcd7a4f",
+              "sets": [
+                {
+                  "weight": 190,
+                  "reps": 6
+                },
+                {
+                  "weight": 190,
+                  "reps": 9
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 260,
+                  "reps": 8
+                },
+                {
+                  "weight": 260,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "deadlift_sumo",
+              "instanceId": "3cb24d03-df40-4471-8a5e-68bc1d8d8ebb",
+              "sets": [
+                {
+                  "weight": 165,
+                  "reps": 7
+                },
+                {
+                  "weight": 165,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 225,
+                  "reps": 10
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "45bf676b-c8da-433f-8d43-3a4a8627b559",
+          "lifts": [
+            {
+              "id": "hipThrust",
+              "instanceId": "1952bcc7-00aa-4fa2-b091-c0bb9fb3d012",
+              "sets": [
+                {
+                  "weight": 80,
+                  "reps": 8
+                },
+                {
+                  "weight": 80,
+                  "reps": 11
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 115,
+                  "reps": 8
+                },
+                {
+                  "weight": 115,
+                  "reps": 10
+                }
+              ]
+            },
+            {
+              "id": "gluteKickback",
+              "instanceId": "f4b75a81-e842-4c17-a2ad-7f72cb4bd804",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "calfRaise_standing",
+          "instanceId": "0e3cafba-3644-41a0-be59-7861b92330bd",
+          "sets": [
+            {
+              "weight": 5,
+              "reps": 10
+            },
+            {
+              "weight": 5,
+              "reps": 10
+            },
+            {
+              "weight": 5,
+              "reps": 12
+            }
+          ],
+          "goals": [
+            {
+              "weight": 70,
+              "reps": 10
+            },
+            {
+              "weight": 70,
+              "reps": 12
+            }
+          ]
+        },
+        {
+          "id": "backExtension",
+          "instanceId": "c4c615b4-3615-4902-a48b-cdafdbb5aa2d",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 12
+            },
+            {
+              "weight": 10,
+              "reps": 12
+            }
+          ],
+          "goals": [
+            {
+              "weight": 45,
+              "reps": 12
+            },
+            {
+              "weight": 45,
+              "reps": 15
+            }
+          ]
+        },
+        {
+          "id": "elevateCore",
+          "instanceId": "f3f27396-23bf-4a44-9fb9-60be8ce9cedf",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "u3",
+      "name": "Upper 3",
+      "routineId": "upperLower2026",
+      "items": [
+        {
+          "kind": "oneOf",
+          "instanceId": "df5b5652-3313-4d22-b73c-d5b22e26b84c",
+          "lifts": [
+            {
+              "id": "bench_dumbbell",
+              "instanceId": "31d60f0b-45a0-4ee6-bba8-28eec6a835e6",
+              "sets": [
+                {
+                  "weight": 60,
+                  "reps": 9
+                },
+                {
+                  "weight": 60,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 85,
+                  "reps": 10
+                },
+                {
+                  "weight": 85,
+                  "reps": 12
+                }
+              ]
+            },
+            {
+              "id": "bench_barbell",
+              "instanceId": "393b3065-4006-4b6d-a143-27794e2a6469",
+              "sets": [
+                {
+                  "weight": 155,
+                  "reps": 5
+                },
+                {
+                  "weight": 135,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 195,
+                  "reps": 10
+                },
+                {
+                  "weight": 215,
+                  "reps": 5
+                },
+                {
+                  "weight": 245,
+                  "reps": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "57cc86a1-dc4c-4368-b9e0-007562be966f",
+          "lifts": [
+            {
+              "id": "ohp_plateMachine",
+              "instanceId": "08bbf05b-5749-4224-b021-e1c975b24470",
+              "sets": [
+                {
+                  "weight": 60,
+                  "reps": 6
+                },
+                {
+                  "weight": 60,
+                  "reps": 9
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 80,
+                  "reps": 9
+                },
+                {
+                  "weight": 80,
+                  "reps": 11
+                }
+              ]
+            },
+            {
+              "id": "inclinePress_plateMachine",
+              "instanceId": "4e9240da-b8e7-41cb-a567-1e4c4435751b",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "tricep_overhead",
+          "instanceId": "2c7c4966-2deb-4040-8150-1309b34037c5",
+          "sets": [
+            {
+              "weight": 45,
+              "reps": 10
+            },
+            {
+              "weight": 45,
+              "reps": 13
+            }
+          ],
+          "goals": [
+            {
+              "weight": 60,
+              "reps": 12
+            },
+            {
+              "weight": 60,
+              "reps": 15
+            }
+          ]
+        },
+        {
+          "id": "skull_crusher",
+          "instanceId": "26a814f0-968b-46d6-8ac4-0d6176f0f775",
+          "sets": [
+            {
+              "weight": 0,
+              "reps": 0
+            },
+            {
+              "weight": 0,
+              "reps": 0
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "4a6c0f7f-4015-4bcb-9464-4a8b17c72f8d",
+          "lifts": [
+            {
+              "id": "row_cable",
+              "instanceId": "ab476cf8-6714-4f42-8e90-e2398f9403e4",
+              "sets": [
+                {
+                  "weight": 130,
+                  "reps": 8
+                },
+                {
+                  "weight": 130,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 180,
+                  "reps": 9
+                },
+                {
+                  "weight": 180,
+                  "reps": 11
+                }
+              ]
+            },
+            {
+              "id": "row_cableWide",
+              "instanceId": "2c5c5ed5-274e-4ff8-b9e5-c336c73473fb",
+              "sets": [
+                {
+                  "weight": 0,
+                  "reps": 0
+                },
+                {
+                  "weight": 0,
+                  "reps": 0
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "952a2c7c-5875-4d75-b792-1f5a0ac82b26",
+          "lifts": [
+            {
+              "id": "pulldown_cable",
+              "instanceId": "6e7eb2b5-c1f3-4df1-b9ec-f0782b97b371",
+              "sets": [
+                {
+                  "weight": 110,
+                  "reps": 7
+                },
+                {
+                  "weight": 110,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 150,
+                  "reps": 9
+                },
+                {
+                  "weight": 150,
+                  "reps": 11
+                }
+              ]
+            },
+            {
+              "id": "pulldown_machine",
+              "instanceId": "30506fe2-38f5-4640-a926-88ac7c53c5a8",
+              "sets": [
+                {
+                  "weight": 145,
+                  "reps": 11
+                },
+                {
+                  "weight": 145,
+                  "reps": 13
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 205,
+                  "reps": 11
+                },
+                {
+                  "weight": 205,
+                  "reps": 13
+                }
+              ]
+            },
+            {
+              "id": "pulldown_plateMachine",
+              "instanceId": "3b745d93-3d01-489f-bfd1-2623c72538e9",
+              "sets": [
+                {
+                  "weight": 85,
+                  "reps": 8
+                },
+                {
+                  "weight": 85,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 115,
+                  "reps": 10
+                },
+                {
+                  "weight": 115,
+                  "reps": 12
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "a1384675-dc69-4de8-8fef-68f2f52647ab",
+          "lifts": [
+            {
+              "id": "curl_hammer",
+              "instanceId": "24542f92-55bc-4a3d-a58b-d24b59ba0c9e",
+              "sets": [
+                {
+                  "weight": 27.5,
+                  "reps": 8
+                },
+                {
+                  "weight": 27.5,
+                  "reps": 10
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 35,
+                  "reps": 12
+                },
+                {
+                  "weight": 35,
+                  "reps": 15
+                }
+              ]
+            },
+            {
+              "id": "curl_reverse",
+              "instanceId": "9d953808-aaf0-44ba-b9a5-d5faf0e67f06",
+              "sets": [
+                {
+                  "weight": 50,
+                  "reps": 9
+                },
+                {
+                  "weight": 50,
+                  "reps": 12
+                }
+              ],
+              "goals": [
+                {
+                  "weight": 70,
+                  "reps": 10
+                },
+                {
+                  "weight": 70,
+                  "reps": 12
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

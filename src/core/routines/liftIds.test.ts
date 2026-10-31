@@ -9,7 +9,7 @@ import { isLiftGroup } from '../types/workout.ts';
 const dir = __dirname;
 const files = readdirSync(dir).filter(f => f.endsWith('.json'));
 
-test('every lift id in routinesNew/*.json exists in SystemLiftDefs', () => {
+test('every lift id in routines/*.json exists in SystemLiftDefs', () => {
   const invalid: string[] = [];
 
   for (const file of files) {

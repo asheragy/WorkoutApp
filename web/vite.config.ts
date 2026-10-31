@@ -9,7 +9,9 @@ const shared = fileURLToPath(new URL('../src/core', import.meta.url));
 const src = fileURLToPath(new URL('../src', import.meta.url));
 // Where Save writes routine JSON. Read-only for the web app for now (routines
 // still load from the code files); the phone will later import from here.
-const routinesDir = fileURLToPath(new URL('../src/core/routinesNew', import.meta.url));
+const routinesDir = fileURLToPath(
+  new URL('../src/core/routines', import.meta.url),
+);
 
 export default defineConfig({
   plugins: [react(), routinesApi(routinesDir)],

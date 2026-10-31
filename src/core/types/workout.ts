@@ -3,6 +3,7 @@ export const DEFAULT_ROUTINE = 'default';
 export type Routine = {
   id: string;
   title: string;
+  description?: string; // free-form notes about the routine; web editor only for now
 };
 
 export type Workout = {

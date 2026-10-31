@@ -1,0 +1,303 @@
+{
+  "version": 1,
+  "routine": {
+    "id": "3995deca-8204-4dc9-841b-1f4db64a486f",
+    "title": "4-day Upper Lower",
+    "description": "Upper 1: Vertical Press / Horizontal Pull\nLower 1: DL / Misc legs\nUpper 2: Horizontal Press / Vertical Pull\nLower 2: Quad focus"
+  },
+  "workouts": [
+    {
+      "name": "Upper 1",
+      "routineId": "",
+      "items": [
+        {
+          "id": "ohp_barbell",
+          "instanceId": "a0bbd480-ae56-418b-8ea9-ee9c282fc91c",
+          "sets": []
+        },
+        {
+          "id": "row_barbell",
+          "instanceId": "501e99b2-6267-4f92-835b-63c981a16896",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "5194a82d-41d3-4d8c-835e-7b99509b43c1",
+          "lifts": [
+            {
+              "id": "ohp_plateMachine",
+              "instanceId": "2ee45a47-a4dc-45bc-8ae3-b46e44dcddd4",
+              "sets": []
+            },
+            {
+              "id": "ohp_machine",
+              "instanceId": "bcedea84-3ef4-4c38-b584-dc3bfb4e29c2",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "3c94bd85-4603-4e0e-b7e9-cf62d28ecd4a",
+          "lifts": [
+            {
+              "id": "row_cable",
+              "instanceId": "4e79c03e-f6a5-45bd-a183-c02f0024678e",
+              "sets": []
+            },
+            {
+              "id": "row_plateMachine",
+              "instanceId": "f315325a-190e-4a63-a6d7-7576e179118b",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "id": "pullover_dumbbell",
+          "instanceId": "ff02b0cc-d7cf-45a1-97df-bda51a7b29b4",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "41e18661-3143-4168-9d05-2ff4911622a7",
+          "lifts": [
+            {
+              "id": "dip_machine",
+              "instanceId": "bf8a12db-f4cd-43ce-8f63-51d803025f8f",
+              "sets": []
+            },
+            {
+              "id": "dip",
+              "instanceId": "a0375127-6ff2-443a-8a1e-ccf2635429c0",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "id": "curl_hammer",
+          "instanceId": "29cbaa5d-7565-482e-8f2e-7270d766eadf",
+          "sets": []
+        },
+        {
+          "id": "fly_machine",
+          "instanceId": "b17a353e-1edd-4be6-a49f-056f8c9d89dc",
+          "sets": []
+        }
+      ]
+    },
+    {
+      "name": "Lower 1",
+      "routineId": "",
+      "items": [
+        {
+          "id": "hipAbduction",
+          "instanceId": "46770673-a2fa-49d7-ac47-017dc31a05ac",
+          "sets": []
+        },
+        {
+          "id": "hipAdduction",
+          "instanceId": "135bd49c-51af-49c4-9874-9dfc7141ca72",
+          "sets": []
+        },
+        {
+          "id": "deadlift_barbell",
+          "instanceId": "3a3d99f6-11f3-4112-824e-12b436ee7803",
+          "sets": []
+        },
+        {
+          "id": "splitSquat",
+          "instanceId": "e051ea1f-cad7-4a42-a770-4c35e7efb286",
+          "sets": []
+        },
+        {
+          "id": "calfRaise_standing",
+          "instanceId": "15946d29-1dfa-4511-881e-d324e0d0a73c",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "dbef0704-b4bf-4f79-85a6-9cd1be8b7652",
+          "lifts": [
+            {
+              "id": "hipThrust",
+              "instanceId": "e82f4868-f77c-4c53-a5fb-a8a6dfedbb53",
+              "sets": []
+            },
+            {
+              "id": "backExtension",
+              "instanceId": "70dac47b-37f3-40f1-b309-91845dbfa5f8",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "id": "plank",
+          "instanceId": "01fe7b33-42c4-4313-ab2e-c18840f90899",
+          "sets": []
+        },
+        {
+          "id": "squat_belt",
+          "instanceId": "db61a0c6-73ca-4016-b9af-0146c36e9494",
+          "sets": []
+        }
+      ]
+    },
+    {
+      "name": "Upper 2",
+      "routineId": "",
+      "items": [
+        {
+          "id": "inclinePress_barbell",
+          "instanceId": "34095cc6-d38e-4e03-93ca-a1f42d2afa30",
+          "sets": []
+        },
+        {
+          "id": "pullup",
+          "instanceId": "31503d52-b954-4459-8d38-42afe17fdf7a",
+          "sets": []
+        },
+        {
+          "id": "bench_dumbbell",
+          "instanceId": "272a031e-a44d-4811-900e-3b007725b4bc",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "41ac0a94-c5cd-46c8-8352-8d1ad9665b0b",
+          "lifts": [
+            {
+              "id": "pulldown_machine",
+              "instanceId": "11cf2026-3c94-4c9b-85d0-e0d3f75ec494",
+              "sets": []
+            },
+            {
+              "id": "pulldown_plateMachine",
+              "instanceId": "e3ac923c-227d-4fc5-bcf0-e284111ca6aa",
+              "sets": []
+            },
+            {
+              "id": "pulldown_cable",
+              "instanceId": "0c29505e-6001-4172-b2d5-527db29a87df",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "64641aab-01e4-468f-aaf2-0187dddb6f17",
+          "lifts": [
+            {
+              "id": "inclinePress_plateMachine",
+              "instanceId": "c2303793-120b-45e2-8ead-a0066210cb8b",
+              "sets": []
+            },
+            {
+              "id": "inclinePress_machine",
+              "instanceId": "8d525787-3301-49d7-8474-eefec3ac7f5a",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "id": "shrug_dumbbell",
+          "instanceId": "1fe472f8-a2ff-4401-96fb-66f1bdb18f63",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "f71a66b8-97f7-41ca-8097-d059abef4614",
+          "lifts": [
+            {
+              "id": "latRaise_machine",
+              "instanceId": "37058330-c926-4ce0-b561-a585a3413891",
+              "sets": []
+            },
+            {
+              "id": "latRaise_dumbbell",
+              "instanceId": "362d2883-6dfa-4ff4-a0d1-e4b56d8b1f82",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "f1243b94-45d6-47a8-a2c7-bfba49691e8a",
+          "lifts": [
+            {
+              "id": "reverseFly_machine",
+              "instanceId": "5aaae85e-4cc0-49cd-93d9-44c892492ea4",
+              "sets": []
+            },
+            {
+              "id": "uprightRow_barbell",
+              "instanceId": "834f9cd3-7a25-4a5e-9537-af1662fcecc2",
+              "sets": []
+            }
+          ]
+        },
+        {
+          "id": "curl_incline",
+          "instanceId": "6b11aad5-5430-4f13-b953-7680d7e9efbb",
+          "sets": []
+        }
+      ]
+    },
+    {
+      "name": "Lower 2",
+      "routineId": "",
+      "items": [
+        {
+          "id": "legExtensions",
+          "instanceId": "ac46b784-e5ff-466f-9fec-b51a8a0565e7",
+          "sets": []
+        },
+        {
+          "id": "legCurl_kneeling",
+          "instanceId": "c69751c0-06c1-4be4-8fa8-6917e2d94ea4",
+          "sets": []
+        },
+        {
+          "id": "squat_front",
+          "instanceId": "633b15e4-7ce9-4aa6-9509-651bbca3febc",
+          "sets": []
+        },
+        {
+          "id": "rdl_barbell",
+          "instanceId": "1a6f1b59-ecfd-42ce-9867-b191508d3f5b",
+          "sets": []
+        },
+        {
+          "id": "calfRaise_seated",
+          "instanceId": "88cb0536-49ae-4ddf-aa6c-770b6b35c25b",
+          "sets": []
+        },
+        {
+          "id": "legRaise",
+          "instanceId": "66562aac-9475-47e2-b3f8-b4a9ec86eef5",
+          "sets": []
+        },
+        {
+          "id": "gluteKickback",
+          "instanceId": "6d862e63-ae97-4653-8386-14d41c367c1a",
+          "sets": []
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "4542ee37-05f2-4b5f-8ae7-e276cf0e0521",
+          "lifts": [
+            {
+              "id": "legPress",
+              "instanceId": "986f2a18-a39d-48ce-9008-36c47ca2c73e",
+              "sets": []
+            },
+            {
+              "id": "squat_v",
+              "instanceId": "efc4ca41-e020-46a7-8279-2e284f7fe2f7",
+              "sets": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

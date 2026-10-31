@@ -6,7 +6,7 @@ import {
   WorkoutItem,
 } from '@shared/types/workout.ts';
 
-// On-disk format for src/core/routinesNew/<routineId>.json: the RoutineTemplate shape
+// On-disk format for src/core/routines/<routineId>.json: the RoutineTemplate shape
 // plus a version field. Runtime-only fields (completed, lastCompleted, hide) are
 // never written.
 export const FILE_VERSION = 1;
@@ -16,7 +16,13 @@ export type RoutineFile = RoutineTemplate & { version: number };
 export function toFile(template: RoutineTemplate): RoutineFile {
   return {
     version: FILE_VERSION,
-    routine: template.routine,
+    routine: {
+      id: template.routine.id,
+      title: template.routine.title,
+      ...(template.routine.description && {
+        description: template.routine.description,
+      }),
+    },
     workouts: template.workouts.map(w => ({
       ...(w.id !== undefined && { id: w.id }),
       name: w.name,

@@ -15,12 +15,20 @@ body {
 
 input,
 select,
+textarea,
 button {
   background: var(--input-bg);
   color: var(--fg);
   border: 1px solid var(--border);
   border-radius: 3px;
   padding: 2px 4px;
+}
+
+textarea {
+  font: inherit;
+  resize: vertical;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 button {
