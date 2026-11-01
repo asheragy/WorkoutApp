@@ -8,11 +8,22 @@ import Page from '../components/Page.tsx';
 import AutoTextarea from '../components/AutoTextarea.tsx';
 import Toast, { ToastMessage } from '../components/Toast.tsx';
 
+// Editor view mode. "reorder" collapses every lift and shows the move arrows;
+// "preview" replaces the lift cards with a read-only text summary.
+type Mode = 'full' | 'reorder' | 'preview';
+const MODES: { value: Mode; label: string }[] = [
+  { value: 'full', label: 'Full' },
+  { value: 'reorder', label: 'Reorder' },
+  { value: 'preview', label: 'Preview' },
+];
+
 export default function WorkoutsPage() {
   const { routineId = '' } = useParams();
   const [template, setTemplate] = useState<RoutineTemplate>();
-  const [compact, setCompact] = useState(false);
-  const [reorder, setReorder] = useState(false);
+  const [mode, setMode] = useState<Mode>('full');
+  const compact = mode === 'reorder';
+  const reorder = mode === 'reorder';
+  const preview = mode === 'preview';
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState<ToastMessage | null>(null);
   const clearToast = useCallback(() => setToast(null), []);
@@ -56,22 +67,21 @@ export default function WorkoutsPage() {
   return (
     <Page wide>
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <input
-            type="checkbox"
-            checked={compact}
-            onChange={e => setCompact(e.target.checked)}
-          />
-          Compact
-        </label>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <input
-            type="checkbox"
-            checked={reorder}
-            onChange={e => setReorder(e.target.checked)}
-          />
-          Reorder
-        </label>
+        {MODES.map(m => (
+          <label
+            key={m.value}
+            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+          >
+            <input
+              type="radio"
+              name="mode"
+              value={m.value}
+              checked={mode === m.value}
+              onChange={() => setMode(m.value)}
+            />
+            {m.label}
+          </label>
+        ))}
         <button
           type="button"
           onClick={onSave}
@@ -123,6 +133,7 @@ export default function WorkoutsPage() {
             workout={w}
             compact={compact}
             reorder={reorder}
+            preview={preview}
             onChange={updated => {
               setTemplate(
                 prev =>

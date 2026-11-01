@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
 import LiftGroup from './LiftGroup.tsx';
+import WorkoutPreview from './WorkoutPreview.tsx';
+import SetUtils from '@shared/utils/SetUtils.ts';
+import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 import { isLiftGroup } from '@shared/types/workout.ts';
 
 type Props = {
   workout: WorkoutTemplate;
   compact: boolean;
   reorder: boolean;
+  // Read-only text summary instead of the editable lift cards.
+  preview: boolean;
   onChange: (workout: WorkoutTemplate) => void;
 };
 
@@ -15,9 +20,17 @@ export default function Workout({
   workout,
   compact,
   reorder,
+  preview,
   onChange,
 }: Props) {
   const [collapsed, setCollapsed] = useState(false);
+
+  // Same number the app's Home screen shows: working sets split across group members.
+  const totalSets = SetUtils.formatSetCount(
+    SetUtils.getWorkingSets2(liftDefs, [workout]).find(
+      x => x.group === 'Total',
+    )!.sets,
+  );
 
   function swapItems(a: number, b: number) {
     const items = [...workout.items];
@@ -80,45 +93,58 @@ export default function Workout({
     >
       <div style={{ display: 'flex', gap: 4 }}>
         {toggle}
-        <input
-          type="text"
-          style={{ flex: 1 }}
-          value={workout.name}
-          onChange={e => onChange({ ...workout, name: e.target.value })}
-        />
-      </div>
-      {workout.items.map((item, i) => {
-        const shared = {
-          compact,
-          reorder,
-          onMoveUp: i > 0 ? () => swapItems(i, i - 1) : undefined,
-          onMoveDown:
-            i < workout.items.length - 1
-              ? () => swapItems(i, i + 1)
-              : undefined,
-        };
-        const replace = (updated: typeof item) =>
-          onChange({
-            ...workout,
-            items: workout.items.map((x, j) => (j === i ? updated : x)),
-          });
-
-        return isLiftGroup(item) ? (
-          <LiftGroup
-            key={item.instanceId}
-            group={item}
-            onChange={replace}
-            {...shared}
-          />
+        {preview ? (
+          <span style={{ flex: 1, fontWeight: 'bold', alignSelf: 'center' }}>
+            {workout.name || '(unnamed)'}
+          </span>
         ) : (
-          <Lift
-            key={item.instanceId}
-            lift={item}
-            onChange={replace}
-            {...shared}
+          <input
+            type="text"
+            style={{ flex: 1 }}
+            value={workout.name}
+            onChange={e => onChange({ ...workout, name: e.target.value })}
           />
-        );
-      })}
+        )}
+        <span
+          style={{ alignSelf: 'center', whiteSpace: 'nowrap', fontSize: 14 }}
+        >
+          {totalSets} Sets
+        </span>
+      </div>
+      {preview && <WorkoutPreview workout={workout} />}
+      {!preview &&
+        workout.items.map((item, i) => {
+          const shared = {
+            compact,
+            reorder,
+            onMoveUp: i > 0 ? () => swapItems(i, i - 1) : undefined,
+            onMoveDown:
+              i < workout.items.length - 1
+                ? () => swapItems(i, i + 1)
+                : undefined,
+          };
+          const replace = (updated: typeof item) =>
+            onChange({
+              ...workout,
+              items: workout.items.map((x, j) => (j === i ? updated : x)),
+            });
+
+          return isLiftGroup(item) ? (
+            <LiftGroup
+              key={item.instanceId}
+              group={item}
+              onChange={replace}
+              {...shared}
+            />
+          ) : (
+            <Lift
+              key={item.instanceId}
+              lift={item}
+              onChange={replace}
+              {...shared}
+            />
+          );
+        })}
     </div>
   );
 }

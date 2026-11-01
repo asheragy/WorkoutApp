@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Lift as LiftType, LiftSet } from '@shared/types/workout.ts';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
@@ -8,7 +7,7 @@ import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 
 type Props = {
   lift: LiftType;
-  // Global "Compact" toggle; whenever it changes every lift snaps to that collapsed state.
+  // Global "Compact" toggle; hides the sets/goals table on every lift.
   compact: boolean;
   // Global "Reorder" toggle; shows up/down arrows to the left of the dropdown.
   reorder: boolean;
@@ -31,10 +30,6 @@ const COLUMNS = 5; // Set, Weight, Reps, 1RM, remove
 
 export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMoveDown }: Props) {
   const def = liftDefs[lift.id];
-  const [collapsed, setCollapsed] = useState(compact);
-
-  useEffect(() => setCollapsed(compact), [compact]);
-
   const setMaxes = lift.sets.filter(x => !x.warmup).map(x => SetUtils.calculate1RM(settings, def, x));
   const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
   const goalPercent = LiftUtils.goalPercent(settings, def, lift);
@@ -102,7 +97,7 @@ export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMov
         <select
           style={{ flex: 1, minWidth: 0 }}
           value={lift.id}
-          disabled={collapsed}
+          disabled={compact}
           onChange={e => onChange({ ...lift, id: e.target.value })}>
           {liftOptions.map(opt => (
             <option key={opt.id} value={opt.id}>
@@ -110,17 +105,10 @@ export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMov
             </option>
           ))}
         </select>
-        <button
-          type="button"
-          onClick={() => setCollapsed(c => !c)}
-          title={collapsed ? 'Expand' : 'Collapse'}
-          style={{ width: 28, padding: 0 }}>
-          {collapsed ? '▸' : '▾'}
-        </button>
       </div>
 
       {/* Sets and goals share one table so their columns stay aligned. */}
-      {!collapsed && (
+      {!compact && (
         <table>
           {lift.sets.length > 0 && (
             <thead>

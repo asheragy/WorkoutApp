@@ -80,6 +80,12 @@ const SetUtils = {
     return [2 * weight, ...Array(def.muscleGroups.length - 1).fill(weight)];
   },
 
+  // Set totals can be fractional ("one of" groups split their sets across members).
+  // Show one decimal when needed: 3.5 -> "3.5", 4 -> "4".
+  formatSetCount(sets: number): string {
+    return sets.toFixed(1).replace(/\.0$/, '');
+  },
+
   getWorkingSets(
     defs: Record<string, LiftDef>,
     workouts: Workout[],

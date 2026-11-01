@@ -183,7 +183,7 @@ function WorkoutListItem({ workout }: WorkoutItemProps) {
         else return <LiftRow lift={item} key={item.instanceId}></LiftRow>;
       })}
       <Text style={{ paddingTop: 8, color: colors.text }}>
-        {Math.round(sets) + ' Sets'}
+        {SetUtils.formatSetCount(sets) + ' Sets'}
       </Text>
       <Text style={{ color: colors.text }}>
         {'Last Completed: ' + Utils.lastCompleted(workout.lastCompleted)}
