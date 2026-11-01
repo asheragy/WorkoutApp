@@ -1,6 +1,6 @@
 import LiftUtils from './LiftUtils.ts';
 import { Lifts, SystemLiftDefs } from '../LiftDatabase.ts';
-import { Lift, WorkoutItem } from '../types/workout.ts';
+import { isLiftGroup, Lift, WorkoutItem } from '../types/workout.ts';
 
 test('flatten', () => {
   const lift = (id: string): Lift => ({ id, instanceId: 'i' + id, sets: [] });
@@ -76,4 +76,111 @@ test('replaceLift', () => {
 
   // Input is not mutated
   expect(items[0]).toStrictEqual(lift('a'));
+});
+
+describe('group editing', () => {
+  const lift = (id: string): Lift => ({ id, instanceId: 'i' + id, sets: [] });
+  const group = (id: string, ...lifts: Lift[]): WorkoutItem => ({
+    kind: 'oneOf',
+    instanceId: id,
+    lifts,
+  });
+  const a = lift('a');
+  const b = lift('b');
+  const c = lift('c');
+  const d = lift('d');
+  const e = lift('e');
+  // [a, (b c), d, (e)] is invalid so use: a, (b c d), e
+  const items: WorkoutItem[] = [a, group('g', b, c, d), e];
+
+  test('joinGroup', () => {
+    // Plain lift onto a plain lift makes a new group in the target's place
+    const joined = LiftUtils.joinGroup(items, 'ie', a, 'last');
+    expect(joined).toHaveLength(2);
+    expect(joined[0]).toBe(items[1]);
+    const g2 = joined[1];
+    expect(isLiftGroup(g2) && g2.lifts).toStrictEqual([e, a]);
+    expect(g2.instanceId).not.toBe('ie');
+
+    // Onto an existing group keeps the group's id
+    expect(LiftUtils.joinGroup(items, 'g', a, 'first')).toStrictEqual([
+      group('g', a, b, c, d),
+      e,
+    ]);
+    expect(LiftUtils.joinGroup(items, 'g', e, 'last')).toStrictEqual([
+      a,
+      group('g', b, c, d, e),
+    ]);
+
+    // A lift that is not in items (from another workout) is simply added
+    const f = lift('f');
+    expect(LiftUtils.joinGroup(items, 'g', f, 'last')).toStrictEqual([
+      a,
+      group('g', b, c, d, f),
+      e,
+    ]);
+
+    expect(() => LiftUtils.joinGroup(items, 'nope', a, 'last')).toThrow();
+    expect(items).toStrictEqual([a, group('g', b, c, d), e]);
+  });
+
+  test('takeFromGroup / insertIntoGroup', () => {
+    expect(LiftUtils.takeFromGroup(items, 'g', 1)).toStrictEqual([
+      [a, group('g', b, d), e],
+      c,
+    ]);
+    // Group of two collapses to the remaining lift
+    expect(
+      LiftUtils.takeFromGroup([group('h', b, c)], 'h', 0),
+    ).toStrictEqual([[c], b]);
+
+    expect(LiftUtils.insertIntoGroup(items, 'g', 0, a)).toStrictEqual([
+      a,
+      group('g', a, b, c, d),
+      e,
+    ]);
+    // Index past the end appends
+    expect(LiftUtils.insertIntoGroup(items, 'g', 99, a)).toStrictEqual([
+      a,
+      group('g', b, c, d, a),
+      e,
+    ]);
+
+    expect(() => LiftUtils.takeFromGroup(items, 'g', 3)).toThrow();
+    expect(() => LiftUtils.takeFromGroup(items, 'ia', 0)).toThrow();
+    expect(() => LiftUtils.insertIntoGroup(items, 'x', 0, a)).toThrow();
+  });
+
+  test('removeFromGroup', () => {
+    expect(LiftUtils.removeFromGroup(items, 'g', 'ic')).toStrictEqual([
+      a,
+      group('g', b, d),
+      c,
+      e,
+    ]);
+    // Last pair: group collapses and the removed lift follows it
+    expect(
+      LiftUtils.removeFromGroup([a, group('h', b, c)], 'h', 'ib'),
+    ).toStrictEqual([a, c, b]);
+    expect(() => LiftUtils.removeFromGroup(items, 'g', 'ia')).toThrow();
+  });
+
+  test('moveGroupLift', () => {
+    expect(LiftUtils.moveGroupLift(items, 'g', 0, 'g', 2)).toStrictEqual([
+      a,
+      group('g', c, d, b),
+      e,
+    ]);
+    // Same group of two does not collapse mid-move
+    expect(
+      LiftUtils.moveGroupLift([group('h', b, c)], 'h', 1, 'h', 0),
+    ).toStrictEqual([group('h', c, b)]);
+
+    // Between groups; a source left with one lift collapses
+    const two: WorkoutItem[] = [group('h', a, b), group('g', c, d)];
+    expect(LiftUtils.moveGroupLift(two, 'h', 0, 'g', 1)).toStrictEqual([
+      b,
+      group('g', c, a, d),
+    ]);
+  });
 });

@@ -1,15 +1,29 @@
 import { useState } from 'react';
+import {
+  Draggable,
+  DraggableProvidedDragHandleProps,
+  Droppable,
+} from '@hello-pangea/dnd';
 import { WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
 import LiftGroup from './LiftGroup.tsx';
+import LiftUtils from '@shared/utils/LiftUtils.ts';
 import WorkoutPreview from './WorkoutPreview.tsx';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
-import { isLiftGroup } from '@shared/types/workout.ts';
+import { isLiftGroup, WorkoutItem } from '@shared/types/workout.ts';
+
+// Droppable type for the workout's top-level item list; see LiftGroup for the
+// nested one.
+export const ITEM_DROPPABLE_TYPE = 'item';
 
 type Props = {
   workout: WorkoutTemplate;
+  // Id of this workout's drop list for the page-level DragDropContext.
+  droppableId: string;
   compact: boolean;
+  // Drag-and-drop mode: top-level items can be dragged within this workout or
+  // into another one, and dropped onto another item to join a group.
   reorder: boolean;
   // Read-only text summary instead of the editable lift cards.
   preview: boolean;
@@ -18,6 +32,7 @@ type Props = {
 
 export default function Workout({
   workout,
+  droppableId,
   compact,
   reorder,
   preview,
@@ -31,12 +46,6 @@ export default function Workout({
       x => x.group === 'Total',
     )!.sets,
   );
-
-  function swapItems(a: number, b: number) {
-    const items = [...workout.items];
-    [items[a], items[b]] = [items[b], items[a]];
-    onChange({ ...workout, items });
-  }
 
   const toggle = (
     <button
@@ -112,39 +121,103 @@ export default function Workout({
         </span>
       </div>
       {preview && <WorkoutPreview workout={workout} />}
-      {!preview &&
-        workout.items.map((item, i) => {
-          const shared = {
-            compact,
-            reorder,
-            onMoveUp: i > 0 ? () => swapItems(i, i - 1) : undefined,
-            onMoveDown:
-              i < workout.items.length - 1
-                ? () => swapItems(i, i + 1)
-                : undefined,
-          };
-          const replace = (updated: typeof item) =>
-            onChange({
-              ...workout,
-              items: workout.items.map((x, j) => (j === i ? updated : x)),
-            });
-
-          return isLiftGroup(item) ? (
-            <LiftGroup
-              key={item.instanceId}
-              group={item}
-              onChange={replace}
-              {...shared}
-            />
-          ) : (
-            <Lift
-              key={item.instanceId}
-              lift={item}
-              onChange={replace}
-              {...shared}
-            />
-          );
-        })}
+      {!preview && !reorder && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {workout.items.map((item, i) => renderItem(item, i))}
+        </div>
+      )}
+      {reorder && (
+        <Droppable
+          droppableId={droppableId}
+          type={ITEM_DROPPABLE_TYPE}
+          isCombineEnabled
+        >
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
+                // Keeps an empty workout droppable and highlights the target list.
+                minHeight: 40,
+                borderRadius: 4,
+                background: snapshot.isDraggingOver ? '#2a2a2a' : undefined,
+              }}
+            >
+              {workout.items.map((item, i) => (
+                <Draggable
+                  key={item.instanceId}
+                  draggableId={item.instanceId}
+                  index={i}
+                >
+                  {(provided, snapshot) => (
+                    // A group is dragged by its header (the handle is passed
+                    // down) so the lifts inside it stay draggable themselves.
+                    <div
+                      ref={provided.innerRef}
+                      {...provided.draggableProps}
+                      {...(isLiftGroup(item) ? {} : provided.dragHandleProps)}
+                      style={{
+                        ...provided.draggableProps.style,
+                        opacity: snapshot.isDragging ? 0.8 : 1,
+                      }}
+                    >
+                      {renderItem(
+                        item,
+                        i,
+                        isLiftGroup(item) ? provided.dragHandleProps : undefined,
+                      )}
+                    </div>
+                  )}
+                </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      )}
     </div>
   );
+
+  function renderItem(
+    item: WorkoutItem,
+    i: number,
+    dragHandleProps?: DraggableProvidedDragHandleProps | null,
+  ) {
+    const replace = (updated: typeof item) =>
+      onChange({
+        ...workout,
+        items: workout.items.map((x, j) => (j === i ? updated : x)),
+      });
+
+    return isLiftGroup(item) ? (
+      <LiftGroup
+        key={item.instanceId}
+        group={item}
+        compact={compact}
+        reorder={reorder}
+        dragHandleProps={dragHandleProps}
+        onChange={replace}
+        onRemoveLift={liftId =>
+          onChange({
+            ...workout,
+            items: LiftUtils.removeFromGroup(
+              workout.items,
+              item.instanceId,
+              liftId,
+            ),
+          })
+        }
+      />
+    ) : (
+      <Lift
+        key={item.instanceId}
+        lift={item}
+        compact={compact}
+        onChange={replace}
+      />
+    );
+  }
 }

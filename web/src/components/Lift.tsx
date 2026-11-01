@@ -9,12 +9,10 @@ type Props = {
   lift: LiftType;
   // Global "Compact" toggle; hides the sets/goals table on every lift.
   compact: boolean;
-  // Global "Reorder" toggle; shows up/down arrows to the left of the dropdown.
-  reorder: boolean;
   onChange: (lift: LiftType) => void;
-  // Undefined when the lift is already first/last in its workout.
-  onMoveUp?: () => void;
-  onMoveDown?: () => void;
+  // Set by LiftGroup in reorder mode; shows an eject button that moves the
+  // lift out of its group to the top level of the workout.
+  onRemoveFromGroup?: () => void;
 };
 
 const liftOptions = Object.values(liftDefs)
@@ -23,12 +21,11 @@ const liftOptions = Object.values(liftDefs)
 
 const headerStyle = { fontWeight: 'bold', textAlign: 'center' as const, fontSize: 14 };
 const centerStyle = { textAlign: 'center' as const };
-const arrowStyle = { width: 28, padding: 0, flex: '0 0 auto' };
-// Fixed so the card width doesn't change when the reorder arrows appear; the dropdown shrinks instead.
+// Fixed so the card width doesn't change between modes; the dropdown shrinks instead.
 const LIFT_WIDTH = 340;
 const COLUMNS = 5; // Set, Weight, Reps, 1RM, remove
 
-export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMoveDown }: Props) {
+export default function Lift({ lift, compact, onChange, onRemoveFromGroup }: Props) {
   const def = liftDefs[lift.id];
   const setMaxes = lift.sets.filter(x => !x.warmup).map(x => SetUtils.calculate1RM(settings, def, x));
   const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
@@ -84,27 +81,42 @@ export default function Lift({ lift, compact, reorder, onChange, onMoveUp, onMov
         padding: 8,
       }}>
       <div style={{ display: 'flex', gap: 4 }}>
-        {reorder && (
-          <>
-            <button type="button" onClick={onMoveUp} disabled={!onMoveUp} title="Move up" style={arrowStyle}>
-              ↑
-            </button>
-            <button type="button" onClick={onMoveDown} disabled={!onMoveDown} title="Move down" style={arrowStyle}>
-              ↓
-            </button>
-          </>
+        {/* Plain text in compact mode: the lift can't be changed there, and a
+            <select> (even disabled) swallows the pointer events that start a
+            drag, so the whole card stays draggable. */}
+        {compact ? (
+          <span
+            style={{
+              flex: 1,
+              minWidth: 0,
+              alignSelf: 'center',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+            }}>
+            {def.displayName}
+          </span>
+        ) : (
+          <select
+            style={{ flex: 1, minWidth: 0 }}
+            value={lift.id}
+            onChange={e => onChange({ ...lift, id: e.target.value })}>
+            {liftOptions.map(opt => (
+              <option key={opt.id} value={opt.id}>
+                {opt.label}
+              </option>
+            ))}
+          </select>
         )}
-        <select
-          style={{ flex: 1, minWidth: 0 }}
-          value={lift.id}
-          disabled={compact}
-          onChange={e => onChange({ ...lift, id: e.target.value })}>
-          {liftOptions.map(opt => (
-            <option key={opt.id} value={opt.id}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
+        {onRemoveFromGroup && (
+          <button
+            type="button"
+            onClick={onRemoveFromGroup}
+            title="Remove from group"
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            ⏏
+          </button>
+        )}
       </div>
 
       {/* Sets and goals share one table so their columns stay aligned. */}

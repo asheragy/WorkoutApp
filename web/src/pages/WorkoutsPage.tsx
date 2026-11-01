@@ -1,15 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
+import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import TemplateRepository from '../store/TemplateRepository.ts';
 import { saveRoutine } from '../store/RoutineFile.ts';
-import Workout from '../components/Workout.tsx';
+import Workout, { ITEM_DROPPABLE_TYPE } from '../components/Workout.tsx';
+import { GROUP_DROPPABLE_TYPE } from '../components/LiftGroup.tsx';
+import LiftUtils from '@shared/utils/LiftUtils.ts';
+import { isLiftGroup, WorkoutItem } from '@shared/types/workout.ts';
 import Page from '../components/Page.tsx';
 import AutoTextarea from '../components/AutoTextarea.tsx';
 import Toast, { ToastMessage } from '../components/Toast.tsx';
 
-// Editor view mode. "reorder" collapses every lift and shows the move arrows;
-// "preview" replaces the lift cards with a read-only text summary.
+// Editor view mode. "reorder" collapses every lift and lets the top-level items
+// be dragged between workouts; "preview" replaces the lift cards with a
+// read-only text summary.
 type Mode = 'full' | 'reorder' | 'preview';
 const MODES: { value: Mode; label: string }[] = [
   { value: 'full', label: 'Full' },
@@ -63,6 +68,96 @@ export default function WorkoutsPage() {
   }, [onSave]);
 
   const workouts = template?.workouts ?? [];
+
+  // Drop handler for reorder mode. Top-level droppable ids are workout
+  // indexes (workouts have no stable id of their own) and group droppable ids
+  // are group instanceIds, so a drop can span two columns. Every case is
+  // applied as a single update.
+  const onDragEnd = useCallback((result: DropResult) => {
+    const { source, destination, combine, type } = result;
+    if (!destination && !combine) return;
+    setTemplate(prev => {
+      if (!prev) return prev;
+      const workouts = prev.workouts.map(w => ({ ...w, items: [...w.items] }));
+      const setItems = (i: number, items: WorkoutItem[]) => {
+        workouts[i] = { ...workouts[i], items };
+      };
+      const workoutOf = (itemId: string) => {
+        const i = workouts.findIndex(w =>
+          w.items.some(x => x.instanceId === itemId),
+        );
+        if (i < 0) throw new Error(`Item not found: ${itemId}`);
+        return i;
+      };
+
+      if (type === GROUP_DROPPABLE_TYPE) {
+        // Lift moved within a group or to another group, possibly in another
+        // workout. The library never hands a group-type drag a combine.
+        if (!destination) return prev;
+        const from = workoutOf(source.droppableId);
+        const to = workoutOf(destination.droppableId);
+        if (from === to) {
+          setItems(
+            from,
+            LiftUtils.moveGroupLift(
+              workouts[from].items,
+              source.droppableId,
+              source.index,
+              destination.droppableId,
+              destination.index,
+            ),
+          );
+        } else {
+          const [taken, lift] = LiftUtils.takeFromGroup(
+            workouts[from].items,
+            source.droppableId,
+            source.index,
+          );
+          setItems(from, taken);
+          setItems(
+            to,
+            LiftUtils.insertIntoGroup(
+              workouts[to].items,
+              destination.droppableId,
+              destination.index,
+              lift,
+            ),
+          );
+        }
+        return { ...prev, workouts };
+      }
+
+      const from = Number(source.droppableId);
+      const [item] = workouts[from].items.splice(source.index, 1);
+
+      if (combine) {
+        // Top-level lift dropped onto another item: join its group, or form a
+        // new one with it. Groups can't be nested so a dropped group is a no-op.
+        if (isLiftGroup(item)) return prev;
+        const to = Number(combine.droppableId);
+        const targetIndex = workouts[to].items.findIndex(
+          x => x.instanceId === combine.draggableId,
+        );
+        const where = from === to && source.index <= targetIndex ? 'first' : 'last';
+        setItems(
+          to,
+          LiftUtils.joinGroup(
+            workouts[to].items,
+            combine.draggableId,
+            item,
+            where,
+          ),
+        );
+        return { ...prev, workouts };
+      }
+
+      if (!destination) return prev;
+      const to = Number(destination.droppableId);
+      if (from === to && source.index === destination.index) return prev;
+      workouts[to].items.splice(destination.index, 0, item);
+      return { ...prev, workouts };
+    });
+  }, []);
 
   return (
     <Page wide>
@@ -118,36 +213,39 @@ export default function WorkoutsPage() {
           />
         </label>
       )}
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'flex-start',
-          gap: 16,
-          marginTop: 16,
-        }}
-      >
-        {workouts.map((w, i) => (
-          <Workout
-            key={i}
-            workout={w}
-            compact={compact}
-            reorder={reorder}
-            preview={preview}
-            onChange={updated => {
-              setTemplate(
-                prev =>
-                  prev && {
-                    ...prev,
-                    workouts: prev.workouts.map((x, j) =>
-                      j === i ? updated : x,
-                    ),
-                  },
-              );
-            }}
-          />
-        ))}
-      </div>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            gap: 16,
+            marginTop: 16,
+          }}
+        >
+          {workouts.map((w, i) => (
+            <Workout
+              key={i}
+              workout={w}
+              droppableId={String(i)}
+              compact={compact}
+              reorder={reorder}
+              preview={preview}
+              onChange={updated => {
+                setTemplate(
+                  prev =>
+                    prev && {
+                      ...prev,
+                      workouts: prev.workouts.map((x, j) =>
+                        j === i ? updated : x,
+                      ),
+                    },
+                );
+              }}
+            />
+          ))}
+        </div>
+      </DragDropContext>
     </Page>
   );
 }
