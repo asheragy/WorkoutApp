@@ -4,9 +4,9 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
 
 // Dev-server endpoint that owns every disk write the web app makes. Writes are limited to
-// the one directory passed in; the id is validated so the path cannot escape it.
+// the one directory passed in; the file name is validated so the path cannot escape it.
 //
-//   PUT /api/routines/:id   body: routine JSON   -> writes <dir>/<id>.json (tmp + rename)
+//   PUT /api/routines/:file   body: routine JSON   -> writes <dir>/<file>.json (tmp + rename)
 export default function routinesApi(dir: string): Plugin {
   return {
     name: 'routines-api',
@@ -22,11 +22,11 @@ export default function routinesApi(dir: string): Plugin {
   };
 }
 
-const ID = /^[A-Za-z0-9_-]+$/;
+const FILE = /^[A-Za-z0-9_-]+$/;
 
 async function handlePut(dir: string, req: IncomingMessage, res: ServerResponse) {
-  const id = (req.url ?? '').replace(/^\//, '').split('?')[0];
-  if (!ID.test(id)) return send(res, 400, `invalid routine id "${id}"`);
+  const file = (req.url ?? '').replace(/^\//, '').split('?')[0];
+  if (!FILE.test(file)) return send(res, 400, `invalid routine file "${file}"`);
 
   const body = await readBody(req);
   try {
@@ -36,8 +36,8 @@ async function handlePut(dir: string, req: IncomingMessage, res: ServerResponse)
   }
 
   await mkdir(dir, { recursive: true });
-  const target = join(dir, `${id}.json`);
-  const tmp = join(dir, `.${id}.json.tmp`);
+  const target = join(dir, `${file}.json`);
+  const tmp = join(dir, `.${file}.json.tmp`);
   await writeFile(tmp, body.endsWith('\n') ? body : body + '\n', 'utf8');
   await rename(tmp, target);
   send(res, 200, JSON.stringify({ path: target }), 'application/json');

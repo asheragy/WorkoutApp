@@ -1,11 +1,13 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { SystemLiftDefs } from '../src/core/LiftDatabase.ts';
 import SetUtils from '../src/core/utils/SetUtils.ts';
-import { FullBody_3day } from '../src/core/routines/3_FullBody.ts';
 import { isLiftGroup } from '../src/core/types/workout.ts';
+import { RoutineTemplate } from '../src/core/types/template.ts';
 
 /*
 
-npx tsx scripts/working-sets.ts
+npx tsx scripts/working-sets.ts [routine]   (routine = file name in src/core/routines, default 3_FullBody)
 
 6-day Upper Lower
 ┌─────────┬──────────────┬───────┐
@@ -28,7 +30,14 @@ npx tsx scripts/working-sets.ts
  */
 
 const defs = SystemLiftDefs;
-const [routine, workouts] = FullBody_3day;
+const file = join(
+  __dirname,
+  '../src/core/routines',
+  (process.argv[2] ?? '3_FullBody').replace(/\.json$/, '') + '.json',
+);
+const { routine, workouts }: RoutineTemplate = JSON.parse(
+  readFileSync(file, 'utf8'),
+);
 
 workouts.forEach(wo => {
   const sets = SetUtils.getWorkingSets2(defs, [wo]).filter(

@@ -6,36 +6,36 @@ import { saveRoutine } from '../store/RoutineFile.ts';
 import Workout from '../components/Workout.tsx';
 import Page from '../components/Page.tsx';
 import AutoTextarea from '../components/AutoTextarea.tsx';
-
-type SaveState =
-  | { kind: 'idle' }
-  | { kind: 'saving' }
-  | { kind: 'saved' }
-  | { kind: 'error'; message: string };
+import Toast, { ToastMessage } from '../components/Toast.tsx';
 
 export default function WorkoutsPage() {
   const { routineId = '' } = useParams();
   const [template, setTemplate] = useState<RoutineTemplate>();
   const [compact, setCompact] = useState(false);
   const [reorder, setReorder] = useState(false);
-  const [save, setSave] = useState<SaveState>({ kind: 'idle' });
+  const [saving, setSaving] = useState(false);
+  const [toast, setToast] = useState<ToastMessage | null>(null);
+  const clearToast = useCallback(() => setToast(null), []);
 
   useEffect(() => {
     TemplateRepository.get(routineId).then(setTemplate);
-    setSave({ kind: 'idle' });
+    setToast(null);
   }, [routineId]);
 
   const onSave = useCallback(async () => {
     if (!template) return;
-    setSave({ kind: 'saving' });
+    setSaving(true);
     try {
-      await saveRoutine(template);
-      setSave({ kind: 'saved' });
+      const file = TemplateRepository.fileName(template.routine.id);
+      await saveRoutine(template, file);
+      setToast({ text: `Saved to src/core/routines/${file}.json` });
     } catch (e) {
-      setSave({
-        kind: 'error',
-        message: e instanceof Error ? e.message : String(e),
+      setToast({
+        text: e instanceof Error ? e.message : String(e),
+        error: true,
       });
+    } finally {
+      setSaving(false);
     }
   }, [template]);
 
@@ -75,23 +75,13 @@ export default function WorkoutsPage() {
         <button
           type="button"
           onClick={onSave}
-          disabled={!template || save.kind === 'saving'}
+          disabled={!template || saving}
           title="Ctrl+S"
         >
-          Save
+          {saving ? 'Saving…' : 'Save'}
         </button>
-        {save.kind === 'saving' && (
-          <span style={{ opacity: 0.7 }}>Saving…</span>
-        )}
-        {save.kind === 'saved' && (
-          <span style={{ opacity: 0.7 }}>
-            Saved to src/core/routines/{routineId}.json
-          </span>
-        )}
-        {save.kind === 'error' && (
-          <span style={{ color: '#f66' }}>{save.message}</span>
-        )}
       </div>
+      <Toast toast={toast} onDone={clearToast} />
       {template && (
         <label
           style={{
@@ -114,7 +104,6 @@ export default function WorkoutsPage() {
                     routine: { ...prev.routine, description },
                   },
               );
-              setSave({ kind: 'idle' });
             }}
           />
         </label>
@@ -144,7 +133,6 @@ export default function WorkoutsPage() {
                     ),
                   },
               );
-              setSave({ kind: 'idle' });
             }}
           />
         ))}

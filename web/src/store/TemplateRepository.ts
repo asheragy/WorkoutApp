@@ -1,46 +1,43 @@
-import { DEFAULT_ROUTINE, Routine } from '@shared/types/workout.ts';
+import { Routine } from '@shared/types/workout.ts';
 import { RoutineTemplate } from '@shared/types/template.ts';
-import { UpperLower } from '@shared/routines/4_UpperLower.ts';
-import { UpperLower2026 } from '@shared/routines/6_UpperLower.ts';
-import { YatesSplit } from '@shared/routines/4_Yates.ts';
-import { YatesSplitModified } from '@shared/routines/4_Yates_Modified.ts';
-import { PPL_3Day } from '@shared/routines/3_PPL.ts';
-import { HLM_3Day } from '@shared/routines/3_HLM.ts';
-import { ULPPL } from '@shared/routines/5_ULPPL.ts';
-import { ULArnold } from '@shared/routines/5_ULArnold.ts';
-import { UpperLower_2Day } from '@shared/routines/2_UpperLower.ts';
-import { FullBody_3day } from '@shared/routines/3_FullBody.ts';
+import { RoutineFile } from './RoutineFile.ts';
 
-const PreLoadedRoutines = [
-  UpperLower,
-  UpperLower2026,
-  YatesSplit,
-  YatesSplitModified,
-  PPL_3Day,
-  HLM_3Day,
-  ULPPL,
-  ULArnold,
-  FullBody_3day,
-  UpperLower_2Day,
-];
+// Every routine JSON in src/core/routines, globbed at build time by Vite the
+// same way the phone uses Metro's require.context. Keyed by routine id; the
+// file name is kept so Save writes back to the same file.
+type Entry = { file: string; template: RoutineTemplate };
+
+const modules = import.meta.glob<RoutineFile>(
+  '../../../src/core/routines/*.json',
+  { eager: true, import: 'default' },
+);
+
+const entries = new Map<string, Entry>();
+for (const path of Object.keys(modules).sort()) {
+  const file = path.slice(path.lastIndexOf('/') + 1).replace(/\.json$/, '');
+  const { version: _version, ...template } = modules[path];
+  const id = template.routine.id;
+  if (entries.has(id))
+    throw new Error(
+      `Duplicate routine id ${id} in ${file}.json and ${entries.get(id)!.file}.json`,
+    );
+  entries.set(id, { file, template });
+}
 
 export default class TemplateRepository {
   static async listAll(): Promise<Routine[]> {
-    return [
-      { id: DEFAULT_ROUTINE, title: 'Default' },
-      ...PreLoadedRoutines.map(x => x[0]),
-    ];
+    return [...entries.values()].map(e => e.template.routine);
   }
 
   static async get(id: string): Promise<RoutineTemplate | undefined> {
-    const entry = PreLoadedRoutines.find(x => x[0].id === id);
-    if (entry) {
-      return {
-        routine: entry[0],
-        workouts: entry[1],
-      };
-    }
+    return entries.get(id)?.template;
+  }
 
-    return undefined;
+  // File name (without .json) the routine was loaded from. Throws for an
+  // unknown id so a save can never silently create a second file.
+  static fileName(id: string): string {
+    const entry = entries.get(id);
+    if (!entry) throw new Error(`No routine file for id ${id}`);
+    return entry.file;
   }
 }

@@ -86,11 +86,14 @@ export function WorkoutList({ navigation }: Props) {
         dispatch(updateSettings(settings));
 
         console.log('Using routine: ' + settings.routine);
+        /*
         RoutineRepository.getAll().then(routines => {
           const curr = routines.find(x => x.id == settings.routine);
           const title = curr?.id ? curr.title : 'Workouts';
           navigation.setOptions({ title });
         });
+         */
+        navigation.setOptions({ title: 'TODO fix' });
 
         WorkoutRepository.getRoutine(settings.routine, importLifts).then(
           result => {

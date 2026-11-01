@@ -4,18 +4,30 @@ import { SystemLiftDefs } from '../LiftDatabase.ts';
 import { RoutineTemplate } from '../types/template.ts';
 import { isLiftGroup } from '../types/workout.ts';
 
-// Every routine JSON saved by the web app must only reference lifts that exist
-// in SystemLiftDefs, otherwise the phone would crash when importing it.
+// Checks over every routine JSON saved by the web app. The files are read from
+// disk here because the app loads them via Metro's require.context, which Jest
+// does not provide.
 const dir = __dirname;
 const files = readdirSync(dir).filter(f => f.endsWith('.json'));
+const routines: [string, RoutineTemplate][] = files.map(file => [
+  file,
+  JSON.parse(readFileSync(join(dir, file), 'utf8')),
+]);
 
+test('at least one routine json exists', () => {
+  expect(files.length).toBeGreaterThan(0);
+});
+
+test('no duplicate routine uuid', () => {
+  const ids = routines.map(([, r]) => r.routine.id);
+  expect(new Set(ids).size).toBe(ids.length);
+});
+
+// Otherwise the phone would crash when importing it.
 test('every lift id in routines/*.json exists in SystemLiftDefs', () => {
   const invalid: string[] = [];
 
-  for (const file of files) {
-    const template: RoutineTemplate = JSON.parse(
-      readFileSync(join(dir, file), 'utf8'),
-    );
+  for (const [file, template] of routines) {
     for (const workout of template.workouts) {
       for (const item of workout.items) {
         const lifts = isLiftGroup(item) ? item.lifts : [item];

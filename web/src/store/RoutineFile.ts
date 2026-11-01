@@ -6,7 +6,7 @@ import {
   WorkoutItem,
 } from '@shared/types/workout.ts';
 
-// On-disk format for src/core/routines/<routineId>.json: the RoutineTemplate shape
+// On-disk format for src/core/routines/<file>.json: the RoutineTemplate shape
 // plus a version field. Runtime-only fields (completed, lastCompleted, hide) are
 // never written.
 export const FILE_VERSION = 1;
@@ -37,9 +37,12 @@ export function serialize(template: RoutineTemplate): string {
 }
 
 // PUT the routine to the dev-server plugin (web/plugins/routinesApi.ts).
-export async function saveRoutine(template: RoutineTemplate): Promise<void> {
-  const res = await fetch(
-    `/api/routines/${encodeURIComponent(template.routine.id)}`,
+// `file` is the name (without .json) the routine was loaded from.
+export async function saveRoutine(
+  template: RoutineTemplate,
+  file: string,
+): Promise<void> {
+  const res = await fetch(`/api/routines/${encodeURIComponent(file)}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
