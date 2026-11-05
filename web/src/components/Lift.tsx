@@ -13,6 +13,9 @@ type Props = {
   // Set by LiftGroup in reorder mode; shows an eject button that moves the
   // lift out of its group to the top level of the workout.
   onRemoveFromGroup?: () => void;
+  // Set in reorder mode; shows an X that removes the lift from the workout
+  // after a confirmation dialog.
+  onDelete?: () => void;
 };
 
 const liftOptions = Object.values(liftDefs)
@@ -25,7 +28,13 @@ const centerStyle = { textAlign: 'center' as const };
 const LIFT_WIDTH = 340;
 const COLUMNS = 5; // Set, Weight, Reps, 1RM, remove
 
-export default function Lift({ lift, compact, onChange, onRemoveFromGroup }: Props) {
+export default function Lift({
+  lift,
+  compact,
+  onChange,
+  onRemoveFromGroup,
+  onDelete,
+}: Props) {
   const def = liftDefs[lift.id];
   const setMaxes = lift.sets.filter(x => !x.warmup).map(x => SetUtils.calculate1RM(settings, def, x));
   const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
@@ -115,6 +124,18 @@ export default function Lift({ lift, compact, onChange, onRemoveFromGroup }: Pro
             title="Remove from group"
             style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
             ⏏
+          </button>
+        )}
+        {onDelete && (
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm(`Remove ${def.displayName} from this workout?`))
+                onDelete();
+            }}
+            title="Remove lift"
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            ✕
           </button>
         )}
       </div>

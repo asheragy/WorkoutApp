@@ -1,7 +1,10 @@
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router';
 import useRoutines from './hooks/useRoutines.ts';
+import TemplateRepository from './store/TemplateRepository.ts';
 
 const LAST_ROUTINE_KEY = 'lastRoutineId';
+// Sentinel value of the selector's last option.
+const NEW_ROUTINE = '__new__';
 
 // Persistent top bar: routine selector plus page tabs. Routine pages carry the routine id in
 // the URL; the global Lift Defs page does not, so the selector falls back to the last one used.
@@ -17,8 +20,14 @@ export default function Shell() {
   const current = routineId ?? localStorage.getItem(LAST_ROUTINE_KEY) ?? routines[0]?.id ?? '';
 
   function selectRoutine(id: string) {
+    if (id === NEW_ROUTINE) {
+      // The select is controlled, so cancelling leaves it on the current routine.
+      const title = window.prompt('Routine title')?.trim();
+      if (!title) return;
+      id = TemplateRepository.create(title);
+    }
     localStorage.setItem(LAST_ROUTINE_KEY, id);
-    if (routineId) navigate(`/r/${id}/${section}`);
+    if (routineId || id !== current) navigate(`/r/${id}/${section}`);
   }
 
   return (
@@ -40,6 +49,7 @@ export default function Shell() {
               {r.title}
             </option>
           ))}
+          <option value={NEW_ROUTINE}>New routine…</option>
         </select>
         <span style={{ width: 1, alignSelf: 'stretch', background: 'var(--border)', marginLeft: 16 }} />
         <nav className="tabs" style={{ display: 'flex', gap: 4 }}>

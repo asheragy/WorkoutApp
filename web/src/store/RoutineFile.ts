@@ -36,13 +36,20 @@ export function serialize(template: RoutineTemplate): string {
   return JSON.stringify(toFile(template), null, 2);
 }
 
+// Allowed routine file names (without .json); mirrors the server check.
+export const FILE_NAME = /^[A-Za-z0-9_-]+$/;
+
 // PUT the routine to the dev-server plugin (web/plugins/routinesApi.ts).
-// `file` is the name (without .json) the routine was loaded from.
+// `file` is the name (without .json) the routine was loaded from. With
+// `create`, the server refuses to overwrite an existing file.
 export async function saveRoutine(
   template: RoutineTemplate,
   file: string,
+  create = false,
 ): Promise<void> {
-  const res = await fetch(`/api/routines/${encodeURIComponent(file)}`,
+  const query = create ? '?create=1' : '';
+  const res = await fetch(
+    `/api/routines/${encodeURIComponent(file)}${query}`,
     {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },

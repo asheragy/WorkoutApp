@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import uuid from 'react-native-uuid';
 import {
   Draggable,
   DraggableProvidedDragHandleProps,
@@ -7,11 +8,12 @@ import {
 import { WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
 import LiftGroup from './LiftGroup.tsx';
+import LiftPicker from './LiftPicker.tsx';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import WorkoutPreview from './WorkoutPreview.tsx';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
-import { isLiftGroup, WorkoutItem } from '@shared/types/workout.ts';
+import { isLiftGroup, Lift as LiftType, WorkoutItem } from '@shared/types/workout.ts';
 
 // Droppable type for the workout's top-level item list; see LiftGroup for the
 // nested one.
@@ -28,6 +30,9 @@ type Props = {
   // Read-only text summary instead of the editable lift cards.
   preview: boolean;
   onChange: (workout: WorkoutTemplate) => void;
+  // Set by the page in reorder mode when the workout has no items; shows an X
+  // that removes the workout from the routine.
+  onDelete?: () => void;
 };
 
 export default function Workout({
@@ -37,8 +42,22 @@ export default function Workout({
   reorder,
   preview,
   onChange,
+  onDelete,
 }: Props) {
   const [collapsed, setCollapsed] = useState(false);
+  const [picking, setPicking] = useState(false);
+
+  // Mirrors WorkoutEditScreen.onExerciseAdded: new lift at the end, no sets.
+  function addLift(defId: string) {
+    const lift: LiftType = {
+      id: defId,
+      instanceId: uuid.v4(),
+      sets: [],
+      goals: [],
+    };
+    setPicking(false);
+    onChange({ ...workout, items: [...workout.items, lift] });
+  }
 
   // Same number the app's Home screen shows: working sets split across group members.
   const totalSets = SetUtils.formatSetCount(
@@ -119,6 +138,16 @@ export default function Workout({
         >
           {totalSets} Sets
         </span>
+        {onDelete && (
+          <button
+            type="button"
+            onClick={onDelete}
+            title="Remove workout"
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}
+          >
+            ✕
+          </button>
+        )}
       </div>
       {preview && <WorkoutPreview workout={workout} />}
       {!preview && !reorder && (
@@ -178,6 +207,14 @@ export default function Workout({
           )}
         </Droppable>
       )}
+      {reorder && (
+        <button type="button" onClick={() => setPicking(true)}>
+          Add
+        </button>
+      )}
+      {picking && (
+        <LiftPicker onSelect={addLift} onCancel={() => setPicking(false)} />
+      )}
     </div>
   );
 
@@ -210,6 +247,15 @@ export default function Workout({
             ),
           })
         }
+        onDeleteLift={liftId => {
+          const liftIndex = item.lifts.findIndex(x => x.instanceId === liftId);
+          const [items] = LiftUtils.takeFromGroup(
+            workout.items,
+            item.instanceId,
+            liftIndex,
+          );
+          onChange({ ...workout, items });
+        }}
       />
     ) : (
       <Lift
@@ -217,6 +263,15 @@ export default function Workout({
         lift={item}
         compact={compact}
         onChange={replace}
+        onDelete={
+          reorder
+            ? () =>
+                onChange({
+                  ...workout,
+                  items: workout.items.filter((_, j) => j !== i),
+                })
+            : undefined
+        }
       />
     );
   }

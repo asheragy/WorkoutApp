@@ -1,11 +1,14 @@
+import uuid from 'react-native-uuid';
 import { Routine } from '@shared/types/workout.ts';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import { RoutineFile } from './RoutineFile.ts';
 
 // Every routine JSON in src/core/routines, globbed at build time by Vite the
-// same way the phone uses Metro's require.context. Keyed by routine id; the
-// file name is kept so Save writes back to the same file.
-type Entry = { file: string; template: RoutineTemplate };
+// same way the phone uses Metro's require.context, plus routines created in
+// this session that have not been saved yet. Keyed by routine id; the file
+// name is kept so Save writes back to the same file, and is undefined until
+// a new routine is saved for the first time.
+type Entry = { file?: string; template: RoutineTemplate };
 
 const modules = import.meta.glob<RoutineFile>(
   '../../../src/core/routines/*.json',
@@ -24,6 +27,12 @@ for (const path of Object.keys(modules).sort()) {
   entries.set(id, { file, template });
 }
 
+// Notified when the routine list changes (a routine is created).
+const listeners = new Set<() => void>();
+function notify() {
+  listeners.forEach(fn => fn());
+}
+
 export default class TemplateRepository {
   static async listAll(): Promise<Routine[]> {
     return [...entries.values()].map(e => e.template.routine);
@@ -33,11 +42,32 @@ export default class TemplateRepository {
     return entries.get(id)?.template;
   }
 
-  // File name (without .json) the routine was loaded from. Throws for an
+  // New empty routine, in memory only until the first Save. Returns its id.
+  static create(title: string): string {
+    const id = uuid.v4();
+    entries.set(id, { template: { routine: { id, title }, workouts: [] } });
+    notify();
+    return id;
+  }
+
+  // File name (without .json) the routine was loaded from, or undefined for a
+  // routine created this session that has not been saved yet. Throws for an
   // unknown id so a save can never silently create a second file.
-  static fileName(id: string): string {
+  static fileName(id: string): string | undefined {
     const entry = entries.get(id);
-    if (!entry) throw new Error(`No routine file for id ${id}`);
+    if (!entry) throw new Error(`Unknown routine id ${id}`);
     return entry.file;
+  }
+
+  // Records the file a new routine was first saved to.
+  static setFile(id: string, file: string) {
+    const entry = entries.get(id);
+    if (!entry) throw new Error(`Unknown routine id ${id}`);
+    entry.file = file;
+  }
+
+  static subscribe(listener: () => void): () => void {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
   }
 }

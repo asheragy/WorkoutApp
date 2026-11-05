@@ -3,7 +3,7 @@ import { useParams } from 'react-router';
 import { DragDropContext, DropResult } from '@hello-pangea/dnd';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import TemplateRepository from '../store/TemplateRepository.ts';
-import { saveRoutine } from '../store/RoutineFile.ts';
+import { FILE_NAME, saveRoutine } from '../store/RoutineFile.ts';
 import Workout, { ITEM_DROPPABLE_TYPE } from '../components/Workout.tsx';
 import { GROUP_DROPPABLE_TYPE } from '../components/LiftGroup.tsx';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
@@ -40,10 +40,34 @@ export default function WorkoutsPage() {
 
   const onSave = useCallback(async () => {
     if (!template) return;
+    const id = template.routine.id;
+    const existing = TemplateRepository.fileName(id);
+    // A routine created this session has no file yet: ask for one. The .json
+    // extension is implied, so strip it if typed.
+    const isNew = existing === undefined;
+    let file = existing ?? '';
+    if (isNew) {
+      const entered = window
+        .prompt('File name for this routine (saved as <name>.json)')
+        ?.trim()
+        .replace(/\.json$/i, '');
+      if (!entered) {
+        setToast({ text: 'Not saved: no file name entered', error: true });
+        return;
+      }
+      if (!FILE_NAME.test(entered)) {
+        setToast({
+          text: `Not saved: file name may only use letters, digits, _ and -`,
+          error: true,
+        });
+        return;
+      }
+      file = entered;
+    }
     setSaving(true);
     try {
-      const file = TemplateRepository.fileName(template.routine.id);
-      await saveRoutine(template, file);
+      await saveRoutine(template, file, isNew);
+      if (isNew) TemplateRepository.setFile(id, file);
       setToast({ text: `Saved to src/core/routines/${file}.json` });
     } catch (e) {
       setToast({
@@ -68,6 +92,25 @@ export default function WorkoutsPage() {
   }, [onSave]);
 
   const workouts = template?.workouts ?? [];
+
+  // New empty workout at the end; routineId is left blank the same way the
+  // routine files leave it. The name is typed into the column's header.
+  const addWorkout = useCallback(() => {
+    setTemplate(
+      prev =>
+        prev && {
+          ...prev,
+          workouts: [...prev.workouts, { routineId: '', name: '', items: [] }],
+        },
+    );
+  }, []);
+
+  const deleteWorkout = useCallback((i: number) => {
+    setTemplate(
+      prev =>
+        prev && { ...prev, workouts: prev.workouts.filter((_, j) => j !== i) },
+    );
+  }, []);
 
   // Drop handler for reorder mode. Top-level droppable ids are workout
   // indexes (workouts have no stable id of their own) and group droppable ids
@@ -231,6 +274,12 @@ export default function WorkoutsPage() {
               compact={compact}
               reorder={reorder}
               preview={preview}
+              // Only an empty workout can be deleted, so no confirmation.
+              onDelete={
+                reorder && w.items.length === 0
+                  ? () => deleteWorkout(i)
+                  : undefined
+              }
               onChange={updated => {
                 setTemplate(
                   prev =>
@@ -244,6 +293,16 @@ export default function WorkoutsPage() {
               }}
             />
           ))}
+          {reorder && template && (
+            // Sits where the new column will appear.
+            <button
+              type="button"
+              onClick={addWorkout}
+              style={{ flex: '0 0 auto', alignSelf: 'flex-start' }}
+            >
+              Add Workout
+            </button>
+          )}
         </div>
       </DragDropContext>
     </Page>

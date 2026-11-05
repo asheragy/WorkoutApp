@@ -1,4 +1,4 @@
-import { mkdir, rename, writeFile } from 'node:fs/promises';
+import { access, mkdir, rename, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Plugin } from 'vite';
@@ -6,7 +6,8 @@ import type { Plugin } from 'vite';
 // Dev-server endpoint that owns every disk write the web app makes. Writes are limited to
 // the one directory passed in; the file name is validated so the path cannot escape it.
 //
-//   PUT /api/routines/:file   body: routine JSON   -> writes <dir>/<file>.json (tmp + rename)
+//   PUT /api/routines/:file[?create=1]   body: routine JSON   -> writes <dir>/<file>.json (tmp + rename)
+//                                        with create, 409 if the file already exists
 export default function routinesApi(dir: string): Plugin {
   return {
     name: 'routines-api',
@@ -25,7 +26,9 @@ export default function routinesApi(dir: string): Plugin {
 const FILE = /^[A-Za-z0-9_-]+$/;
 
 async function handlePut(dir: string, req: IncomingMessage, res: ServerResponse) {
-  const file = (req.url ?? '').replace(/^\//, '').split('?')[0];
+  const [path, query = ''] = (req.url ?? '').replace(/^\//, '').split('?');
+  const file = path;
+  const create = new URLSearchParams(query).has('create');
   if (!FILE.test(file)) return send(res, 400, `invalid routine file "${file}"`);
 
   const body = await readBody(req);
@@ -37,10 +40,21 @@ async function handlePut(dir: string, req: IncomingMessage, res: ServerResponse)
 
   await mkdir(dir, { recursive: true });
   const target = join(dir, `${file}.json`);
+  if (create && (await exists(target)))
+    return send(res, 409, `${file}.json already exists`);
   const tmp = join(dir, `.${file}.json.tmp`);
   await writeFile(tmp, body.endsWith('\n') ? body : body + '\n', 'utf8');
   await rename(tmp, target);
   send(res, 200, JSON.stringify({ path: target }), 'application/json');
+}
+
+async function exists(path: string): Promise<boolean> {
+  try {
+    await access(path);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 function readBody(req: IncomingMessage): Promise<string> {

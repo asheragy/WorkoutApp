@@ -23,6 +23,9 @@ type Props = {
   // Eject a lift to the top level of the workout (needs the workout's items,
   // so the parent handles it).
   onRemoveLift: (liftId: string) => void;
+  // Delete a lift from the group entirely; also handled by the parent so a
+  // group left with one lift collapses to a plain lift.
+  onDeleteLift: (liftId: string) => void;
 };
 
 export default function LiftGroup({
@@ -32,6 +35,7 @@ export default function LiftGroup({
   dragHandleProps,
   onChange,
   onRemoveLift,
+  onDeleteLift,
 }: Props) {
   const renderLift = (lift: LiftGroupType['lifts'][number], i: number) => (
     <Lift
@@ -41,6 +45,7 @@ export default function LiftGroup({
       onRemoveFromGroup={
         reorder ? () => onRemoveLift(lift.instanceId) : undefined
       }
+      onDelete={reorder ? () => onDeleteLift(lift.instanceId) : undefined}
       onChange={updated =>
         onChange({
           ...group,

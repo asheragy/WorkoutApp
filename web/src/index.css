@@ -106,3 +106,45 @@ button:hover {
     transform: none;
   }
 }
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 320px;
+  max-height: 70vh;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #1a1a1a;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+.modal-list {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.modal-item {
+  text-align: left;
+  background: none;
+  border: none;
+  border-radius: 3px;
+  padding: 4px 6px;
+}
+
+.modal-item:hover {
+  background: #333;
+}
