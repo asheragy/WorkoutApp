@@ -67,10 +67,7 @@ export type RootStackParamList = {
   };
   Settings: undefined;
   Goals: undefined;
-  Routines: {
-    // TODO no function parameters
-    onChanged: (importLifts: boolean) => void;
-  };
+  Routines: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

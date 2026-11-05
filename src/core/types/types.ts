@@ -53,6 +53,7 @@ export type GlobalSettings = {
   largestHalfPoundDumbbell?: number;
   plateCount?: boolean;
   routine: string;
+  routineName?: string;
   bodyweight?: number;
 };
 

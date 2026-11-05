@@ -13,10 +13,11 @@ import { Routine } from '../core/types/workout';
 import RoutineRepository from '../repository/RoutineRepository';
 import { useTheme } from '@react-navigation/native';
 import SettingsRepository from '../repository/SettingsRepository';
+import WorkoutRepository from '../repository/WorkoutRepository.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Routines'>;
 
-export function RoutinesScreen({ route, navigation }: Props) {
+export function RoutinesScreen({ navigation }: Props) {
   const [routines, setRoutines] = useState<Routine[]>([]);
   const [selected, setSelected] = useState<string | undefined>(undefined);
   const { colors } = useTheme();
@@ -36,23 +37,19 @@ export function RoutinesScreen({ route, navigation }: Props) {
     }
   }
 
-  async function onSwitch(routine: Routine, importLifts: boolean) {
+  async function onSwitch(routine: Routine) {
     await SettingsRepository.set('routine', routine.id);
-    route.params.onChanged(importLifts);
+    await SettingsRepository.set('routineName', routine.title);
+    await WorkoutRepository.importIfEmpty(routine.id);
     navigation.pop();
   }
 
   const confirmSwitch = (routine: Routine) => {
     Alert.alert('Switch Program?', 'Are you sure', [
       {
-        text: 'Yes/Import',
-        style: 'destructive',
-        onPress: () => onSwitch(routine, true),
-      },
-      {
         text: 'Yes',
         style: 'default',
-        onPress: () => onSwitch(routine, false),
+        onPress: () => onSwitch(routine),
       },
       {
         text: 'No',

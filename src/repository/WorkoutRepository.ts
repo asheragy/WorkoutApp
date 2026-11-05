@@ -1,7 +1,7 @@
 import { Workout } from '../core/types/workout';
 import Utils from '../components/Utils';
 import { db, dbReady } from './db.ts';
-import LiftUtils from '../core/utils/LiftUtils.ts';
+import { PreLoadedRoutines } from './RoutineRepository.ts';
 
 export type CompletedWorkout = {
   workoutId: string;
@@ -15,41 +15,23 @@ type WorkoutData = Omit<Workout, 'id' | 'routineId' | 'lastCompleted'> & {
 };
 
 export default class WorkoutRepository {
-  static async getRoutine(
-    routine: string,
-    importLifts?: boolean,
-  ): Promise<Workout[]> {
-    const workouts = await this.getAllByRoutine(routine);
+  static async importIfEmpty(routine: string): Promise<void> {
+    const workouts = await this.getRoutine(routine);
 
-    /* TODO temporarily leaving off on device
     if (workouts.length == 0) {
-      const preloaded = findPreloaded(routine);
-      if (preloaded.length > 0) {
-        console.log(`Saving predefined routine ${routine}`);
-        const workouts: Workout[] = preloaded.map(x => {
+      const preloaded = PreLoadedRoutines.find(x => x.routine.id == routine);
+      if (preloaded) {
+        console.log('Importing ' + preloaded.routine.title);
+        const workouts = preloaded.workouts.map(wo => {
           return {
-            ...x,
+            ...wo,
             routineId: routine,
           };
         });
 
         await this.insertAll(workouts);
-        return this.getRoutine(routine, importLifts);
       }
     }
-     */
-
-    /* TODO this should work but handling per workout for now
-    if (importLifts) {
-      console.log('Importing lifts to latest');
-      for (const workout of workouts) {
-        Actually this returns a modified workout which needs to be replaced here
-        await this.importLatestLiftsInternal(workout, all);
-      }
-    }
-     */
-
-    return workouts;
   }
 
   static async importLatestLifts(workout: Workout): Promise<Workout> {
@@ -162,7 +144,7 @@ export default class WorkoutRepository {
       throw new Error('Unable to find id ' + workoutId);
   }
 
-  private static async getAllByRoutine(routine: string): Promise<Workout[]> {
+  static async getRoutine(routine: string): Promise<Workout[]> {
     await dbReady();
 
     const rows = await db.executeRaw(
@@ -232,6 +214,8 @@ export default class WorkoutRepository {
   private static fromRow(row: unknown[]): Workout {
     const [id, routineId, dataJson] = row;
     const data: WorkoutData = JSON.parse(dataJson as string);
+
+    if (data.items == undefined) data.items = [];
 
     return {
       ...data,

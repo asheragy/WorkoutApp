@@ -41,3 +41,16 @@ test('every lift id in routines/*.json exists in SystemLiftDefs', () => {
 
   expect(invalid).toEqual([]);
 });
+
+test('workouts do not set routineId', () => {
+  const invalid: string[] = [];
+
+  for (const [file, template] of routines) {
+    for (const workout of template.workouts) {
+      if (workout.routineId !== undefined && workout.routineId != '')
+        invalid.push(`${file} / ${workout.name}`);
+    }
+  }
+
+  expect(invalid).toEqual([]);
+});

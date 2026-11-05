@@ -23,7 +23,6 @@ import { displayName } from '../core/LiftDatabase.ts';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
-import RoutineRepository from '../repository/RoutineRepository.ts';
 import SetUtils from '../core/utils/SetUtils.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'Home'>;
@@ -64,11 +63,7 @@ export function WorkoutList({ navigation }: Props) {
             <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem
               title="Routines"
-              onPress={() =>
-                navigation.navigate('Routines', {
-                  onChanged: importLifts => loadState(importLifts),
-                })
-              }
+              onPress={() => navigation.navigate('Routines')}
             />
             <HiddenItem title="Goals" onPress={() => onGoals()} />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
@@ -79,42 +74,31 @@ export function WorkoutList({ navigation }: Props) {
     });
   }, [navigation, workouts]);
 
-  const loadState = useCallback(
-    (importLifts?: boolean) => {
-      SettingsRepository.get().then(settings => {
-        // TODO should this go in App.txs?
-        dispatch(updateSettings(settings));
+  const loadState = useCallback(() => {
+    SettingsRepository.get().then(settings => {
+      // TODO should this go in App.txs?
+      dispatch(updateSettings(settings));
 
-        console.log('Using routine: ' + settings.routine);
-        /*
-        RoutineRepository.getAll().then(routines => {
-          const curr = routines.find(x => x.id == settings.routine);
-          const title = curr?.id ? curr.title : 'Workouts';
-          navigation.setOptions({ title });
-        });
-         */
-        navigation.setOptions({ title: 'TODO fix' });
+      console.log('Using routine: ' + settings.routine);
+      const title = settings.routineName ?? 'Workouts';
+      navigation.setOptions({ title });
 
-        WorkoutRepository.getRoutine(settings.routine, importLifts).then(
-          result => {
-            const incompleted = result.filter(w => w.lastCompleted == null);
-            const completed = result
-              .filter(
-                (w): w is Workout & { lastCompleted: Date } =>
-                  w.lastCompleted != null,
-              )
-              .slice()
-              .sort(
-                (a, b) => a.lastCompleted.getTime() - b.lastCompleted.getTime(),
-              );
+      WorkoutRepository.getRoutine(settings.routine).then(result => {
+        const incompleted = result.filter(w => w.lastCompleted == null);
+        const completed = result
+          .filter(
+            (w): w is Workout & { lastCompleted: Date } =>
+              w.lastCompleted != null,
+          )
+          .slice()
+          .sort(
+            (a, b) => a.lastCompleted.getTime() - b.lastCompleted.getTime(),
+          );
 
-            setWorkouts([...incompleted, ...completed]);
-          },
-        );
+        setWorkouts([...incompleted, ...completed]);
       });
-    },
-    [dispatch, navigation],
-  );
+    });
+  }, [dispatch, navigation]);
 
   useFocusEffect(
     useCallback(() => {
