@@ -15,512 +15,119 @@ const createDictionary = <
 
 export const Lifts = createDictionary({
   // Chest
-  bench_barbell: {
-    name: 'Bench Press',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  bench_dumbbell: {
-    name: 'Bench Press',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  bench_reverse: {
-    name: 'Bench Press (Reverse Grip)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  inclinePress_barbell: {
-    name: 'Incline Press',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  inclinePress_dumbbell: {
-    name: 'Incline Press',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  inclinePress_plateMachine: {
-    name: 'Incline Press',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  inclinePress_machine: {
-    name: 'Incline Press',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  fly_machine: {
-    name: 'Flys',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Chest],
-  },
+  bench_barbell: { name: 'Bench Press', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  bench_dumbbell: { name: 'Bench Press', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  bench_reverse: { name: 'Bench Press (Reverse Grip)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  inclinePress_barbell: { name: 'Incline Press', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  inclinePress_dumbbell: { name: 'Incline Press', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  inclinePress_plateMachine: { name: 'Incline Press', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  inclinePress_machine: { name: 'Incline Press', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  fly_machine: { name: 'Flys', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Chest] },
 
   // Back
-  row_barbell: {
-    name: 'Rows',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_dumbbell: {
-    name: 'Rows',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_cable: {
-    name: 'Rows (Cable)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_cableWide: {
-    name: 'Rows (Cable Wide-Grip)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_plateMachine: {
-    name: 'Rows',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_machine: {
-    name: 'Rows',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  row_plateLow: {
-    name: 'Rows (Low Plate)',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
+  row_barbell: { name: 'Rows', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_dumbbell: { name: 'Rows', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_cable: { name: 'Rows (Cable)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_cableWide: { name: 'Rows (Cable Wide-Grip)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_plateMachine: { name: 'Rows', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_machine: { name: 'Rows', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  row_plateLow: { name: 'Rows (Low Plate)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   // Rows T-Bar (Plate loaded machine)
   // Rows T-Bar (Barbell)
-  pulldown_cable: {
-    name: 'Pulldowns (Cable)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pulldown_hsHighRow: {
-    name: 'Pulldowns (High Row)',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pulldown_plateMachine: {
-    name: 'Pulldowns',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pulldown_machine: {
-    name: 'Pulldowns',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pulldown_machineHS: {
-    name: 'Pulldowns (HammerStrength)',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pulldown_highRow: {
-    name: 'Pulldowns (High Row)',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pullup: {
-    name: 'Pullups',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
-  pullup_neutral: {
-    name: 'Pullups (Neutral grip)',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps],
-  },
+  pulldown_cable: { name: 'Pulldowns (Cable)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_hsHighRow: { name: 'Pulldowns (High Row)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_plateMachine: { name: 'Pulldowns', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_machine: { name: 'Pulldowns', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_machineHS: { name: 'Pulldowns (HammerStrength)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pulldown_highRow: { name: 'Pulldowns (High Row)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pullup: { name: 'Pullups', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pullup_neutral: { name: 'Pullups (Neutral grip)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
 
   // Shoulders
-  ohp_barbell: {
-    name: 'Overhead Press',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps],
-  },
-  ohp_seated: {
-    name: 'Overhead Press (Seated)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps],
-  },
-  ohp_dumbbell: {
-    name: 'Overhead Press',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps],
-  },
-  ohp_plateMachine: {
-    name: 'Overhead Press',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps],
-  },
-  ohp_machine: {
-    name: 'Overhead Press',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps],
-  },
-  ohp_btn: {
-    name: 'Behind the Neck Press',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
-  reverseFly_machine: {
-    name: 'Reverse Flys',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
-  latRaise_dumbbell: {
-    name: 'Lat Raise',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
-  latRaise_machine: {
-    name: 'Lat Raise',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
-  facePull: {
-    name: 'Face Pulls',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
-  uprightRow_barbell: {
-    name: 'Upright Rows',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Shoulders],
-  },
+  ohp_barbell: { name: 'Overhead Press', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_seated: { name: 'Overhead Press (Seated)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_dumbbell: { name: 'Overhead Press', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_plateMachine: { name: 'Overhead Press', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_machine: { name: 'Overhead Press', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
+  ohp_btn: { name: 'Behind the Neck Press', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders] },
+  reverseFly_machine: { name: 'Reverse Flys', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Shoulders] },
+  latRaise_dumbbell: { name: 'Lat Raise', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Shoulders] },
+  latRaise_machine: { name: 'Lat Raise', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Shoulders] },
+  facePull: { name: 'Face Pulls', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Shoulders] },
+  uprightRow_barbell: { name: 'Upright Rows', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders] },
 
   // Biceps
-  curl_reverse: {
-    name: 'Curls (Reverse)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Biceps],
-  },
-  curl_hammer: {
-    name: 'Curls (Hammer)',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Biceps],
-  },
-  curl_incline: {
-    name: 'Curls (Incline)',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Biceps],
-  },
-  curl_machine: {
-    name: 'Curls (Machine)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Biceps],
-  },
+  curl_reverse: { name: 'Curls (Reverse)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Biceps] },
+  curl_hammer: { name: 'Curls (Hammer)', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Biceps] },
+  curl_incline: { name: 'Curls (Incline)', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Biceps] },
+  curl_machine: { name: 'Curls (Machine)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Biceps] },
 
   // Not a machine lift but it fits best with calculations
-  curl_ezBar: {
-    name: 'Curls (EZ-bar)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Biceps],
-  },
-  curl_wrist: {
-    name: 'Curls (Wrist)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Other],
-  },
+  curl_ezBar: { name: 'Curls (EZ-bar)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Biceps] },
+  curl_wrist: { name: 'Curls (Wrist)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Other] },
 
   // Triceps
-  tricep_machine: {
-    name: 'Tricep (Machine)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Triceps],
-  },
-  tricep_rope: {
-    name: 'Tricep (Cable)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Triceps],
-  },
-  tricep_overhead: {
-    name: 'Tricep (Overhead)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Triceps],
-  },
-  skull_crusher: {
-    name: 'Skull Crushers',
-    type: LiftType.Other,
-    muscleGroups: [MuscleGroup.Triceps],
-  },
-  bench_closegrip: {
-    name: 'Bench Press (Close-grip)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Triceps, MuscleGroup.Chest],
-  },
-  dip: {
-    name: 'Dips',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
-  dip_machine: {
-    name: 'Dips',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps],
-  },
+  tricep_machine: { name: 'Tricep (Machine)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
+  tricep_rope: { name: 'Tricep (Cable)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
+  tricep_overhead: { name: 'Tricep (Overhead)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
+  skull_crusher: { name: 'Skull Crushers', type: LiftType.Other, muscleGroups: [MuscleGroup.Triceps] },
+  bench_closegrip: { name: 'Bench Press (Close-grip)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Triceps, MuscleGroup.Chest] },
+  dip: { name: 'Dips', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  dip_machine: { name: 'Dips', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
 
   // Quads
-  squat_barbell: {
-    name: 'Squat',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    factor: 1.75,
-  },
-  squat_ssb: {
-    name: 'Squat (SSB)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    baseWeight: 70,
-    factor: 1.75,
-  },
-  squat_belt: {
-    name: 'Squat (Belt)',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    baseWeight: 65,
-    factor: 1.5,
-  },
-  squat_v: {
-    name: 'Squat (V-Squat)',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    factor: 1.5,
-    baseWeight: 95,
-  },
-  squat_front: {
-    name: 'Squat (Front)',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    factor: 1.75,
-  },
-  legPress: {
-    name: 'Leg Press',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    baseWeight: 100,
-  },
-  legPress_single: {
-    name: 'Leg Press (Single)',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes],
-    baseWeight: 100,
-  },
-  legExtensions: {
-    name: 'Leg Extensions',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Quads],
-  },
+  squat_barbell: { name: 'Squat', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
+  squat_ssb: { name: 'Squat (SSB)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 70, factor: 1.75 },
+  squat_belt: { name: 'Squat (Belt)', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 65, factor: 1.5 },
+  squat_v: { name: 'Squat (V-Squat)', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.5, baseWeight: 95 },
+  squat_front: { name: 'Squat (Front)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], factor: 1.75 },
+  legPress: { name: 'Leg Press', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
+  legPress_single: { name: 'Leg Press (Single)', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes], baseWeight: 100 },
+  legPress_stack: { name: 'Leg Press', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes] },
+  legExtensions: { name: 'Leg Extensions', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Quads] },
 
   // Glutes
-  lunge: {
-    name: 'Lunges',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads],
-  },
-  splitSquat: {
-    name: 'Split Squat',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads],
-  },
-  gluteKickback: {
-    name: 'Glute Kickback',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Glutes],
-  },
-  hipThrust: {
-    name: 'Hip Thrust',
-    type: LiftType.MachinePlateDouble,
-    muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings],
-  },
+  lunge: { name: 'Lunges', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads] },
+  splitSquat: { name: 'Split Squat', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads] },
+  gluteKickback: { name: 'Glute Kickback', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Glutes] },
+  hipThrust: { name: 'Hip Thrust', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings] },
 
   // Deadlifts
-  deadlift_barbell: {
-    name: 'Deadlift',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Glutes,
-      MuscleGroup.Hamstrings,
-      MuscleGroup.LowerBack,
-    ],
-    factor: 2,
-  },
-  deadlift_trapbar: {
-    name: 'Deadlift (TrapBar)',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Glutes,
-      MuscleGroup.Quads,
-      MuscleGroup.LowerBack,
-    ],
-    baseWeight: 60,
-    factor: 1.75,
-  },
-  deadlift_trapbar_high: {
-    name: 'Deadlift High (TrapBar)',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Quads,
-      MuscleGroup.Glutes,
-      MuscleGroup.LowerBack,
-    ],
-    baseWeight: 55,
-    factor: 1.75,
-  },
-  deadlift_sumo: {
-    name: 'Deadlift (Sumo)',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Glutes,
-      MuscleGroup.Quads,
-      MuscleGroup.LowerBack,
-    ],
-    factor: 1.75,
-  },
-  deadlift_deficit: {
-    name: 'Deadlift (Deficit)',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Glutes,
-      MuscleGroup.Hamstrings,
-      MuscleGroup.LowerBack,
-    ],
-    factor: 1.75,
-  },
+  deadlift_barbell: { name: 'Deadlift', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack], factor: 2 },
+  deadlift_trapbar: { name: 'Deadlift (TrapBar)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], baseWeight: 60, factor: 1.75 },
+  deadlift_trapbar_high: { name: 'Deadlift High (TrapBar)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Quads, MuscleGroup.Glutes, MuscleGroup.LowerBack], baseWeight: 55, factor: 1.75 },
+  deadlift_sumo: { name: 'Deadlift (Sumo)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads, MuscleGroup.LowerBack], factor: 1.75 },
+  deadlift_deficit: { name: 'Deadlift (Deficit)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings, MuscleGroup.LowerBack], factor: 1.75 },
 
   // Hamstrings
-  rdl_barbell: {
-    name: 'RDL',
-    type: LiftType.Barbell,
-    muscleGroups: [
-      MuscleGroup.Hamstrings,
-      MuscleGroup.Glutes,
-      MuscleGroup.LowerBack,
-    ],
-  },
-  rdl_single: {
-    name: 'RDL (Single Leg)',
-    type: LiftType.Other,
-    muscleGroups: [
-      MuscleGroup.Hamstrings,
-      MuscleGroup.Glutes,
-      MuscleGroup.LowerBack,
-    ],
-  },
-  legCurl_seated: {
-    name: 'Leg Curls',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Hamstrings],
-  },
-  legCurl_kneeling: {
-    name: 'Leg Curls (Kneeling)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Hamstrings],
-  },
-  legCurl_laying: {
-    name: 'Leg Curls (Laying)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Hamstrings],
-  },
-  backExtension: {
-    name: 'Back Extensions',
-    type: LiftType.Bodyweight,
-    muscleGroups: [
-      MuscleGroup.LowerBack,
-      MuscleGroup.Hamstrings,
-      MuscleGroup.Glutes,
-    ],
-    factor: 1.25,
-  },
+  rdl_barbell: { name: 'RDL', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes, MuscleGroup.LowerBack] },
+  rdl_single: { name: 'RDL (Single Leg)', type: LiftType.Other, muscleGroups: [MuscleGroup.Hamstrings, MuscleGroup.Glutes, MuscleGroup.LowerBack] },
+  legCurl_seated: { name: 'Leg Curls', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
+  legCurl_kneeling: { name: 'Leg Curls (Kneeling)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
+  legCurl_laying: { name: 'Leg Curls (Laying)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
+  backExtension: { name: 'Back Extensions', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes], factor: 1.25 },
 
   // Calves
-  calfRaise_standing: {
-    name: 'Calf Raises (Standing)',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Calves],
-  },
-  calfRaise_seated: {
-    name: 'Calf Raises (Seated Plate)',
-    type: LiftType.MachinePlateSingle,
-    muscleGroups: [MuscleGroup.Calves],
-  },
-  calfRaise_seatedStack: {
-    name: 'Calf Raises (Seated Stack)',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Calves],
-  },
-  calfRaise_bodyWeight: {
-    name: 'Calf Raises (Body weight)',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Calves],
-  },
+  calfRaise_standing: { name: 'Calf Raises (Standing)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_seated: { name: 'Calf Raises (Seated Plate)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_seatedStack: { name: 'Calf Raises (Seated Stack)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_bodyWeight: { name: 'Calf Raises (Body weight)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
 
   // Abs
-  legRaise: {
-    name: 'Leg Raises',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Abs],
-  },
-  plank: {
-    name: 'Planks',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Abs],
-  }, // TODO time
-  elevateCore: {
-    name: 'Elevate Core',
-    type: LiftType.Other,
-    muscleGroups: [MuscleGroup.Abs],
-  },
-  frontSquatHold: {
-    name: 'Front Squat Hold',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Abs],
-  },
+  legRaise: { name: 'Leg Raises', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs] },
+  plank: { name: 'Planks', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Abs], }, // TODO time
+  elevateCore: { name: 'Elevate Core', type: LiftType.Other, muscleGroups: [MuscleGroup.Abs] },
+  frontSquatHold: { name: 'Front Squat Hold', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Abs] },
 
   // Other
-  hipAbduction: {
-    name: 'Hip Abduction',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  hipAdduction: {
-    name: 'Hip Adduction',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  gripper: {
-    name: 'Grippers',
-    type: LiftType.Other,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  shrug_dumbbell: {
-    name: 'Shrugs',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  shrug_barbell: {
-    name: 'Shrugs',
-    type: LiftType.Barbell,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  tibRaise: {
-    name: 'Tib Raises',
-    type: LiftType.Bodyweight,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  pullover_machine: {
-    name: 'Pullovers',
-    type: LiftType.MachineStack,
-    muscleGroups: [MuscleGroup.Other],
-  },
-  pullover_dumbbell: {
-    name: 'Pullovers',
-    type: LiftType.Dumbbell,
-    muscleGroups: [MuscleGroup.Other],
-  },
+  hipAbduction: { name: 'Hip Abduction', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Other] },
+  hipAdduction: { name: 'Hip Adduction', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Other] },
+  gripper: { name: 'Grippers', type: LiftType.Other, muscleGroups: [MuscleGroup.Other] },
+  shrug_dumbbell: { name: 'Shrugs', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Other] },
+  shrug_barbell: { name: 'Shrugs', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Other] },
+  tibRaise: { name: 'Tib Raises', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Other] },
+  pullover_machine: { name: 'Pullovers', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Other] },
+  pullover_dumbbell: { name: 'Pullovers', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Other] },
 } as const);
 
 const goals: Record<string, PersistedSet> = {

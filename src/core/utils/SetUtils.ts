@@ -288,6 +288,11 @@ function calcPlates(def: LiftDef, weight: number): number[] {
       remaining -= 90;
     }
 
+    if (remaining >= 70) {
+      result.push(35);
+      remaining -= 70;
+    }
+
     if (remaining >= 50) {
       result.push(25);
       remaining -= 50;
@@ -313,6 +318,11 @@ function calcPlates(def: LiftDef, weight: number): number[] {
     while (remaining >= 45) {
       result.push(45);
       remaining -= 45;
+    }
+
+    if (remaining >= 35) {
+      result.push(35);
+      remaining -= 35;
     }
 
     if (remaining >= 25) {

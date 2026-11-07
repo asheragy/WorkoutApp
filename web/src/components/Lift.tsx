@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { Lift as LiftType, LiftSet } from '@shared/types/workout.ts';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import Set from './Set.tsx';
+import AutoTextarea from './AutoTextarea.tsx';
 import { settings } from '../store/Settings.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 
@@ -39,6 +41,10 @@ export default function Lift({
   const setMaxes = lift.sets.filter(x => !x.warmup).map(x => SetUtils.calculate1RM(settings, def, x));
   const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
   const goalPercent = LiftUtils.goalPercent(settings, def, lift);
+  // The note box is hidden until the pencil is pressed, unless a note exists.
+  // Stays open once revealed so a note cleared mid-edit doesn't vanish.
+  const [noteRevealed, setNoteRevealed] = useState(false);
+  const showNote = noteRevealed || lift.note !== undefined;
 
   function onSetChange(index: number, updated: LiftSet) {
     onChange({ ...lift, sets: lift.sets.map((x, i) => (i === index ? updated : x)) });
@@ -117,6 +123,16 @@ export default function Lift({
             ))}
           </select>
         )}
+        {!compact && (
+          <button
+            type="button"
+            onClick={() => setNoteRevealed(true)}
+            disabled={showNote}
+            title="Add note"
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            ✎
+          </button>
+        )}
         {onRemoveFromGroup && (
           <button
             type="button"
@@ -139,6 +155,18 @@ export default function Lift({
           </button>
         )}
       </div>
+
+      {/* Full mode only. An emptied note is dropped rather than saved as ""
+          so the mobile app, which shows any defined note, stays quiet. */}
+      {!compact && showNote && (
+        <AutoTextarea
+          value={lift.note ?? ''}
+          placeholder="Note"
+          autoFocus={noteRevealed}
+          style={{ width: '100%', boxSizing: 'border-box' }}
+          onChange={note => onChange({ ...lift, note: note || undefined })}
+        />
+      )}
 
       {/* Sets and goals share one table so their columns stay aligned. */}
       {!compact && (

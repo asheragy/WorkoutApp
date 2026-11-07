@@ -1,12 +1,12 @@
 import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import {
-  View,
+  Alert,
   Button,
   ScrollView,
   StyleSheet,
   Text,
-  Alert,
+  View,
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Lift } from '../core/types/workout';
@@ -23,6 +23,7 @@ import { MaterialHeaderButton } from '../components/Common.tsx';
 import { AppState } from '../state/store.ts';
 import WorkoutRepository from '../repository/WorkoutRepository.ts';
 import LiftUtils from '../core/utils/LiftUtils.ts';
+import { LiftType } from '../core/types/types.ts';
 
 type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 
@@ -39,6 +40,11 @@ export default function LiftEditScreen({ route, navigation }: Props) {
 
   useEffect(() => {
     navigation.setOptions({ title: displayName(defs, lift.id) });
+    const def = defs[lift.id];
+    if (def)
+      setShowPlates(
+        def.type == LiftType.MachinePlateDouble || (def.factor ?? 0) > 0,
+      );
   }, [defs, lift.id, navigation]);
 
   React.useLayoutEffect(() => {

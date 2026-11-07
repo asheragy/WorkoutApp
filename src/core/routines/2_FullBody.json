@@ -1,0 +1,248 @@
+{
+  "version": 1,
+  "routine": {
+    "id": "9e741e04-0dd4-45b2-b0bf-ee0e06d3cde3",
+    "title": "2-day Full Body"
+  },
+  "workouts": [
+    {
+      "name": "Day 1",
+      "routineId": "",
+      "items": [
+        {
+          "kind": "oneOf",
+          "instanceId": "a049c192-2af7-4182-be7f-d66d176535cf",
+          "lifts": [
+            {
+              "id": "legPress",
+              "instanceId": "ee1f7eea-1b0f-47be-aff0-30af2c327f8f",
+              "sets": [
+                {
+                  "weight": 90,
+                  "reps": 10
+                },
+                {
+                  "weight": 90,
+                  "reps": 10
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "legPress_stack",
+              "instanceId": "cd77ba8c-c6d0-4b33-ad5d-013f6709f3cd",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "1e671ede-8f5a-45ed-9754-c29ea6faba63",
+          "lifts": [
+            {
+              "id": "deadlift_barbell",
+              "instanceId": "58dd0779-921e-4ad1-9177-b71e05e4edb0",
+              "sets": [
+                {
+                  "weight": 105,
+                  "reps": 5
+                },
+                {
+                  "weight": 95,
+                  "reps": 10
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "rdl_barbell",
+              "instanceId": "5ac8f05d-e4f4-49b5-8839-1332b74b39df",
+              "sets": [
+                {
+                  "weight": 25,
+                  "reps": 8
+                },
+                {
+                  "weight": 25,
+                  "reps": 8
+                }
+              ],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "ac4fa818-ba7c-4189-bd65-36871114fead",
+          "lifts": [
+            {
+              "id": "bench_barbell",
+              "instanceId": "ee558b31-1e44-408d-b6d0-1240005c3be3",
+              "sets": [
+                {
+                  "weight": 95,
+                  "reps": 3
+                },
+                {
+                  "weight": 85,
+                  "reps": 5
+                },
+                {
+                  "weight": 75,
+                  "reps": 8
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "tricep_machine",
+              "instanceId": "1801f867-6def-4308-acb6-b6f8e1a6a274",
+              "sets": [],
+              "goals": []
+            },
+            {
+              "id": "tricep_rope",
+              "instanceId": "163ae546-d239-421d-ac1e-73b84417dd0c",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "id": "pulldown_cable",
+          "instanceId": "249b507e-8329-46a6-86ed-b5f8f854d3f5",
+          "sets": [],
+          "goals": []
+        },
+        {
+          "id": "pulldown_plateMachine",
+          "instanceId": "d526dab8-1299-46fc-a744-d14f1e2a03f9",
+          "sets": [],
+          "goals": []
+        },
+        {
+          "id": "pulldown_machine",
+          "instanceId": "ea8b4551-3028-44ce-bc79-15a6bf2b26bf",
+          "sets": [],
+          "goals": []
+        }
+      ]
+    },
+    {
+      "name": "Day 2",
+      "routineId": "",
+      "items": [
+        {
+          "kind": "oneOf",
+          "instanceId": "a74ddab2-5c09-47c2-964e-d0c5ac29991b",
+          "lifts": [
+            {
+              "id": "squat_barbell",
+              "instanceId": "6e53663c-ca86-4f0c-9dc6-ba920796bdbc",
+              "sets": [
+                {
+                  "weight": 95,
+                  "reps": 5
+                },
+                {
+                  "weight": 95,
+                  "reps": 5
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "lunge",
+              "instanceId": "07ae2599-d690-423b-af6f-c81a800c3cff",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "d7cec8e2-6fdb-4409-88a8-9fc52f6b0eeb",
+          "lifts": [
+            {
+              "id": "hipThrust",
+              "instanceId": "5b39c3a2-b65b-43fb-b70c-3da1a8dfd0a9",
+              "sets": [
+                {
+                  "weight": 45,
+                  "reps": 5
+                },
+                {
+                  "weight": 35,
+                  "reps": 10
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "hipAbduction",
+              "instanceId": "c7db4a01-a0f1-4947-8684-38fc32efa4a3",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "b03fc593-4c33-4699-bfe0-37737251b5c7",
+          "lifts": [
+            {
+              "id": "inclinePress_barbell",
+              "instanceId": "4e9ba0b3-aef6-4182-85fa-8ff98e4e831c",
+              "sets": [
+                {
+                  "weight": 85,
+                  "reps": 3
+                },
+                {
+                  "weight": 75,
+                  "reps": 5
+                },
+                {
+                  "weight": 65,
+                  "reps": 10
+                }
+              ],
+              "goals": []
+            },
+            {
+              "id": "ohp_dumbbell",
+              "instanceId": "a32d3e6a-e67f-413e-abbf-46da34082d00",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        },
+        {
+          "kind": "oneOf",
+          "instanceId": "c5a44905-38d5-465a-b2b5-537f89b34aaa",
+          "lifts": [
+            {
+              "id": "row_cable",
+              "instanceId": "490fd0c0-0c13-4a9b-b2eb-3a2dbb7b4eeb",
+              "sets": [],
+              "goals": []
+            },
+            {
+              "id": "row_dumbbell",
+              "instanceId": "aa4f2e66-49df-4e10-9b4f-4b1dba6dfd49",
+              "sets": [],
+              "goals": []
+            },
+            {
+              "id": "row_machine",
+              "instanceId": "18ddc11f-ec37-41d4-8176-fc7cdc4aebb1",
+              "sets": [],
+              "goals": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
