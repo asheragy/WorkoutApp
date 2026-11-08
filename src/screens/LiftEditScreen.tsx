@@ -43,7 +43,7 @@ export default function LiftEditScreen({ route, navigation }: Props) {
     const def = defs[lift.id];
     if (def)
       setShowPlates(
-        def.type == LiftType.MachinePlateDouble || (def.factor ?? 0) > 0,
+        def.type == LiftType.MachinePlateDouble || (def.baseWeight ?? 0) > 0,
       );
   }, [defs, lift.id, navigation]);
 

@@ -194,14 +194,18 @@ export function PersistedSetRow(props: {
               justifyContent: 'center',
             }}
           >
-            <NumberControl
-              disabled={props.set.completed}
-              precision={0}
-              value={props.set.reps}
-              onChange={newRepsValue => update(props.set.weight, newRepsValue)}
-              decrementBy={() => 1}
-              incrementBy={() => 1}
-            ></NumberControl>
+            <View>
+              <NumberControl
+                disabled={props.set.completed}
+                precision={0}
+                value={props.set.reps}
+                onChange={newRepsValue =>
+                  update(props.set.weight, newRepsValue)
+                }
+                decrementBy={() => 1}
+                incrementBy={() => 1}
+              ></NumberControl>
+            </View>
           </View>
           <View
             style={{
@@ -229,6 +233,7 @@ export function PersistedSetRow(props: {
               width: Widths[5],
               flexDirection: 'row',
               justifyContent: 'flex-end',
+              alignItems: 'center',
             }}
           >
             {props.showCompleteCheckbox && (

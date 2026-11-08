@@ -40,7 +40,7 @@ const { routine, workouts }: RoutineTemplate = JSON.parse(
 );
 
 workouts.forEach(wo => {
-  const sets = SetUtils.getWorkingSets2(defs, [wo]).filter(
+  const sets = SetUtils.getWorkingSets(defs, [wo]).filter(
     x => x.group == 'Total',
   )[0].sets;
   console.log(wo.name + ' (' + sets + ')');
@@ -63,7 +63,7 @@ workouts.forEach(wo => {
 });
 
 const interval = 4.5;
-const entries = SetUtils.getWorkingSets2(defs, workouts);
+const entries = SetUtils.getWorkingSets(defs, workouts);
 const entriesNormalized = entries.map(entry => ({
   group: entry.group,
   sets: Math.round(10 * entry.sets * (7 / interval)) / 10,

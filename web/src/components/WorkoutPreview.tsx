@@ -1,10 +1,9 @@
 import { Fragment } from 'react';
-import { WorkoutTemplate } from '@shared/types/template.ts';
-import { Lift, isLiftGroup } from '@shared/types/workout.ts';
+import { Lift, isLiftGroup, Workout } from '@shared/types/workout.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 
 type Props = {
-  workout: WorkoutTemplate;
+  workout: Workout;
 };
 
 const nameStyle = { textAlign: 'left' as const, padding: '2px 8px 2px 0' };

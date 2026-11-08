@@ -1,18 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { WorkoutTemplate } from '@shared/types/template.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import TemplateRepository from '../store/TemplateRepository.ts';
 import { settings } from '../store/Settings.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
 import Page from '../components/Page.tsx';
-import { isLiftGroup } from '@shared/types/workout.ts';
+import { isLiftGroup, Workout } from '@shared/types/workout.ts';
 
 type GoalRow = { id: string; name: string; percent: number };
 
 // Simplified version of the phone app's calcWorkoutGoals: one row per lift with a goal,
 // averaged when the lift appears in more than one workout. No muscle group rows.
-export function calcGoals(workouts: WorkoutTemplate[]): GoalRow[] {
+export function calcGoals(workouts: Workout[]): GoalRow[] {
   const percents = new Map<string, number[]>();
 
   workouts

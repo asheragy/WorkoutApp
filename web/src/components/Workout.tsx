@@ -5,7 +5,6 @@ import {
   DraggableProvidedDragHandleProps,
   Droppable,
 } from '@hello-pangea/dnd';
-import { WorkoutTemplate } from '@shared/types/template.ts';
 import Lift from './Lift.tsx';
 import LiftGroup from './LiftGroup.tsx';
 import LiftPicker from './LiftPicker.tsx';
@@ -13,7 +12,12 @@ import LiftUtils from '@shared/utils/LiftUtils.ts';
 import WorkoutPreview from './WorkoutPreview.tsx';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import { SystemLiftDefs as liftDefs } from '@shared/LiftDatabase.ts';
-import { isLiftGroup, Lift as LiftType, WorkoutItem } from '@shared/types/workout.ts';
+import {
+  isLiftGroup,
+  Lift as LiftType,
+  Workout as WorkoutTemplate,
+  WorkoutItem,
+} from '@shared/types/workout.ts';
 
 // Droppable type for the workout's top-level item list; see LiftGroup for the
 // nested one.
@@ -61,9 +65,8 @@ export default function Workout({
 
   // Same number the app's Home screen shows: working sets split across group members.
   const totalSets = SetUtils.formatSetCount(
-    SetUtils.getWorkingSets2(liftDefs, [workout]).find(
-      x => x.group === 'Total',
-    )!.sets,
+    SetUtils.getWorkingSets(liftDefs, [workout]).find(x => x.group === 'Total')!
+      .sets,
   );
 
   const toggle = (
@@ -196,7 +199,9 @@ export default function Workout({
                       {renderItem(
                         item,
                         i,
-                        isLiftGroup(item) ? provided.dragHandleProps : undefined,
+                        isLiftGroup(item)
+                          ? provided.dragHandleProps
+                          : undefined,
                       )}
                     </div>
                   )}
