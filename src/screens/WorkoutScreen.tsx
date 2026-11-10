@@ -5,6 +5,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
@@ -146,23 +147,33 @@ export function WorkoutScreen({ route, navigation }: Props) {
                   lift: lift,
                 })
               }
+              onLongPress={lift =>
+                navigation.navigate('LiftHistory', { liftId: lift.id })
+              }
             />
           );
 
         return (
-          <LiftItem
-            lift={item}
-            def={defs[item.id]}
-            settings={settings}
-            onEdit={() =>
+          <TouchableOpacity
+            onPress={() => {
               navigation.navigate('LiftEdit', {
                 workoutId: route.params.workoutId,
                 lift: item,
-              })
+              });
+            }}
+            onLongPress={() =>
+              navigation.navigate('LiftHistory', { liftId: item.id })
             }
-            overrideComplete={false}
             key={item.instanceId}
-          ></LiftItem>
+          >
+            <LiftItem
+              lift={item}
+              def={defs[item.id]}
+              settings={settings}
+              onEdit={() => console.log('unused')}
+              overrideComplete={false}
+            ></LiftItem>
+          </TouchableOpacity>
         );
       })}
 
@@ -176,6 +187,7 @@ export function WorkoutScreen({ route, navigation }: Props) {
 function GroupItem(props: {
   group: LiftGroup;
   onEditLift: (lift: Lift) => void;
+  onLongPress: (lift: Lift) => void;
 }) {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings = useSelector((store: AppState) => store.settings);
@@ -196,16 +208,21 @@ function GroupItem(props: {
     >
       {props.group.lifts.map(lift => {
         return (
-          <LiftItem
-            lift={lift}
-            def={defs[lift.id]}
-            settings={settings}
-            onEdit={() => props.onEditLift(lift)}
-            overrideComplete={
-              anyCompleted && lift.sets.every(set => !set.completed)
-            }
+          <TouchableOpacity
             key={lift.instanceId}
-          ></LiftItem>
+            onPress={() => props.onEditLift(lift)}
+            onLongPress={() => props.onLongPress(lift)}
+          >
+            <LiftItem
+              lift={lift}
+              def={defs[lift.id]}
+              settings={settings}
+              onEdit={() => console.log('unused')}
+              overrideComplete={
+                anyCompleted && lift.sets.every(set => !set.completed)
+              }
+            ></LiftItem>
+          </TouchableOpacity>
         );
       })}
     </View>

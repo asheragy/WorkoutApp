@@ -231,7 +231,7 @@ test('plate calculator', () => {
   const def = SystemLiftDefs[Lifts.deadlift_barbell.id];
   expect(SetUtils.calcPlatesStr(def, 135)).toEqual('|45|');
   expect(SetUtils.calcPlatesStr(def, 405)).toEqual('|45|45|45|45|');
-  expect(SetUtils.calcPlatesStr(def, 130)).toEqual('|25|10|5|2.5|');
+  expect(SetUtils.calcPlatesStr(def, 130)).toEqual('|35|5|2.5|');
   expect(SetUtils.calcPlatesStr(def, 175)).toEqual('|45|10|10|');
 
   // Special bars
@@ -258,7 +258,7 @@ test('plate calculator - baseWeight override', () => {
     baseWeight: 55,
   };
 
-  expect(SetUtils.calcPlatesStr(def, 135)).toEqual('|25|10|5|');
+  expect(SetUtils.calcPlatesStr(def, 135)).toEqual('|35|5|');
   expect(SetUtils.calcPlatesStr(def, 145)).toEqual('|45|');
 
   def = {
