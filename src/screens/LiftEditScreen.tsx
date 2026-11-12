@@ -75,6 +75,14 @@ export default function LiftEditScreen({ route, navigation }: Props) {
               title={showPlates ? 'Hide Plates' : 'Show Plates'}
               onPress={() => onTogglePlates()}
             />
+            <HiddenItem
+              title="Add Goal"
+              onPress={() => setLift(LiftUtils.addGoal(lift, true))}
+            />
+            <HiddenItem
+              title="Add Goal2"
+              onPress={() => setLift(LiftUtils.addGoal(lift, false))}
+            />
           </OverflowMenu>
         </HeaderButtons>
       ),

@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Image, Text, TextInput, View } from 'react-native';
+import { Button, Image, Pressable, Text, TextInput, View } from 'react-native';
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { useTheme } from '@react-navigation/native';
 import { Lift, LiftSet } from '../../core/types/workout';
 import { Style_LiftText } from '../Common';
@@ -15,6 +16,7 @@ import {
 } from 'react-native-popup-menu';
 import { PersistedSetRow } from './PersistedSetRow';
 import { PersistedSetHeader } from './PersistedSetHeader';
+import { Widths } from './Widths';
 import SetUtils from '../../core/utils/SetUtils.ts';
 import LiftUtils from '../../core/utils/LiftUtils.ts';
 
@@ -67,30 +69,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
   }
 
   function addGoal(primary: boolean) {
-    let goal: LiftSet = { weight: 0, reps: 0 };
-    if (primary && props.lift.goals && props.lift.goals?.length > 0)
-      goal = { ...props.lift.goals[props.lift.goals.length - 1] };
-    else if (!primary && props.lift.goals2 && props.lift.goals2?.length > 0)
-      goal = { ...props.lift.goals2[props.lift.goals2.length - 1] };
-    else if (props.lift.sets.length > 0) {
-      goal = { ...props.lift.sets[props.lift.sets.length - 1] };
-      // Clears all other fields
-      goal = {
-        weight: goal.weight,
-        reps: goal.reps,
-      };
-    }
-
-    const updatedLift = getUpdatedLift();
-    if (primary) {
-      if (props.lift.goals) updatedLift.goals = [...props.lift.goals, goal];
-      else updatedLift.goals = [goal];
-    } else {
-      if (props.lift.goals2) updatedLift.goals2 = [...props.lift.goals2, goal];
-      else updatedLift.goals2 = [goal];
-    }
-
-    props.onChange(updatedLift);
+    props.onChange(LiftUtils.addGoal(props.lift, primary));
   }
 
   function onRemoveGoal(primary: boolean, index: number) {
@@ -241,15 +220,31 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               top1RM={top1RM}
             ></PersistedSetRow>
           ))}
+
+          <View style={{ flexDirection: 'row', paddingHorizontal: 2 }}>
+            <Pressable
+              onPress={addSet}
+              hitSlop={8}
+              style={{
+                width: Widths[0],
+                alignItems: 'center',
+                paddingVertical: 6,
+              }}
+            >
+              <MaterialDesignIcons
+                name="plus-circle-outline"
+                size={24}
+                color={colors.primary}
+              />
+            </Pressable>
+          </View>
           <View
             style={{
               margin: 10,
               justifyContent: 'center',
               alignItems: 'center',
             }}
-          >
-            <Button title="Add Set" onPress={addSet}></Button>
-          </View>
+          ></View>
           {goalPercent && (
             <Text style={{ color: colors.text, textAlign: 'center' }}>
               {(goalPercent * 100).toFixed(2) + '%'}
@@ -268,15 +263,17 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               onChange={set => onGoalChange(true, index, set)}
             ></PersistedSetRow>
           ))}
-          <View
-            style={{
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Button title="Add Goal" onPress={() => addGoal(true)}></Button>
-          </View>
+          {(props.lift.goals?.length ?? 0) > 0 && (
+            <View
+              style={{
+                margin: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Button title="Add Goal" onPress={() => addGoal(true)}></Button>
+            </View>
+          )}
 
           {goal2Percent && (
             <Text style={{ color: colors.text, textAlign: 'center' }}>
@@ -296,15 +293,17 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
               onChange={set => onGoalChange(false, index, set)}
             ></PersistedSetRow>
           ))}
-          <View
-            style={{
-              margin: 10,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Button title="Add Goal2" onPress={() => addGoal(false)}></Button>
-          </View>
+          {(props.lift.goals2?.length ?? 0) > 0 && (
+            <View
+              style={{
+                margin: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Button title="Add Goal2" onPress={() => addGoal(false)}></Button>
+            </View>
+          )}
         </>
       )}
     </View>

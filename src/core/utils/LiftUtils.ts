@@ -3,6 +3,7 @@ import {
   isLiftGroup,
   Lift,
   LiftGroup,
+  LiftSet,
   WorkoutItem,
 } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
@@ -22,6 +23,24 @@ function collapse(group: LiftGroup): WorkoutItem {
 }
 
 const LiftUtils = {
+  // Appends a goal to goals (primary) or goals2, copying the last goal in that
+  // group, else the last set with only weight/reps kept. Returns a new lift.
+  addGoal(lift: Lift, primary: boolean): Lift {
+    const existing = primary ? lift.goals : lift.goals2;
+    let goal: LiftSet = { weight: 0, reps: 0 };
+    if (existing && existing.length > 0)
+      goal = { ...existing[existing.length - 1] };
+    else if (lift.sets.length > 0) {
+      const last = lift.sets[lift.sets.length - 1];
+      goal = { weight: last.weight, reps: last.reps };
+    }
+
+    const updated = [...(existing ?? []), goal];
+    return primary
+      ? { ...lift, goals: updated }
+      : { ...lift, goals2: updated };
+  },
+
   // Flat list of every lift in order, groups expanded in place. No
   // `alternate` flags are added; use this wherever the grouping is irrelevant
   // (history, goals, lookups by instanceId).
