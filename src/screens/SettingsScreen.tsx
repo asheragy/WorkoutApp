@@ -5,6 +5,12 @@ import LiftDefRepository from '../repository/LiftDefRepository';
 import { LiftType, MuscleGroup } from '../core/types/types.ts';
 import SettingsRepository from '../repository/SettingsRepository.ts';
 import { getDb } from '../repository/db.ts';
+import WorkoutRepository from '../repository/WorkoutRepository.ts';
+import { PreLoadedRoutines } from '../repository/RoutineRepository.ts';
+import {
+  cleanWorkouts,
+  ROUTINE_FILE_VERSION,
+} from '../core/utils/RoutineUtils.ts';
 
 const BACKUP_DIR = `${RNFS.ExternalStorageDirectoryPath}/Documents/WorkoutApp`;
 
@@ -63,11 +69,56 @@ export function SettingsScreen() {
     }
   }
 
+  // Writes the current routine, as it is on this phone, in the same format as
+  // the files in src/core/routines.
+  async function onExportRoutine() {
+    const filename = `routine_${timestamp()}.json`;
+    const destPath = `${BACKUP_DIR}/${filename}`;
+
+    try {
+      const settings = await SettingsRepository.get();
+      const workouts = await WorkoutRepository.getRoutine(settings.routine);
+      // Title and description are not stored on the phone; they come from the
+      // bundled routine this one was imported from, if any.
+      const preloaded = PreLoadedRoutines.find(
+        x => x.routine.id == settings.routine,
+      )?.routine;
+
+      const file = {
+        version: ROUTINE_FILE_VERSION,
+        routine: {
+          id: settings.routine,
+          title: preloaded?.title ?? settings.routineName ?? 'Default',
+          ...(preloaded?.description && {
+            description: preloaded.description,
+          }),
+        },
+        workouts: cleanWorkouts(workouts),
+      };
+
+      await RNFS.mkdir(BACKUP_DIR);
+      await RNFS.writeFile(
+        destPath,
+        JSON.stringify(file, null, 2) + '\n',
+        'utf8',
+      );
+
+      ToastAndroid.show(
+        'Saved to Documents/WorkoutApp/' + filename,
+        ToastAndroid.LONG,
+      );
+    } catch (e) {
+      console.error('Export failed', e);
+      Alert.alert('Export failed', e instanceof Error ? e.message : String(e));
+    }
+  }
+
   return (
     <View>
       <Button title="Log Defs" onPress={logLiftDefs}></Button>
       <Button title="Log Settings" onPress={logSettings}></Button>
       <Button title="Backup Database" onPress={onBackup}></Button>
+      <Button title="Export Routine" onPress={onExportRoutine}></Button>
     </View>
   );
 }

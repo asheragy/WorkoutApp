@@ -1,5 +1,5 @@
 import uuid from 'react-native-uuid';
-import { Routine } from '@shared/types/workout.ts';
+import { isLiftGroup, Lift, Routine } from '@shared/types/workout.ts';
 import { RoutineTemplate } from '@shared/types/template.ts';
 import { RoutineFile } from './RoutineFile.ts';
 
@@ -46,6 +46,37 @@ export default class TemplateRepository {
   static create(title: string): string {
     const id = uuid.v4();
     entries.set(id, { template: { routine: { id, title }, workouts: [] } });
+    notify();
+    return id;
+  }
+
+  // Adds a routine read from a file outside src/core/routines as a new
+  // routine: it gets a fresh routine id and fresh instanceIds, so it never
+  // collides with the routine it was exported from, and like create() it has
+  // no file until the first Save. Returns its id.
+  static import(template: RoutineTemplate, title: string): string {
+    const id = uuid.v4();
+    const freshLift = (lift: Lift): Lift => ({
+      ...lift,
+      instanceId: uuid.v4(),
+    });
+    entries.set(id, {
+      template: {
+        routine: { ...template.routine, id, title },
+        workouts: template.workouts.map(w => ({
+          ...w,
+          items: w.items.map(item =>
+            isLiftGroup(item)
+              ? {
+                  ...item,
+                  instanceId: uuid.v4(),
+                  lifts: item.lifts.map(freshLift),
+                }
+              : freshLift(item),
+          ),
+        })),
+      },
+    });
     notify();
     return id;
   }
