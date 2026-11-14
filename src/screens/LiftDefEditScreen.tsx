@@ -13,7 +13,7 @@ import LiftDefRepository from '../repository/LiftDefRepository';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@react-navigation/native';
 import { PersistedSetRow } from '../components/EditableLiftItem/PersistedSetRow.tsx';
-import { LiftSet } from '../core/types/workout.ts';
+import { WeightReps } from '../core/types/workout.ts';
 import { AppState } from '../state/store.ts';
 import { NumberControl } from '../components/NumberControl.tsx';
 
@@ -84,7 +84,7 @@ export function LiftDefEditScreen({ route, navigation }: Props) {
     });
   }
 
-  function changeGoal(set: LiftSet) {
+  function changeGoal(set: WeightReps) {
     setDef({
       ...def,
       goal: { weight: set.weight, reps: set.reps },

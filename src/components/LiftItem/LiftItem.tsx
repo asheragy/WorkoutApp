@@ -1,13 +1,6 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import {
-  Image,
-  StyleProp,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { StyleProp, Text, TextStyle, View } from 'react-native';
 import { Lift } from '../../core/types/workout';
 import { Style_LiftText } from '../Common';
 import { ReadOnlySetTable } from './ReadOnlySetTable';
@@ -45,10 +38,19 @@ export default function LiftItem(props: {
         style={{
           marginVertical: 8,
           flexDirection: 'row',
+          alignItems: 'center',
         }}
       >
         <View style={{ width: '20%' }}></View>
-        <Text style={[Style_LiftText, headerText, { width: '60%' }]}>
+        <Text
+          style={[
+            Style_LiftText,
+            headerText,
+            {
+              width: '60%',
+            },
+          ]}
+        >
           {getTitle(props.def, props.lift, props.settings)}
         </Text>
         <View
@@ -58,11 +60,7 @@ export default function LiftItem(props: {
             alignContent: 'center',
             justifyContent: 'center',
           }}
-        >
-          <TouchableOpacity onPress={props.onEdit}>
-            <Image style={{}} source={require('../../icons/edit.png')} />
-          </TouchableOpacity>
-        </View>
+        ></View>
       </View>
       {!completed && (
         <ReadOnlySetTable lift={props.lift} def={props.def}></ReadOnlySetTable>

@@ -1,4 +1,5 @@
-import { LiftDef, LiftType, MuscleGroup, PersistedSet } from './types/types.ts';
+import { LiftDef, LiftType, MuscleGroup } from './types/types.ts';
+import { WeightReps } from './types/workout.ts';
 
 // A LiftDef before its displayName has been derived, see assignDisplayNames
 export type LiftDefBase = Omit<LiftDef, 'displayName'>;
@@ -130,7 +131,7 @@ export const Lifts = createDictionary({
   pullover_dumbbell: { name: 'Pullovers', type: LiftType.Dumbbell, muscleGroups: [MuscleGroup.Other] },
 } as const);
 
-const goals: Record<string, PersistedSet> = {
+const goals: Record<string, WeightReps> = {
   [Lifts.bench_dumbbell.id]: {
     weight: 100,
     reps: 10,

@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { Lift as LiftType, LiftSet } from '@shared/types/workout.ts';
+import {
+  Lift as LiftType,
+  LiftSet,
+  WeightReps,
+} from '@shared/types/workout.ts';
 import SetUtils from '@shared/utils/SetUtils.ts';
 import LiftUtils from '@shared/utils/LiftUtils.ts';
 import Set from './Set.tsx';
@@ -24,7 +28,11 @@ const liftOptions = Object.values(liftDefs)
   .map(def => ({ id: def.id, label: def.displayName }))
   .sort((a, b) => a.label.localeCompare(b.label));
 
-const headerStyle = { fontWeight: 'bold', textAlign: 'center' as const, fontSize: 14 };
+const headerStyle = {
+  fontWeight: 'bold',
+  textAlign: 'center' as const,
+  fontSize: 14,
+};
 const centerStyle = { textAlign: 'center' as const };
 // Fixed so the card width doesn't change between modes; the dropdown shrinks instead.
 const LIFT_WIDTH = 340;
@@ -38,7 +46,9 @@ export default function Lift({
   onDelete,
 }: Props) {
   const def = liftDefs[lift.id];
-  const setMaxes = lift.sets.filter(x => !x.warmup).map(x => SetUtils.calculate1RM(settings, def, x));
+  const setMaxes = lift.sets
+    .filter(x => !x.warmup)
+    .map(x => SetUtils.calculate1RM(settings, def, x));
   const top1RM = setMaxes.length > 0 ? Math.max(...setMaxes) : undefined;
   const goalPercent = LiftUtils.goalPercent(settings, def, lift);
   // The note box is hidden until the pencil is pressed, unless a note exists.
@@ -47,11 +57,17 @@ export default function Lift({
   const showNote = noteRevealed || lift.note !== undefined;
 
   function onSetChange(index: number, updated: LiftSet) {
-    onChange({ ...lift, sets: lift.sets.map((x, i) => (i === index ? updated : x)) });
+    onChange({
+      ...lift,
+      sets: lift.sets.map((x, i) => (i === index ? updated : x)),
+    });
   }
 
-  function onGoalChange(index: number, updated: LiftSet) {
-    onChange({ ...lift, goals: lift.goals!.map((x, i) => (i === index ? updated : x)) });
+  function onGoalChange(index: number, updated: WeightReps) {
+    onChange({
+      ...lift,
+      goals: lift.goals!.map((x, i) => (i === index ? updated : x)),
+    });
   }
 
   function onRemoveSet(index: number) {
@@ -66,14 +82,18 @@ export default function Lift({
   function addSet() {
     let set: LiftSet = { weight: 0, reps: 0 };
     if (lift.sets.length > 0) {
-      set = { ...lift.sets[lift.sets.length - 1], warmup: undefined, completed: undefined };
+      set = {
+        ...lift.sets[lift.sets.length - 1],
+        warmup: undefined,
+        completed: undefined,
+      };
     }
     onChange({ ...lift, sets: [...lift.sets, set] });
   }
 
   // Mirrors EditableLiftItem.addGoal: copy the last goal, else weight/reps of the last set.
   function addGoal() {
-    let goal: LiftSet = { weight: 0, reps: 0 };
+    let goal: WeightReps = { weight: 0, reps: 0 };
     if (lift.goals && lift.goals.length > 0) {
       goal = { ...lift.goals[lift.goals.length - 1] };
     } else if (lift.sets.length > 0) {
@@ -94,7 +114,8 @@ export default function Lift({
         border: '1px solid #333',
         borderRadius: 4,
         padding: 8,
-      }}>
+      }}
+    >
       <div style={{ display: 'flex', gap: 4 }}>
         {/* Plain text in compact mode: the lift can't be changed there, and a
             <select> (even disabled) swallows the pointer events that start a
@@ -108,14 +129,16 @@ export default function Lift({
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-            }}>
+            }}
+          >
             {def.displayName}
           </span>
         ) : (
           <select
             style={{ flex: 1, minWidth: 0 }}
             value={lift.id}
-            onChange={e => onChange({ ...lift, id: e.target.value })}>
+            onChange={e => onChange({ ...lift, id: e.target.value })}
+          >
             {liftOptions.map(opt => (
               <option key={opt.id} value={opt.id}>
                 {opt.label}
@@ -129,7 +152,8 @@ export default function Lift({
             onClick={() => setNoteRevealed(true)}
             disabled={showNote}
             title="Add note"
-            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}
+          >
             ✎
           </button>
         )}
@@ -138,7 +162,8 @@ export default function Lift({
             type="button"
             onClick={onRemoveFromGroup}
             title="Remove from group"
-            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}
+          >
             ⏏
           </button>
         )}
@@ -146,11 +171,14 @@ export default function Lift({
           <button
             type="button"
             onClick={() => {
-              if (window.confirm(`Remove ${def.displayName} from this workout?`))
+              if (
+                window.confirm(`Remove ${def.displayName} from this workout?`)
+              )
                 onDelete();
             }}
             title="Remove lift"
-            style={{ width: 28, padding: 0, flex: '0 0 auto' }}>
+            style={{ width: 28, padding: 0, flex: '0 0 auto' }}
+          >
             ✕
           </button>
         )}

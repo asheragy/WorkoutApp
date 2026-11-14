@@ -1,8 +1,9 @@
-import { LiftDef, PersistedSet } from '../core/types/types';
-import { LiftSet, Workout } from '../core/types/workout';
+import { LiftDef } from '../core/types/types';
+import { LiftSet, PersistedSet, Workout } from '../core/types/workout';
 import { db, LiftHistoryTableSchema } from './db.ts';
 import { Scalar } from '@op-engineering/op-sqlite';
 import LiftUtils from '../core/utils/LiftUtils.ts';
+import SetUtils from '../core/utils/SetUtils.ts';
 
 export type LiftHistory = {
   timestamp: Date;
@@ -127,7 +128,7 @@ export default class LiftHistoryRepository {
     workoutId: string,
     position: number,
   ) {
-    const persistedSets = LiftHistoryRepository.setsToPersisted(sets, def);
+    const persistedSets = LiftHistoryRepository.setsToPersisted(sets);
 
     await this.addHistorySql(
       def.id,
@@ -138,23 +139,12 @@ export default class LiftHistoryRepository {
     );
   }
 
-  private static setsToPersisted(
-    sets: LiftSet[],
-    def: LiftDef,
-  ): PersistedSet[] {
+  private static setsToPersisted(sets: LiftSet[]): PersistedSet[] {
     const filtered = sets.filter(x => x.completed);
 
     if (sets.length != filtered.length) console.log('Filtered out lifts');
 
-    return filtered.map(set => {
-      const res: PersistedSet = {
-        weight: set.weight,
-        reps: set.reps,
-        warmup: set.warmup || false,
-      };
-
-      return res;
-    });
+    return SetUtils.setsToPersisted(filtered);
   }
 
   private static async addHistorySql(

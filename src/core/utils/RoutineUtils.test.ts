@@ -18,8 +18,8 @@ const workouts: Workout[] = [
           { weight: 135, reps: 5, warmup: false, completed: true },
           { weight: 135, reps: 5, completed: false },
         ],
-        goals: [{ weight: 140, reps: 5, completed: true }],
-        goals2: [{ weight: 150, reps: 5, completed: true }],
+        goals: [{ weight: 140, reps: 5 }],
+        goals2: [{ weight: 150, reps: 5 }],
       },
       {
         kind: 'oneOf',

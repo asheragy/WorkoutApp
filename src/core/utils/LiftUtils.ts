@@ -3,7 +3,7 @@ import {
   isLiftGroup,
   Lift,
   LiftGroup,
-  LiftSet,
+  WeightReps,
   WorkoutItem,
 } from '../types/workout.ts';
 import { GlobalSettings, LiftDef } from '../types/types.ts';
@@ -27,7 +27,7 @@ const LiftUtils = {
   // group, else the last set with only weight/reps kept. Returns a new lift.
   addGoal(lift: Lift, primary: boolean): Lift {
     const existing = primary ? lift.goals : lift.goals2;
-    let goal: LiftSet = { weight: 0, reps: 0 };
+    let goal: WeightReps = { weight: 0, reps: 0 };
     if (existing && existing.length > 0)
       goal = { ...existing[existing.length - 1] };
     else if (lift.sets.length > 0) {
@@ -36,9 +36,7 @@ const LiftUtils = {
     }
 
     const updated = [...(existing ?? []), goal];
-    return primary
-      ? { ...lift, goals: updated }
-      : { ...lift, goals2: updated };
+    return primary ? { ...lift, goals: updated } : { ...lift, goals2: updated };
   },
 
   // Flat list of every lift in order, groups expanded in place. No
@@ -77,14 +75,9 @@ const LiftUtils = {
     if (def.id != lift.id) throw new Error('Def must match lift Id');
 
     if (lift.sets.length > 0 && lift.goals && lift.goals.length > 0) {
-      const sets = lift.sets
-        .filter(x => !x.warmup)
-        .map(x => SetUtils.setToPersisted(x));
-      const goals = (lift.goals ?? []).map(x => SetUtils.setToPersisted(x));
-
       const percent =
-        SetUtils.calculate1RMAverage(settings, def, sets) /
-        SetUtils.calculate1RMAverage(settings, def, goals);
+        SetUtils.calculate1RMAverage(settings, def, lift.sets) /
+        SetUtils.calculate1RMAverage(settings, def, lift.goals);
 
       return percent;
     }
@@ -100,14 +93,9 @@ const LiftUtils = {
     if (def.id != lift.id) throw new Error('Def must match lift Id');
 
     if (lift.sets.length > 0 && lift.goals2 && lift.goals2.length > 0) {
-      const sets = lift.sets
-        .filter(x => !x.warmup)
-        .map(x => SetUtils.setToPersisted(x));
-      const goals = (lift.goals2 ?? []).map(x => SetUtils.setToPersisted(x));
-
       const percent =
-        SetUtils.calculate1RMAverage(settings, def, sets) /
-        SetUtils.calculate1RMAverage(settings, def, goals);
+        SetUtils.calculate1RMAverage(settings, def, lift.sets) /
+        SetUtils.calculate1RMAverage(settings, def, lift.goals2);
 
       return percent * 1.2;
     }
@@ -211,7 +199,11 @@ const LiftUtils = {
       result[index] = { ...group, lifts };
       return result;
     }
-    const [taken, lift] = LiftUtils.takeFromGroup(items, fromGroupId, fromIndex);
+    const [taken, lift] = LiftUtils.takeFromGroup(
+      items,
+      fromGroupId,
+      fromIndex,
+    );
     return LiftUtils.insertIntoGroup(taken, toGroupId, toIndex, lift);
   },
 };

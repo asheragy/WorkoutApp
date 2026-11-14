@@ -5,8 +5,9 @@ import Page from '../components/Page.tsx';
 // Grouped by primary muscle group name, then by display name, both alphabetically.
 const sortedDefs = Object.values(liftDefs).sort(
   (a, b) =>
-    MuscleGroup[a.muscleGroups[0]].localeCompare(MuscleGroup[b.muscleGroups[0]]) ||
-    a.displayName.localeCompare(b.displayName),
+    MuscleGroup[a.muscleGroups[0]].localeCompare(
+      MuscleGroup[b.muscleGroups[0]],
+    ) || a.displayName.localeCompare(b.displayName),
 );
 
 // LiftDef fields in display order. Skips id and system (always true for the system list).
@@ -19,7 +20,10 @@ const COLUMNS: { key: keyof Omit<LiftDef, 'id'>; label: string }[] = [
   { key: 'goal', label: 'Goal' },
 ];
 
-function formatCell(def: LiftDef, key: (typeof COLUMNS)[number]['key']): string {
+function formatCell(
+  def: LiftDef,
+  key: (typeof COLUMNS)[number]['key'],
+): string {
   const value = def[key];
   if (value === undefined) return '';
   switch (key) {
@@ -31,7 +35,7 @@ function formatCell(def: LiftDef, key: (typeof COLUMNS)[number]['key']): string 
       return def.muscleGroups.map(g => MuscleGroup[g]).join(', ');
     case 'goal': {
       const goal = def.goal!;
-      return `${goal.weight} x ${goal.reps}${goal.warmup ? ' (warmup)' : ''}`;
+      return `${goal.weight} x ${goal.reps}`;
     }
     default:
       return String(value);

@@ -4,9 +4,14 @@ import {
   LiftType,
   MuscleGroup,
   NormalizedSet,
-  PersistedSet,
 } from '../types/types.ts';
-import { isLiftGroup, LiftSet, Workout } from '../types/workout.ts';
+import {
+  isLiftGroup,
+  LiftSet,
+  PersistedSet,
+  WeightReps,
+  Workout,
+} from '../types/workout.ts';
 import { Lifts } from '../LiftDatabase.ts';
 
 export type WorkingSets = {
@@ -62,12 +67,15 @@ const SetUtils = {
     return current - step;
   },
 
-  // TODO limited scope and does not account for some things
-  // TODO warmup?
+  setsToPersisted(sets: LiftSet[]): PersistedSet[] {
+    return sets.map(set => this.setToPersisted(set));
+  },
+
   setToPersisted(set: LiftSet): PersistedSet {
     return {
       weight: set.weight,
       reps: set.reps,
+      ...(set.warmup && { warmup: true }),
     };
   },
 
@@ -180,14 +188,14 @@ const SetUtils = {
   calculate1RM(
     settings: Pick<GlobalSettings, 'bodyweight'>,
     def: LiftDef,
-    set: LiftSet | PersistedSet,
+    set: WeightReps,
   ): number {
     let weight = set.weight;
     const reps = set.reps;
     const type = def.type;
 
     if (type == LiftType.Bodyweight) {
-      // TODO special case, bodyweight % should be on lift def, pullups are ~65%
+      // TODO special case, bodyweight % should be on lift def, pullups are ~90%
       if (def.id == Lifts.backExtension.id)
         weight += (settings.bodyweight ?? 0) / 2;
       else weight += settings.bodyweight ?? 0;

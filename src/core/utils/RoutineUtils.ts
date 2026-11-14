@@ -1,7 +1,7 @@
+import SetUtils from './SetUtils.ts';
 import {
   isLiftGroup,
   Lift,
-  LiftSet,
   Workout,
   WorkoutItem,
 } from '../types/workout.ts';
@@ -35,17 +35,13 @@ function cleanLift(lift: Lift): Lift {
   return {
     id: lift.id,
     instanceId: lift.instanceId,
-    sets: lift.sets.map(cleanSet),
-    ...(lift.goals && { goals: lift.goals.map(cleanSet) }),
-    ...(lift.goals2 && { goals2: lift.goals2.map(cleanSet) }),
+    sets: lift.sets.map(SetUtils.setToPersisted),
+    ...(lift.goals && {
+      goals: lift.goals.map(x => ({ weight: x.weight, reps: x.reps })),
+    }),
+    ...(lift.goals2 && {
+      goals2: lift.goals2.map(x => ({ weight: x.weight, reps: x.reps })),
+    }),
     ...(lift.note && { note: lift.note }),
-  };
-}
-
-function cleanSet(set: LiftSet): LiftSet {
-  return {
-    weight: set.weight,
-    reps: set.reps,
-    ...(set.warmup && { warmup: true }),
   };
 }

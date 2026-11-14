@@ -29,15 +29,18 @@ export type Lift = {
   id: string;
   instanceId: string;
   sets: LiftSet[];
-  goals?: LiftSet[];
-  goals2?: LiftSet[];
+  goals?: WeightReps[];
+  goals2?: WeightReps[];
   hide?: boolean;
   note?: string;
 };
 
-export type LiftSet = {
-  weight: number;
-  reps: number;
+export type WeightReps = { weight: number; reps: number };
+
+export type PersistedSet = WeightReps & {
   warmup?: boolean;
+};
+
+export type LiftSet = PersistedSet & {
   completed?: boolean;
 };

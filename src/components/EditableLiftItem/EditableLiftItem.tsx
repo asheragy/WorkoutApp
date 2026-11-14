@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Image, Pressable, Text, TextInput, View } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { useTheme } from '@react-navigation/native';
-import { Lift, LiftSet } from '../../core/types/workout';
+import { Lift, LiftSet, WeightReps } from '../../core/types/workout';
 import { Style_LiftText } from '../Common';
 import { GlobalSettings } from '../../core/types/types';
 import { displayName } from '../../core/LiftDatabase.ts';
@@ -94,11 +94,13 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
     props.onChange(updatedLift);
   }
 
-  function onGoalChange(primary: boolean, index: number, updated: LiftSet) {
+  function onGoalChange(primary: boolean, index: number, updated: WeightReps) {
     const updatedLift = getUpdatedLift();
+    // The row passes a full LiftSet at runtime, keep only the goal fields
+    const goal: WeightReps = { weight: updated.weight, reps: updated.reps };
 
-    if (primary) updatedLift.goals![index] = updated;
-    else updatedLift.goals2![index] = updated;
+    if (primary) updatedLift.goals![index] = goal;
+    else updatedLift.goals2![index] = goal;
     props.onChange(updatedLift);
   }
 

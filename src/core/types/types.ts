@@ -1,4 +1,4 @@
-import { LiftSet } from './workout.ts';
+import { WeightReps } from './workout.ts';
 
 export enum LiftType {
   Barbell = 1,
@@ -33,7 +33,7 @@ export type LiftDef = {
   type: LiftType;
   system?: boolean;
   muscleGroups: ReadonlyArray<MuscleGroup>;
-  goal?: PersistedSet;
+  goal?: WeightReps;
   baseWeight?: number;
   factor?: number;
 };
@@ -56,6 +56,3 @@ export type GlobalSettings = {
   routineName?: string;
   bodyweight?: number;
 };
-
-// Subset of LiftSet, what gets persisted
-export type PersistedSet = Pick<LiftSet, 'weight' | 'reps' | 'warmup'>;
