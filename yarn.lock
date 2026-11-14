@@ -3967,9 +3967,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@op-engineering/op-sqlite@npm:^16.2.0":
-  version: 16.2.0
-  resolution: "@op-engineering/op-sqlite@npm:16.2.0"
+"@op-engineering/op-sqlite@npm:^19.0.5":
+  version: 19.0.5
+  resolution: "@op-engineering/op-sqlite@npm:19.0.5"
   peerDependencies:
     "@sqlite.org/sqlite-wasm": "*"
     react: "*"
@@ -3977,7 +3977,7 @@ __metadata:
   peerDependenciesMeta:
     "@sqlite.org/sqlite-wasm":
       optional: true
-  checksum: 10c0/55fdba005fccb1cd50a17738bed6b32a278173a1ab0c391c3294ce032c36d9936cb1a97ab5333eb40f7480910ce8d783c1028c207e50b0e257393b53311781a8
+  checksum: 10c0/90fefb6411e5c2497cd13205bdde08d529a2ea0ea24c9199463615eb141378edda92f44762bb52707358ca395e346d8f44953d413e5eff46e39b257dfa7e5233
   languageName: node
   linkType: hard
 
@@ -4180,15 +4180,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-vector-icons/common@npm:^13.0.4":
-  version: 13.0.4
-  resolution: "@react-native-vector-icons/common@npm:13.0.4"
+"@react-native-vector-icons/common@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "@react-native-vector-icons/common@npm:14.0.0"
   dependencies:
     find-up: "npm:^8.0.0"
     picocolors: "npm:^1.1.1"
     plist: "npm:^3.1.0"
   peerDependencies:
-    "@react-native-vector-icons/get-image": ^13.0.2
+    "@react-native-vector-icons/get-image": ^14.0.0
     "@react-native/assets-registry": "*"
     expo-font: "*"
     react: "*"
@@ -4202,15 +4202,15 @@ __metadata:
       optional: true
   bin:
     rnvi-update-plist: lib/commonjs/scripts/updatePlist.js
-  checksum: 10c0/34fd2982f263adbb34ba6895f52b2dc6a907ad6f7480a72d71cc9d9113301912e56da124729a7cb7307addf747aaf9ecd0a7301218fa1fd1fd1d5641fb6cff84
+  checksum: 10c0/ac5fbf875a4636079767278fe7dfb01b4d024198ef909dd964b85f7dd411fb4b37bd4747eeeeb09be99579a920557775903a111f43b51c8ad51f216948db4742
   languageName: node
   linkType: hard
 
-"@react-native-vector-icons/material-design-icons@npm:^13.1.5":
-  version: 13.1.5
-  resolution: "@react-native-vector-icons/material-design-icons@npm:13.1.5"
+"@react-native-vector-icons/material-design-icons@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "@react-native-vector-icons/material-design-icons@npm:14.0.0"
   dependencies:
-    "@react-native-vector-icons/common": "npm:^13.0.4"
+    "@react-native-vector-icons/common": "npm:^14.0.0"
   peerDependencies:
     expo: "*"
     react: "*"
@@ -4218,7 +4218,7 @@ __metadata:
   peerDependenciesMeta:
     expo:
       optional: true
-  checksum: 10c0/94f2903eb8b92157abac23e6a659d3b1d3df14fbc34826c87f0edf1ad27a6c4ab05cd67ab83cee2cf6d8b6ac0822055cbf4aa1903e33e95b3988badc8875e6dc
+  checksum: 10c0/7a010467dafee93b044e7a8ab545369cb023751154b40ab31185a7706cfe8690bd0cd3d8024cf2c6a2b2bcd7a44113f88c532da11c2ec5b445c1d26224255764
   languageName: node
   linkType: hard
 
@@ -10824,7 +10824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"paths-js@npm:^0.4.10":
+"paths-js@npm:^0.4.11":
   version: 0.4.11
   resolution: "paths-js@npm:0.4.11"
   checksum: 10c0/4ac4f2ecc3d5a5a3c6e7b6f6e7cfc30857f3055b870e353cbb77c1967dce23812e15c622ed2df1db26edfa2c881f720ec5031d6a1581fdf2b4c168757217f9b7
@@ -10890,13 +10890,6 @@ __metadata:
     base64-js: "npm:^1.5.1"
     xmlbuilder: "npm:^15.1.1"
   checksum: 10c0/db19ba50faafc4103df8e79bcd6b08004a56db2a9dd30b3e5c8b0ef30398ef44344a674e594d012c8fc39e539a2b72cb58c60a76b4b4401cbbc7c8f6b028d93d
-  languageName: node
-  linkType: hard
-
-"point-in-polygon@npm:^1.0.1":
-  version: 1.1.0
-  resolution: "point-in-polygon@npm:1.1.0"
-  checksum: 10c0/de00419585ee25555d97585b7a23eeb2464a87ef29404264bee55654ca2ecab5a5a99d33e689c07d045faf80091e838f44a1fd130bdd6134493df53114947343
   languageName: node
   linkType: hard
 
@@ -11116,17 +11109,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-chart-kit@npm:^6.12.3":
-  version: 6.12.3
-  resolution: "react-native-chart-kit@npm:6.12.3"
+"react-native-chart-kit@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "react-native-chart-kit@npm:7.0.4"
   dependencies:
-    paths-js: "npm:^0.4.10"
-    point-in-polygon: "npm:^1.0.1"
+    paths-js: "npm:^0.4.11"
   peerDependencies:
-    react: "> 16.7.0"
-    react-native: ">= 0.50.0"
-    react-native-svg: "> 6.4.1"
-  checksum: 10c0/34a3b48b82a07e1e236a95bf828850b7058a4ad2829bafa6793f05c9945f405b2a5d74b805a873d5cfe2edae3c0598aa99fe71420a24c9ce6840aa4ccdd9345d
+    react: ">=19.1.0 <20"
+    react-native: ">=0.81 <1"
+    react-native-svg: ">=15.12.1 <16"
+  bin:
+    chart-kit: bin/chart-kit.mjs
+  checksum: 10c0/eda11431302da9dd266a00b093e11edae209924e3e497be306a47381870508edbda8318b283cd7cb6f940736bb00a1e2ca262426e5d871e9fbe3499e6fdd646e
   languageName: node
   linkType: hard
 
@@ -11199,13 +11193,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:^8.0.2":
-  version: 8.0.2
-  resolution: "react-native-pager-view@npm:8.0.2"
+"react-native-pager-view@npm:^10.0.2":
+  version: 10.0.2
+  resolution: "react-native-pager-view@npm:10.0.2"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/a2ba54ba413d07468d0f5d509071d9addb1281424c04293b9213a8f47fc097455b76109bef5e66272cdb04c1654d8eded6bc7ae3486341fa10dfc58c021defd6
+  checksum: 10c0/7d485d4d51d36c035c8d2cb1d5addfbeaf750c04daf856a5307f858a703e172ca8bf7b8c8c0f55be04c7f0f519dbcd362166854d23aad0485731b5902c098418
   languageName: node
   linkType: hard
 
@@ -13371,12 +13365,12 @@ __metadata:
     "@babel/preset-env": "npm:^7.29.14"
     "@babel/runtime": "npm:^7.29.14"
     "@eslint/js": "npm:^10.0.1"
-    "@op-engineering/op-sqlite": "npm:^16.2.0"
+    "@op-engineering/op-sqlite": "npm:^19.0.5"
     "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:20.2.0"
     "@react-native-community/cli-platform-android": "npm:20.2.0"
     "@react-native-community/cli-platform-ios": "npm:20.2.0"
-    "@react-native-vector-icons/material-design-icons": "npm:^13.1.5"
+    "@react-native-vector-icons/material-design-icons": "npm:^14.0.0"
     "@react-native/babel-preset": "npm:0.88.1"
     "@react-native/eslint-config": "npm:0.88.1"
     "@react-native/jest-preset": "npm:0.88.1"
@@ -13397,13 +13391,13 @@ __metadata:
     prettier: "npm:3.10.1"
     react: "npm:19.3.0"
     react-native: "npm:0.88.1"
-    react-native-chart-kit: "npm:^6.12.3"
+    react-native-chart-kit: "npm:^7.0.4"
     react-native-draggable-flatlist: "npm:^4.0.3"
     react-native-dropdown-picker: "npm:^5.4.6"
     react-native-fs: "npm:^2.20.0"
     react-native-gesture-handler: "npm:3.5.0"
     react-native-gradle-plugin: "npm:^0.71.19"
-    react-native-pager-view: "npm:^8.0.2"
+    react-native-pager-view: "npm:^10.0.2"
     react-native-popup-menu: "npm:^0.19.0"
     react-native-reanimated: "npm:^4.7.1"
     react-native-safe-area-context: "npm:^5.11.1"
