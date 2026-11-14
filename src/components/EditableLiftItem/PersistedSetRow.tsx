@@ -20,14 +20,7 @@ import {
 import { Widths } from './Widths';
 import { NumberControl } from '../NumberControl';
 import SetUtils from '../../core/utils/SetUtils';
-import RNCheckBox from '@react-native-community/checkbox';
-
-// The package's typings extend `NativeMethods`, which react-native's types no
-// longer export as of 0.88, so its class type is unusable as a JSX element.
-const CheckBox = RNCheckBox as unknown as React.ComponentType<{
-  value?: boolean;
-  onValueChange?: (value: boolean) => void;
-}>;
+import { CheckBox } from '../CheckBox';
 
 // Swipeable keeps its action panel visible behind the row at all times (as of
 // gesture-handler 3.5), so hide the red background until a swipe starts.

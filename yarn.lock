@@ -3988,20 +3988,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/checkbox@npm:^0.5.20":
-  version: 0.5.20
-  resolution: "@react-native-community/checkbox@npm:0.5.20"
-  peerDependencies:
-    react: "*"
-    react-native: ">= 0.62"
-    react-native-windows: ">=0.62"
-  peerDependenciesMeta:
-    react-native-windows:
-      optional: true
-  checksum: 10c0/ee6176dfc882330fb84c871290ed1398d445c64dd689a4c311e4b1e5d6d7e1c540c9678467a0c5e57579640dc1decde322b77835cdd386976be957fb2c636287
-  languageName: node
-  linkType: hard
-
 "@react-native-community/cli-clean@npm:20.2.0":
   version: 20.2.0
   resolution: "@react-native-community/cli-clean@npm:20.2.0"
@@ -13366,7 +13352,6 @@ __metadata:
     "@babel/runtime": "npm:^7.29.14"
     "@eslint/js": "npm:^10.0.1"
     "@op-engineering/op-sqlite": "npm:^19.0.5"
-    "@react-native-community/checkbox": "npm:^0.5.20"
     "@react-native-community/cli": "npm:20.2.0"
     "@react-native-community/cli-platform-android": "npm:20.2.0"
     "@react-native-community/cli-platform-ios": "npm:20.2.0"

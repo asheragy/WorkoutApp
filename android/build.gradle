@@ -22,11 +22,3 @@ buildscript {
 }
 
 apply plugin: "com.facebook.react.rootproject"
-
-// AGP 9 no longer generates BuildConfig for library modules by default, which
-// breaks older libraries that declare buildConfigField (e.g. checkbox).
-subprojects {
-    plugins.withId("com.android.library") {
-        android.buildFeatures.buildConfig = true
-    }
-}
