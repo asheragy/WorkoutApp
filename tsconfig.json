@@ -4,7 +4,15 @@
     "types": [
       "jest",
       "node"
-    ]
+    ],
+    "paths": {
+      "react-navigation-header-buttons": [
+        "./node_modules/react-navigation-header-buttons/lib/typescript/module/index.d.ts"
+      ],
+      "react-navigation-header-buttons/HeaderButtonsProvider": [
+        "./node_modules/react-navigation-header-buttons/lib/typescript/module/providers/HeaderButtonsProvider.d.ts"
+      ]
+    }
   },
   "include": [
     "**/*.ts",
