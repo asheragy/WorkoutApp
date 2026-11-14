@@ -7,6 +7,10 @@ import Swipeable, {
   SwipeableMethods,
 } from 'react-native-gesture-handler/ReanimatedSwipeable';
 import { Alert, Text, View } from 'react-native';
+import Animated, {
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import {
   Menu,
   MenuOption,
@@ -16,7 +20,31 @@ import {
 import { Widths } from './Widths';
 import { NumberControl } from '../NumberControl';
 import SetUtils from '../../core/utils/SetUtils';
-import CheckBox from '@react-native-community/checkbox';
+import RNCheckBox from '@react-native-community/checkbox';
+
+// The package's typings extend `NativeMethods`, which react-native's types no
+// longer export as of 0.88, so its class type is unusable as a JSX element.
+const CheckBox = RNCheckBox as unknown as React.ComponentType<{
+  value?: boolean;
+  onValueChange?: (value: boolean) => void;
+}>;
+
+// Swipeable keeps its action panel visible behind the row at all times (as of
+// gesture-handler 3.5), so hide the red background until a swipe starts.
+function DeleteBackground(props: { progress: SharedValue<number> }) {
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: props.progress.value === 0 ? 0 : 1,
+  }));
+
+  return (
+    <Animated.View
+      style={[
+        { flexDirection: 'row', flex: 1, backgroundColor: 'red' },
+        animatedStyle,
+      ]}
+    />
+  );
+}
 
 export function PersistedSetRow(props: {
   set: LiftSet;
@@ -82,16 +110,8 @@ export function PersistedSetRow(props: {
     );
   }
 
-  const renderRightActions = () => {
-    return (
-      <View
-        style={{
-          flexDirection: 'row',
-          flex: 1,
-          backgroundColor: 'red',
-        }}
-      ></View>
-    );
+  const renderRightActions = (progress: SharedValue<number>) => {
+    return <DeleteBackground progress={progress} />;
   };
 
   const set1RM = SetUtils.calculate1RM(props.settings, props.def, props.set);

@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "18.0.1",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
     "react-native-uuid": "^2.0.4",
     "react-router": "^8.5.0"
   },
