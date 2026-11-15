@@ -96,7 +96,7 @@ export function WorkoutEditScreen({ route, navigation }: Props) {
   }
 
   function onSelectExercise() {
-    navigation.navigate('LiftDefList', { onSelect: onExerciseAdded });
+    navigation.navigate('Lifts', { onSelect: onExerciseAdded });
   }
 
   function onExerciseAdded(defId: string) {

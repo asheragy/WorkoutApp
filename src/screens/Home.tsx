@@ -53,19 +53,20 @@ export function WorkoutList({ navigation }: Props) {
             {
               //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             }
-            <HiddenItem title="Refresh" onPress={() => loadState()} />
-            <HiddenItem title="Lift History" onPress={() => onLifts()} />
-            <HiddenItem title="Lift Defs" onPress={() => onLiftDefs()} />
             <HiddenItem
-              title="Add"
+              title="Add Workout"
               onPress={() => navigation.navigate('WorkoutEdit', {})}
             />
-            <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem
               title="Routines"
               onPress={() => navigation.navigate('Routines')}
             />
+            <HiddenItem
+              title="Lifts"
+              onPress={() => navigation.navigate('Lifts', {})}
+            />
             <HiddenItem title="Goals" onPress={() => onGoals()} />
+            <HiddenItem title="Stats" onPress={() => onStats()} />
             <HiddenItem title="Settings" onPress={() => onSettings()} />
             {}
           </OverflowMenu>
@@ -106,8 +107,6 @@ export function WorkoutList({ navigation }: Props) {
     }, [loadState]),
   );
 
-  const onLifts = () => navigation.navigate('LiftList');
-  const onLiftDefs = () => navigation.navigate('LiftDefList', {});
   //const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
   const onGoals = () => navigation.navigate('Goals');

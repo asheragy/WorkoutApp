@@ -9,13 +9,12 @@ import {
 import { createStackNavigator } from '@react-navigation/stack';
 import { GlobalSettings, LiftDef } from './core/types/types';
 import { Provider, useDispatch } from 'react-redux';
-import { LiftListScreen } from './screens/LiftListScreen';
 import { LiftHistoryScreen } from './screens/LiftHistory/LiftHistoryScreen';
 import { LiftDefEditScreen } from './screens/LiftDefEditScreen';
 import { WorkoutEditScreen } from './screens/WorkoutEditScreen';
 import { WorkoutList } from './screens/Home';
 import { Lift } from './core/types/workout';
-import { LiftDefListScreen } from './screens/LiftDefListScreen';
+import { LiftsScreen } from './screens/LiftsScreen';
 import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { WorkoutHistoryScreen } from './screens/WorkoutHistoryScreen';
@@ -54,11 +53,10 @@ export type RootStackParamList = {
   WorkoutHistory: {
     workoutId: string;
   };
-  LiftList: undefined;
   LiftDefEdit: {
     def?: LiftDef;
   };
-  LiftDefList: {
+  Lifts: {
     // TODO no function parameters
     onSelect?: (defId: string) => void;
   };
@@ -154,14 +152,6 @@ const AppRoot = () => {
             component={WorkoutHistoryScreen}
           />
           <Stack.Screen
-            name="LiftList"
-            options={{
-              title: 'Lifts',
-              headerStyle: styles.headerStyle,
-            }}
-            component={LiftListScreen}
-          />
-          <Stack.Screen
             name="LiftDefEdit"
             options={{
               title: 'Edit Lift Defintion',
@@ -178,12 +168,12 @@ const AppRoot = () => {
             component={WorkoutEditScreen}
           />
           <Stack.Screen
-            name="LiftDefList"
+            name="Lifts"
             options={{
-              title: 'Lift Definitions',
+              title: 'Lifts',
               headerStyle: styles.headerStyle,
             }}
-            component={LiftDefListScreen}
+            component={LiftsScreen}
           />
           <Stack.Screen
             name="Goals"

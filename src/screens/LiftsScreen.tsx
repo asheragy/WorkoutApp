@@ -15,10 +15,9 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { MaterialHeaderButton } from '../components/Common.tsx';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-type Props = StackScreenProps<RootStackParamList, 'LiftDefList'>;
+type Props = StackScreenProps<RootStackParamList, 'Lifts'>;
 
-// TODO better name for this, its a subset of
-export function LiftDefListScreen({ route, navigation }: Props) {
+export function LiftsScreen({ route, navigation }: Props) {
   const isSelection = route.params.onSelect != undefined;
   const defs = useAppSelector(store => store.liftDefs);
   const lifts = Array.from(Object.values(defs)).sort((a, b) =>
@@ -47,12 +46,19 @@ export function LiftDefListScreen({ route, navigation }: Props) {
     }
   }
 
+  function onHistory(def: LiftDef) {
+    navigation.navigate('LiftHistory', { liftId: def.id });
+  }
+
   function onAdd() {
     navigation.navigate('LiftDefEdit', {});
   }
 
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
-    <TouchableOpacity onPress={() => onEdit(item.item)}>
+    <TouchableOpacity
+      onPress={() => onEdit(item.item)}
+      onLongPress={() => onHistory(item.item)}
+    >
       <DefListItem def={item.item}></DefListItem>
     </TouchableOpacity>
   );
