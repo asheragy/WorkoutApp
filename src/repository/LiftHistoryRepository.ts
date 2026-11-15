@@ -29,21 +29,21 @@ type Row = {
 
 export default class LiftHistoryRepository {
   static async listKeys(): Promise<string[]> {
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       `SELECT distinct lift_id FROM lift_history`,
       [],
     );
 
-    return rows.map(row => row[0]);
+    return rows.map(row => row[0] as string);
   }
 
   static async get(key: string): Promise<LiftHistory[]> {
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       `SELECT * FROM lift_history WHERE lift_id = ?`,
       [key],
     );
 
-    return rows.map(row => {
+    return (rows as LiftHistoryTableSchema[]).map(row => {
       return {
         workoutId: row[1],
         timestamp: new Date(row[2]),
@@ -88,7 +88,7 @@ export default class LiftHistoryRepository {
 
   private static async query(query: string, params?: Scalar[]): Promise<Row[]> {
     try {
-      const rows = await db.executeRaw(query, params);
+      const { rawRows: rows } = await db.executeRaw(query, params);
       console.log(rows);
       return rows.map(row => this.getRow(row as LiftHistoryTableSchema));
     } catch (err) {

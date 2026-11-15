@@ -100,7 +100,7 @@ export default class WorkoutRepository {
   static async listCompletedWorkouts(): Promise<CompletedWorkout[]> {
     await dbReady();
 
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       `
         SELECT workout_id, timestamp
         FROM lift_history
@@ -111,8 +111,8 @@ export default class WorkoutRepository {
     );
 
     return rows.map(row => ({
-      workoutId: row[0],
-      timestamp: new Date(row[1]),
+      workoutId: row[0] as string,
+      timestamp: new Date(row[1] as number),
     }));
   }
 
@@ -125,7 +125,7 @@ export default class WorkoutRepository {
   static async get(id: string): Promise<Workout | undefined> {
     await dbReady();
 
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       'SELECT id, routine_id, data_json FROM workouts WHERE id = ?',
       [id],
     );
@@ -147,7 +147,7 @@ export default class WorkoutRepository {
   static async getRoutine(routine: string): Promise<Workout[]> {
     await dbReady();
 
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       'SELECT id, routine_id, data_json FROM workouts WHERE routine_id = ?',
       [routine],
     );
@@ -158,7 +158,7 @@ export default class WorkoutRepository {
   private static async getAll(): Promise<Workout[]> {
     await dbReady();
 
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       'SELECT id, routine_id, data_json FROM workouts',
     );
 

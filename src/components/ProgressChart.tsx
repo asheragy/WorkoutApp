@@ -2,7 +2,11 @@ import React from 'react';
 import { Dimensions, Text, View } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { useTheme } from '@react-navigation/native';
-import { Dataset } from 'react-native-chart-kit/dist/HelperTypes';
+
+// chart-kit 7 no longer allows deep imports of its helper types
+type Dataset = React.ComponentProps<
+  typeof LineChart
+>['data']['datasets'][number];
 
 export function ProgressChart(props: {
   title?: string;

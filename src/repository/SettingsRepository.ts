@@ -13,7 +13,9 @@ export default class SettingsRepository {
       bodyweight: 200,
     };
 
-    const rows = await db.executeRaw('SELECT key, value_json FROM settings');
+    const { rawRows: rows } = await db.executeRaw(
+      'SELECT key, value_json FROM settings',
+    );
 
     const writable = result as Record<string, unknown>;
     for (const [key, valueJson] of rows) {

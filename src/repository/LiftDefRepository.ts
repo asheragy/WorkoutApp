@@ -97,7 +97,9 @@ export default class LiftDefRepository {
   }
 
   static async getAll(): Promise<LiftDef[]> {
-    const rows = await db.executeRaw('SELECT id, data_json FROM lift_defs');
+    const { rawRows: rows } = await db.executeRaw(
+      'SELECT id, data_json FROM lift_defs',
+    );
 
     return rows.map(([id, dataJson]) =>
       LiftDefRepository.fromRow(id as string, dataJson as string),
@@ -105,7 +107,7 @@ export default class LiftDefRepository {
   }
 
   private static async getById(id: string): Promise<LiftDef | undefined> {
-    const rows = await db.executeRaw(
+    const { rawRows: rows } = await db.executeRaw(
       'SELECT id, data_json FROM lift_defs WHERE id = ?',
       [id],
     );
