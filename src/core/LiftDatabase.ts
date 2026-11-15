@@ -41,8 +41,8 @@ export const Lifts = createDictionary({
   pulldown_machine: { name: 'Pulldowns', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_machineHS: { name: 'Pulldowns (HammerStrength)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
   pulldown_highRow: { name: 'Pulldowns (High Row)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
-  pullup: { name: 'Pullups', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
-  pullup_neutral: { name: 'Pullups (Neutral grip)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps] },
+  pullup: { name: 'Pullups', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps], bodyweightFactor: 0.9 },
+  pullup_neutral: { name: 'Pullups (Neutral grip)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Back, MuscleGroup.Biceps], bodyweightFactor: 0.9 },
 
   // Shoulders
   ohp_barbell: { name: 'Overhead Press', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Shoulders, MuscleGroup.Triceps] },
@@ -73,7 +73,7 @@ export const Lifts = createDictionary({
   tricep_overhead: { name: 'Tricep (Overhead)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Triceps] },
   skull_crusher: { name: 'Skull Crushers', type: LiftType.Other, muscleGroups: [MuscleGroup.Triceps] },
   bench_closegrip: { name: 'Bench Press (Close-grip)', type: LiftType.Barbell, muscleGroups: [MuscleGroup.Triceps, MuscleGroup.Chest] },
-  dip: { name: 'Dips', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
+  dip: { name: 'Dips', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps], bodyweightFactor: 0.9 },
   dip_machine: { name: 'Dips', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Chest, MuscleGroup.Triceps] },
 
   // Quads
@@ -88,8 +88,8 @@ export const Lifts = createDictionary({
   legExtensions: { name: 'Leg Extensions', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Quads] },
 
   // Glutes
-  lunge: { name: 'Lunges', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads] },
-  splitSquat: { name: 'Split Squat', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads] },
+  lunge: { name: 'Lunges', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads], bodyweightFactor: 0.8 },
+  splitSquat: { name: 'Split Squat', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Quads], bodyweightFactor: 0.8 },
   gluteKickback: { name: 'Glute Kickback', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Glutes] },
   hipThrust: { name: 'Hip Thrust', type: LiftType.MachinePlateDouble, muscleGroups: [MuscleGroup.Glutes, MuscleGroup.Hamstrings] },
 
@@ -106,10 +106,10 @@ export const Lifts = createDictionary({
   legCurl_seated: { name: 'Leg Curls', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_kneeling: { name: 'Leg Curls (Kneeling)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
   legCurl_laying: { name: 'Leg Curls (Laying)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Hamstrings] },
-  backExtension: { name: 'Back Extensions', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes], factor: 1.25 },
+  backExtension: { name: 'Back Extensions', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.LowerBack, MuscleGroup.Hamstrings, MuscleGroup.Glutes], factor: 1.25, bodyweightFactor: 0.5 },
 
   // Calves
-  calfRaise_standing: { name: 'Calf Raises (Standing)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
+  calfRaise_standing: { name: 'Calf Raises (Standing Stack)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },
   calfRaise_seated: { name: 'Calf Raises (Seated Plate)', type: LiftType.MachinePlateSingle, muscleGroups: [MuscleGroup.Calves] },
   calfRaise_seatedStack: { name: 'Calf Raises (Seated Stack)', type: LiftType.MachineStack, muscleGroups: [MuscleGroup.Calves] },
   calfRaise_bodyWeight: { name: 'Calf Raises (Body weight)', type: LiftType.Bodyweight, muscleGroups: [MuscleGroup.Calves] },

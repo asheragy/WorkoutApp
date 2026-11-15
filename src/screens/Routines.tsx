@@ -58,12 +58,19 @@ export function RoutinesScreen({ navigation }: Props) {
     ]);
   };
 
-  // TODO bold text for selected only
   const renderItem = (item: ListRenderItemInfo<Routine>) => (
     <TouchableOpacity onPress={() => onClick(item.item)}>
       <View key={item.item.id}>
-        <Text style={{ color: colors.text, padding: 10 }}>
-          {(item.item.id == selected ? '**' : '') + item.item.title}
+        <Text
+          style={{
+            color: colors.text,
+            padding: 10,
+            fontWeight: item.item.id == selected ? 'bold' : 'normal',
+          }}
+        >
+          {item.item.id == selected
+            ? `*** ${item.item.title} ***`
+            : item.item.title}
         </Text>
       </View>
     </TouchableOpacity>

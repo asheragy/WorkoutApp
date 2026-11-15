@@ -1,4 +1,4 @@
-import { WeightReps } from './workout.ts';
+import { DEFAULT_ROUTINE, WeightReps } from './workout.ts';
 
 export enum LiftType {
   Barbell = 1,
@@ -36,6 +36,8 @@ export type LiftDef = {
   goal?: WeightReps;
   baseWeight?: number;
   factor?: number;
+  // Portion of bodyweight lifted for Bodyweight lifts (0.9 = 90%), defaults to 1
+  bodyweightFactor?: number;
 };
 
 /**
@@ -55,4 +57,11 @@ export type GlobalSettings = {
   routine: string;
   routineName?: string;
   bodyweight?: number;
+};
+
+export const DEFAULT_SETTINGS: GlobalSettings = {
+  routine: DEFAULT_ROUTINE,
+  largestHalfPoundDumbbell: 47.5,
+  plateCount: true,
+  bodyweight: 206,
 };

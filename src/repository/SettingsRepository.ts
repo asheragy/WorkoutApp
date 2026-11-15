@@ -1,17 +1,11 @@
-import { GlobalSettings } from '../core/types/types';
+import { DEFAULT_SETTINGS, GlobalSettings } from '../core/types/types';
 import { db, dbReady } from './db.ts';
-import { DEFAULT_ROUTINE } from '../core/types/workout';
 
 export default class SettingsRepository {
   static async get(): Promise<GlobalSettings> {
     await dbReady();
 
-    const result: GlobalSettings = {
-      routine: DEFAULT_ROUTINE,
-      largestHalfPoundDumbbell: 47.5,
-      plateCount: true,
-      bodyweight: 200,
-    };
+    const result: GlobalSettings = { ...DEFAULT_SETTINGS };
 
     const { rawRows: rows } = await db.executeRaw(
       'SELECT key, value_json FROM settings',

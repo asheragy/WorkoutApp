@@ -58,6 +58,14 @@ export type RootStackParamList = {
   };
   Lifts: {
     // TODO no function parameters
+    // Params must be serializable; a callback triggers the "Non-serializable values were found in the navigation state" warning and breaks state persistence / deep links.
+    // Only one caller passes it: WorkoutEditScreen.onSelectExercise -> LiftsScreen.onEdit.
+    // Scope (3 files), using the documented "pass params back" pattern:
+    // - Here: replace with a plain flag, e.g. Lifts: { select?: boolean }, and add WorkoutEdit: { workoutId?: string; selectedDefId?: string }
+    // - LiftsScreen: isSelection reads the flag; on select, instead of onSelect(id) + pop(), return the id to the previous screen with
+    //   navigation.popTo('WorkoutEdit', { selectedDefId }, { merge: true }) (merge is needed so workoutId is kept; check the v7 signature)
+    // - WorkoutEditScreen: useEffect on route.params.selectedDefId calls onExerciseAdded, then setParams({ selectedDefId: undefined }) so picking the same lift twice in a row still fires
+    // If a second screen ever needs the picker, LiftsScreen would have to take the return route name as a param instead of hardcoding it.
     onSelect?: (defId: string) => void;
   };
   WorkoutEdit: {
@@ -139,7 +147,7 @@ const AppRoot = () => {
             name="LiftHistory"
             options={() => ({
               headerStyle: styles.headerStyle,
-              title: 'TODO',
+              title: 'Lift History',
             })}
             component={LiftHistoryScreen}
           />

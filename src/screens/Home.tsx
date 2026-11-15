@@ -77,7 +77,6 @@ export function WorkoutList({ navigation }: Props) {
 
   const loadState = useCallback(() => {
     SettingsRepository.get().then(settings => {
-      // TODO should this go in App.txs?
       dispatch(updateSettings(settings));
 
       console.log('Using routine: ' + settings.routine);
@@ -139,6 +138,11 @@ export function WorkoutList({ navigation }: Props) {
       data={workouts}
       renderItem={renderItem}
       // TODO workout.id should not be nullable probably?
+      // Scope: Workout.id is optional (core/types/workout.ts) only so an unsaved workout can exist before insert.
+      // Fix by splitting the type, e.g. NewWorkout = Omit<Workout, 'id'> with Workout.id required.
+      // - Unsaved producers that would use NewWorkout: WorkoutEditScreen (initial useState, onCopy's `delete id`) and the bundled routine JSON loaded by WorkoutRepository.importIfEmpty/insertAll
+      // - WorkoutRepository.upsert branches on `id == undefined`; becomes separate insert(NewWorkout) / update(Workout)
+      // - Then drop the workarounds: `id!` in WorkoutRepository.update, LiftHistoryRepository.addWorkout and onSelect above, `id ?? ''` in StatsScreen, the `id != undefined` check in WorkoutEditScreen and the index fallback below
       keyExtractor={(workout, index) => workout.id || index + ''}
     ></FlatList>
   );

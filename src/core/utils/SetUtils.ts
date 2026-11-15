@@ -12,7 +12,6 @@ import {
   WeightReps,
   Workout,
 } from '../types/workout.ts';
-import { Lifts } from '../LiftDatabase.ts';
 
 export type WorkingSets = {
   group: string;
@@ -174,9 +173,7 @@ const SetUtils = {
     for (let i = 0; i < sets.length; i++) {
       const set = sets[i];
       if (set.warmup != true) {
-        const weight =
-          set.weight +
-          (def.type == LiftType.Bodyweight ? (settings.bodyweight ?? 0) : 0);
+        const weight = set.weight + bodyweightOffset(settings, def);
 
         sum += weight * set.reps;
       }
@@ -190,16 +187,8 @@ const SetUtils = {
     def: LiftDef,
     set: WeightReps,
   ): number {
-    let weight = set.weight;
+    const weight = set.weight + bodyweightOffset(settings, def);
     const reps = set.reps;
-    const type = def.type;
-
-    if (type == LiftType.Bodyweight) {
-      // TODO special case, bodyweight % should be on lift def, pullups are ~90%
-      if (def.id == Lifts.backExtension.id)
-        weight += (settings.bodyweight ?? 0) / 2;
-      else weight += settings.bodyweight ?? 0;
-    }
 
     const sum =
       oneRMBrzycki(weight, reps) +
@@ -224,6 +213,15 @@ const SetUtils = {
     return sum / values.length;
   },
 };
+
+function bodyweightOffset(
+  settings: Pick<GlobalSettings, 'bodyweight'>,
+  def: LiftDef,
+): number {
+  if (def.type != LiftType.Bodyweight) return 0;
+
+  return (settings.bodyweight ?? 0) * (def.bodyweightFactor ?? 1);
+}
 
 export function oneRMLombardi(weight: number, reps: number) {
   return weight * Math.pow(reps, 0.1);

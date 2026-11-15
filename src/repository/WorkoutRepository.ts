@@ -35,7 +35,6 @@ export default class WorkoutRepository {
   }
 
   static async importLatestLifts(workout: Workout): Promise<Workout> {
-    // TODO need to refactor for lifts if this is even used still
     throw new Error('Not implemented');
     //const all = await this.getAll();
     //return await this.importLatestLiftsInternal(workout, all);

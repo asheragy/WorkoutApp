@@ -8,7 +8,7 @@
     {
       "id": "l1",
       "name": "Lower 1",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "id": "hipAdduction",
@@ -203,7 +203,7 @@
     {
       "id": "u1",
       "name": "Upper 1",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "kind": "oneOf",
@@ -540,7 +540,7 @@
     {
       "id": "l2",
       "name": "Lower 2",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "id": "legExtensions",
@@ -745,7 +745,7 @@
     {
       "id": "u2",
       "name": "Upper 2",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "kind": "oneOf",
@@ -1132,7 +1132,7 @@
     {
       "id": "l3",
       "name": "Lower 3",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "id": "legCurl_kneeling",
@@ -1395,7 +1395,7 @@
     {
       "id": "u3",
       "name": "Upper 3",
-      "routineId": "upperLower2026",
+      "routineId": "",
       "items": [
         {
           "kind": "oneOf",

@@ -338,6 +338,14 @@ test('calc 1RM bodyweight', () => {
     263.92,
     2,
   );
+  // 50 + 200 * 0.5
+  expect(
+    SetUtils.calculate1RM(
+      { bodyweight: 200 },
+      { ...def, bodyweightFactor: 0.5 },
+      set,
+    ),
+  ).toBeCloseTo(158.35, 2);
 });
 
 test('1RM Lombardi', () => {

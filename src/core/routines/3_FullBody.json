@@ -8,7 +8,7 @@
     {
       "id": "d1",
       "name": "Legs",
-      "routineId": "fullBody3",
+      "routineId": "",
       "items": [
         {
           "id": "hipAdduction",
@@ -207,7 +207,7 @@
     {
       "id": "misc",
       "name": "Misc",
-      "routineId": "fullBody3",
+      "routineId": "",
       "items": [
         {
           "kind": "oneOf",
@@ -308,7 +308,7 @@
     {
       "id": "push",
       "name": "Push",
-      "routineId": "fullBody3",
+      "routineId": "",
       "items": [
         {
           "id": "bench_barbell",
@@ -455,7 +455,7 @@
     {
       "id": "pull",
       "name": "Pull",
-      "routineId": "fullBody3",
+      "routineId": "",
       "items": [
         {
           "id": "pullup",
