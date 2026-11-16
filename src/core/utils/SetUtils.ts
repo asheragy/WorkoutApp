@@ -187,6 +187,9 @@ const SetUtils = {
     def: LiftDef,
     set: WeightReps,
   ): number {
+    // Timed lifts are scored by their seconds (stored in reps), weight is ignored
+    if (def.timed) return set.reps;
+
     const weight = set.weight + bodyweightOffset(settings, def);
     const reps = set.reps;
 

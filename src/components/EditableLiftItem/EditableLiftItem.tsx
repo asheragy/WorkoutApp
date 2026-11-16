@@ -207,7 +207,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
 
       {props.mode === 'lift_edit' && (
         <>
-          <PersistedSetHeader></PersistedSetHeader>
+          <PersistedSetHeader timed={def.timed}></PersistedSetHeader>
           {props.lift.sets.map((set, index) => (
             <PersistedSetRow
               set={set}

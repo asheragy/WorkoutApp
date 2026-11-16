@@ -38,6 +38,7 @@ export type LiftDef = {
   factor?: number;
   // Portion of bodyweight lifted for Bodyweight lifts (0.9 = 90%), defaults to 1
   bodyweightFactor?: number;
+  timed?: boolean; // Measured in seconds not reps
 };
 
 /**

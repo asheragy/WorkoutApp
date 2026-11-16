@@ -204,8 +204,8 @@ export default function Lift({
               <tr>
                 <th style={headerStyle}>Set</th>
                 <th style={headerStyle}>Weight</th>
-                <th style={headerStyle}>Reps</th>
-                <th style={headerStyle}>1RM</th>
+                <th style={headerStyle}>{def.timed ? 'Seconds' : 'Reps'}</th>
+                <th style={headerStyle}>{def.timed ? '' : '1RM'}</th>
                 <th />
               </tr>
             </thead>
@@ -244,8 +244,8 @@ export default function Lift({
               <tr>
                 <th />
                 <th style={headerStyle}>Weight</th>
-                <th style={headerStyle}>Reps</th>
-                <th style={headerStyle}>1RM</th>
+                <th style={headerStyle}>{def.timed ? 'Seconds' : 'Reps'}</th>
+                <th style={headerStyle}>{def.timed ? '' : '1RM'}</th>
                 <th />
               </tr>
             )}

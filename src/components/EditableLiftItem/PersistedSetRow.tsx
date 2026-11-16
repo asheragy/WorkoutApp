@@ -234,11 +234,13 @@ export function PersistedSetRow(props: {
                 color: colors.text,
               }}
             >
-              {props.set.warmup
-                ? props.top1RM
-                  ? Math.round((100 * set1RM) / props.top1RM) + '%'
-                  : ''
-                : Math.round(set1RM * 10) / 10}
+              {props.def.timed
+                ? ''
+                : props.set.warmup
+                  ? props.top1RM
+                    ? Math.round((100 * set1RM) / props.top1RM) + '%'
+                    : ''
+                  : Math.round(set1RM * 10) / 10}
             </Text>
           </View>
           <View

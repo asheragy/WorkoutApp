@@ -15,7 +15,10 @@ export function ReadOnlySetTable({ lift, def }: { lift: Lift; def: LiftDef }) {
 
   return (
     <View>
-      <SetHeader showPlateCount={settings.plateCount == true}></SetHeader>
+      <SetHeader
+        showPlateCount={settings.plateCount == true}
+        timed={def.timed}
+      ></SetHeader>
       <View>
         {SetUtils.normalizeSets(lift.sets, def).map((set, index) => (
           <SetItem

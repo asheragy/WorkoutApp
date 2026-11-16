@@ -1,22 +1,29 @@
-import {useTheme} from '@react-navigation/native';
-import {StyleSheet, Text, View} from 'react-native';
-import {Widths} from './Widths';
+import { useTheme } from '@react-navigation/native';
+import { StyleSheet, Text, View } from 'react-native';
+import { Widths } from './Widths';
 import React from 'react';
-import {Style_LiftText} from '../Common';
+import { Style_LiftText } from '../Common';
 
-export function PersistedSetHeader() {
-  const {colors} = useTheme();
-  const labels = ['Set', 'Weight', '', 'Reps', '1RM'];
+export function PersistedSetHeader(props: { timed?: boolean }) {
+  const { colors } = useTheme();
+  const labels = [
+    'Set',
+    'Weight',
+    '',
+    props.timed ? 'Seconds' : 'Reps',
+    props.timed ? '' : '1RM',
+  ];
 
   return (
-    <View style={{flexDirection: 'row'}}>
+    <View style={{ flexDirection: 'row' }}>
       {labels.map((label, index) => (
         <Text
           key={index}
           style={[
             styles.liftHeader,
-            {width: Widths[index], color: colors.text},
-          ]}>
+            { width: Widths[index], color: colors.text },
+          ]}
+        >
           {label}
         </Text>
       ))}

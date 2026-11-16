@@ -153,6 +153,8 @@ export default class LiftDefRepository {
         // For backwards compatability also type
         entry.type = def.type;
         entry.muscleGroups = def.muscleGroups;
+        // Not editable, always from the system def
+        entry.timed = def.timed;
 
         result[def.id] = entry;
       } else {

@@ -23,7 +23,11 @@ export function LiftChartTab(props: {
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ProgressChart title="1RM" dates={dates} values={values}></ProgressChart>
+      <ProgressChart
+        title={props.def.timed ? 'Seconds' : '1RM'}
+        dates={dates}
+        values={values}
+      ></ProgressChart>
       <ProgressChart
         title="Volume"
         dates={dates}

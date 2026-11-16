@@ -20,11 +20,14 @@ const inputStyle = { width: 64, textAlign: 'right' as const };
 
 export default function Set({ set, def, settings, label, top1RM, onChange, onDelete }: Props) {
   const set1RM = SetUtils.calculate1RM(settings, def, set);
-  const oneRM = set.warmup
-    ? top1RM
-      ? Math.round((100 * set1RM) / top1RM) + '%'
-      : ''
-    : Math.round(set1RM * 10) / 10;
+  // Timed lifts have no 1RM, the cell stays so columns line up
+  const oneRM = def.timed
+    ? ''
+    : set.warmup
+      ? top1RM
+        ? Math.round((100 * set1RM) / top1RM) + '%'
+        : ''
+      : Math.round(set1RM * 10) / 10;
 
   return (
     <tr>

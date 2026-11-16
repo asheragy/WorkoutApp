@@ -2,7 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { useTheme } from '@react-navigation/native';
 
-export default function SetHeader(props: { showPlateCount: boolean }) {
+export default function SetHeader(props: {
+  showPlateCount: boolean;
+  timed?: boolean;
+}) {
   const { colors } = useTheme();
   const weightWidth = props.showPlateCount ? '30%' : '60%';
 
@@ -22,7 +25,7 @@ export default function SetHeader(props: { showPlateCount: boolean }) {
         ></Text>
       )}
       <Text style={[styles.liftHeader, { width: '20%', color: colors.text }]}>
-        Reps
+        {props.timed ? 'Seconds' : 'Reps'}
       </Text>
     </View>
   );
