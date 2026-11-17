@@ -5,17 +5,17 @@ import {
   DarkTheme,
   DefaultTheme,
   NavigationContainer,
+  NavigatorScreenParams,
 } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { GlobalSettings, LiftDef } from './core/types/types';
+import { LiftDef } from './core/types/types';
 import { Provider, useDispatch } from 'react-redux';
 import { LiftHistoryScreen } from './screens/LiftHistory/LiftHistoryScreen';
 import { LiftDefEditScreen } from './screens/LiftDefEditScreen';
 import { WorkoutEditScreen } from './screens/WorkoutEditScreen';
-import { WorkoutList } from './screens/Home';
+import { HomeTabParamList, HomeTabs } from './screens/HomeTabs';
 import { Lift } from './core/types/workout';
 import { LiftsScreen } from './screens/LiftsScreen';
-import { StatsScreen } from './screens/StatsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { WorkoutHistoryScreen } from './screens/WorkoutHistoryScreen';
 import LiftDefRepository from './repository/LiftDefRepository';
@@ -23,7 +23,6 @@ import { dbReady } from './repository/db.ts';
 import { MenuProvider } from 'react-native-popup-menu';
 import { RoutinesScreen } from './screens/Routines';
 import { store } from './state/store.ts';
-import { GoalsScreen } from './screens/Goals/GoalsScreen.tsx';
 import LiftEditScreen from './screens/LiftEditScreen.tsx';
 import {
   SafeAreaProvider,
@@ -32,9 +31,7 @@ import {
 import { HeaderButtonsProvider } from 'react-navigation-header-buttons/HeaderButtonsProvider';
 
 export type RootStackParamList = {
-  Home: {
-    settings: GlobalSettings;
-  };
+  Home: NavigatorScreenParams<HomeTabParamList>;
   Workout: {
     workoutId: string;
   };
@@ -43,7 +40,6 @@ export type RootStackParamList = {
     lift: Lift;
   };
   Weight: undefined;
-  Stats: undefined;
   LiftChart: {
     lift: LiftDef;
   };
@@ -72,7 +68,6 @@ export type RootStackParamList = {
     workoutId?: string;
   };
   Settings: undefined;
-  Goals: undefined;
   Routines: undefined;
 };
 
@@ -108,11 +103,9 @@ const AppRoot = () => {
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
-            component={WorkoutList}
-            options={{
-              title: `Workouts v${React.version}`,
-              headerStyle: styles.headerStyle,
-            }}
+            component={HomeTabs}
+            // Each tab draws its own header
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Workout"
@@ -128,14 +121,6 @@ const AppRoot = () => {
             })}
             component={LiftEditScreen}
           />
-          <Stack.Screen
-            name="Stats"
-            options={{
-              headerStyle: styles.headerStyle,
-            }}
-            component={StatsScreen}
-          />
-
           <Stack.Screen
             name="Routines"
             options={{
@@ -182,13 +167,6 @@ const AppRoot = () => {
               headerStyle: styles.headerStyle,
             }}
             component={LiftsScreen}
-          />
-          <Stack.Screen
-            name="Goals"
-            options={{
-              headerStyle: styles.headerStyle,
-            }}
-            component={GoalsScreen}
           />
           <Stack.Screen
             name="Settings"

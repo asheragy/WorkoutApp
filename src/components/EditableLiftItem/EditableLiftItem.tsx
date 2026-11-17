@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button, Image, Pressable, Text, TextInput, View } from 'react-native';
+import { Button, Pressable, Text, TextInput, View } from 'react-native';
 import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import { useTheme } from '@react-navigation/native';
 import { Lift, LiftSet, WeightReps } from '../../core/types/workout';
-import { Style_LiftText } from '../Common';
+import { MoreIcon, Style_LiftText } from '../Common';
 import { GlobalSettings } from '../../core/types/types';
 import { displayName } from '../../core/LiftDatabase.ts';
 import { useSelector } from 'react-redux';
@@ -142,7 +142,7 @@ export default function EditableLiftItem(props: EditableLiftItemProps) {
                   },
                 }}
               >
-                <Image source={require('../../icons/more.png')}></Image>
+                <MoreIcon />
               </MenuTrigger>
               <MenuOptions
                 customStyles={{ optionsContainer: {} }}

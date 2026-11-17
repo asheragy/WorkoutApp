@@ -4,7 +4,6 @@ import {
   Button,
   ScrollView,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -18,7 +17,7 @@ import {
   OverflowMenu,
   HiddenItem,
 } from 'react-navigation-header-buttons';
-import { MaterialHeaderButton } from '../components/Common';
+import { MaterialHeaderButton, MoreIcon } from '../components/Common';
 import { useSelector } from 'react-redux';
 import { AppState } from '../state/store';
 import LiftHistoryRepository from '../repository/LiftHistoryRepository';
@@ -27,7 +26,6 @@ import { useFocusEffect, useTheme } from '@react-navigation/native';
 type Props = StackScreenProps<RootStackParamList, 'Workout'>;
 
 export function WorkoutScreen({ route, navigation }: Props) {
-  const { colors } = useTheme();
   const defs = useSelector((store: AppState) => store.liftDefs);
   const settings = useSelector((store: AppState) => store.settings);
   const [workout, setWorkout] = useState<Workout>({
@@ -42,13 +40,7 @@ export function WorkoutScreen({ route, navigation }: Props) {
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={() => (
-              <Text
-                style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
-              >
-                ...
-              </Text>
-            )}
+            OverflowIcon={<MoreIcon color="white" />}
           >
             <HiddenItem title="History" onPress={() => onHistory()} />
             <HiddenItem title="Import Lifts" onPress={() => onImport()} />

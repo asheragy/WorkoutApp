@@ -1,10 +1,10 @@
 import { Text, View } from 'react-native';
 import { useSelector } from 'react-redux';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { GlobalSettings, LiftDef, MuscleGroup } from '../core/types/types';
 import WorkoutRepository from '../repository/WorkoutRepository';
 import { AppState, useAppSelector } from '../state/store.ts';
-import { useTheme } from '@react-navigation/native';
+import { useFocusEffect, useTheme } from '@react-navigation/native';
 import { NumberControl } from '../components/NumberControl.tsx';
 import ChartUtils, { HistoryEntry } from '../core/utils/ChartUtils.ts';
 import { ProgressChart } from '../components/ProgressChart.tsx';
@@ -34,7 +34,8 @@ export function StatsScreen() {
     (store: AppState) => store.settings,
   );
 
-  useEffect(onLoad, [value]);
+  // Reload on focus, the tab stays mounted while workouts change elsewhere
+  useFocusEffect(useCallback(onLoad, [value, settings, defs]));
 
   function onLoad() {
     getCycleDates(settings).then(dates => {

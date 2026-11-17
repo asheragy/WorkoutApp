@@ -10,14 +10,21 @@ import {
 import {
   HeaderButtons,
   HiddenItem,
+  Item,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import { useFocusEffect, useTheme } from '@react-navigation/native';
+import {
+  CompositeScreenProps,
+  useFocusEffect,
+  useTheme,
+} from '@react-navigation/native';
+import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import SettingsRepository from '../repository/SettingsRepository';
 import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
-import { MaterialHeaderButton } from '../components/Common';
+import type { HomeTabParamList } from './HomeTabs';
+import { MaterialHeaderButton, MoreIcon } from '../components/Common';
 import { isLiftGroup, Lift, LiftGroup, Workout } from '../core/types/workout';
 import { displayName } from '../core/LiftDatabase.ts';
 import WorkoutRepository from '../repository/WorkoutRepository';
@@ -25,7 +32,10 @@ import Utils from '../components/Utils';
 import { AppDispatch, AppState, updateSettings } from '../state/store';
 import SetUtils from '../core/utils/SetUtils.ts';
 
-type Props = StackScreenProps<RootStackParamList, 'Home'>;
+type Props = CompositeScreenProps<
+  BottomTabScreenProps<HomeTabParamList, 'Workouts'>,
+  StackScreenProps<RootStackParamList>
+>;
 
 export function WorkoutList({ navigation }: Props) {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
@@ -36,27 +46,19 @@ export function WorkoutList({ navigation }: Props) {
     navigation.setOptions({
       headerRight: () => (
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+          <Item
+            title="add workout"
+            iconName="plus"
+            onPress={() => navigation.navigate('WorkoutEdit', {})}
+          />
+          <Item title="settings" iconName="cog" onPress={onSettings} />
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={() => (
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  fontSize: 24,
-                  color: colors.text,
-                }}
-              >
-                ...
-              </Text>
-            )}
+            OverflowIcon={<MoreIcon color="white" />}
           >
             {
               //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
             }
-            <HiddenItem
-              title="Add Workout"
-              onPress={() => navigation.navigate('WorkoutEdit', {})}
-            />
             <HiddenItem
               title="Routines"
               onPress={() => navigation.navigate('Routines')}
@@ -65,9 +67,6 @@ export function WorkoutList({ navigation }: Props) {
               title="Lifts"
               onPress={() => navigation.navigate('Lifts', {})}
             />
-            <HiddenItem title="Goals" onPress={() => onGoals()} />
-            <HiddenItem title="Stats" onPress={() => onStats()} />
-            <HiddenItem title="Settings" onPress={() => onSettings()} />
             {}
           </OverflowMenu>
         </HeaderButtons>
@@ -80,9 +79,6 @@ export function WorkoutList({ navigation }: Props) {
       dispatch(updateSettings(settings));
 
       console.log('Using routine: ' + settings.routine);
-      const title = settings.routineName ?? 'Workouts';
-      navigation.setOptions({ title });
-
       WorkoutRepository.getRoutine(settings.routine).then(result => {
         const incompleted = result.filter(w => w.lastCompleted == null);
         const completed = result
@@ -108,8 +104,6 @@ export function WorkoutList({ navigation }: Props) {
 
   //const onWeightLog = () => navigation.navigate('Weight');
   const onSettings = () => navigation.navigate('Settings');
-  const onGoals = () => navigation.navigate('Goals');
-  const onStats = () => navigation.navigate('Stats');
 
   function onSelect(item: Workout) {
     navigation.navigate('Workout', {

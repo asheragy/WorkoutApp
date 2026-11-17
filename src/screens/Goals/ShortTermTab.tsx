@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store.ts';
 import WorkoutRepository from '../../repository/WorkoutRepository.ts';
@@ -13,23 +14,26 @@ export function ShortTermTab(props: {
   const defs = useSelector((store: AppState) => store.liftDefs);
   const [goalRows, setGoalRows] = useState<GoalRow[]>([]);
 
-  useEffect(() => {
-    const loadData = async () => {
-      const workouts = await WorkoutRepository.getRoutine(
-        props.settings.routine,
-      );
+  // Reload on focus, the tab stays mounted while workouts change elsewhere
+  useFocusEffect(
+    useCallback(() => {
+      const loadData = async () => {
+        const workouts = await WorkoutRepository.getRoutine(
+          props.settings.routine,
+        );
 
-      const result = calcWorkoutGoals(
-        props.settings,
-        defs,
-        workouts,
-        props.primary,
-      );
-      setGoalRows(result);
-    };
+        const result = calcWorkoutGoals(
+          props.settings,
+          defs,
+          workouts,
+          props.primary,
+        );
+        setGoalRows(result);
+      };
 
-    loadData();
-  }, []);
+      loadData();
+    }, [props.settings, props.primary, defs]),
+  );
 
   return <ProgressList goals={goalRows} />;
 }

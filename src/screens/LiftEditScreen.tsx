@@ -1,13 +1,5 @@
-import { useTheme } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import {
-  Alert,
-  Button,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Alert, Button, ScrollView, StyleSheet, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { Lift } from '../core/types/workout';
 import { displayName } from '../core/LiftDatabase.ts';
@@ -19,7 +11,7 @@ import {
   HiddenItem,
   OverflowMenu,
 } from 'react-navigation-header-buttons';
-import { MaterialHeaderButton } from '../components/Common.tsx';
+import { MaterialHeaderButton, MoreIcon } from '../components/Common.tsx';
 import { AppState } from '../state/store.ts';
 import WorkoutRepository from '../repository/WorkoutRepository.ts';
 import LiftUtils from '../core/utils/LiftUtils.ts';
@@ -30,7 +22,6 @@ type Props = StackScreenProps<RootStackParamList, 'LiftEdit'>;
 export default function LiftEditScreen({ route, navigation }: Props) {
   const [lift, setLift] = useState<Lift>(route.params.lift);
   const [showPlates, setShowPlates] = useState<boolean>(false);
-  const { colors } = useTheme();
 
   const defs = useSelector((store: AppState) => store.liftDefs);
 
@@ -53,13 +44,7 @@ export default function LiftEditScreen({ route, navigation }: Props) {
         <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
           <OverflowMenu
             style={{ marginHorizontal: 10 }}
-            OverflowIcon={() => (
-              <Text
-                style={{ fontWeight: 'bold', fontSize: 24, color: colors.text }}
-              >
-                ...
-              </Text>
-            )}
+            OverflowIcon={<MoreIcon color="white" />}
           >
             <HiddenItem
               title="History"

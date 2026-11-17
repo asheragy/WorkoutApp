@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 import { AppState } from '../../state/store.ts';
 import { ProgressList } from './Common.tsx';
@@ -21,49 +22,52 @@ export function LongTermTab(props: { settings: GlobalSettings }) {
       return a.name.localeCompare(b.name);
     });
 
-  useEffect(() => {
-    const loadData = async () => {
-      const workouts = await WorkoutRepository.getRoutine(
-        props.settings.routine,
-      );
-      const result: GoalRow[] = [];
-
-      for (const defWithGoal of goals) {
-        const lifts = workouts
-          .flatMap(workout => LiftUtils.flatten(workout.items))
-          .filter(lift => lift.id === defWithGoal.id);
-
-        if (lifts.length == 0) continue;
-
-        const sets = lifts
-          .flatMap(lift => lift.sets)
-          .filter(set => !set.warmup);
-        const maxes = sets.map(set =>
-          SetUtils.calculate1RM(props.settings, defWithGoal, set),
+  // Reload on focus, the tab stays mounted while workouts change elsewhere
+  useFocusEffect(
+    useCallback(() => {
+      const loadData = async () => {
+        const workouts = await WorkoutRepository.getRoutine(
+          props.settings.routine,
         );
-        const best = maxes.length > 0 ? Math.max(...maxes) : 0;
+        const result: GoalRow[] = [];
 
-        if (defWithGoal.goal) {
-          const target = SetUtils.calculate1RM(
-            props.settings,
-            defWithGoal,
-            defWithGoal.goal,
+        for (const defWithGoal of goals) {
+          const lifts = workouts
+            .flatMap(workout => LiftUtils.flatten(workout.items))
+            .filter(lift => lift.id === defWithGoal.id);
+
+          if (lifts.length == 0) continue;
+
+          const sets = lifts
+            .flatMap(lift => lift.sets)
+            .filter(set => !set.warmup);
+          const maxes = sets.map(set =>
+            SetUtils.calculate1RM(props.settings, defWithGoal, set),
           );
-          const percent = target > 0 ? best / target : 0;
-          result.push({
-            id: defWithGoal.id,
-            name: defWithGoal.displayName,
-            percent,
-          });
+          const best = maxes.length > 0 ? Math.max(...maxes) : 0;
+
+          if (defWithGoal.goal) {
+            const target = SetUtils.calculate1RM(
+              props.settings,
+              defWithGoal,
+              defWithGoal.goal,
+            );
+            const percent = target > 0 ? best / target : 0;
+            result.push({
+              id: defWithGoal.id,
+              name: defWithGoal.displayName,
+              percent,
+            });
+          }
         }
-      }
 
-      result.sort((a, b) => a.percent - b.percent);
-      setGoalRows(result);
-    };
+        result.sort((a, b) => a.percent - b.percent);
+        setGoalRows(result);
+      };
 
-    loadData();
-  }, []);
+      loadData();
+    }, [props.settings, defs]),
+  );
 
   return <ProgressList goals={goalRows} />;
 }
