@@ -154,6 +154,17 @@ export default class WorkoutRepository {
     return rows.map(row => this.fromRow(row));
   }
 
+  // Workout id -> name, for every routine
+  static async getNames(): Promise<Record<string, string>> {
+    await dbReady();
+
+    const { rawRows: rows } = await db.executeRaw(
+      `SELECT id, json_extract(data_json, '$.name') FROM workouts`,
+    );
+
+    return Object.fromEntries(rows.map(row => [row[0], row[1]]));
+  }
+
   private static async getAll(): Promise<Workout[]> {
     await dbReady();
 

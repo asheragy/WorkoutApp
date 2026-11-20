@@ -19,6 +19,10 @@ export type WorkoutHistory = {
   }[];
 };
 
+export type CompletedWorkoutHistory = WorkoutHistory & {
+  workoutId: string;
+};
+
 type Row = {
   liftId: string;
   workoutId: string;
@@ -84,6 +88,44 @@ export default class LiftHistoryRepository {
         lifts: lifts,
       };
     });
+  }
+
+  // Most recent completed workouts across all routines, newest first
+  static async getRecentWorkouts(
+    limit: number,
+  ): Promise<CompletedWorkoutHistory[]> {
+    // A completed workout writes all of its lifts with the same timestamp
+    const { rawRows } = await db.executeRaw(
+      `SELECT * FROM lift_history
+       WHERE timestamp IN (
+         SELECT DISTINCT timestamp FROM lift_history
+         ORDER BY timestamp DESC LIMIT ?
+       )
+       ORDER BY timestamp DESC, position ASC`,
+      [limit],
+    );
+
+    const result: CompletedWorkoutHistory[] = [];
+    for (const rawRow of rawRows) {
+      const row = this.getRow(rawRow as LiftHistoryTableSchema);
+      let last = result[result.length - 1];
+
+      if (
+        last == undefined ||
+        last.timestamp.getTime() != row.timestamp.getTime()
+      ) {
+        last = {
+          workoutId: row.workoutId,
+          timestamp: row.timestamp,
+          lifts: [],
+        };
+        result.push(last);
+      }
+
+      last.lifts.push({ liftId: row.liftId, sets: row.sets });
+    }
+
+    return result;
   }
 
   private static async query(query: string, params?: Scalar[]): Promise<Row[]> {

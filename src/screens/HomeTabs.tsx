@@ -11,7 +11,7 @@ import { AppState } from '../state/store';
 import { WorkoutList } from './Home';
 import { GoalsScreen } from './Goals/GoalsScreen.tsx';
 import { StatsScreen } from './StatsScreen';
-import { HistoryScreen } from './history/HistoryScreen';
+import { HistoryScreen } from './History/HistoryScreen';
 
 export type HomeTabParamList = {
   Workouts: undefined;
