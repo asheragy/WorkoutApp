@@ -1,6 +1,19 @@
 import React from 'react';
-import { Alert, Button, ToastAndroid, View } from 'react-native';
+import {
+  Alert,
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import { MaterialDesignIcons } from '@react-native-vector-icons/material-design-icons';
 import RNFS from 'react-native-fs';
+import { StackScreenProps } from '@react-navigation/stack';
+import type { RootStackParamList } from '../App';
 import LiftDefRepository from '../repository/LiftDefRepository';
 import { LiftType, MuscleGroup } from '../core/types/types.ts';
 import SettingsRepository from '../repository/SettingsRepository.ts';
@@ -23,7 +36,34 @@ function timestamp() {
   );
 }
 
-export function SettingsScreen() {
+type SettingsAction =
+  | 'lifts'
+  | 'routines'
+  | 'logDefs'
+  | 'logSettings'
+  | 'backup'
+  | 'exportRoutine';
+
+// Listed in display order
+const ACTION_LABELS: Record<SettingsAction, string> = {
+  lifts: 'Lifts',
+  routines: 'Routines',
+  logDefs: 'Log Defs',
+  logSettings: 'Log Settings',
+  backup: 'Backup Database',
+  exportRoutine: 'Export Routine',
+};
+
+const ACTIONS = Object.keys(ACTION_LABELS) as SettingsAction[];
+
+// These open another screen, the rest run in place
+const NAVIGATE_ACTIONS: SettingsAction[] = ['lifts', 'routines'];
+
+type Props = StackScreenProps<RootStackParamList, 'Settings'>;
+
+export function SettingsScreen({ navigation }: Props) {
+  const { colors } = useTheme();
+
   async function logLiftDefs() {
     const defs = await LiftDefRepository.getAll();
     console.log('Defs');
@@ -113,12 +153,68 @@ export function SettingsScreen() {
     }
   }
 
+  function onAction(action: SettingsAction) {
+    switch (action) {
+      case 'lifts':
+        return navigation.navigate('Lifts', {});
+      case 'routines':
+        return navigation.navigate('Routines');
+      case 'logDefs':
+        return logLiftDefs();
+      case 'logSettings':
+        return logSettings();
+      case 'backup':
+        return onBackup();
+      case 'exportRoutine':
+        return onExportRoutine();
+    }
+  }
+
+  const renderItem = ({ item }: ListRenderItemInfo<SettingsAction>) => (
+    <TouchableOpacity
+      style={[styles.row, { backgroundColor: colors.card }]}
+      onPress={() => onAction(item)}
+    >
+      <Text style={[styles.label, { color: colors.text }]}>
+        {ACTION_LABELS[item]}
+      </Text>
+      {NAVIGATE_ACTIONS.includes(item) && (
+        <MaterialDesignIcons
+          name="chevron-right"
+          size={24}
+          color={colors.text}
+        />
+      )}
+    </TouchableOpacity>
+  );
+
+  const separator = () => (
+    <View style={[styles.separator, { backgroundColor: colors.border }]} />
+  );
+
   return (
-    <View>
-      <Button title="Log Defs" onPress={logLiftDefs}></Button>
-      <Button title="Log Settings" onPress={logSettings}></Button>
-      <Button title="Backup Database" onPress={onBackup}></Button>
-      <Button title="Export Routine" onPress={onExportRoutine}></Button>
-    </View>
+    <FlatList
+      data={ACTIONS}
+      renderItem={renderItem}
+      keyExtractor={action => action}
+      ItemSeparatorComponent={separator}
+    />
   );
 }
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    // Fixed so rows match with or without the chevron
+    minHeight: 52,
+    paddingHorizontal: 16,
+  },
+  label: {
+    fontSize: 16,
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+  },
+});

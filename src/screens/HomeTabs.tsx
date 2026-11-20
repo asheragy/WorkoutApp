@@ -11,7 +11,7 @@ import { AppState } from '../state/store';
 import { WorkoutList } from './Home';
 import { GoalsScreen } from './Goals/GoalsScreen.tsx';
 import { StatsScreen } from './StatsScreen';
-import { HistoryScreen } from './HistoryScreen';
+import { HistoryScreen } from './history/HistoryScreen';
 
 export type HomeTabParamList = {
   Workouts: undefined;
@@ -85,7 +85,11 @@ export function HomeTabs({ navigation }: Props) {
       <Tab.Screen
         name="History"
         component={HistoryScreen}
-        options={{ tabBarIcon: tabIcon('history') }}
+        options={{
+          // Top tabs sit directly under the header
+          headerShadowVisible: false,
+          tabBarIcon: tabIcon('history'),
+        }}
       />
     </Tab.Navigator>
   );

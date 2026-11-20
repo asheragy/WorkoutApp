@@ -46,19 +46,12 @@ export function LiftsScreen({ route, navigation }: Props) {
     }
   }
 
-  function onHistory(def: LiftDef) {
-    navigation.navigate('LiftHistory', { liftId: def.id });
-  }
-
   function onAdd() {
     navigation.navigate('LiftDefEdit', {});
   }
 
   const renderItem = (item: ListRenderItemInfo<LiftDef>) => (
-    <TouchableOpacity
-      onPress={() => onEdit(item.item)}
-      onLongPress={() => onHistory(item.item)}
-    >
+    <TouchableOpacity onPress={() => onEdit(item.item)}>
       <DefListItem def={item.item}></DefListItem>
     </TouchableOpacity>
   );

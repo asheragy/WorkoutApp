@@ -7,12 +7,7 @@ import {
   TouchableOpacity,
   ListRenderItemInfo,
 } from 'react-native';
-import {
-  HeaderButtons,
-  HiddenItem,
-  Item,
-  OverflowMenu,
-} from 'react-navigation-header-buttons';
+import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import {
   CompositeScreenProps,
   useFocusEffect,
@@ -24,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { StackScreenProps } from '@react-navigation/stack';
 import type { RootStackParamList } from '../App';
 import type { HomeTabParamList } from './HomeTabs';
-import { MaterialHeaderButton, MoreIcon } from '../components/Common';
+import { MaterialHeaderButton } from '../components/Common';
 import { isLiftGroup, Lift, LiftGroup, Workout } from '../core/types/workout';
 import { displayName } from '../core/LiftDatabase.ts';
 import WorkoutRepository from '../repository/WorkoutRepository';
@@ -45,31 +40,16 @@ export function WorkoutList({ navigation }: Props) {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
-          <Item
-            title="add workout"
-            iconName="plus"
-            onPress={() => navigation.navigate('WorkoutEdit', {})}
-          />
-          <Item title="settings" iconName="cog" onPress={onSettings} />
-          <OverflowMenu
-            style={{ marginHorizontal: 10 }}
-            OverflowIcon={<MoreIcon color="white" />}
-          >
-            {
-              //<HiddenItem title="Weight Log" onPress={() => onWeightLog()} />
-            }
-            <HiddenItem
-              title="Routines"
-              onPress={() => navigation.navigate('Routines')}
+        <View style={{ marginRight: 10 }}>
+          <HeaderButtons HeaderButtonComponent={MaterialHeaderButton}>
+            <Item
+              title="add workout"
+              iconName="plus"
+              onPress={() => navigation.navigate('WorkoutEdit', {})}
             />
-            <HiddenItem
-              title="Lifts"
-              onPress={() => navigation.navigate('Lifts', {})}
-            />
-            {}
-          </OverflowMenu>
-        </HeaderButtons>
+            <Item title="settings" iconName="cog" onPress={onSettings} />
+          </HeaderButtons>
+        </View>
       ),
     });
   }, [navigation, workouts]);
